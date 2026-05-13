@@ -333,6 +333,73 @@
             color: white;
             box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
         }
+
+        .discipline-panel {
+            background: rgba(255,255,255,0.92);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 28px;
+            padding: 1rem;
+        }
+
+        .author-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 0.9rem;
+            border-radius: 9999px;
+            background: #ecfdf5;
+            color: #134e4a;
+            font-size: 0.8rem;
+            border: 1px solid #d1fae5;
+            margin: 0.15rem;
+        }
+
+        .author-chip button {
+            color: #065f46;
+            font-weight: 700;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .card-design-select {
+            background: white;
+            border: 2px solid rgba(148, 163, 184, 0.24);
+            border-radius: 1rem;
+            padding: 0.9rem 1rem;
+            width: 100%;
+            outline: none;
+            color: #1f2937;
+        }
+
+        .card-preview {
+            width: 100%;
+            min-height: 140px;
+            border-radius: 28px;
+            background-size: cover;
+            background-position: center;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            display: grid;
+            place-items: center;
+            padding: 1rem;
+            background-color: #f8fafc;
+            color: #0f172a;
+            position: relative;
+        }
+
+        .card-preview::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 28px;
+            background: linear-gradient(0deg, rgba(255,255,255,0.85), rgba(255,255,255,0.15));
+            pointer-events: none;
+        }
+
+        .card-preview span {
+            position: relative;
+            z-index: 1;
+        }
     </style>
 </head>
 <body class="overflow-hidden">
@@ -408,12 +475,79 @@
                             <input id="edit-game-name" type="text" class="w-full p-3 border-2 border-slate-200 rounded-xl outline-none focus:border-emerald-500 transition" placeholder="Ex: Frações e Decimais">
                         </div>
                         <div>
+                            <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Enunciado</label>
+                            <textarea id="edit-game-enunciado" rows="4" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none" placeholder="Explique a proposta do jogo..."></textarea>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
+                            <textarea id="edit-game-explicacao" rows="4" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none" placeholder="Breve explicação do conteúdo..."></textarea>
+                        </div>
+                        <div>
                             <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Nível de Dificuldade</label>
                             <select id="edit-game-diff" class="w-full p-3 border-2 border-slate-200 rounded-xl outline-none focus:border-emerald-500 transition">
                                 <option value="1">Nível 1 - Iniciante</option>
                                 <option value="2">Nível 2 - Intermédio</option>
                                 <option value="3">Nível 3 - Avançado</option>
                             </select>
+                        </div>
+                        <div class="space-y-4">
+                            <button id="toggle-discipline-info" onclick="app.toggleInfoPanel()" class="w-full py-3 bg-slate-900 text-white rounded-3xl font-bold uppercase text-xs tracking-[0.25em]">Informações da Disciplina</button>
+                            <div id="discipline-panel" class="discipline-panel hidden">
+                                <div>
+                                    <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Campus</label>
+                                    <input id="edit-game-campus" type="text" class="w-full p-3 border-2 border-slate-200 rounded-xl outline-none focus:border-emerald-500 transition" placeholder="Campus...">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Disciplina</label>
+                                    <select id="edit-game-disciplina" class="w-full p-3 border-2 border-slate-200 rounded-xl outline-none focus:border-emerald-500 transition">
+                                        <option value="Matemática">Matemática</option>
+                                        <option value="Português">Português</option>
+                                        <option value="Ciências">Ciências</option>
+                                        <option value="História">História</option>
+                                        <option value="Geografia">Geografia</option>
+                                        <option value="Inglês">Inglês</option>
+                                        <option value="Artes">Artes</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo</label>
+                                    <input id="edit-game-conteudo" type="text" class="w-full p-3 border-2 border-slate-200 rounded-xl outline-none focus:border-emerald-500 transition" placeholder="Ex: Frações, leitura..."></input>
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Série</label>
+                                    <select id="edit-game-serie" class="w-full p-3 border-2 border-slate-200 rounded-xl outline-none focus:border-emerald-500 transition">
+                                        <option value="1.º ano">1.º ano</option>
+                                        <option value="2.º ano">2.º ano</option>
+                                        <option value="3.º ano">3.º ano</option>
+                                        <option value="4.º ano">4.º ano</option>
+                                        <option value="5.º ano">5.º ano</option>
+                                        <option value="6.º ano">6.º ano</option>
+                                        <option value="7.º ano">7.º ano</option>
+                                        <option value="8.º ano">8.º ano</option>
+                                        <option value="9.º ano">9.º ano</option>
+                                        
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Autores</label>
+                                    <input id="edit-game-author-input" type="text" onkeydown="app.handleAuthorInput(event)" class="w-full p-3 border-2 border-slate-200 rounded-xl outline-none focus:border-emerald-500 transition" placeholder="Digite um autor e pressione Enter">
+                                    <div id="edit-game-authors-list" class="mt-3 flex flex-wrap"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Design da Frente</label>
+                                <select id="edit-game-front" class="card-design-select">
+                                    <option value="imagens/frente/frente01.png">Frente 1</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Design do Verso</label>
+                                <select id="edit-game-back" class="card-design-select">
+                                    <option value="imagens/verso/verso01.png">Verso 1</option>
+                                </select>
+                            </div>
                         </div>
                     </aside>
                     <div class="flex-1 p-8 overflow-y-auto bg-white">
@@ -617,6 +751,17 @@
                         id: 1,
                         name: "Frações e Decimais",
                         difficulty: 1,
+                        frontDesign: "imagens/frente/frente01.png",
+                        backDesign: "imagens/verso/verso01.png",
+                        disciplineInfo: {
+                            campus: "",
+                            disciplina: "Matemática",
+                            conteudo: "",
+                            serie: "6.º ano",
+                            autores: [],
+                            enunciado: "",
+                            explicacao: ""
+                        },
                         cards: Array.from({length: 12}, (_, i) => ({
                             id: i,
                             content: i < 4 ? `Carta de Senha ${i+1}` : `Opção de Distração ${i+1}`,
@@ -698,6 +843,17 @@
                     id: Date.now(),
                     name: "",
                     difficulty: 1,
+                    frontDesign: "imagens/frente/frente01.png",
+                    backDesign: "imagens/verso/verso01.png",
+                    disciplineInfo: {
+                        campus: "",
+                        disciplina: "Matemática",
+                        conteudo: "",
+                        serie: "6.º ano",
+                        autores: [],
+                        enunciado: "",
+                        explicacao: ""
+                    },
                     cards: Array.from({length: 12}, (_, i) => ({ 
                         id: i, 
                         content: "", 
@@ -718,7 +874,16 @@
 
             syncEditorUI: function() {
                 document.getElementById('edit-game-name').value = this.state.editingGame.name;
+                document.getElementById('edit-game-enunciado').value = this.state.editingGame.disciplineInfo.enunciado || "";
+                document.getElementById('edit-game-explicacao').value = this.state.editingGame.disciplineInfo.explicacao || "";
                 document.getElementById('edit-game-diff').value = this.state.editingGame.difficulty;
+                document.getElementById('edit-game-front').value = this.state.editingGame.frontDesign || "imagens/frente/frente01.png";
+                document.getElementById('edit-game-back').value = this.state.editingGame.backDesign || "imagens/verso/verso01.png";
+                document.getElementById('edit-game-campus').value = this.state.editingGame.disciplineInfo.campus || "";
+                document.getElementById('edit-game-disciplina').value = this.state.editingGame.disciplineInfo.disciplina || "Matemática";
+                document.getElementById('edit-game-conteudo').value = this.state.editingGame.disciplineInfo.conteudo || "";
+                document.getElementById('edit-game-serie').value = this.state.editingGame.disciplineInfo.serie || "6.º ano";
+                this.renderAuthorsList();
                 document.getElementById('editor-title-display').innerText = this.state.editingGame.name || "Novo Jogo";
                 this.renderEditorGrid();
             },
@@ -769,6 +934,53 @@
                 document.getElementById('modal-help').classList.add('hidden');
             },
 
+            toggleInfoPanel: function() {
+                const panel = document.getElementById('discipline-panel');
+                if (!panel) return;
+                panel.classList.toggle('hidden');
+            },
+
+            handleAuthorInput: function(event) {
+                if (event.key !== 'Enter') return;
+                event.preventDefault();
+                const input = document.getElementById('edit-game-author-input');
+                if (!input) return;
+                const value = input.value.trim();
+                if (!value) return;
+                this.addAuthor(value);
+                input.value = '';
+            },
+
+            addAuthor: function(name) {
+                const authors = this.state.editingGame.disciplineInfo.authors;
+                if (!authors.includes(name)) {
+                    authors.push(name);
+                    this.renderAuthorsList();
+                }
+            },
+
+            removeAuthor: function(index) {
+                const authors = this.state.editingGame.disciplineInfo.authors;
+                authors.splice(index, 1);
+                this.renderAuthorsList();
+            },
+
+            renderAuthorsList: function() {
+                const list = document.getElementById('edit-game-authors-list');
+                if (!list) return;
+                list.innerHTML = '';
+                const authors = this.state.editingGame.disciplineInfo.authors || [];
+                authors.forEach((author, idx) => {
+                    const chip = document.createElement('div');
+                    chip.className = 'author-chip';
+                    chip.innerHTML = `
+                        <span>${author}</span>
+                        <button type="button" onclick="app.removeAuthor(${idx})">×</button>
+                    `;
+                    list.appendChild(chip);
+                });
+            },
+
             openHistory: function() {
                 const modal = document.getElementById('modal-history');
                 const list = document.getElementById('modal-history-list');
@@ -807,6 +1019,17 @@
                 const eg = this.state.editingGame;
                 eg.name = document.getElementById('edit-game-name').value || "Material sem Nome";
                 eg.difficulty = parseInt(document.getElementById('edit-game-diff').value);
+                eg.frontDesign = document.getElementById('edit-game-front').value || "imagens/frente/frente01.png";
+                eg.backDesign = document.getElementById('edit-game-back').value || "imagens/verso/verso01.png";
+                eg.disciplineInfo = {
+                    campus: document.getElementById('edit-game-campus').value || "",
+                    disciplina: document.getElementById('edit-game-disciplina').value || "Matemática",
+                    conteudo: document.getElementById('edit-game-conteudo').value || "",
+                    serie: document.getElementById('edit-game-serie').value || "6.º ano",
+                    autores: eg.disciplineInfo.authors || [],
+                    enunciado: document.getElementById('edit-game-enunciado').value || "",
+                    explicacao: document.getElementById('edit-game-explicacao').value || ""
+                };
 
                 const existingIndex = this.state.games.findIndex(x => x.id === eg.id);
                 if (existingIndex > -1) {
@@ -836,7 +1059,18 @@
                 this.renderPlayGrid(true);
                 this.renderHand();
                 this.updatePlayUI();
+                this.updatePlayDesigns();
                 this.switchView('player');
+            },
+
+            updatePlayDesigns: function() {
+                const design = this.state.activeGame.backDesign || "imagens/verso/verso01.png";
+                document.querySelectorAll('.deck-card-back').forEach(el => {
+                    el.style.backgroundImage = `url('${design}')`;
+                    el.style.backgroundSize = 'cover';
+                    el.style.backgroundPosition = 'center';
+                    el.style.backgroundBlendMode = 'overlay';
+                });
             },
 
             renderPlayGrid: function(animate = false) {
@@ -851,8 +1085,13 @@
                     const isSelected = this.state.currentGuess.includes(card.id);
                     const selectedClasses = isSelected ? 'card-selected' : 'border-transparent';
                     const animationClasses = animate ? 'hidden-card' : '';
+                    const design = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
 
                     btn.className = `game-card border-2 shadow-sm text-left flex flex-col justify-between transition-all hover:border-emerald-100 active:scale-95 ${selectedClasses} ${animationClasses}`;
+                    btn.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.82), rgba(255,255,255,0.82)), url('${design}')`;
+                    btn.style.backgroundSize = 'cover';
+                    btn.style.backgroundPosition = 'center';
+                    btn.style.backgroundBlendMode = 'overlay';
                     btn.innerHTML = `
                         <div class="flex items-center justify-between card-label-row">
                             <span class="text-[10px] font-black text-slate-400 uppercase">Carta ${card.pileId}</span>
