@@ -536,15 +536,25 @@
                             </div>
                         </div>
                         <div class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div class="rounded-3xl overflow-hidden border border-slate-200">
+                                    <div class="px-4 py-3 bg-slate-50 text-[10px] font-black uppercase tracking-[0.24em] text-slate-500">Pré-visualização Frente</div>
+                                    <img id="preview-front" src="imagens/frente/frente01.png" alt="Pré-visualização frente" class="w-full h-40 object-cover bg-slate-100">
+                                </div>
+                                <div class="rounded-3xl overflow-hidden border border-slate-200">
+                                    <div class="px-4 py-3 bg-slate-50 text-[10px] font-black uppercase tracking-[0.24em] text-slate-500">Pré-visualização Verso</div>
+                                    <img id="preview-back" src="imagens/verso/verso01.png" alt="Pré-visualização verso" class="w-full h-40 object-cover bg-slate-100">
+                                </div>
+                            </div>
                             <div>
                                 <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Design da Frente</label>
-                                <select id="edit-game-front" class="card-design-select">
+                                <select id="edit-game-front" class="card-design-select" onchange="app.updateDesignPreviews()">
                                     <option value="imagens/frente/frente01.png">Frente 1</option>
                                 </select>
                             </div>
                             <div>
                                 <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Design do Verso</label>
-                                <select id="edit-game-back" class="card-design-select">
+                                <select id="edit-game-back" class="card-design-select" onchange="app.updateDesignPreviews()">
                                     <option value="imagens/verso/verso01.png">Verso 1</option>
                                 </select>
                             </div>
@@ -884,6 +894,7 @@
                 document.getElementById('edit-game-conteudo').value = this.state.editingGame.disciplineInfo.conteudo || "";
                 document.getElementById('edit-game-serie').value = this.state.editingGame.disciplineInfo.serie || "6.º ano";
                 this.renderAuthorsList();
+                this.updateDesignPreviews();
                 document.getElementById('editor-title-display').innerText = this.state.editingGame.name || "Novo Jogo";
                 this.renderEditorGrid();
             },
@@ -1071,6 +1082,15 @@
                     el.style.backgroundPosition = 'center';
                     el.style.backgroundBlendMode = 'overlay';
                 });
+            },
+
+            updateDesignPreviews: function() {
+                const front = document.getElementById('edit-game-front');
+                const back = document.getElementById('edit-game-back');
+                const previewFront = document.getElementById('preview-front');
+                const previewBack = document.getElementById('preview-back');
+                if (previewFront && front) previewFront.src = front.value || 'imagens/frente/frente01.png';
+                if (previewBack && back) previewBack.src = back.value || 'imagens/verso/verso01.png';
             },
 
             renderPlayGrid: function(animate = false) {
