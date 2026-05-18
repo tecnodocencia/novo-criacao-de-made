@@ -49,18 +49,52 @@
         .game-card {
             aspect-ratio: 4 / 5;
             min-height: 220px;
-            border-radius: 28px;
-            background: linear-gradient(180deg, #ffffff 0%, #f7fafc 100%);
+            border-radius: 32px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
             border: 1px solid rgba(148, 163, 184, 0.18);
-            box-shadow: 0 18px 35px rgba(15, 23, 42, 0.08);
-            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
-            padding: 1.25rem;
+            box-shadow: 0 24px 40px rgba(15, 23, 42, 0.1);
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+            padding: 1.5rem;
             box-sizing: border-box;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .game-card p {
             word-break: break-word;
+            color: #0f172a;
+        }
+
+        .card-preview {
+            border-radius: 32px;
+            overflow: hidden;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            box-shadow: 0 24px 40px rgba(15, 23, 42, 0.08);
+            background: white;
+            max-width: 260px;
+            margin-inline: auto;
+        }
+
+        .card-preview img {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            object-fit: cover;
+            display: block;
+            background: #f8fafc;
+            min-height: 180px;
+        }
+
+        .card-preview-label {
+            padding: 1rem 1.25rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.14);
+            background: #f8fafc;
+            font-size: 0.77rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #475569;
         }
 
         .game-card .card-label-row {
@@ -457,49 +491,53 @@
             </section>
 
             <!-- VIEW: EDITOR -->
-            <section id="view-creator" class="view-section flex-col bg-white hidden">
+            <section id="view-creator" class="view-section flex-col bg-white hidden h-full overflow-y-auto">
                 <header class="h-20 border-b px-8 flex items-center justify-between shrink-0 bg-white z-10">
                     <div>
                         <h2 class="font-bold text-lg" id="editor-title-display">Novo Jogo</h2>
-                        <p class="text-[10px] text-slate-400 font-bold uppercase">Configuração de Cartas</p>
-                    </div>
-                    <div class="flex space-x-3">
-                        <button onclick="app.switchView('dashboard')" class="px-4 py-2 text-sm font-bold text-slate-400">Cancelar</button>
-                        <button onclick="app.saveGame()" class="px-8 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-sm shadow-xl">Publicar Material</button>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase">Configuração</p>
                     </div>
                 </header>
-                <div class="flex-1 flex overflow-hidden">
-                    <aside class="w-80 border-r p-8 bg-emerald-50/90 space-y-6 overflow-y-auto">
-                        <div>
-                            <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Nome do Jogo</label>
-                            <input id="edit-game-name" type="text" class="w-full p-3 border-2 border-slate-200 rounded-xl outline-none focus:border-emerald-500 transition" placeholder="Ex: Frações e Decimais">
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Enunciado</label>
-                            <textarea id="edit-game-enunciado" rows="4" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none" placeholder="Explique a proposta do jogo..."></textarea>
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
-                            <textarea id="edit-game-explicacao" rows="4" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none" placeholder="Breve explicação do conteúdo..."></textarea>
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Nível de Dificuldade</label>
-                            <select id="edit-game-diff" class="w-full p-3 border-2 border-slate-200 rounded-xl outline-none focus:border-emerald-500 transition">
-                                <option value="1">Nível 1 - Iniciante</option>
-                                <option value="2">Nível 2 - Intermédio</option>
-                                <option value="3">Nível 3 - Avançado</option>
-                            </select>
-                        </div>
+                <div class="flex-1 min-h-0 overflow-y-auto">
+                    <aside class="flex-1 h-full min-h-0 p-10 bg-emerald-50/80 space-y-8 overflow-y-auto">
                         <div class="space-y-4">
-                            <button id="toggle-discipline-info" onclick="app.toggleInfoPanel()" class="w-full py-3 bg-slate-900 text-white rounded-3xl font-bold uppercase text-xs tracking-[0.25em]">Informações da Disciplina</button>
-                            <div id="discipline-panel" class="discipline-panel hidden">
+                            <div class="flex items-center justify-between gap-3">
                                 <div>
-                                    <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Campus</label>
-                                    <input id="edit-game-campus" type="text" class="w-full p-3 border-2 border-slate-200 rounded-xl outline-none focus:border-emerald-500 transition" placeholder="Campus...">
+                                    <p class="text-[10px] uppercase tracking-[0.28em] text-slate-500 font-bold">Passo <span id="creator-step-current">1</span> de 5</p>
+                                    <h3 class="text-lg font-black text-slate-900" id="creator-step-title">Dados do Jogo</h3>
+                                </div>
+                                <div class="text-[10px] text-slate-500 uppercase tracking-[0.24em]">Wizard</div>
+                            </div>
+                            <div class="grid grid-cols-5 gap-2">
+                                <span id="creator-step-dot-1" class="h-2 rounded-full bg-emerald-600"></span>
+                                <span id="creator-step-dot-2" class="h-2 rounded-full bg-slate-300"></span>
+                                <span id="creator-step-dot-3" class="h-2 rounded-full bg-slate-300"></span>
+                                <span id="creator-step-dot-4" class="h-2 rounded-full bg-slate-300"></span>
+                                <span id="creator-step-dot-5" class="h-2 rounded-full bg-slate-300"></span>
+                            </div>
+                            <div class="relative h-2 rounded-full bg-slate-200 overflow-hidden mt-4">
+                                <div id="creator-progress-fill" class="absolute inset-y-0 left-0 bg-emerald-600 rounded-full transition-all duration-300" style="width:20%"></div>
+                            </div>
+                        </div>
+                        <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-3">
+                            <h4 class="text-xl font-black text-slate-900">Bem-vindo ao assistente de criação</h4>
+                            <p class="text-sm text-slate-600">Preencha as informações básicas do seu jogo para começar.</p>
+                        </div>
+                        <div id="creator-step-1" class="creator-step">
+                            <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+                                <div class="space-y-4">
+                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Informações iniciais</p>
+                                    <p class="text-sm text-slate-600">Preencha os dados básicos do jogo e os autores.</p>
                                 </div>
                                 <div>
-                                    <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Disciplina</label>
-                                    <select id="edit-game-disciplina" class="w-full p-3 border-2 border-slate-200 rounded-xl outline-none focus:border-emerald-500 transition">
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Modelo</label>
+                                    <select id="edit-game-model" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
+                                        <option value="Modelo Senha">Modelo Senha</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Disciplina</label>
+                                    <select id="edit-game-disciplina" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
                                         <option value="Matemática">Matemática</option>
                                         <option value="Português">Português</option>
                                         <option value="Ciências">Ciências</option>
@@ -510,12 +548,12 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo</label>
-                                    <input id="edit-game-conteudo" type="text" class="w-full p-3 border-2 border-slate-200 rounded-xl outline-none focus:border-emerald-500 transition" placeholder="Ex: Frações, leitura..."></input>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo</label>
+                                    <input id="edit-game-conteudo" type="text" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Frações, leitura...">
                                 </div>
                                 <div>
-                                    <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Série</label>
-                                    <select id="edit-game-serie" class="w-full p-3 border-2 border-slate-200 rounded-xl outline-none focus:border-emerald-500 transition">
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Série</label>
+                                    <select id="edit-game-serie" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
                                         <option value="1.º ano">1.º ano</option>
                                         <option value="2.º ano">2.º ano</option>
                                         <option value="3.º ano">3.º ano</option>
@@ -525,46 +563,126 @@
                                         <option value="7.º ano">7.º ano</option>
                                         <option value="8.º ano">8.º ano</option>
                                         <option value="9.º ano">9.º ano</option>
-                                        
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Autores</label>
-                                    <input id="edit-game-author-input" type="text" onkeydown="app.handleAuthorInput(event)" class="w-full p-3 border-2 border-slate-200 rounded-xl outline-none focus:border-emerald-500 transition" placeholder="Digite um autor e pressione Enter">
-                                    <div id="edit-game-authors-list" class="mt-3 flex flex-wrap"></div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <label class="text-[11px] font-black text-slate-500 uppercase tracking-widest">Autores</label>
+                                        <button type="button" onclick="app.openAuthorModal()" class="text-emerald-700 text-[11px] uppercase font-black">Adicionar</button>
+                                    </div>
+                                    <div id="edit-game-authors-list" class="mt-2 flex flex-wrap gap-2"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="space-y-4">
-                            <div class="grid grid-cols-2 gap-4 mb-4">
-                                <div class="rounded-3xl overflow-hidden border border-slate-200">
-                                    <div class="px-4 py-3 bg-slate-50 text-[10px] font-black uppercase tracking-[0.24em] text-slate-500">Pré-visualização Frente</div>
-                                    <img id="preview-front" src="imagens/frente/frente01.png" alt="Pré-visualização frente" class="w-full h-40 object-cover bg-slate-100">
+                        <div id="creator-step-2" class="creator-step hidden">
+                            <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+                                <div class="space-y-3">
+                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Regras e aparência</p>
+                                    <p class="text-sm text-slate-600">Defina o funcionamento do jogo e escolha a aparência das cartas.</p>
                                 </div>
-                                <div class="rounded-3xl overflow-hidden border border-slate-200">
-                                    <div class="px-4 py-3 bg-slate-50 text-[10px] font-black uppercase tracking-[0.24em] text-slate-500">Pré-visualização Verso</div>
-                                    <img id="preview-back" src="imagens/verso/verso01.png" alt="Pré-visualização verso" class="w-full h-40 object-cover bg-slate-100">
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Regra</label>
+                                    <textarea id="edit-game-regra" rows="4" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Descreva a regra do jogo..."></textarea>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Objetivo</label>
+                                    <textarea id="edit-game-objetivo" rows="4" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Explique o objetivo do aluno..."></textarea>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="card-preview cursor-pointer" onclick="app.toggleFrontDesign()">
+                                        <img id="preview-front" src="imagens/frente/frente01.png" alt="Pré-visualização frente">
+                                        <div class="card-preview-label">Clique para trocar o design da frente</div>
+                                    </div>
+                                    <div class="card-preview cursor-pointer" onclick="app.toggleBackDesign()">
+                                        <img id="preview-back" src="imagens/verso/verso01.png" alt="Pré-visualização verso">
+                                        <div class="card-preview-label">Clique para trocar o design do verso</div>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-2">Clique na pré-visualização para alterar o design da carta.</p>
+                            </div>
+                        </div>
+                        <div id="creator-step-3" class="creator-step hidden">
+                            <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+                                <div class="space-y-3">
+                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Detalhes finais</p>
+                                    <p class="text-sm text-slate-600">Defina o título, o enunciado e a explicação do jogo.</p>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Título do Jogo</label>
+                                    <input id="edit-game-name" type="text" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Frações e Decimais">
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Enunciado</label>
+                                    <textarea id="edit-game-enunciado" rows="5" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Explique a proposta do jogo..."></textarea>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
+                                    <textarea id="edit-game-explicacao" rows="5" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Breve explicação do conteúdo..."></textarea>
                                 </div>
                             </div>
-                            <div>
-                                <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Design da Frente</label>
-                                <select id="edit-game-front" class="card-design-select" onchange="app.updateDesignPreviews()">
-                                    <option value="imagens/frente/frente01.png">Frente 1</option>
-                                </select>
+                        </div>
+                        <div id="creator-step-4" class="creator-step hidden">
+                            <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+                                <div class="space-y-3">
+                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Criação de Cartas</p>
+                                    <p class="text-sm text-slate-600">Preencha as cartas do jogo. Clique em cada carta para editar o conteúdo.</p>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Nível de Dificuldade</label>
+                                    <select id="edit-game-diff" onchange="app.updateDifficultyInfo()" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
+                                        <option value="1">Nível 1 — 10 tentativas</option>
+                                        <option value="2">Nível 2 — 8 tentativas</option>
+                                        <option value="3">Nível 3 — 6 tentativas</option>
+                                        <option value="4">Nível 4 — 5 tentativas</option>
+                                    </select>
+                                </div>
+                                <div id="creator-difficulty-info" class="rounded-[28px] border border-slate-200 bg-emerald-50 p-4 text-slate-700 space-y-2">
+                                    <p class="text-sm font-black">EM JOGAR NOVAMENTE</p>
+                                    <p class="text-sm" id="creator-difficulty-description">10 tentativas - apenas embaralhamento</p>
+                                </div>
+                                <div class="rounded-[28px] border border-slate-200 bg-slate-50 p-4">
+                                    <p class="text-sm font-black text-slate-700 mb-4">Cartas do Jogo</p>
+                                    <div id="editor-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+                                </div>
                             </div>
-                            <div>
-                                <label class="text-[10px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Design do Verso</label>
-                                <select id="edit-game-back" class="card-design-select" onchange="app.updateDesignPreviews()">
-                                    <option value="imagens/verso/verso01.png">Verso 1</option>
-                                </select>
+                        </div>
+                        <div id="creator-step-5" class="creator-step hidden">
+                            <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+                                <div class="space-y-3">
+                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Testagem preliminar</p>
+                                    <p class="text-sm text-slate-600">Revise os dados e teste o jogo antes de finalizar.</p>
+                                </div>
+                                <div class="rounded-3xl border border-emerald-100 bg-emerald-50 p-4 space-y-4">
+                                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                        <div class="space-y-2">
+                                            <p class="text-sm font-black text-slate-700">Resumo do Material</p>
+                                            <p class="text-sm text-slate-700"><strong>Disciplina:</strong> <span id="preview-disciplina">-</span></p>
+                                            <p class="text-sm text-slate-700"><strong>Conteúdo:</strong> <span id="preview-conteudo">-</span></p>
+                                            <p class="text-sm text-slate-700"><strong>Série:</strong> <span id="preview-serie">-</span></p>
+                                            <p class="text-sm text-slate-700"><strong>Dificuldade:</strong> <span id="preview-difficulty">Nível 1</span></p>
+                                            <p class="text-sm text-slate-700"><strong>Tentativas:</strong> <span id="preview-attempts">10</span></p>
+                                            <p class="text-sm text-slate-700"><strong>Replay:</strong> <span id="preview-shuffle">apenas embaralhamento</span></p>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-3">
+                                            <div class="rounded-3xl bg-white border border-slate-200 p-3 text-center">
+                                                <p class="text-[10px] uppercase text-slate-400 mb-2">Frente</p>
+                                                <img id="preview-final-front" src="imagens/frente/frente01.png" alt="Design frente" class="mx-auto h-24 w-full object-contain rounded-3xl shadow-sm" />
+                                            </div>
+                                            <div class="rounded-3xl bg-white border border-slate-200 p-3 text-center">
+                                                <p class="text-[10px] uppercase text-slate-400 mb-2">Verso</p>
+                                                <img id="preview-final-back" src="imagens/verso/verso01.png" alt="Design verso" class="mx-auto h-24 w-full object-contain rounded-3xl shadow-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="app.playPreview()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-3xl font-bold uppercase text-xs tracking-[0.25em]">Testar Jogo</button>
                             </div>
+                        </div>
+                        <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                            <button id="creator-prev-btn" onclick="app.prevStep()" class="w-full sm:max-w-[240px] py-3 bg-white text-slate-700 rounded-3xl font-bold border border-slate-200 transition hidden">Voltar</button>
+                            <button id="creator-next-btn" onclick="app.nextStep()" class="w-full sm:max-w-[240px] py-3 bg-slate-900 text-white rounded-3xl font-bold uppercase text-xs tracking-[0.25em]">Criar Jogo</button>
                         </div>
                     </aside>
-                    <div class="flex-1 p-8 overflow-y-auto bg-white">
-                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="editor-grid">
-                            <!-- Cards de Cartas via JS -->
-                        </div>
-                    </div>
                 </div>
             </section>
 
@@ -579,6 +697,11 @@
                             <div>
                                 <h2 class="text-xl md:text-2xl font-black text-slate-900" id="play-name-display">---</h2>
                                 <p class="text-xs md:text-sm text-slate-500 mt-1" id="play-meta-display">---</p>
+                                <div class="flex flex-wrap gap-2 mt-2 text-[11px] uppercase tracking-[0.18em] text-slate-500" id="play-details-display">
+                                    <span id="play-attempts-display" class="bg-white/90 border border-slate-200 rounded-full px-3 py-1">---</span>
+                                    <span id="play-shuffle-display" class="bg-white/90 border border-slate-200 rounded-full px-3 py-1">---</span>
+                                    <span id="play-cards-display" class="bg-white/90 border border-slate-200 rounded-full px-3 py-1">---</span>
+                                </div>
                             </div>
                         </div>
                         <button onclick="app.openHelp()" class="w-11 h-11 rounded-full bg-white/90 border border-slate-200 shadow-sm hover:bg-white transition flex items-center justify-center">
@@ -752,15 +875,38 @@
         </div>
     </div>
 
+    <!-- MODAL DE ADIÇÃO DE AUTOR -->
+    <div id="modal-author" class="fixed inset-0 bg-emerald-900/20 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white w-full max-w-md rounded-[40px] shadow-2xl overflow-hidden">
+            <div class="p-10 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-black text-slate-800 mb-2">Adicionar Autor</h3>
+                    <p class="text-sm text-slate-400">Digite o nome do autor para adicioná-lo à lista.</p>
+                </div>
+                <div>
+                    <label class="text-[10px] font-black text-slate-500 uppercase mb-2 block tracking-widest">Nome do Autor</label>
+                    <input id="modal-input-author" type="text" class="w-full p-4 bg-slate-50 border-2 border-transparent focus:border-emerald-500 rounded-3xl outline-none text-sm transition" placeholder="Ex: João da Silva" onkeydown="app.handleModalAuthorKeypress(event)">
+                </div>
+                <div class="flex space-x-3 pt-4">
+                    <button onclick="app.closeAuthorModal()" class="flex-1 py-4 font-bold text-slate-400 hover:text-slate-600">Cancelar</button>
+                    <button onclick="app.confirmAuthor()" class="flex-1 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold shadow-lg shadow-emerald-200">Adicionar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Objeto Global do Aplicativo
         const app = {
             state: {
                 games: [
                     {
-                        id: 1,
                         name: "Frações e Decimais",
                         difficulty: 1,
+                        attemptLimit: 10,
+                        shuffleMode: 'apenas embaralhamento',
+                        newCardsOnReplay: 0,
+                        cardCount: 12,
                         frontDesign: "imagens/frente/frente01.png",
                         backDesign: "imagens/verso/verso01.png",
                         disciplineInfo: {
@@ -783,9 +929,30 @@
                 activeGame: null,
                 editingGame: null,
                 editingCardIndex: null,
+                editingStep: 1,
                 currentGuess: [],
                 attempts: [],
                 gameOver: false
+            },
+
+            difficultyRules: {
+                1: { label: 'Nível 1', attempts: 10, shuffle: 'apenas embaralhamento', newCardsOnReplay: 0, description: '10 tentativas - apenas embaralhamento' },
+                2: { label: 'Nível 2', attempts: 8, shuffle: 'embaralhamento + 1 carta nova', newCardsOnReplay: 1, description: '8 tentativas - embaralhamento + 1 carta nova' },
+                3: { label: 'Nível 3', attempts: 6, shuffle: 'embaralhamento + 2 cartas novas', newCardsOnReplay: 2, description: '6 tentativas - embaralhamento + 2 cartas novas' },
+                4: { label: 'Nível 4', attempts: 5, shuffle: 'embaralhamento + 3 cartas novas', newCardsOnReplay: 3, description: '5 tentativas - embaralhamento + 3 cartas novas' }
+            },
+
+            getDifficultyConfig: function(level) {
+                return this.difficultyRules[level] || this.difficultyRules[1];
+            },
+
+            applyDifficultySettings: function(game) {
+                const cfg = this.getDifficultyConfig(game.difficulty);
+                game.attemptLimit = cfg.attempts;
+                game.shuffleMode = cfg.shuffle;
+                game.newCardsOnReplay = cfg.newCardsOnReplay;
+                game.cardCount = game.cardCount || game.cards.length;
+                return game;
             },
 
             login: function() {
@@ -839,6 +1006,10 @@
                             <span class="text-[9px] font-black bg-emerald-50 text-emerald-700 px-2 py-1 rounded">NÍVEL ${game.difficulty}</span>
                         </div>
                         <h3 class="text-lg font-bold text-slate-800 mb-6">${game.name}</h3>
+                        <div class="space-y-3">
+                            <p class="text-sm text-slate-500">Modelo: <span class="font-semibold text-slate-800">${game.model || 'Senha'}</span></p>
+                            <p class="text-sm text-slate-500">Disciplina: <span class="font-semibold text-slate-800">${game.disciplineInfo?.disciplina || '-'}</span></p>
+                        </div>
                         <div class="flex space-x-2">
                             <button onclick="app.playGame(${game.id})" class="flex-1 py-3 bg-emerald-600 text-white rounded-2xl text-xs font-bold shadow-lg shadow-emerald-100 active:scale-95 transition">Jogar</button>
                             <button onclick="app.editGame(${game.id})" class="flex-1 py-3 bg-slate-50 text-slate-500 rounded-2xl text-xs font-bold border hover:bg-slate-100 transition">Editar</button>
@@ -852,15 +1023,21 @@
                 this.state.editingGame = {
                     id: Date.now(),
                     name: "",
+                    model: "Modelo Senha",
                     difficulty: 1,
+                    attemptLimit: 10,
+                    shuffleMode: 'apenas embaralhamento',
+                    newCardsOnReplay: 0,
+                    cardCount: 12,
                     frontDesign: "imagens/frente/frente01.png",
                     backDesign: "imagens/verso/verso01.png",
                     disciplineInfo: {
-                        campus: "",
                         disciplina: "Matemática",
                         conteudo: "",
                         serie: "6.º ano",
                         autores: [],
+                        regra: "",
+                        objetivo: "",
                         enunciado: "",
                         explicacao: ""
                     },
@@ -871,6 +1048,7 @@
                         pileId: i + 1 
                     }))
                 };
+                this.state.editingStep = 1;
                 this.syncEditorUI();
                 this.switchView('creator');
             },
@@ -878,29 +1056,226 @@
             editGame: function(id) {
                 const g = this.state.games.find(x => x.id === id);
                 this.state.editingGame = JSON.parse(JSON.stringify(g));
+                this.state.editingStep = 1;
                 this.syncEditorUI();
                 this.switchView('creator');
             },
 
             syncEditorUI: function() {
                 document.getElementById('edit-game-name').value = this.state.editingGame.name;
+                document.getElementById('edit-game-model').value = this.state.editingGame.model || "Modelo Senha";
                 document.getElementById('edit-game-enunciado').value = this.state.editingGame.disciplineInfo.enunciado || "";
                 document.getElementById('edit-game-explicacao').value = this.state.editingGame.disciplineInfo.explicacao || "";
+                document.getElementById('edit-game-regra').value = this.state.editingGame.disciplineInfo.regra || "";
+                document.getElementById('edit-game-objetivo').value = this.state.editingGame.disciplineInfo.objetivo || "";
                 document.getElementById('edit-game-diff').value = this.state.editingGame.difficulty;
-                document.getElementById('edit-game-front').value = this.state.editingGame.frontDesign || "imagens/frente/frente01.png";
-                document.getElementById('edit-game-back').value = this.state.editingGame.backDesign || "imagens/verso/verso01.png";
-                document.getElementById('edit-game-campus').value = this.state.editingGame.disciplineInfo.campus || "";
                 document.getElementById('edit-game-disciplina').value = this.state.editingGame.disciplineInfo.disciplina || "Matemática";
                 document.getElementById('edit-game-conteudo').value = this.state.editingGame.disciplineInfo.conteudo || "";
                 document.getElementById('edit-game-serie').value = this.state.editingGame.disciplineInfo.serie || "6.º ano";
                 this.renderAuthorsList();
                 this.updateDesignPreviews();
+                this.updateDifficultyInfo();
+                this.updateCreatorPreview();
+                this.setEditorStep(this.state.editingStep);
                 document.getElementById('editor-title-display').innerText = this.state.editingGame.name || "Novo Jogo";
                 this.renderEditorGrid();
             },
 
+            setEditorStep: function(step) {
+                this.state.editingStep = step;
+                const total = 5;
+                for (let i = 1; i <= total; i++) {
+                    const stepEl = document.getElementById(`creator-step-${i}`);
+                    const rightEl = document.getElementById(`creator-right-step-${i}`);
+                    const dot = document.getElementById(`creator-step-dot-${i}`);
+                    if (stepEl) stepEl.classList.toggle('hidden', i !== step);
+                    if (rightEl) rightEl.classList.toggle('hidden', i !== step);
+                    if (dot) dot.classList.toggle('bg-emerald-600', i <= step);
+                }
+                const progressFill = document.getElementById('creator-progress-fill');
+                if (progressFill) progressFill.style.width = `${(step / total) * 100}%`;
+
+                const titleMap = {
+                    1: 'Dados do Jogo',
+                    2: 'Regras e Aparência',
+                    3: 'Título e Explicação',
+                    4: 'Criação de Cartas',
+                    5: 'Teste e Finalizar'
+                };
+                const nextLabelMap = {
+                    1: 'Criar Jogo',
+                    2: 'Criar Cartas',
+                    3: 'Testagem Preliminar do Jogo',
+                    4: 'Finalizar',
+                    5: 'Finalizar'
+                };
+                const prevBtn = document.getElementById('creator-prev-btn');
+                const nextBtn = document.getElementById('creator-next-btn');
+                const stepLabel = document.getElementById('creator-step-current');
+                const stepTitle = document.getElementById('creator-step-title');
+
+                if (stepLabel) stepLabel.innerText = step;
+                if (stepTitle) stepTitle.innerText = titleMap[step] || 'Editor';
+                if (nextBtn) nextBtn.innerText = nextLabelMap[step] || 'Próximo';
+                if (prevBtn) prevBtn.classList.toggle('hidden', step === 1);
+                if (step === 5 && nextBtn) nextBtn.innerText = 'Finalizar';
+                this.updateCreatorPreview();
+            },
+
+            persistEditorFields: function() {
+                if (!this.state.editingGame) return;
+                const eg = this.state.editingGame;
+                eg.name = document.getElementById('edit-game-name')?.value || eg.name;
+                eg.model = document.getElementById('edit-game-model')?.value || eg.model;
+                eg.difficulty = parseInt(document.getElementById('edit-game-diff')?.value) || eg.difficulty;
+                eg.disciplineInfo.disciplina = document.getElementById('edit-game-disciplina')?.value || eg.disciplineInfo.disciplina;
+                eg.disciplineInfo.conteudo = document.getElementById('edit-game-conteudo')?.value || eg.disciplineInfo.conteudo;
+                eg.disciplineInfo.serie = document.getElementById('edit-game-serie')?.value || eg.disciplineInfo.serie;
+                eg.disciplineInfo.regra = document.getElementById('edit-game-regra')?.value || eg.disciplineInfo.regra;
+                eg.disciplineInfo.objetivo = document.getElementById('edit-game-objetivo')?.value || eg.disciplineInfo.objetivo;
+                eg.disciplineInfo.enunciado = document.getElementById('edit-game-enunciado')?.value || eg.disciplineInfo.enunciado;
+                eg.disciplineInfo.explicacao = document.getElementById('edit-game-explicacao')?.value || eg.disciplineInfo.explicacao;
+                const diffConfig = this.getDifficultyConfig(eg.difficulty);
+                eg.attemptLimit = diffConfig.attemptLimit;
+                eg.shuffleMode = diffConfig.shuffleMode;
+                eg.newCardsOnReplay = diffConfig.newCardsOnReplay;
+                eg.cardCount = diffConfig.cardCount;
+                this.renderAuthorsList();
+            },
+
+            nextStep: function() {
+                this.persistEditorFields();
+                if (this.state.editingStep < 5) {
+                    this.setEditorStep(this.state.editingStep + 1);
+                } else {
+                    this.saveGame();
+                }
+            },
+
+            prevStep: function() {
+                if (this.state.editingStep > 1) {
+                    this.persistEditorFields();
+                    this.setEditorStep(this.state.editingStep - 1);
+                }
+            },
+
+            updateCreatorPreview: function() {
+                const disciplina = document.getElementById('preview-disciplina');
+                const conteudo = document.getElementById('preview-conteudo');
+                const serie = document.getElementById('preview-serie');
+                const difficulty = document.getElementById('preview-difficulty');
+                const attempts = document.getElementById('preview-attempts');
+                const shuffle = document.getElementById('preview-shuffle');
+                const frontPreview = document.getElementById('preview-final-front');
+                const backPreview = document.getElementById('preview-final-back');
+                const diffConfig = this.getDifficultyConfig(this.state.editingGame.difficulty);
+                if (disciplina) disciplina.innerText = this.state.editingGame.disciplineInfo.disciplina || '-';
+                if (conteudo) conteudo.innerText = this.state.editingGame.disciplineInfo.conteudo || '-';
+                if (serie) serie.innerText = this.state.editingGame.disciplineInfo.serie || '-';
+                if (difficulty) difficulty.innerText = `Nível ${this.state.editingGame.difficulty}`;
+                if (attempts) attempts.innerText = diffConfig.attemptLimit;
+                if (shuffle) shuffle.innerText = diffConfig.shuffleMode || diffConfig.shuffle || 'apenas embaralhamento';
+                if (frontPreview) frontPreview.src = this.state.editingGame.frontDesign || 'imagens/frente/frente01.png';
+                if (backPreview) backPreview.src = this.state.editingGame.backDesign || 'imagens/verso/verso01.png';
+            },
+
+            getDifficultyConfig: function(level) {
+                const map = {
+                    1: { attemptLimit: 10, shuffleMode: 'apenas embaralhamento', newCardsOnReplay: 0, cardCount: 12, description: '10 tentativas - apenas embaralhamento' },
+                    2: { attemptLimit: 8, shuffleMode: 'embaralhamento e troca', newCardsOnReplay: 2, cardCount: 12, description: '8 tentativas - troca de 2 cartas a cada replay' },
+                    3: { attemptLimit: 6, shuffleMode: 'embaralhamento completo', newCardsOnReplay: 3, cardCount: 12, description: '6 tentativas - embaralhamento completo do deck' },
+                    4: { attemptLimit: 5, shuffleMode: 'embaralhamento completo', newCardsOnReplay: 4, cardCount: 12, description: '5 tentativas - máxima dificuldade e cartas renovadas' }
+                };
+                return map[level] || map[1];
+            },
+
+            updateDifficultyInfo: function() {
+                const diff = parseInt(document.getElementById('edit-game-diff')?.value) || this.state.editingGame.difficulty;
+                const info = this.getDifficultyConfig(diff);
+                const infoLabel = document.getElementById('creator-difficulty-description');
+                if (infoLabel) infoLabel.innerText = info.description;
+                this.state.editingGame.difficulty = diff;
+                this.state.editingGame.attemptLimit = info.attemptLimit;
+                this.state.editingGame.shuffleMode = info.shuffleMode;
+                this.state.editingGame.newCardsOnReplay = info.newCardsOnReplay;
+                this.state.editingGame.cardCount = info.cardCount;
+            },
+
+            updatePlayDetails: function() {
+                const attemptsDisplay = document.getElementById('play-attempts-display');
+                const shuffleDisplay = document.getElementById('play-shuffle-display');
+                const cardsDisplay = document.getElementById('play-cards-display');
+                if(attemptsDisplay) attemptsDisplay.innerText = `Máx. ${this.state.activeGame.attemptLimit} tentativas`;
+                if(shuffleDisplay) shuffleDisplay.innerText = this.state.activeGame.shuffleMode || 'apenas embaralhamento';
+                if(cardsDisplay) cardsDisplay.innerText = `${this.state.activeGame.cardCount} cartas`;
+            },
+
+            buildPlayDeck: function(game) {
+                const original = game.originalCards || game.cards || [];
+                const correctCards = original.filter(c => c.isCorrect);
+                let distractors = original.filter(c => !c.isCorrect);
+                this.shuffleArray(distractors);
+
+                if (game.newCardsOnReplay > 0 && game.replayCount) {
+                    const offset = (game.replayCount * game.newCardsOnReplay) % distractors.length;
+                    distractors = distractors.slice(offset).concat(distractors.slice(0, offset));
+                }
+
+                const totalCount = Math.max(game.cardCount || original.length, correctCards.length);
+                const needed = Math.max(totalCount - correctCards.length, 0);
+                const selected = distractors.slice(0, needed);
+                const deck = [...correctCards, ...selected];
+                return deck.sort(() => Math.random() - 0.5);
+            },
+
+            shuffleArray: function(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            },
+
+            replayGame: function() {
+                if (!this.state.activeGame) return;
+                this.state.activeGame.replayCount = (this.state.activeGame.replayCount || 0) + 1;
+                this.state.activeGame.cards = this.buildPlayDeck(this.state.activeGame);
+                this.state.currentGuess = [];
+                this.state.attempts = [];
+                this.state.gameOver = false;
+                this.updatePlayUI();
+                this.renderPlayGrid(true);
+                this.renderHand();
+                this.updatePlayDesigns();
+            },
+
+            playPreview: function() {
+                this.persistEditorFields();
+                const previewGame = JSON.parse(JSON.stringify(this.state.editingGame));
+                previewGame.id = `preview-${Date.now()}`;
+                previewGame.originalCards = JSON.parse(JSON.stringify(this.state.editingGame.cards));
+                previewGame.replayCount = 0;
+                this.state.activeGame = this.applyDifficultySettings(previewGame);
+                this.state.activeGame.cards = this.buildPlayDeck(this.state.activeGame);
+                this.state.currentGuess = [];
+                this.state.attempts = [];
+                this.state.gameOver = false;
+
+                document.getElementById('play-name-display').innerText = this.state.activeGame.name;
+                document.getElementById('play-meta-display').innerText = `Dificuldade: Nível ${this.state.activeGame.difficulty}`;
+                const deckCountEl = document.getElementById('deck-count-number');
+                if (deckCountEl) deckCountEl.innerText = this.state.activeGame.cards.length;
+
+                this.renderPlayGrid(true);
+                this.renderHand();
+                this.updatePlayUI();
+                this.updatePlayDesigns();
+                this.switchView('player');
+            },
+
             renderEditorGrid: function() {
                 const grid = document.getElementById('editor-grid');
+                if (!grid) return;
                 grid.innerHTML = '';
 
                 this.state.editingGame.cards.forEach((card, idx) => {
@@ -963,7 +1338,7 @@
             },
 
             addAuthor: function(name) {
-                const authors = this.state.editingGame.disciplineInfo.authors;
+                const authors = this.state.editingGame.disciplineInfo.autores;
                 if (!authors.includes(name)) {
                     authors.push(name);
                     this.renderAuthorsList();
@@ -971,7 +1346,7 @@
             },
 
             removeAuthor: function(index) {
-                const authors = this.state.editingGame.disciplineInfo.authors;
+                const authors = this.state.editingGame.disciplineInfo.autores;
                 authors.splice(index, 1);
                 this.renderAuthorsList();
             },
@@ -980,7 +1355,7 @@
                 const list = document.getElementById('edit-game-authors-list');
                 if (!list) return;
                 list.innerHTML = '';
-                const authors = this.state.editingGame.disciplineInfo.authors || [];
+                const authors = this.state.editingGame.disciplineInfo.autores || [];
                 authors.forEach((author, idx) => {
                     const chip = document.createElement('div');
                     chip.className = 'author-chip';
@@ -990,6 +1365,39 @@
                     `;
                     list.appendChild(chip);
                 });
+            },
+
+            openAuthorModal: function() {
+                const modal = document.getElementById('modal-author');
+                const input = document.getElementById('modal-input-author');
+                if (modal && input) {
+                    modal.style.display = 'flex';
+                    input.value = '';
+                    input.focus();
+                }
+            },
+
+            closeAuthorModal: function() {
+                const modal = document.getElementById('modal-author');
+                if (modal) modal.style.display = 'none';
+            },
+
+            handleModalAuthorKeypress: function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    this.confirmAuthor();
+                } else if (event.key === 'Escape') {
+                    this.closeAuthorModal();
+                }
+            },
+
+            confirmAuthor: function() {
+                const input = document.getElementById('modal-input-author');
+                if (!input) return;
+                const value = input.value.trim();
+                if (!value) return;
+                this.addAuthor(value);
+                this.closeAuthorModal();
             },
 
             openHistory: function() {
@@ -1029,18 +1437,23 @@
             saveGame: function() {
                 const eg = this.state.editingGame;
                 eg.name = document.getElementById('edit-game-name').value || "Material sem Nome";
+                eg.model = document.getElementById('edit-game-model').value || "Modelo Senha";
                 eg.difficulty = parseInt(document.getElementById('edit-game-diff').value);
-                eg.frontDesign = document.getElementById('edit-game-front').value || "imagens/frente/frente01.png";
-                eg.backDesign = document.getElementById('edit-game-back').value || "imagens/verso/verso01.png";
                 eg.disciplineInfo = {
-                    campus: document.getElementById('edit-game-campus').value || "",
                     disciplina: document.getElementById('edit-game-disciplina').value || "Matemática",
                     conteudo: document.getElementById('edit-game-conteudo').value || "",
                     serie: document.getElementById('edit-game-serie').value || "6.º ano",
-                    autores: eg.disciplineInfo.authors || [],
+                    autores: eg.disciplineInfo.autores || [],
+                    regra: document.getElementById('edit-game-regra').value || "",
+                    objetivo: document.getElementById('edit-game-objetivo').value || "",
                     enunciado: document.getElementById('edit-game-enunciado').value || "",
                     explicacao: document.getElementById('edit-game-explicacao').value || ""
                 };
+                const diffConfig = this.getDifficultyConfig(eg.difficulty);
+                eg.attemptLimit = diffConfig.attemptLimit;
+                eg.shuffleMode = diffConfig.shuffleMode;
+                eg.newCardsOnReplay = diffConfig.newCardsOnReplay;
+                eg.cardCount = diffConfig.cardCount;
 
                 const existingIndex = this.state.games.findIndex(x => x.id === eg.id);
                 if (existingIndex > -1) {
@@ -1057,7 +1470,10 @@
             playGame: function(id) {
                 const g = this.state.games.find(x => x.id === id);
                 this.state.activeGame = JSON.parse(JSON.stringify(g));
-                this.state.activeGame.cards = this.state.activeGame.cards.sort(() => Math.random() - 0.5);
+                this.state.activeGame.originalCards = JSON.parse(JSON.stringify(g.cards));
+                this.state.activeGame.replayCount = 0;
+                this.state.activeGame = this.applyDifficultySettings(this.state.activeGame);
+                this.state.activeGame.cards = this.buildPlayDeck(this.state.activeGame);
                 this.state.currentGuess = [];
                 this.state.attempts = [];
                 this.state.gameOver = false;
@@ -1085,12 +1501,34 @@
             },
 
             updateDesignPreviews: function() {
-                const front = document.getElementById('edit-game-front');
-                const back = document.getElementById('edit-game-back');
                 const previewFront = document.getElementById('preview-front');
                 const previewBack = document.getElementById('preview-back');
-                if (previewFront && front) previewFront.src = front.value || 'imagens/frente/frente01.png';
-                if (previewBack && back) previewBack.src = back.value || 'imagens/verso/verso01.png';
+                if (previewFront) previewFront.src = this.state.editingGame.frontDesign || 'imagens/frente/frente01.png';
+                if (previewBack) previewBack.src = this.state.editingGame.backDesign || 'imagens/verso/verso01.png';
+            },
+
+            toggleFrontDesign: function() {
+                const fronts = [
+                    'imagens/frente/frente01.png',
+                    'imagens/frente/frente02.png',
+                    'imagens/frente/frente03.png'
+                ];
+                const current = this.state.editingGame.frontDesign;
+                const nextIndex = (fronts.indexOf(current) + 1) % fronts.length;
+                this.state.editingGame.frontDesign = fronts[nextIndex];
+                this.updateDesignPreviews();
+            },
+
+            toggleBackDesign: function() {
+                const backs = [
+                    'imagens/verso/verso01.png',
+                    'imagens/verso/verso02.png',
+                    'imagens/verso/verso03.png'
+                ];
+                const current = this.state.editingGame.backDesign;
+                const nextIndex = (backs.indexOf(current) + 1) % backs.length;
+                this.state.editingGame.backDesign = backs[nextIndex];
+                this.updateDesignPreviews();
             },
 
             renderPlayGrid: function(animate = false) {
@@ -1236,6 +1674,7 @@
 
             validateGuess: function() {
                 const correctIds = this.state.activeGame.cards.filter(c => c.isCorrect).map(c => c.id).slice(0, 4);
+                const limit = this.state.activeGame.attemptLimit || 8;
                 
                 let black = 0;
                 let white = 0;
@@ -1262,7 +1701,7 @@
                 this.state.currentGuess = [];
                 
                 if(black === 4) this.state.gameOver = 'win';
-                else if(this.state.attempts.length >= 8) this.state.gameOver = 'lose';
+                else if(this.state.attempts.length >= limit) this.state.gameOver = 'lose';
 
                 this.renderPlayGrid();
                 this.renderCurrentGuessSlots();
@@ -1275,7 +1714,9 @@
                 
                 if(counter) counter.innerText = `${this.state.attempts.length}/8`;
                 const left = document.getElementById('attempts-left');
-                if(left) left.innerText = 8 - this.state.attempts.length;
+                const limit = this.state.activeGame.attemptLimit || 8;
+                if(left) left.innerText = Math.max(limit - this.state.attempts.length, 0);
+                if(counter) counter.innerText = `${this.state.attempts.length}/${limit}`;
                 if(history) {
                     history.innerHTML = '';
                     this.state.attempts.forEach(att => {
@@ -1309,8 +1750,11 @@
                         actions.innerHTML = `
                             <div class="p-6 rounded-[32px] text-center ${win ? 'bg-green-500/10 border-green-500/30' : 'bg-red-500/10 border-red-500/30'} border">
                                 <h4 class="text-lg font-black ${win ? 'text-green-400' : 'text-red-400'} mb-1">${win ? 'VITÓRIA!' : 'FIM DE TENTATIVAS'}</h4>
-                                <p class="text-[10px] text-white/50 font-bold uppercase mb-4 tracking-tighter">${win ? 'Senha Descoberta com Sucesso' : 'Tente Novamente em breve'}</p>
-                                <button onclick="app.switchView('dashboard')" class="bg-white text-slate-900 px-8 py-3 rounded-full font-black text-[10px] uppercase tracking-widest shadow-xl active:scale-95 transition">Sair</button>
+                                <p class="text-[10px] text-white/50 font-bold uppercase mb-4 tracking-tighter">${win ? 'Senha Descoberta com Sucesso' : 'Reinicie para jogar novamente'}</p>
+                                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                                    <button onclick="app.switchView('dashboard')" class="bg-white text-slate-900 px-8 py-3 rounded-full font-black text-[10px] uppercase tracking-widest shadow-xl active:scale-95 transition">Sair</button>
+                                    <button onclick="app.replayGame()" class="bg-emerald-600 text-white px-8 py-3 rounded-full font-black text-[10px] uppercase tracking-widest shadow-xl active:scale-95 transition">Jogar Novamente</button>
+                                </div>
                             </div>
                         `;
                     }
@@ -1324,6 +1768,8 @@
         window.onclick = function(event) {
             const modal = document.getElementById('modal-card');
             if (event.target == modal) app.closeModal();
+            const authorModal = document.getElementById('modal-author');
+            if (event.target == authorModal) app.closeAuthorModal();
         }
     </script>
 </body>
