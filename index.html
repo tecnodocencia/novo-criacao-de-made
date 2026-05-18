@@ -439,15 +439,52 @@
 <body class="overflow-hidden">
 
     <!-- TELA DE LOGIN -->
-    <section id="view-login" class="view-section active flex-col items-center justify-center bg-gradient-to-br from-emerald-500 via-lime-400 to-amber-300 text-slate-900">
-        <div class="text-center space-y-6 p-8 rounded-[40px] shadow-2xl bg-white">
-            <div class="inline-flex items-center justify-center rounded-3xl bg-slate-100/90 p-4 shadow-inner shadow-slate-200">
+    <section id="view-login" class="view-section active flex-col items-center justify-center bg-[#f4f4f0] text-slate-900">
+        <div class="text-center space-y-6 p-8 rounded-[40px] shadow-2xl bg-[#fdfbf8] border border-[#f0ece7] max-w-md w-full">
+            <div class="inline-flex items-center justify-center rounded-3xl bg-[#fff5e9] p-4 shadow-inner shadow-[#e7dfd6]/80">
                 <img src="Criação vermelho sem.png" alt="Logo MADE" class="h-28 w-auto object-contain" />
             </div>
-            <p class="text-slate-800 font-light max-w-xs mx-auto text-sm uppercase tracking-widest">Protótipo de Material Autoral Digital Educacional</p>
-            <button onclick="app.login()" class="mt-8 px-12 py-4 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold rounded-2xl shadow-xl transition transform active:scale-95">
-                Iniciar Ferramenta
-            </button>
+            <p class="text-slate-700 font-light max-w-xs mx-auto text-sm uppercase tracking-widest">Protótipo de Material Autoral Digital Educacional</p>
+            <div id="auth-mode-toggle" class="flex items-center justify-center gap-2 rounded-full bg-[#e1ddd7] p-1 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-700">
+                <button onclick="app.setAuthMode('login')" id="auth-login-btn" class="px-4 py-2 rounded-full bg-[#f5e7d6] text-[#bb3e44]">Login</button>
+                <button onclick="app.setAuthMode('register')" id="auth-register-btn" class="px-4 py-2 rounded-full text-slate-700 hover:bg-[#f6eae0]">Cadastro</button>
+            </div>
+            <div id="auth-form" class="space-y-4 text-left">
+                <div id="login-form" class="space-y-4">
+                    <div>
+                        <label class="block text-[11px] font-black uppercase tracking-[0.24em] text-slate-500 mb-2">Email</label>
+                        <input id="auth-email" type="email" placeholder="teste@gmail.com" class="w-full p-4 border border-[#e0d8cf] rounded-3xl bg-[#fffaf4] text-slate-800 outline-none focus:border-[#bb3e44] transition" />
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-black uppercase tracking-[0.24em] text-slate-500 mb-2">Senha</label>
+                        <input id="auth-password" type="password" placeholder="123456" class="w-full p-4 border border-[#e0d8cf] rounded-3xl bg-[#fffaf4] text-slate-800 outline-none focus:border-[#bb3e44] transition" />
+                    </div>
+                    <button onclick="app.login()" class="w-full py-4 bg-[#bb3e44] hover:bg-[#d24b53] text-white rounded-3xl font-bold transition">Entrar</button>
+                </div>
+                <div id="register-form" class="hidden space-y-4">
+                    <div>
+                        <label class="block text-[11px] font-black uppercase tracking-[0.24em] text-slate-500 mb-2">Email</label>
+                        <input id="register-email" type="email" placeholder="seu@email.com" class="w-full p-4 border border-[#e0d8cf] rounded-3xl bg-[#fffaf4] text-slate-800 outline-none focus:border-[#bb3e44] transition" />
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-black uppercase tracking-[0.24em] text-slate-500 mb-2">Senha</label>
+                        <input id="register-password" type="password" placeholder="123456" class="w-full p-4 border border-[#e0d8cf] rounded-3xl bg-[#fffaf4] text-slate-800 outline-none focus:border-[#bb3e44] transition" />
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-black uppercase tracking-[0.24em] text-slate-500 mb-2">Confirmar senha</label>
+                        <input id="register-password-confirm" type="password" placeholder="123456" class="w-full p-4 border border-[#e0d8cf] rounded-3xl bg-[#fffaf4] text-slate-800 outline-none focus:border-[#bb3e44] transition" />
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-black uppercase tracking-[0.24em] text-slate-500 mb-2">Sou</label>
+                        <select id="register-role" class="w-full p-4 border border-[#e0d8cf] rounded-3xl bg-[#fffaf4] text-slate-800 outline-none focus:border-[#bb3e44] transition text-sm">
+                            <option value="professor">Professor</option>
+                            <option value="aluno">Aluno</option>
+                        </select>
+                    </div>
+                    <button onclick="app.register()" class="w-full py-4 bg-[#bb3e44] hover:bg-[#d24b53] text-white rounded-3xl font-bold transition">Cadastrar</button>
+                </div>
+            </div>
+            <p id="auth-feedback" class="text-sm text-red-500 hidden"></p>
         </div>
     </section>
 
@@ -887,6 +924,11 @@
         // Objeto Global do Aplicativo
         const app = {
             state: {
+                authMode: 'login',
+                activeUser: null,
+                users: [
+                    { email: 'teste@gmail.com', password: '123456', role: 'professor' }
+                ],
                 games: [
                     {
                         name: "Frações e Decimais",
@@ -943,10 +985,87 @@
                 return game;
             },
 
+            setAuthMode: function(mode) {
+                this.state.authMode = mode;
+                const loginForm = document.getElementById('login-form');
+                const registerForm = document.getElementById('register-form');
+                const loginBtn = document.getElementById('auth-login-btn');
+                const registerBtn = document.getElementById('auth-register-btn');
+                if (loginForm && registerForm && loginBtn && registerBtn) {
+                    loginForm.classList.toggle('hidden', mode !== 'login');
+                    registerForm.classList.toggle('hidden', mode !== 'register');
+                    loginBtn.classList.toggle('bg-[#f5e7d6]', mode === 'login');
+                    loginBtn.classList.toggle('text-[#bb3e44]', mode === 'login');
+                    registerBtn.classList.toggle('bg-[#f5e7d6]', mode === 'register');
+                    registerBtn.classList.toggle('text-[#bb3e44]', mode === 'register');
+                }
+                const feedback = document.getElementById('auth-feedback');
+                if (feedback) {
+                    feedback.classList.add('hidden');
+                    feedback.innerText = '';
+                }
+            },
+
             login: function() {
+                const email = document.getElementById('auth-email')?.value.trim();
+                const password = document.getElementById('auth-password')?.value;
+                const feedback = document.getElementById('auth-feedback');
+                if (!email || !password) {
+                    if (feedback) {
+                        feedback.classList.remove('hidden');
+                        feedback.innerText = 'Preencha email e senha para entrar.';
+                    }
+                    return;
+                }
+                const user = this.state.users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+                if (!user) {
+                    if (feedback) {
+                        feedback.classList.remove('hidden');
+                        feedback.innerText = 'Email ou senha incorretos.';
+                    }
+                    return;
+                }
+                this.state.activeUser = user;
                 document.getElementById('view-login').classList.remove('active');
                 document.getElementById('main-layout').classList.remove('hidden');
                 this.renderDashboard();
+            },
+
+            register: function() {
+                const email = document.getElementById('register-email')?.value.trim();
+                const password = document.getElementById('register-password')?.value;
+                const confirmPassword = document.getElementById('register-password-confirm')?.value;
+                const role = document.getElementById('register-role')?.value;
+                const feedback = document.getElementById('auth-feedback');
+                if (!email || !password || !confirmPassword || !role) {
+                    if (feedback) {
+                        feedback.classList.remove('hidden');
+                        feedback.innerText = 'Preencha todos os campos para cadastrar.';
+                    }
+                    return;
+                }
+                if (password !== confirmPassword) {
+                    if (feedback) {
+                        feedback.classList.remove('hidden');
+                        feedback.innerText = 'As senhas não coincidem.';
+                    }
+                    return;
+                }
+                if (this.state.users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+                    if (feedback) {
+                        feedback.classList.remove('hidden');
+                        feedback.innerText = 'Este email já está cadastrado.';
+                    }
+                    return;
+                }
+                this.state.users.push({ email, password, role });
+                if (feedback) {
+                    feedback.classList.remove('hidden');
+                    feedback.classList.remove('text-red-500');
+                    feedback.classList.add('text-emerald-700');
+                    feedback.innerText = 'Cadastro realizado! Faça login para continuar.';
+                }
+                this.setAuthMode('login');
             },
 
             switchView: function(viewId) {
