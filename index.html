@@ -506,22 +506,10 @@
                                     <p class="text-[10px] uppercase tracking-[0.28em] text-slate-500 font-bold">Passo <span id="creator-step-current">1</span> de 5</p>
                                     <h3 class="text-lg font-black text-slate-900" id="creator-step-title">Dados do Jogo</h3>
                                 </div>
-                                <div class="text-[10px] text-slate-500 uppercase tracking-[0.24em]">Wizard</div>
-                            </div>
-                            <div class="grid grid-cols-5 gap-2">
-                                <span id="creator-step-dot-1" class="h-2 rounded-full bg-emerald-600"></span>
-                                <span id="creator-step-dot-2" class="h-2 rounded-full bg-slate-300"></span>
-                                <span id="creator-step-dot-3" class="h-2 rounded-full bg-slate-300"></span>
-                                <span id="creator-step-dot-4" class="h-2 rounded-full bg-slate-300"></span>
-                                <span id="creator-step-dot-5" class="h-2 rounded-full bg-slate-300"></span>
                             </div>
                             <div class="relative h-2 rounded-full bg-slate-200 overflow-hidden mt-4">
                                 <div id="creator-progress-fill" class="absolute inset-y-0 left-0 bg-emerald-600 rounded-full transition-all duration-300" style="width:20%"></div>
                             </div>
-                        </div>
-                        <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-3">
-                            <h4 class="text-xl font-black text-slate-900">Bem-vindo ao assistente de criação</h4>
-                            <p class="text-sm text-slate-600">Preencha as informações básicas do seu jogo para começar.</p>
                         </div>
                         <div id="creator-step-1" class="creator-step">
                             <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
@@ -1103,10 +1091,10 @@
                     5: 'Teste e Finalizar'
                 };
                 const nextLabelMap = {
-                    1: 'Criar Jogo',
-                    2: 'Criar Cartas',
-                    3: 'Testagem Preliminar do Jogo',
-                    4: 'Finalizar',
+                    1: 'Próximo',
+                    2: 'Detalhes finais',
+                    3: 'Criação de Cartas',
+                    4: 'Testagem Preliminar do Jogo',
                     5: 'Finalizar'
                 };
                 const prevBtn = document.getElementById('creator-prev-btn');
@@ -1182,9 +1170,9 @@
             getDifficultyConfig: function(level) {
                 const map = {
                     1: { attemptLimit: 10, shuffleMode: 'apenas embaralhamento', newCardsOnReplay: 0, cardCount: 12, description: '10 tentativas - apenas embaralhamento' },
-                    2: { attemptLimit: 8, shuffleMode: 'embaralhamento e troca', newCardsOnReplay: 2, cardCount: 12, description: '8 tentativas - troca de 2 cartas a cada replay' },
-                    3: { attemptLimit: 6, shuffleMode: 'embaralhamento completo', newCardsOnReplay: 3, cardCount: 12, description: '6 tentativas - embaralhamento completo do deck' },
-                    4: { attemptLimit: 5, shuffleMode: 'embaralhamento completo', newCardsOnReplay: 4, cardCount: 12, description: '5 tentativas - máxima dificuldade e cartas renovadas' }
+                    2: { attemptLimit: 8, shuffleMode: 'embaralhamento e troca', newCardsOnReplay: 2, cardCount: 12, description: '8 tentativas - embaralhamento + 1 carta nova' },
+                    3: { attemptLimit: 6, shuffleMode: 'embaralhamento completo', newCardsOnReplay: 3, cardCount: 12, description: '6 tentativas - embaralhamento + 2 cartas novas' },
+                    4: { attemptLimit: 5, shuffleMode: 'embaralhamento completo', newCardsOnReplay: 4, cardCount: 12, description: ' 5 tentativas - embaralhamento + 3 cartas novas' }
                 };
                 return map[level] || map[1];
             },
