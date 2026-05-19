@@ -712,7 +712,7 @@
             </section>
 
             <!-- VIEW: PLAYER (MODO JOGO) -->
-            <section id="view-player" class="view-section flex-1 flex flex-col p-4 pb-6 hidden table-surface overflow-hidden">
+            <section id="view-player" class="view-section flex-1 flex flex-col p-6 hidden table-surface overflow-hidden">
                 <div class="flex-1 flex flex-col gap-4 overflow-hidden min-h-0">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div class="flex items-center gap-3">
@@ -722,77 +722,46 @@
                             <div>
                                 <h2 class="text-xl md:text-2xl font-black text-slate-900" id="play-name-display">---</h2>
                                 <p class="text-xs md:text-sm text-slate-500 mt-1" id="play-meta-display">---</p>
-                                <div class="flex flex-wrap gap-2 mt-2 text-[11px] uppercase tracking-[0.18em] text-slate-500" id="play-details-display">
-                                    <span id="play-attempts-display" class="bg-white/90 border border-slate-200 rounded-full px-3 py-1">---</span>
-                                    <span id="play-shuffle-display" class="bg-white/90 border border-slate-200 rounded-full px-3 py-1">---</span>
-                                    <span id="play-cards-display" class="bg-white/90 border border-slate-200 rounded-full px-3 py-1">---</span>
-                                </div>
                             </div>
                         </div>
                         <button onclick="app.openHelp()" class="w-11 h-11 rounded-full bg-white/90 border border-slate-200 shadow-sm hover:bg-white transition flex items-center justify-center">
                             <i class="fa-solid fa-circle-question text-slate-500"></i>
                         </button>
                     </div>
-
-                    <div class="flex-1 grid grid-cols-1 xl:grid-cols-[220px_minmax(0,1fr)_300px] gap-4 overflow-hidden pr-4 min-h-0">
-                        <div class="deck-board flex flex-col items-center gap-4 p-6">
-                            <div class="deck-stack">
-                                <div class="deck-card-back deck-card-back-3"></div>
-                                <div class="deck-card-back deck-card-back-2"></div>
-                                <div class="deck-card-back deck-card-back-1"></div>
-                                <div class="deck-card-back deck-card-back-main">
-                                    <span>MADE</span>
-                                </div>
-                            </div>
-                            <div class="text-slate-700 uppercase tracking-[0.3em] text-xs">Deck de Compras</div>
-                            <div id="deck-count" class="bg-white rounded-3xl border border-slate-200 px-4 py-3 text-sm text-slate-600 shadow-sm w-full text-center">
-                                <div id="deck-count-number" class="font-black text-lg">12</div>
-                                Cartas totais
+                    
+                    <!-- GAME BOARD CONTAINER -->
+                    <div class="flex-1 grid grid-cols-1 lg:grid-cols-[340px_minmax(0,1fr)_340px] gap-6 overflow-hidden min-h-0">
+                        <!-- COLUNA 1: BANCO DE ITENS -->
+                        <div class="board-pane p-5 flex flex-col gap-4">
+                            <h3 class="text-slate-700 uppercase tracking-[0.2em] text-xs font-bold px-1">Banco de Itens</h3>
+                            <div id="play-item-bank" class="grid grid-cols-2 gap-4 overflow-y-auto custom-scrollbar pr-2">
+                                <!-- Itens do banco gerados via JS -->
                             </div>
                         </div>
 
-                        <div class="flex flex-col gap-6">
-                            <div class="board-pane p-5 flex flex-col min-h-0 h-full">
-                                <div class="text-slate-700 uppercase tracking-[0.2em] text-xs mb-4">Cartas na Mesa</div>
-                                <div id="play-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-4 overflow-y-auto min-h-0 flex-1 pr-1"></div>
+                        <!-- COLUNA 2: MESA DE JOGO E HISTÓRICO -->
+                        <div class="board-pane p-5 flex flex-col gap-4 overflow-hidden">
+                            <h3 class="text-slate-700 uppercase tracking-[0.2em] text-xs font-bold px-1">Mesa de Jogo</h3>
+                            <div id="play-history" class="flex-1 flex flex-col gap-4 overflow-y-auto custom-scrollbar pr-2">
+                                <!-- Histórico e área de tentativa atual gerados via JS -->
                             </div>
                         </div>
 
-                        <div class="board-pane p-6 flex flex-col gap-4 min-h-0">
-                            <div class="board-inner flex flex-col gap-4">
-                                <div class="flex items-center justify-between gap-3">
-                                    <div class="text-slate-700 uppercase tracking-[0.2em] text-xs">Tabuleiro de Dedução</div>
-                                    <span class="text-slate-600 font-black italic" id="play-counter">0/8</span>
-                                </div>
-                                <div id="current-guess-display" class="grid grid-cols-4 gap-3 p-4 bg-white rounded-3xl border border-slate-200 shadow-sm">
-                                    <div class="guess-slot" id="slot-0"></div>
-                                    <div class="guess-slot" id="slot-1"></div>
-                                    <div class="guess-slot" id="slot-2"></div>
-                                    <div class="guess-slot" id="slot-3"></div>
-                                </div>
-                                <div class="text-slate-500 text-sm">As tentativas serão registradas aqui após validar a combinação.</div>
-                                <div class="text-slate-500 text-sm">Tentativas restantes: <span id="attempts-left">8</span></div>
+                        <!-- COLUNA 3: PAINEL DE VALIDAÇÃO E FEEDBACK -->
+                        <div class="board-pane p-5 flex flex-col gap-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-slate-700 uppercase tracking-[0.2em] text-xs font-bold px-1">Validação</h3>
+                                <span class="text-slate-600 font-black" id="play-counter">0/8</span>
                             </div>
-                            <div class="flex items-center justify-between mb-3 gap-2">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-slate-700 uppercase tracking-[0.2em] text-xs">Histórico de Tentativas</span>
-                                    <button onclick="app.openHistory()" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white border border-slate-200 text-slate-500 hover:bg-slate-100 transition">
-                                        <i class="fa-solid fa-clock-rotate-left"></i>
-                                    </button>
-                                </div>
-                                <span class="text-slate-500 text-[10px] uppercase tracking-[0.2em]">role para ver</span>
+                            <div id="play-feedback-history" class="flex-1 flex flex-col gap-4 overflow-y-auto custom-scrollbar pr-2">
+                                <!-- Feedback das tentativas gerado via JS -->
                             </div>
-                            <div id="play-history" class="flex-1 min-h-0 flex flex-col gap-3 overflow-y-auto pr-1 custom-scrollbar max-h-[260px] bg-white/70 rounded-3xl p-2 border border-slate-100 shadow-inner"></div>
-                            <div id="play-actions" class="mt-4 sticky bottom-0 bg-transparent py-4">
-                                <button id="btn-validate" onclick="app.validateGuess()" disabled class="w-full py-4 rounded-2xl font-black text-xs tracking-widest bg-slate-900 text-white shadow-xl transition duration-300 hover:bg-slate-800">
-                                    VALIDAR NA MESA
+                            <div id="play-actions" class="mt-auto pt-4">
+                                <button id="btn-validate" onclick="app.validateGuess()" disabled class="w-full py-4 rounded-2xl font-black text-xs tracking-widest bg-slate-300 text-slate-500 cursor-not-allowed transition">
+                                    VALIDAR TENTATIVA
                                 </button>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="hand-row">
-                        <!-- Cartas na mão do jogador -->
                     </div>
                 </div>
             </section>
@@ -1594,16 +1563,14 @@
                 this.state.activeGame = this.applyDifficultySettings(this.state.activeGame);
                 this.state.activeGame.cards = this.buildPlayDeck(this.state.activeGame);
                 this.state.currentGuess = [];
+                this.state.currentGuess = Array(4).fill(null);
                 this.state.attempts = [];
-                this.state.gameOver = false;
+                this.state.gameOver = null;
 
                 document.getElementById('play-name-display').innerText = this.state.activeGame.name;
                 document.getElementById('play-meta-display').innerText = `Dificuldade: Nível ${this.state.activeGame.difficulty}`;
-                const deckCountEl = document.getElementById('deck-count-number');
-                if (deckCountEl) deckCountEl.innerText = this.state.activeGame.cards.length;
                 
                 this.renderPlayGrid(true);
-                this.renderHand();
                 this.updatePlayUI();
                 this.updatePlayDesigns();
                 this.switchView('player');
@@ -1651,33 +1618,9 @@
             },
 
             renderPlayGrid: function(animate = false) {
-                const grid = document.getElementById('play-grid');
-                grid.innerHTML = '';
-                
-                this.state.activeGame.cards.forEach(card => {
-                    const btn = document.createElement('button');
-                    btn.id = 'p-card-' + card.id;
-                    btn.onclick = () => this.toggleSelection(card.id);
-                    
-                    const isSelected = this.state.currentGuess.includes(card.id);
-                    const selectedClasses = isSelected ? 'card-selected' : 'border-transparent';
-                    const animationClasses = animate ? 'hidden-card' : '';
-                    const design = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
-
-                    btn.className = `game-card border-2 shadow-sm text-left flex flex-col justify-between transition-all hover:border-emerald-100 active:scale-95 ${selectedClasses} ${animationClasses}`;
-                    btn.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.82), rgba(255,255,255,0.82)), url('${design}')`;
-                    btn.style.backgroundSize = 'cover';
-                    btn.style.backgroundPosition = 'center';
-                    btn.style.backgroundBlendMode = 'overlay';
-                    btn.innerHTML = `
-                        <div class="flex items-center justify-between card-label-row">
-                            <span class="text-[10px] font-black text-slate-400 uppercase">Carta ${card.pileId}</span>
-                            <span class="text-[12px] font-black text-slate-500"></span>
-                        </div>
-                        <p class="text-sm font-semibold text-slate-700 leading-6">${card.content || 'Carta vazia'}</p>
-                    `;
-                    grid.appendChild(btn);
-                });
+                // This function is being replaced by renderItemBank and the new history/active row rendering
+                this.renderItemBank();
+                this.updatePlayUI();
 
                 if (animate) {
                     this.animateDealToTable();
@@ -1685,8 +1628,8 @@
             },
 
             animateDealToTable: function() {
-                const deckStack = document.querySelector('.deck-stack');
-                const cards = Array.from(document.querySelectorAll('#play-grid .game-card'));
+                const deckStack = document.querySelector('.deck-stack'); // This element is removed, so this might need adjustment or removal
+                const cards = Array.from(document.querySelectorAll('#play-item-bank .game-card'));
                 if (deckStack) {
                     deckStack.classList.add('shuffling');
                 }
@@ -1703,86 +1646,31 @@
                 }, 700);
             },
 
-            toggleSelection: function(cardId) {
+            toggleSelection: function(cardId, slotIndex = null) {
                 if(this.state.gameOver) return;
 
-                const index = this.state.currentGuess.indexOf(cardId);
-                if(index > -1) {
-                    this.state.currentGuess.splice(index, 1);
-                } else if(this.state.currentGuess.length < 4) {
-                    this.state.currentGuess.push(cardId);
+                if (slotIndex !== null) { // Clicou num slot da mesa
+                    this.state.currentGuess[slotIndex] = null; // Esvazia o slot
+                } else { // Clicou num item do banco
+                    const emptySlotIndex = this.state.currentGuess.findIndex(slot => slot === null || slot === undefined);
+                    if (emptySlotIndex !== -1) {
+                        this.state.currentGuess[emptySlotIndex] = cardId;
+                    }
                 }
 
-                this.renderPlayGrid();
-                this.renderCurrentGuessSlots();
-                this.renderHand();
+                this.updatePlayUI();
                 this.updateValidationButton();
             },
 
-            // Nova função para renderizar os slots da dedução no painel Mastermind
-            renderCurrentGuessSlots: function() {
-                for(let i=0; i<4; i++) {
-                    const slot = document.getElementById(`slot-${i}`);
-                    if (!slot) continue;
-
-                    const cardId = this.state.currentGuess[i];
-                    if (cardId !== undefined) {
-                        const card = this.state.activeGame.cards.find(c => c.id === cardId);
-                        slot.classList.add('filled');
-                        slot.innerHTML = card.pileId; // Mostra o número da carta selecionada
-                    } else {
-                        slot.classList.remove('filled');
-                        slot.innerHTML = '';
-                    }
-                }
-            },
-
             renderHand: function() {
-                const hand = document.querySelector('.hand-row');
-                if (!hand) return;
-                hand.innerHTML = '';
-
-                if(this.state.currentGuess.length === 0) {
-                    const empty = document.createElement('div');
-                    empty.className = 'hand-hint';
-                    empty.innerHTML = `
-                        <i class="fa-solid fa-hand-pointer"></i>
-                        <span>Selecione cartas da mesa para elas aparecerem aqui na mão.</span>
-                    `;
-                    hand.appendChild(empty);
-                    return;
-                }
-
-                this.state.currentGuess.forEach((cardId, index) => {
-                    const card = this.state.activeGame.cards.find(c => c.id === cardId);
-                    const cardEl = document.createElement('div');
-                    cardEl.className = `hand-card ${this.state.currentGuess.includes(cardId) ? 'selected' : ''}`;
-                    cardEl.style.transform = `rotate(${(index - 1.5) * 3}deg)`;
-                    cardEl.style.marginLeft = index === 0 ? '0px' : '-36px';
-                    cardEl.style.zIndex = 10 + index;
-                    cardEl.title = 'Clique para remover esta carta da mão';
-                    cardEl.onclick = () => this.toggleSelection(cardId);
-                    cardEl.innerHTML = `
-                        <div class="text-[10px] uppercase tracking-[0.28em] text-slate-400">Carta ${card.pileId}</div>
-                        <div class="mt-2 text-[12px] font-bold text-slate-800">${card.content || 'Carta vazia'}</div>
-                    `;
-                    hand.appendChild(cardEl);
-                });
-
-                const note = document.createElement('div');
-                note.className = 'hand-expand-note';
-                note.innerHTML = `
-                    <i class="fa-solid fa-mouse-pointer"></i>
-                    <span>Passe o mouse na mão para visualizar melhor as cartas.</span>
-                `;
-                hand.appendChild(note);
+                // This function is obsolete and is being removed. The .hand-row element is also removed from HTML.
             },
 
             updateValidationButton: function() {
                 const btn = document.getElementById('btn-validate');
                 if(!btn) return;
 
-                if(this.state.currentGuess.length === 4) {
+                if(this.state.currentGuess.filter(c => c !== null).length === 4) {
                     btn.disabled = false;
                     btn.className = "w-full py-5 rounded-2xl font-black text-xs tracking-widest bg-slate-900 text-white shadow-xl shadow-slate-900/20 cursor-pointer active:scale-95 transition";
                 } else {
@@ -1792,7 +1680,7 @@
             },
 
             validateGuess: function() {
-                const correctIds = this.state.activeGame.cards.filter(c => c.isCorrect).map(c => c.id).slice(0, 4);
+                const correctIds = this.state.activeGame.originalCards.filter(c => c.isCorrect).map(c => c.id).slice(0, 4);
                 const limit = this.state.activeGame.attemptLimit || 8;
                 
                 let black = 0;
@@ -1817,62 +1705,59 @@
                 }
 
                 this.state.attempts.push({ black, white, guess: [...this.state.currentGuess] });
-                this.state.currentGuess = [];
+                this.state.currentGuess = Array(4).fill(null);
                 
                 if(black === 4) this.state.gameOver = 'win';
                 else if(this.state.attempts.length >= limit) this.state.gameOver = 'lose';
 
-                this.renderPlayGrid();
-                this.renderCurrentGuessSlots();
                 this.updatePlayUI();
             },
 
             updatePlayUI: function() {
                 const history = document.getElementById('play-history');
                 const counter = document.getElementById('play-counter');
+                const feedbackHistory = document.getElementById('play-feedback-history');
                 
-                if(counter) counter.innerText = `${this.state.attempts.length}/8`;
-                const left = document.getElementById('attempts-left');
                 const limit = this.state.activeGame.attemptLimit || 8;
-                if(left) left.innerText = Math.max(limit - this.state.attempts.length, 0);
                 if(counter) counter.innerText = `${this.state.attempts.length}/${limit}`;
-                if(history) {
-                    history.innerHTML = '';
-                    this.state.attempts.forEach(att => {
-                        const row = document.createElement('div');
-                        row.className = "flex items-center justify-between bg-white/90 p-4 rounded-3xl border border-white/20 shadow-sm";
-                        
-                        // Mostra os números das cartas tentadas
-                        const guessTags = att.guess.map(id => {
-                            const c = this.state.activeGame.cards.find(x => x.id === id);
-                            return `<div class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-700 text-[10px] flex items-center justify-center font-black">${c.pileId}</div>`;
-                        }).join('');
+                
+                if(!history || !feedbackHistory) return;
 
-                        row.innerHTML = `
-                            <div class="flex space-x-1.5">
-                                ${guessTags}
-                            </div>
-                            <div class="flex space-x-1">
-                                ${Array.from({length: att.black}).map(() => '<div class="w-3 h-3 rounded-full bg-green-400"></div>').join('')}
-                                ${Array.from({length: att.white}).map(() => '<div class="w-3 h-3 rounded-full bg-slate-500"></div>').join('')}
-                            </div>
-                        `;
-                        history.appendChild(row);
-                    });
-                    history.scrollTop = history.scrollHeight;
+                history.innerHTML = '';
+                feedbackHistory.innerHTML = '';
+
+                // Renderizar tentativas passadas
+                this.state.attempts.forEach((att, index) => {
+                    const attemptRow = this.createAttemptRow(att.guess, index, false);
+                    history.appendChild(attemptRow);
+
+                    const feedbackRow = this.createFeedbackRow(att, index);
+                    feedbackHistory.appendChild(feedbackRow);
+                });
+
+                // Renderizar área de tentativa atual (se o jogo não acabou)
+                if (!this.state.gameOver) {
+                    const currentAttemptRow = this.createAttemptRow(this.state.currentGuess, this.state.attempts.length, true);
+                    history.appendChild(currentAttemptRow);
+
+                    const currentFeedbackRow = this.createFeedbackRow(null, this.state.attempts.length);
+                    feedbackHistory.appendChild(currentFeedbackRow);
                 }
+
+                history.scrollTop = history.scrollHeight;
+                feedbackHistory.scrollTop = feedbackHistory.scrollHeight;
 
                 if(this.state.gameOver) {
                     const win = this.state.gameOver === 'win';
                     const actions = document.getElementById('play-actions');
                     if(actions) {
                         actions.innerHTML = `
-                            <div class="p-6 rounded-[32px] text-center ${win ? 'bg-green-500/10 border-green-500/30' : 'bg-red-500/10 border-red-500/30'} border">
-                                <h4 class="text-lg font-black ${win ? 'text-green-400' : 'text-red-400'} mb-1">${win ? 'VITÓRIA!' : 'FIM DE TENTATIVAS'}</h4>
-                                <p class="text-[10px] text-white/50 font-bold uppercase mb-4 tracking-tighter">${win ? 'Senha Descoberta com Sucesso' : 'Reinicie para jogar novamente'}</p>
+                            <div class="p-4 rounded-[24px] text-center ${win ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'} border">
+                                <h4 class="text-lg font-black ${win ? 'text-emerald-600' : 'text-red-600'} mb-1">${win ? 'VITÓRIA!' : 'FIM DE TENTATIVAS'}</h4>
+                                <p class="text-xs ${win ? 'text-emerald-800' : 'text-red-800'} font-semibold mb-4">${win ? 'Senha descoberta com sucesso!' : 'Reinicie para jogar novamente.'}</p>
                                 <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                                    <button onclick="app.switchView('dashboard')" class="bg-white text-slate-900 px-8 py-3 rounded-full font-black text-[10px] uppercase tracking-widest shadow-xl active:scale-95 transition">Sair</button>
-                                    <button onclick="app.replayGame()" class="bg-emerald-600 text-white px-8 py-3 rounded-full font-black text-[10px] uppercase tracking-widest shadow-xl active:scale-95 transition">Jogar Novamente</button>
+                                    <button onclick="app.switchView('dashboard')" class="flex-1 bg-white text-slate-700 px-4 py-3 rounded-xl font-bold text-xs border border-slate-200 transition hover:bg-slate-50">Sair</button>
+                                    <button onclick="app.replayGame()" class="flex-1 bg-emerald-600 text-white px-4 py-3 rounded-xl font-bold text-xs shadow-lg shadow-emerald-200 transition hover:bg-emerald-700">Jogar Novamente</button>
                                 </div>
                             </div>
                         `;
@@ -1880,7 +1765,62 @@
                 } else {
                     this.updateValidationButton();
                 }
-            }
+            },
+
+            renderItemBank: function() {
+                const bank = document.getElementById('play-item-bank');
+                if (!bank) return;
+                bank.innerHTML = '';
+                const bankItems = this.state.activeGame.originalCards.slice(0, 12);
+
+                bankItems.forEach(card => {
+                    const design = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
+                    const cardEl = document.createElement('div');
+                    cardEl.className = 'game-card p-4 cursor-pointer';
+                    cardEl.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.82), rgba(255,255,255,0.82)), url('${design}')`;
+                    cardEl.style.backgroundSize = 'cover';
+                    cardEl.style.backgroundPosition = 'center';
+                    cardEl.onclick = () => this.toggleSelection(card.id);
+                    cardEl.innerHTML = `
+                        <span class="text-[10px] font-black text-slate-400 uppercase">Carta ${card.pileId}</span>
+                        <p class="text-sm font-semibold text-slate-700 leading-6 mt-2">${card.content || 'Carta vazia'}</p>
+                    `;
+                    bank.appendChild(cardEl);
+                });
+            },
+
+            createAttemptRow: function(guess, attemptIndex, isActive) {
+                const row = document.createElement('div');
+                row.className = `board-inner grid grid-cols-4 gap-3 h-20 ${isActive ? 'bg-white/80' : 'bg-slate-100/50 opacity-80'}`;
+                
+                const slotsHtml = (guess || []).map((cardId, slotIndex) => {
+                    if (cardId !== null) {
+                        const card = this.state.activeGame.originalCards.find(c => c.id === cardId);
+                        return `
+                            <div class="guess-slot filled cursor-pointer" ${isActive ? `onclick="app.toggleSelection(null, ${slotIndex})"` : ''}>
+                                ${card.pileId}
+                            </div>`;
+                    }
+                    return `<div class="guess-slot"></div>`;
+                }).join('');
+
+                row.innerHTML = slotsHtml;
+                return row;
+            },
+
+            createFeedbackRow: function(attemptResult, attemptIndex) {
+                const row = document.createElement('div');
+                row.className = 'board-inner flex items-center justify-center gap-2 h-20';
+
+                if (attemptResult) {
+                    const blackPegs = Array(attemptResult.black).fill('<div class="w-4 h-4 rounded-full bg-emerald-500 border-2 border-white shadow-md"></div>').join('');
+                    const whitePegs = Array(attemptResult.white).fill('<div class="w-4 h-4 rounded-full bg-slate-400 border-2 border-white shadow-md"></div>').join('');
+                    row.innerHTML = blackPegs + whitePegs;
+                } else {
+                    row.innerHTML = Array(4).fill('<div class="w-4 h-4 rounded-full bg-slate-200"></div>').join('');
+                }
+                return row;
+            },
         };
 
         // Previne fechamento acidental de modais
