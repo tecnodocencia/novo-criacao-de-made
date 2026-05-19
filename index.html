@@ -434,6 +434,40 @@
             position: relative;
             z-index: 1;
         }
+
+        /* Animação de Flip para a Senha */
+        .solution-card-container {
+            perspective: 1000px;
+            aspect-ratio: 4/5;
+        }
+        .solution-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        .solution-card-container.flipped .solution-card-inner {
+            transform: rotateY(180deg);
+        }
+        .solution-card-front, .solution-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.25rem; /* 20px */
+            overflow: hidden;
+        }
+        .solution-card-front {
+            transform: rotateY(180deg);
+        }
+        .solution-card-back {
+            background-size: cover;
+            background-position: center;
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.1);
+        }
     </style>
 </head>
 <body class="overflow-hidden">
@@ -729,6 +763,14 @@
                         </button>
                     </div>
                     
+                    <!-- LINHA DA SENHA SECRETA -->
+                    <div id="solution-row-container" class="pb-2">
+                        <h3 class="text-slate-600 uppercase tracking-[0.2em] text-xs font-bold px-1 mb-3 text-center">Senha Secreta</h3>
+                        <div id="solution-row" class="grid grid-cols-4 gap-4 max-w-sm mx-auto">
+                            <!-- Cartas da solução geradas via JS -->
+                        </div>
+                    </div>
+
                     <!-- GAME BOARD CONTAINER -->
                     <div class="flex-1 grid grid-cols-1 lg:grid-cols-[340px_minmax(0,1fr)_340px] gap-6 overflow-hidden min-h-0">
                         <!-- COLUNA 1: BANCO DE ITENS -->
@@ -1571,6 +1613,7 @@
                 document.getElementById('play-meta-display').innerText = `Dificuldade: Nível ${this.state.activeGame.difficulty}`;
                 
                 this.renderPlayGrid(true);
+                this.renderSolutionRow();
                 this.updatePlayUI();
                 this.updatePlayDesigns();
                 this.switchView('player');
@@ -1711,6 +1754,7 @@
                 else if(this.state.attempts.length >= limit) this.state.gameOver = 'lose';
 
                 this.updatePlayUI();
+                if (this.state.gameOver === 'win') this.revealSolution();
             },
 
             updatePlayUI: function() {
@@ -1825,6 +1869,42 @@
                     row.innerHTML = Array(4).fill('<div class="w-4 h-4 rounded-full bg-slate-200"></div>').join('');
                 }
                 return row;
+            },
+
+            renderSolutionRow: function() {
+                const solutionRow = document.getElementById('solution-row');
+                if (!solutionRow) return;
+                solutionRow.innerHTML = '';
+
+                const backDesign = this.state.activeGame.backDesign || "imagens/verso/verso01.png";
+
+                for (let i = 0; i < 4; i++) {
+                    const cardContainer = document.createElement('div');
+                    cardContainer.id = `solution-card-${i}`;
+                    cardContainer.className = 'solution-card-container';
+                    cardContainer.innerHTML = `
+                        <div class="solution-card-inner">
+                            <div class="solution-card-back" style="background-image: url('${backDesign}')"></div>
+                            <div class="solution-card-front"></div>
+                        </div>
+                    `;
+                    solutionRow.appendChild(cardContainer);
+                }
+            },
+
+            revealSolution: function() {
+                const correctCards = this.state.activeGame.originalCards.filter(c => c.isCorrect).slice(0, 4);
+                const frontDesign = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
+
+                correctCards.forEach((card, i) => {
+                    const cardContainer = document.getElementById(`solution-card-${i}`);
+                    const frontFace = cardContainer.querySelector('.solution-card-front');
+                    
+                    frontFace.className = 'solution-card-front game-card p-2 flex flex-col justify-center items-center text-center';
+                    frontFace.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)), url('${frontDesign}')`;
+                    frontFace.innerHTML = `<p class="text-[10px] leading-tight font-semibold text-slate-700">${card.content}</p>`;
+                    cardContainer.classList.add('flipped');
+                });
             },
         };
 
