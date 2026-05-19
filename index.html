@@ -1791,17 +1791,22 @@
 
             createAttemptRow: function(guess, attemptIndex, isActive) {
                 const row = document.createElement('div');
-                row.className = `board-inner grid grid-cols-4 gap-3 h-20 ${isActive ? 'bg-white/80' : 'bg-slate-100/50 opacity-80'}`;
+                row.className = `grid grid-cols-4 gap-3`;
                 
                 const slotsHtml = (guess || []).map((cardId, slotIndex) => {
                     if (cardId !== null) {
                         const card = this.state.activeGame.originalCards.find(c => c.id === cardId);
+                        const design = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
                         return `
-                            <div class="guess-slot filled cursor-pointer" ${isActive ? `onclick="app.toggleSelection(null, ${slotIndex})"` : ''}>
-                                ${card.pileId}
+                            <div class="game-card p-3 flex flex-col justify-start text-center ${isActive ? 'cursor-pointer' : ''}" 
+                                 style="min-height: 0; aspect-ratio: 4/5; background-image: linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)), url('${design}'); background-size: cover; background-position: center;"
+                                 ${isActive ? `onclick="app.toggleSelection(null, ${slotIndex})"` : ''}>
+                                <span class="block text-[9px] font-black text-slate-500 uppercase mb-1">C.${card.pileId}</span>
+                                <p class="text-[10px] leading-tight font-semibold text-slate-700">${card.content}</p>
                             </div>`;
                     }
-                    return `<div class="guess-slot"></div>`;
+                    // Slot vazio
+                    return `<div class="h-full rounded-lg bg-slate-200/50 border-2 border-dashed border-slate-300/80" style="aspect-ratio: 4/5;"></div>`;
                 }).join('');
 
                 row.innerHTML = slotsHtml;
