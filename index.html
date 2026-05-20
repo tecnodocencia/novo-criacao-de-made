@@ -763,45 +763,45 @@
                         </button>
                     </div>
                     
-                    <!-- LINHA DA SENHA SECRETA -->
-                    <div id="solution-row-container" class="pb-2">
-                        <h3 class="text-slate-600 uppercase tracking-[0.2em] text-xs font-bold px-1 mb-3 text-center">Senha Secreta</h3>
-                        <div id="solution-row" class="grid grid-cols-4 gap-4 max-w-sm mx-auto">
-                            <!-- Cartas da solução geradas via JS -->
-                        </div>
-                    </div>
-
                     <!-- GAME BOARD CONTAINER -->
-                    <div class="flex-1 grid grid-cols-1 lg:grid-cols-[340px_minmax(0,1fr)_340px] gap-6 overflow-hidden min-h-0">
+                    <div class="flex-1 grid grid-cols-1 lg:grid-cols-[420px_minmax(0,1fr)] gap-6 overflow-hidden min-h-0">
                         <!-- COLUNA 1: BANCO DE ITENS -->
                         <div class="board-pane p-5 flex flex-col gap-4">
                             <h3 class="text-slate-700 uppercase tracking-[0.2em] text-xs font-bold px-1">Banco de Itens</h3>
-                            <div id="play-item-bank" class="grid grid-cols-2 gap-4 overflow-y-auto custom-scrollbar pr-2">
+                            <div id="play-item-bank" class="grid grid-cols-3 gap-4 overflow-y-auto custom-scrollbar pr-2">
                                 <!-- Itens do banco gerados via JS -->
                             </div>
                         </div>
-
-                        <!-- COLUNA 2: MESA DE JOGO E HISTÓRICO -->
-                        <div class="board-pane p-5 flex flex-col gap-4 overflow-hidden">
-                            <h3 class="text-slate-700 uppercase tracking-[0.2em] text-xs font-bold px-1">Mesa de Jogo</h3>
-                            <div id="play-history" class="flex-1 flex flex-col gap-4 overflow-y-auto custom-scrollbar pr-2">
-                                <!-- Histórico e área de tentativa atual gerados via JS -->
+                        <!-- COLUNA 2: ÁREA DE JOGO PRINCIPAL -->
+                        <div class="flex flex-col gap-4 overflow-hidden min-h-0">
+                            <!-- SENHA SECRETA -->
+                            <div id="solution-row-container" class="pb-2 w-full max-w-sm shrink-0 mx-auto">
+                                <h3 class="text-slate-600 uppercase tracking-[0.2em] text-xs font-bold px-1 mb-3 text-center">Senha Secreta</h3>
+                                <div id="solution-row" class="grid grid-cols-4 gap-4 mx-auto">
+                                    <!-- Cartas da solução geradas via JS -->
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- COLUNA 3: PAINEL DE VALIDAÇÃO E FEEDBACK -->
-                        <div class="board-pane p-5 flex flex-col gap-4">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-slate-700 uppercase tracking-[0.2em] text-xs font-bold px-1">Validação</h3>
-                                <span class="text-slate-600 font-black" id="play-counter">0/8</span>
-                            </div>
-                            <div id="play-feedback-history" class="flex-1 flex flex-col gap-4 overflow-y-auto custom-scrollbar pr-2">
-                                <!-- Feedback das tentativas gerado via JS -->
-                            </div>
-                            <div id="play-actions" class="mt-auto pt-4">
-                                <button id="btn-validate" onclick="app.validateGuess()" disabled class="w-full py-4 rounded-2xl font-black text-xs tracking-widest bg-slate-300 text-slate-500 cursor-not-allowed transition">
-                                    VALIDAR TENTATIVA
-                                </button>
+                            <!-- MESA DE JOGO E VALIDAÇÃO -->
+                            <div class="flex-1 board-pane p-5 flex flex-col gap-4 overflow-hidden max-w-3xl mx-auto w-full">
+                                <!-- SENHA SECRETA (AGORA DENTRO DO PAINEL) -->
+                                <div id="solution-row-container" class="pb-4 w-full max-w-sm shrink-0 mx-auto border-b border-slate-300/70">
+                                    <h3 class="text-slate-600 uppercase tracking-[0.2em] text-xs font-bold px-1 mb-3 text-center">Senha Secreta</h3>
+                                    <div id="solution-row" class="grid grid-cols-4 gap-4 mx-auto">
+                                        <!-- Cartas da solução geradas via JS -->
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-slate-700 uppercase tracking-[0.2em] text-xs font-bold px-1">Mesa de Jogo e Validação</h3>
+                                    <span class="text-slate-600 font-black" id="play-counter">0/8</span>
+                                </div>
+                                <div id="play-history" class="flex-1 flex flex-col gap-4 overflow-y-auto custom-scrollbar pr-2">
+                                    <!-- Histórico e área de tentativa atual gerados via JS -->
+                                </div>
+                                <div id="play-actions" class="mt-auto pt-4">
+                                    <button id="btn-validate" onclick="app.validateGuess()" disabled class="w-full py-4 rounded-2xl font-black text-xs tracking-widest bg-slate-300 text-slate-500 cursor-not-allowed transition">
+                                        VALIDAR TENTATIVA
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1760,36 +1760,25 @@
             updatePlayUI: function() {
                 const history = document.getElementById('play-history');
                 const counter = document.getElementById('play-counter');
-                const feedbackHistory = document.getElementById('play-feedback-history');
                 
                 const limit = this.state.activeGame.attemptLimit || 8;
                 if(counter) counter.innerText = `${this.state.attempts.length}/${limit}`;
                 
-                if(!history || !feedbackHistory) return;
+                if(!history) return;
 
                 history.innerHTML = '';
-                feedbackHistory.innerHTML = '';
 
                 // Renderizar tentativas passadas
                 this.state.attempts.forEach((att, index) => {
-                    const attemptRow = this.createAttemptRow(att.guess, index, false);
-                    history.appendChild(attemptRow);
-
-                    const feedbackRow = this.createFeedbackRow(att, index);
-                    feedbackHistory.appendChild(feedbackRow);
+                    history.appendChild(this.createCombinedRow(att, att.guess, index, false));
                 });
 
                 // Renderizar área de tentativa atual (se o jogo não acabou)
                 if (!this.state.gameOver) {
-                    const currentAttemptRow = this.createAttemptRow(this.state.currentGuess, this.state.attempts.length, true);
-                    history.appendChild(currentAttemptRow);
-
-                    const currentFeedbackRow = this.createFeedbackRow(null, this.state.attempts.length);
-                    feedbackHistory.appendChild(currentFeedbackRow);
+                    history.appendChild(this.createCombinedRow(null, this.state.currentGuess, this.state.attempts.length, true));
                 }
 
                 history.scrollTop = history.scrollHeight;
-                feedbackHistory.scrollTop = feedbackHistory.scrollHeight;
 
                 if(this.state.gameOver) {
                     const win = this.state.gameOver === 'win';
@@ -1816,7 +1805,7 @@
                 if (!bank) return;
                 bank.innerHTML = '';
                 const bankItems = this.state.activeGame.originalCards.slice(0, 12);
-
+    
                 bankItems.forEach(card => {
                     const design = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
                     const cardEl = document.createElement('div');
@@ -1835,39 +1824,44 @@
 
             createAttemptRow: function(guess, attemptIndex, isActive) {
                 const row = document.createElement('div');
-                row.className = `grid grid-cols-4 gap-3`;
+                row.className = `grid grid-cols-4 gap-2`; // Reduced gap for tighter packing
                 
                 const slotsHtml = (guess || []).map((cardId, slotIndex) => {
                     if (cardId !== null) {
                         const card = this.state.activeGame.originalCards.find(c => c.id === cardId);
                         const design = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
                         return `
-                            <div class="game-card p-3 flex flex-col justify-start text-center ${isActive ? 'cursor-pointer' : ''}" 
-                                 style="min-height: 0; aspect-ratio: 4/5; background-image: linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)), url('${design}'); background-size: cover; background-position: center;"
+                            <div class="game-card p-2 flex flex-col justify-start text-center ${isActive ? 'cursor-pointer' : ''}" 
+                                 style="min-height: 0; aspect-ratio: 4/5.5; background-image: linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)), url('${design}'); background-size: cover; background-position: center;"
                                  ${isActive ? `onclick="app.toggleSelection(null, ${slotIndex})"` : ''}>
                                 <span class="block text-[9px] font-black text-slate-500 uppercase mb-1">C.${card.pileId}</span>
                                 <p class="text-[10px] leading-tight font-semibold text-slate-700">${card.content}</p>
                             </div>`;
                     }
                     // Slot vazio
-                    return `<div class="h-full rounded-lg bg-slate-200/50 border-2 border-dashed border-slate-300/80" style="aspect-ratio: 4/5;"></div>`;
+                    return `<div class="h-full rounded-lg bg-slate-200/50 border-2 border-dashed border-slate-300/80" style="aspect-ratio: 4/5.5;"></div>`;
                 }).join('');
 
                 row.innerHTML = slotsHtml;
                 return row;
             },
 
-            createFeedbackRow: function(attemptResult, attemptIndex) {
+            createCombinedRow: function(attemptResult, guess, attemptIndex, isActive) {
                 const row = document.createElement('div');
-                row.className = 'board-inner flex items-center justify-center gap-2 h-20';
+                row.className = `flex items-center gap-4 p-3 rounded-3xl ${isActive ? 'bg-white/60' : 'bg-slate-100/50'}`;
 
+                const attemptCardsHTML = this.createAttemptRow(guess, attemptIndex, isActive).outerHTML;
+                
+                let feedbackPegsHTML = '';
                 if (attemptResult) {
                     const blackPegs = Array(attemptResult.black).fill('<div class="w-4 h-4 rounded-full bg-emerald-500 border-2 border-white shadow-md"></div>').join('');
                     const whitePegs = Array(attemptResult.white).fill('<div class="w-4 h-4 rounded-full bg-slate-400 border-2 border-white shadow-md"></div>').join('');
-                    row.innerHTML = blackPegs + whitePegs;
+                    feedbackPegsHTML = `<div class="grid grid-cols-2 gap-1.5 w-10">${blackPegs}${whitePegs}</div>`;
                 } else {
-                    row.innerHTML = Array(4).fill('<div class="w-4 h-4 rounded-full bg-slate-200"></div>').join('');
+                    feedbackPegsHTML = `<div class="grid grid-cols-2 gap-1.5 w-10">${Array(4).fill('<div class="w-4 h-4 rounded-full bg-slate-200"></div>').join('')}</div>`;
                 }
+
+                row.innerHTML = `<div class="flex-1">${attemptCardsHTML}</div><div class="shrink-0">${feedbackPegsHTML}</div>`;
                 return row;
             },
 
@@ -1903,6 +1897,7 @@
                     frontFace.className = 'solution-card-front game-card p-2 flex flex-col justify-center items-center text-center';
                     frontFace.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)), url('${frontDesign}')`;
                     frontFace.innerHTML = `<p class="text-[10px] leading-tight font-semibold text-slate-700">${card.content}</p>`;
+                    cardContainer.style.minHeight = '0';
                     cardContainer.classList.add('flipped');
                 });
             },
