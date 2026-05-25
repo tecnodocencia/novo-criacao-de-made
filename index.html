@@ -715,7 +715,7 @@
                                 </div>
                                 <div class="rounded-[28px] border border-slate-200 bg-slate-50 p-4">
                                     <p class="text-sm font-black text-slate-700 mb-4">Cartas do Jogo</p>
-                                    <div id="editor-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+                                    <div id="editor-grid" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4"></div>
                                 </div>
                             </div>
                         </div>
@@ -1423,23 +1423,39 @@
                 grid.innerHTML = '';
 
                 this.state.editingGame.cards.forEach((card, idx) => {
-                    const div = document.createElement('div');
-                    div.onclick = () => this.openCardModal(idx);
-                    div.className = `game-card flex flex-col p-5 cursor-pointer transition-all ${card.content ? '' : 'empty'}`;
+                    const cardEl = document.createElement('div');
+                    // A classe 'empty' é removida para garantir um estilo consistente
+                    cardEl.className = `game-card relative flex flex-col p-4 cursor-pointer transition-all ${card.content ? '' : 'empty'}`;
+                    cardEl.onclick = (e) => {
+                        if (e.target.closest('.toggle-correct-btn')) return;
+                        this.openCardModal(idx);
+                    };
                     
-                    div.innerHTML = card.content ? `
-                        <p class="text-[11px] font-black text-emerald-600 uppercase mb-4 tracking-[0.25em]">Carta ${card.pileId}</p>
-                        <div class="flex-1 flex items-center justify-center text-center">
-                            <p class="text-sm font-semibold text-slate-800 text-center leading-6">${card.content}</p>
-                        </div>
-                        ${card.isCorrect ? '<div class="mt-5 inline-flex items-center justify-center rounded-full bg-emerald-600 text-white px-4 py-2 text-[10px] uppercase tracking-[0.2em]">CÓDIGO</div>' : ''}
-                    ` : `
-                        <div class="flex h-full flex-col items-center justify-center text-slate-400">
-                            <i class="fa-solid fa-plus text-3xl mb-4"></i>
-                            <span class="text-[11px] font-black uppercase">Carta ${card.pileId}</span>
+                    const correctButton = `
+                        <button onclick="app.toggleCardCorrect(${idx})" class="toggle-correct-btn absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold ${card.isCorrect ? 'bg-emerald-500' : 'bg-red-500'} transition-colors">
+                            <i class="fa-solid ${card.isCorrect ? 'fa-check' : 'fa-times'}"></i>
+                        </button>`;
+
+                    // O conteúdo da carta é agora construído de forma unificada
+                    cardEl.innerHTML = `
+                        ${correctButton}
+                        <p class="text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Carta ${card.pileId}</p>
+                        ${card.content ? `
+                            <div class="flex-1 flex items-center justify-center text-center mb-2">
+                                <p class="text-sm font-semibold text-slate-800 text-center leading-6">${card.content}</p>
+                            </div>
+                        ` : `
+                            <div class="flex-1 flex items-center justify-center text-slate-400">
+                                <i class="fa-solid fa-plus text-3xl"></i>
+                            </div>
+                        `}
+                        <div class="mt-auto text-center">
+                            <p class="text-[10px] uppercase font-bold tracking-wider ${card.isCorrect ? 'text-emerald-600' : 'text-red-600'}">
+                                ${card.isCorrect ? 'É CÓDIGO SECRETO' : 'NÃO É CÓDIGO SECRETO'}
+                            </p>
                         </div>
                     `;
-                    grid.appendChild(div);
+                    grid.appendChild(cardEl);
                 });
             },
 
@@ -1454,6 +1470,12 @@
 
             closeModal: function() {
                 document.getElementById('modal-card').style.display = 'none';
+            },
+
+            toggleCardCorrect: function(idx) {
+                const card = this.state.editingGame.cards[idx];
+                card.isCorrect = !card.isCorrect;
+                this.renderEditorGrid();
             },
 
             openHelp: function() {
@@ -1900,6 +1922,33 @@
                 }
             },
 
+            revealSolution: function() {
+                const correctCards = this.state.activeGame.originalCards.filter(c => c.isCorrect).slice(0, 4);
+                const frontDesign = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
+
+                correctCards.forEach((card, i) => {
+                    const cardContainer = document.getElementById(`solution-card-${i}`);
+                    const frontFace = cardContainer.querySelector('.solution-card-front');
+                    
+                    frontFace.className = 'solution-card-front game-card p-2 flex flex-col justify-center items-center text-center';
+                    frontFace.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)), url('${frontDesign}')`;
+                    frontFace.innerHTML = `<p class="text-[10px] leading-tight font-semibold text-slate-700">${card.content}</p>`;
+                    cardContainer.style.minHeight = '0';
+                    cardContainer.classList.add('flipped');
+                });
+            },
+        };
+
+        // Previne fechamento acidental de modais
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal-card');
+            if (event.target == modal) app.closeModal();
+            const authorModal = document.getElementById('modal-author');
+            if (event.target == authorModal) app.closeAuthorModal();
+        }
+    </script>
+</body>
+</html>
             revealSolution: function() {
                 const correctCards = this.state.activeGame.originalCards.filter(c => c.isCorrect).slice(0, 4);
                 const frontDesign = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
