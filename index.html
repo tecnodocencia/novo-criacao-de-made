@@ -591,37 +591,51 @@
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Modelo</label>
                                     <select id="edit-game-model" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
-                                        <option value="Modelo Senha">Modelo Senha</option>
+                                        <option value="Código Secreto">Código Secreto</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Disciplina</label>
                                     <select id="edit-game-disciplina" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
-                                        <option value="Matemática">Matemática</option>
-                                        <option value="Português">Português</option>
-                                        <option value="Ciências">Ciências</option>
+                                        <option value="Biologia">Biologia</option>
+                                        <option value="Dança">Dança</option>
+                                        <option value="Educação Física">Educação Física</option>
+                                        <option value="Espanhol">Espanhol</option>
+                                        <option value="Filosofia">Filosofia</option>
+                                        <option value="Física">Física</option>
                                         <option value="História">História</option>
                                         <option value="Geografia">Geografia</option>
                                         <option value="Inglês">Inglês</option>
-                                        <option value="Artes">Artes</option>
+                                        <option value="Matemática">Matemática</option>
+                                        <option value="Música">Música</option>
+                                        <option value="Português">Português</option>
+                                        <option value="Química">Química</option>
+                                        <option value="Sociologia">Sociologia</option>
+                                        <option value="Teatro">Teatro</option>
+                                        <option value="Outro">Outro</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo</label>
-                                    <input id="edit-game-conteudo" type="text" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Frações, leitura...">
+                                    <input id="edit-game-conteudo" type="text" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Mamíferos, Frações, Leitura...">
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Série</label>
                                     <select id="edit-game-serie" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
-                                        <option value="1.º ano">1.º ano</option>
-                                        <option value="2.º ano">2.º ano</option>
-                                        <option value="3.º ano">3.º ano</option>
-                                        <option value="4.º ano">4.º ano</option>
-                                        <option value="5.º ano">5.º ano</option>
-                                        <option value="6.º ano">6.º ano</option>
-                                        <option value="7.º ano">7.º ano</option>
-                                        <option value="8.º ano">8.º ano</option>
-                                        <option value="9.º ano">9.º ano</option>
+                                        <option value="1º ano – EF">1º ano – EF</option>
+                                        <option value="2º ano – EF">2º ano – EF</option>
+                                        <option value="3º ano – EF">3º ano – EF</option>
+                                        <option value="4º ano">4º ano</option>
+                                        <option value="5º ano">5º ano</option>
+                                        <option value="6º ano">6º ano</option>
+                                        <option value="7º ano">7º ano</option>
+                                        <option value="8º ano">8º ano</option>
+                                        <option value="9º ano">9º ano</option>
+                                        <option value="1º ano – EM">1º ano – EM</option>
+                                        <option value="2º ano – EM">2º ano – EM</option>
+                                        <option value="3º ano – EM">3º ano – EM</option>
+                                        <option value="Ensino Superior">Ensino Superior</option>
+                                        <option value="Outro">Outro</option>
                                     </select>
                                 </div>
                                 <div>
@@ -641,11 +655,11 @@
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Regra</label>
-                                    <textarea id="edit-game-regra" rows="4" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Descreva a regra do jogo..."></textarea>
+                                    <textarea id="edit-game-regra" rows="4" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Descreva a regra do jogo...">Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.</textarea>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Objetivo</label>
-                                    <textarea id="edit-game-objetivo" rows="4" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Explique o objetivo do aluno..."></textarea>
+                                    <textarea id="edit-game-objetivo" rows="4" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Explique o objetivo do aluno...">Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.</textarea>
                                 </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div class="card-preview cursor-pointer" onclick="app.toggleFrontDesign()">
@@ -672,11 +686,11 @@
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Enunciado</label>
-                                    <textarea id="edit-game-enunciado" rows="5" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Explique a proposta do jogo..."></textarea>
+                                    <textarea id="edit-game-enunciado" rows="5" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Explique a proposta do jogo...">Escolha as cartas corretas que representam apenas animais mamíferos na ordem correta.</textarea>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
-                                    <textarea id="edit-game-explicacao" rows="5" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Breve explicação do conteúdo..."></textarea>
+                                    <textarea id="edit-game-explicacao" rows="5" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Breve explicação do conteúdo...">Observe as 12 possibilidades de cartas que estão do lado esquerdo da tela. Clique e arraste a carta escolhida para o retângulo vazio de cartas na posição que achar correta. Repita o processo até que todos os retângulos estejam preenchidos. Clique no botão para verificar a resposta. Observe o feedback do jogo verificando se as bolinhas do lado direito da tela estão pintadas de branco ou de preto. Se estiver pintada de branco significa que você colocou uma carta certa na posição errada. Se estiver pintada de preto significa que você colocou uma carta certa na posição correta. Se estiver transparente significa que essa carta não faz parte do código secreto.</textarea>
                                 </div>
                             </div>
                         </div>
@@ -765,18 +779,18 @@
                     
                     <!-- GAME BOARD CONTAINER -->
                     <div class="flex-1 grid grid-cols-1 lg:grid-cols-[420px_minmax(0,1fr)] gap-6 overflow-hidden min-h-0">
-                        <!-- COLUNA 1: BANCO DE ITENS -->
+                        <!-- COLUNA 1: BANCO DE CARTAS -->
                         <div class="board-pane p-5 flex flex-col gap-4">
-                            <h3 class="text-slate-700 uppercase tracking-[0.2em] text-xs font-bold px-1">Banco de Itens</h3>
+                            <h3 class="text-slate-700 uppercase tracking-[0.2em] text-xs font-bold px-1">Banco de Cartas</h3>
                             <div id="play-item-bank" class="grid grid-cols-3 gap-4 overflow-y-auto custom-scrollbar pr-2">
                                 <!-- Itens do banco gerados via JS -->
                             </div>
                         </div>
                         <!-- COLUNA 2: ÁREA DE JOGO PRINCIPAL -->
                         <div class="flex flex-col gap-4 overflow-hidden min-h-0">
-                            <!-- SENHA SECRETA -->
+                            <!-- CÓDIGO SECRETO -->
                             <div id="solution-row-container" class="pb-2 w-full max-w-sm shrink-0 mx-auto">
-                                <h3 class="text-slate-600 uppercase tracking-[0.2em] text-xs font-bold px-1 mb-3 text-center">Senha Secreta</h3>
+                                <h3 class="text-slate-600 uppercase tracking-[0.2em] text-xs font-bold px-1 mb-3 text-center">Código Secreto</h3>
                                 <div id="solution-row" class="grid grid-cols-4 gap-4 mx-auto">
                                     <!-- Cartas da solução geradas via JS -->
                                 </div>
@@ -784,9 +798,9 @@
                             <!-- MESA DE JOGO E VALIDAÇÃO -->
                             <div class="flex-1 board-pane p-5 flex flex-col gap-4 overflow-hidden max-w-3xl mx-auto w-full">
                                 <!-- SENHA SECRETA (AGORA DENTRO DO PAINEL) -->
-                                <div id="solution-row-container" class="pb-4 w-full max-w-sm shrink-0 mx-auto border-b border-slate-300/70">
-                                    <h3 class="text-slate-600 uppercase tracking-[0.2em] text-xs font-bold px-1 mb-3 text-center">Senha Secreta</h3>
-                                    <div id="solution-row" class="grid grid-cols-4 gap-4 mx-auto">
+                                <div id="solution-row-container" class="pb-4 w-full max-w-sm shrink-0 mx-auto border-b border-slate-300/70" style="display: none;">
+                                    <h3 class="text-slate-600 uppercase tracking-[0.2em] text-xs font-bold px-1 mb-3 text-center">Código Secreto</h3>
+                                    <div id="solution-row" class="grid grid-cols-4 gap-4 mx-auto" style="display: none;">
                                         <!-- Cartas da solução geradas via JS -->
                                     </div>
                                 </div>
@@ -825,7 +839,7 @@
                 </div>
                 <label class="flex items-center p-5 bg-slate-50 rounded-3xl cursor-pointer hover:bg-emerald-50 transition border-2 border-transparent hover:border-emerald-100">
                     <input type="checkbox" id="modal-input-correct" class="w-5 h-5 accent-emerald-600">
-                    <span class="ml-4 text-sm font-bold text-slate-700">Esta carta faz parte da SENHA</span>
+                    <span class="ml-4 text-sm font-bold text-slate-700">Esta carta faz parte do CÓDIGO SECRETO</span>
                 </label>
                 <div class="flex space-x-3 pt-4">
                     <button onclick="app.closeModal()" class="flex-1 py-4 font-bold text-slate-400 hover:text-slate-600">Cancelar</button>
@@ -880,8 +894,8 @@
                             <div class="text-xs uppercase tracking-[0.24em] text-emerald-700 font-black mb-2">Tutorial rápido</div>
                             <div class="grid grid-cols-1 gap-3 text-sm text-slate-600">
                                 <div class="rounded-3xl bg-emerald-50 p-4">
-                                    <div class="font-bold text-slate-900">Cartas de Senha</div>
-                                    <div class="text-xs">Essas são as cartas secretas que você deve descobrir.</div>
+                                    <div class="font-bold text-slate-900">Cartas do Código Secreto</div>
+                                    <div class="text-xs">Essas são as cartas que compõem o código que você deve descobrir.</div>
                                 </div>
                                 <div class="rounded-3xl bg-slate-100 p-4">
                                     <div class="font-bold text-slate-900">Opções de Distração</div>
@@ -961,7 +975,7 @@
                         },
                         cards: Array.from({length: 12}, (_, i) => ({
                             id: i,
-                            content: i < 4 ? `Carta de Senha ${i+1}` : `Opção de Distração ${i+1}`,
+                            content: i < 4 ? `Carta do Código ${i+1}` : `Opção de Distração ${i+1}`,
                             isCorrect: i < 4,
                             pileId: i + 1
                         }))
@@ -1125,7 +1139,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-slate-800 mb-4">${game.name || 'Sem título'}</h3>
                         <div class="space-y-2 text-sm text-slate-500 mb-4">
-                            <p><strong class="text-slate-800">Modelo:</strong> ${game.model || 'Senha'}</p>
+                            <p><strong class="text-slate-800">Modelo:</strong> ${game.model || 'Código Secreto'}</p>
                             <p><strong class="text-slate-800">Disciplina:</strong> ${game.disciplineInfo?.disciplina || '-'}</p>
                             <p><strong class="text-slate-800">Conteúdo:</strong> ${game.disciplineInfo?.conteudo || '-'}</p>
                             <p><strong class="text-slate-800">Série:</strong> ${game.disciplineInfo?.serie || '-'}</p>
@@ -1153,7 +1167,7 @@
                 this.state.editingGame = {
                     id: Date.now(),
                     name: "",
-                    model: "Modelo Senha",
+                    model: "Código Secreto",
                     difficulty: 1,
                     attemptLimit: 10,
                     shuffleMode: 'apenas embaralhamento',
@@ -1162,14 +1176,14 @@
                     frontDesign: "imagens/frente/frente01.png",
                     backDesign: "imagens/verso/verso01.png",
                     disciplineInfo: {
-                        disciplina: "Matemática",
-                        conteudo: "",
-                        serie: "6.º ano",
+                        disciplina: "Biologia",
+                        conteudo: "Mamíferos",
+                        serie: "6º ano",
                         autores: [],
-                        regra: "",
-                        objetivo: "",
-                        enunciado: "",
-                        explicacao: ""
+                        regra: "Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.",
+                        objetivo: "Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.",
+                        enunciado: "Escolha as cartas corretas que representam apenas animais mamíferos na ordem correta.",
+                        explicacao: "Observe as 12 possibilidades de cartas que estão do lado esquerdo da tela. Clique e arraste a carta escolhida para o retângulo vazio de cartas na posição que achar correta. Repita o processo até que todos os retângulos estejam preenchidos. Clique no botão para verificar a resposta. Observe o feedback do jogo verificando se as bolinhas do lado direito da tela estão pintadas de branco ou de preto. Se estiver pintada de branco significa que você colocou uma carta certa na posição errada. Se estiver pintada de preto significa que você colocou uma carta certa na posição correta. Se estiver transparente significa que essa carta não faz parte do código secreto."
                     },
                     cards: Array.from({length: 12}, (_, i) => ({ 
                         id: i, 
@@ -1193,13 +1207,13 @@
 
             syncEditorUI: function() {
                 document.getElementById('edit-game-name').value = this.state.editingGame.name;
-                document.getElementById('edit-game-model').value = this.state.editingGame.model || "Modelo Senha";
+                document.getElementById('edit-game-model').value = this.state.editingGame.model || "Código Secreto";
                 document.getElementById('edit-game-enunciado').value = this.state.editingGame.disciplineInfo.enunciado || "";
                 document.getElementById('edit-game-explicacao').value = this.state.editingGame.disciplineInfo.explicacao || "";
                 document.getElementById('edit-game-regra').value = this.state.editingGame.disciplineInfo.regra || "";
                 document.getElementById('edit-game-objetivo').value = this.state.editingGame.disciplineInfo.objetivo || "";
                 document.getElementById('edit-game-diff').value = this.state.editingGame.difficulty;
-                document.getElementById('edit-game-disciplina').value = this.state.editingGame.disciplineInfo.disciplina || "Matemática";
+                document.getElementById('edit-game-disciplina').value = this.state.editingGame.disciplineInfo.disciplina || "Biologia";
                 document.getElementById('edit-game-conteudo').value = this.state.editingGame.disciplineInfo.conteudo || "";
                 document.getElementById('edit-game-serie').value = this.state.editingGame.disciplineInfo.serie || "6.º ano";
                 this.renderAuthorsList();
@@ -1415,10 +1429,10 @@
                     
                     div.innerHTML = card.content ? `
                         <p class="text-[11px] font-black text-emerald-600 uppercase mb-4 tracking-[0.25em]">Carta ${card.pileId}</p>
-                        <div class="flex-1 flex items-center justify-center">
+                        <div class="flex-1 flex items-center justify-center text-center">
                             <p class="text-sm font-semibold text-slate-800 text-center leading-6">${card.content}</p>
                         </div>
-                        ${card.isCorrect ? '<div class="mt-5 inline-flex items-center justify-center rounded-full bg-emerald-600 text-white px-4 py-2 text-[10px] uppercase tracking-[0.2em]">Senha</div>' : ''}
+                        ${card.isCorrect ? '<div class="mt-5 inline-flex items-center justify-center rounded-full bg-emerald-600 text-white px-4 py-2 text-[10px] uppercase tracking-[0.2em]">CÓDIGO</div>' : ''}
                     ` : `
                         <div class="flex h-full flex-col items-center justify-center text-slate-400">
                             <i class="fa-solid fa-plus text-3xl mb-4"></i>
@@ -1566,13 +1580,13 @@
 
             saveGame: function() {
                 const eg = this.state.editingGame;
-                eg.name = document.getElementById('edit-game-name').value || "Material sem Nome";
-                eg.model = document.getElementById('edit-game-model').value || "Modelo Senha";
+                eg.name = document.getElementById('edit-game-name').value || "Jogo sem Nome";
+                eg.model = document.getElementById('edit-game-model').value || "Código Secreto";
                 eg.difficulty = parseInt(document.getElementById('edit-game-diff').value);
                 eg.disciplineInfo = {
-                    disciplina: document.getElementById('edit-game-disciplina').value || "Matemática",
+                    disciplina: document.getElementById('edit-game-disciplina').value || "Biologia",
                     conteudo: document.getElementById('edit-game-conteudo').value || "",
-                    serie: document.getElementById('edit-game-serie').value || "6.º ano",
+                    serie: document.getElementById('edit-game-serie').value || "6º ano",
                     autores: eg.disciplineInfo.autores || [],
                     regra: document.getElementById('edit-game-regra').value || "",
                     objetivo: document.getElementById('edit-game-objetivo').value || "",
@@ -1786,8 +1800,8 @@
                     if(actions) {
                         actions.innerHTML = `
                             <div class="p-4 rounded-[24px] text-center ${win ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'} border">
-                                <h4 class="text-lg font-black ${win ? 'text-emerald-600' : 'text-red-600'} mb-1">${win ? 'VITÓRIA!' : 'FIM DE TENTATIVAS'}</h4>
-                                <p class="text-xs ${win ? 'text-emerald-800' : 'text-red-800'} font-semibold mb-4">${win ? 'Senha descoberta com sucesso!' : 'Reinicie para jogar novamente.'}</p>
+                                <h4 class="text-lg font-black ${win ? 'text-emerald-600' : 'text-red-600'} mb-1">${win ? 'VITÓRIA!' : 'FIM DE JOGO'}</h4>
+                                <p class="text-xs ${win ? 'text-emerald-800' : 'text-red-800'} font-semibold mb-4">${win ? 'Código Secreto descoberto com sucesso!' : 'Você não tem mais tentativas. Reinicie para jogar novamente.'}</p>
                                 <div class="flex flex-col sm:flex-row gap-3 justify-center">
                                     <button onclick="app.switchView('dashboard')" class="flex-1 bg-white text-slate-700 px-4 py-3 rounded-xl font-bold text-xs border border-slate-200 transition hover:bg-slate-50">Sair</button>
                                     <button onclick="app.replayGame()" class="flex-1 bg-emerald-600 text-white px-4 py-3 rounded-xl font-bold text-xs shadow-lg shadow-emerald-200 transition hover:bg-emerald-700">Jogar Novamente</button>
