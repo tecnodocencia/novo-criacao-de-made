@@ -1425,20 +1425,14 @@
                 this.state.editingGame.cards.forEach((card, idx) => {
                     const cardEl = document.createElement('div');
                     // A classe 'empty' é removida para garantir um estilo consistente
-                    cardEl.className = `game-card relative flex flex-col p-4 cursor-pointer transition-all ${card.content ? '' : 'empty'}`;
+                    cardEl.className = `game-card flex flex-col p-4 cursor-pointer transition-all ${card.content ? '' : 'empty'}`;
                     cardEl.onclick = (e) => {
-                        if (e.target.closest('.toggle-correct-btn')) return;
+                        if (e.target.closest('.status-badge')) return;
                         this.openCardModal(idx);
                     };
                     
-                    const correctButton = `
-                        <button onclick="app.toggleCardCorrect(${idx})" class="toggle-correct-btn absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold ${card.isCorrect ? 'bg-emerald-500' : 'bg-red-500'} transition-colors">
-                            <i class="fa-solid ${card.isCorrect ? 'fa-check' : 'fa-times'}"></i>
-                        </button>`;
-
                     // O conteúdo da carta é agora construído de forma unificada
                     cardEl.innerHTML = `
-                        ${correctButton}
                         <p class="text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Carta ${card.pileId}</p>
                         ${card.content ? `
                             <div class="flex-1 flex items-center justify-center text-center mb-2">
@@ -1449,10 +1443,13 @@
                                 <i class="fa-solid fa-plus text-3xl"></i>
                             </div>
                         `}
-                        <div class="mt-auto text-center">
-                            <p class="text-[10px] uppercase font-bold tracking-wider ${card.isCorrect ? 'text-emerald-600' : 'text-red-600'}">
-                                ${card.isCorrect ? 'É CÓDIGO SECRETO' : 'NÃO É CÓDIGO SECRETO'}
-                            </p>
+                        <div class="mt-auto">
+                            <button onclick="app.toggleCardCorrect(${idx})" class="status-badge w-full inline-flex items-center justify-center gap-2 px-3 py-2 rounded-full text-white text-[10px] font-bold uppercase tracking-wider transition-colors ${card.isCorrect ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-red-500 hover:bg-red-600'}">
+                                <i class="fa-solid ${card.isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+                                <span>
+                                    ${card.isCorrect ? 'É Código Secreto' : 'Não é Código'}
+                                </span>
+                            </button>
                         </div>
                     `;
                     grid.appendChild(cardEl);
