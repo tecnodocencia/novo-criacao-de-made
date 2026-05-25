@@ -714,7 +714,10 @@
                                     <p class="text-sm" id="creator-difficulty-description">10 tentativas - apenas embaralhamento</p>
                                 </div>
                                 <div class="rounded-[28px] border border-slate-200 bg-slate-50 p-4">
-                                    <p class="text-sm font-black text-slate-700 mb-4">Cartas do Jogo</p>
+                                    <div class="flex justify-between items-center mb-4">
+                                        <p class="text-sm font-black text-slate-700">Cartas do Jogo</p>
+                                        <p id="secret-card-counter" class="text-sm font-bold text-slate-500"></p>
+                                    </div>
                                     <div id="editor-grid" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4"></div>
                                 </div>
                             </div>
@@ -791,7 +794,7 @@
                             <!-- CÓDIGO SECRETO -->
                             <div id="solution-row-container" class="pb-2 w-full max-w-sm shrink-0 mx-auto">
                                 <h3 class="text-slate-600 uppercase tracking-[0.2em] text-xs font-bold px-1 mb-3 text-center">Código Secreto</h3>
-                                <div id="solution-row" class="grid grid-cols-4 gap-4 mx-auto">
+                                <div id="solution-row" class="grid grid-cols-6 gap-2 mx-auto">
                                     <!-- Cartas da solução geradas via JS -->
                                 </div>
                             </div>
@@ -800,7 +803,7 @@
                                 <!-- SENHA SECRETA (AGORA DENTRO DO PAINEL) -->
                                 <div id="solution-row-container" class="pb-4 w-full max-w-sm shrink-0 mx-auto border-b border-slate-300/70" style="display: none;">
                                     <h3 class="text-slate-600 uppercase tracking-[0.2em] text-xs font-bold px-1 mb-3 text-center">Código Secreto</h3>
-                                    <div id="solution-row" class="grid grid-cols-4 gap-4 mx-auto" style="display: none;">
+                                    <div id="solution-row" class="grid grid-cols-6 gap-2 mx-auto" style="display: none;">
                                         <!-- Cartas da solução geradas via JS -->
                                     </div>
                                 </div>
@@ -1289,6 +1292,13 @@
 
             nextStep: function() {
                 this.persistEditorFields();
+                if (this.state.editingStep === 4) {
+                    const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
+                    if (correctCount !== 6) {
+                        alert('Você deve selecionar exatamente 6 cartas para o Código Secreto para poder prosseguir.');
+                        return;
+                    }
+                }
                 if (this.state.editingStep < 5) {
                     this.setEditorStep(this.state.editingStep + 1);
                 } else {
@@ -1456,6 +1466,21 @@
                 });
             },
 
+            updateSecretCardCounter: function() {
+                const counterEl = document.getElementById('secret-card-counter');
+                if (!counterEl || !this.state.editingGame) return;
+
+                const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
+                const requiredCount = 6;
+
+                counterEl.innerText = `${correctCount} / ${requiredCount} selecionadas`;
+                if (correctCount === requiredCount) {
+                    counterEl.className = 'text-sm font-bold text-emerald-600';
+                } else {
+                    counterEl.className = 'text-sm font-bold text-red-600';
+                }
+            },
+
             openCardModal: function(idx) {
                 this.state.editingCardIndex = idx;
                 const card = this.state.editingGame.cards[idx];
@@ -1473,6 +1498,7 @@
                 const card = this.state.editingGame.cards[idx];
                 card.isCorrect = !card.isCorrect;
                 this.renderEditorGrid();
+                this.updateSecretCardCounter();
             },
 
             openHelp: function() {
@@ -1638,7 +1664,7 @@
                 this.state.activeGame = this.applyDifficultySettings(this.state.activeGame);
                 this.state.activeGame.cards = this.buildPlayDeck(this.state.activeGame);
                 this.state.currentGuess = [];
-                this.state.currentGuess = Array(4).fill(null);
+                this.state.currentGuess = Array(6).fill(null);
                 this.state.attempts = [];
                 this.state.gameOver = null;
 
@@ -1746,7 +1772,7 @@
                 const btn = document.getElementById('btn-validate');
                 if(!btn) return;
 
-                if(this.state.currentGuess.filter(c => c !== null).length === 4) {
+                if(this.state.currentGuess.filter(c => c !== null).length === 6) {
                     btn.disabled = false;
                     btn.className = "w-full py-5 rounded-2xl font-black text-xs tracking-widest bg-slate-900 text-white shadow-xl shadow-slate-900/20 cursor-pointer active:scale-95 transition";
                 } else {
@@ -1756,7 +1782,7 @@
             },
 
             validateGuess: function() {
-                const correctIds = this.state.activeGame.originalCards.filter(c => c.isCorrect).map(c => c.id).slice(0, 4);
+                const correctIds = this.state.activeGame.originalCards.filter(c => c.isCorrect).map(c => c.id).slice(0, 6);
                 const limit = this.state.activeGame.attemptLimit || 8;
                 
                 let black = 0;
@@ -1764,14 +1790,14 @@
                 const guess = [...this.state.currentGuess];
                 const solution = [...correctIds];
 
-                for(let i=0; i<4; i++) {
+                for(let i=0; i<6; i++) {
                     if(guess[i] === solution[i]) {
                         black++;
                         guess[i] = -1;
                         solution[i] = -2;
                     }
                 }
-                for(let i=0; i<4; i++) {
+                for(let i=0; i<6; i++) {
                     if(guess[i] === -1) continue;
                     const found = solution.indexOf(guess[i]);
                     if(found > -1) {
@@ -1781,9 +1807,9 @@
                 }
 
                 this.state.attempts.push({ black, white, guess: [...this.state.currentGuess] });
-                this.state.currentGuess = Array(4).fill(null);
+                this.state.currentGuess = Array(6).fill(null);
                 
-                if(black === 4) this.state.gameOver = 'win';
+                if(black === 6) this.state.gameOver = 'win';
                 else if(this.state.attempts.length >= limit) this.state.gameOver = 'lose';
 
                 this.updatePlayUI();
@@ -1857,7 +1883,7 @@
 
             createAttemptRow: function(guess, attemptIndex, isActive) {
                 const row = document.createElement('div');
-                row.className = `grid grid-cols-4 gap-2`; // Reduced gap for tighter packing
+                row.className = `grid grid-cols-6 gap-2`; // Reduced gap for tighter packing
                 
                 const slotsHtml = (guess || []).map((cardId, slotIndex) => {
                     if (cardId !== null) {
@@ -1891,7 +1917,7 @@
                     const whitePegs = Array(attemptResult.white).fill('<div class="w-4 h-4 rounded-full bg-slate-400 border-2 border-white shadow-md"></div>').join('');
                     feedbackPegsHTML = `<div class="grid grid-cols-2 gap-1.5 w-10">${blackPegs}${whitePegs}</div>`;
                 } else {
-                    feedbackPegsHTML = `<div class="grid grid-cols-2 gap-1.5 w-10">${Array(4).fill('<div class="w-4 h-4 rounded-full bg-slate-200"></div>').join('')}</div>`;
+                    feedbackPegsHTML = `<div class="grid grid-cols-2 gap-1.5 w-10">${Array(6).fill('<div class="w-4 h-4 rounded-full bg-slate-200"></div>').join('')}</div>`;
                 }
 
                 row.innerHTML = `<div class="flex-1">${attemptCardsHTML}</div><div class="shrink-0">${feedbackPegsHTML}</div>`;
@@ -1905,7 +1931,7 @@
 
                 const backDesign = this.state.activeGame.backDesign || "imagens/verso/verso01.png";
 
-                for (let i = 0; i < 4; i++) {
+                for (let i = 0; i < 6; i++) {
                     const cardContainer = document.createElement('div');
                     cardContainer.id = `solution-card-${i}`;
                     cardContainer.className = 'solution-card-container';
@@ -1920,7 +1946,7 @@
             },
 
             revealSolution: function() {
-                const correctCards = this.state.activeGame.originalCards.filter(c => c.isCorrect).slice(0, 4);
+                const correctCards = this.state.activeGame.originalCards.filter(c => c.isCorrect).slice(0, 6);
                 const frontDesign = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
 
                 correctCards.forEach((card, i) => {
