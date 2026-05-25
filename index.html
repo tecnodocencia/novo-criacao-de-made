@@ -94,7 +94,7 @@
             font-weight: 800;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: #475569;
+        color: #0f172a;
         }
 
         .game-card .card-label-row {
@@ -562,7 +562,7 @@
             </section>
 
             <!-- VIEW: EDITOR -->
-            <section id="view-creator" class="view-section flex-col bg-white hidden h-full overflow-y-auto">
+            <section id="view-creator" class="view-section flex-col bg-white hidden h-full">
                 <header class="h-20 border-b px-8 flex items-center justify-between shrink-0 bg-white z-10">
                     <div>
                         <h2 class="font-bold text-lg" id="editor-title-display">Novo Jogo</h2>
@@ -661,17 +661,33 @@
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Objetivo</label>
                                     <textarea id="edit-game-objetivo" rows="4" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Explique o objetivo do aluno...">Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.</textarea>
                                 </div>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div class="card-preview cursor-pointer" onclick="app.toggleFrontDesign()">
-                                        <img id="preview-front" src="imagens/frente/frente01.png" alt="Pré-visualização frente">
-                                        <div class="card-preview-label">Clique para trocar o design da frente</div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                                    <div class="flex items-center justify-center gap-3">
+                                        <button onclick="app.toggleFrontDesign('prev')" class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
+                                            <i class="fa-solid fa-chevron-left"></i>
+                                        </button>
+                                        <div class="card-preview">
+                                            <img id="preview-front" src="imagens/frente/frente01.png" alt="Pré-visualização frente">
+                                            <div class="card-preview-label">Frente da Carta</div>
+                                        </div>
+                                        <button onclick="app.toggleFrontDesign('next')" class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        </button>
                                     </div>
-                                    <div class="card-preview cursor-pointer" onclick="app.toggleBackDesign()">
-                                        <img id="preview-back" src="imagens/verso/verso01.png" alt="Pré-visualização verso">
-                                        <div class="card-preview-label">Clique para trocar o design do verso</div>
+                                    <div class="flex items-center justify-center gap-3">
+                                        <button onclick="app.toggleBackDesign('prev')" class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
+                                            <i class="fa-solid fa-chevron-left"></i>
+                                        </button>
+                                        <div class="card-preview">
+                                            <img id="preview-back" src="imagens/verso/verso01.png" alt="Pré-visualização verso">
+                                            <div class="card-preview-label">Verso da Carta</div>
+                                        </div>
+                                        <button onclick="app.toggleBackDesign('next')" class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        </button>
                                     </div>
                                 </div>
-                                <p class="text-xs text-slate-500 mt-2">Clique na pré-visualização para alterar o design da carta.</p>
+                                <p class="text-xs text-slate-500 mt-2">Use as setas para alterar o design da carta.</p>
                             </div>
                         </div>
                         <div id="creator-step-3" class="creator-step hidden">
@@ -757,6 +773,9 @@
                         <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                             <button id="creator-prev-btn" onclick="app.prevStep()" class="w-full sm:max-w-[240px] py-3 bg-white text-slate-700 rounded-3xl font-bold border border-slate-200 transition hidden">Voltar</button>
                             <button id="creator-next-btn" onclick="app.nextStep()" class="w-full sm:max-w-[240px] py-3 bg-slate-900 text-white rounded-3xl font-bold uppercase text-xs tracking-[0.25em]">Criar Jogo</button>
+                        </div>
+                        <div id="creator-validation-msg" class="text-center text-sm text-red-600 font-semibold mt-3 hidden">
+                            <!-- Mensagem de validação aparecerá aqui -->
                         </div>
                     </aside>
                 </div>
@@ -958,8 +977,10 @@
                     { email: 'teste@gmail.com', password: '123456', role: 'professor' }
                 ],
                 games: [
-                    {
-                        name: "Frações e Decimais",
+                    {   
+                        id: 1,
+                        name: "Código Secreto: Mamíferos",
+                        model: "Código Secreto",
                         difficulty: 1,
                         attemptLimit: 10,
                         shuffleMode: 'apenas embaralhamento',
@@ -968,20 +989,29 @@
                         frontDesign: "imagens/frente/frente01.png",
                         backDesign: "imagens/verso/verso01.png",
                         disciplineInfo: {
-                            campus: "",
-                            disciplina: "Matemática",
-                            conteudo: "",
-                            serie: "6.º ano",
-                            autores: [],
-                            enunciado: "",
-                            explicacao: ""
+                            disciplina: "Biologia",
+                            conteudo: "Mamíferos",
+                            serie: "6º ano",
+                            autores: ["Equipe MADE"],
+                            regra: "Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.",
+                            objetivo: "Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.",
+                            enunciado: "Escolha as 6 cartas que representam animais mamíferos e coloque-as na ordem correta para desvendar o código secreto.",
+                            explicacao: "Observe as 12 possibilidades de cartas que estão no banco. Clique na carta escolhida para adicioná-la à sua tentativa na mesa. Repita o processo até que todos os 6 espaços estejam preenchidos. Clique no botão para validar a resposta. Observe o feedback: um pino preto significa que você acertou a carta e a posição. Um pino branco significa que a carta pertence ao código, mas está na posição errada."
                         },
-                        cards: Array.from({length: 12}, (_, i) => ({
-                            id: i,
-                            content: i < 4 ? `Carta do Código ${i+1}` : `Opção de Distração ${i+1}`,
-                            isCorrect: i < 4,
-                            pileId: i + 1
-                        }))
+                        cards: [
+                            { id: 0, content: "Baleia", isCorrect: true, pileId: 1 },
+                            { id: 1, content: "Morcego", isCorrect: true, pileId: 2 },
+                            { id: 2, content: "Ornitorrinco", isCorrect: true, pileId: 3 },
+                            { id: 3, content: "Leão", isCorrect: true, pileId: 4 },
+                            { id: 4, content: "Golfinho", isCorrect: true, pileId: 5 },
+                            { id: 5, content: "Ser Humano", isCorrect: true, pileId: 6 },
+                            { id: 6, content: "Pinguim", isCorrect: false, pileId: 7 },
+                            { id: 7, content: "Tartaruga", isCorrect: false, pileId: 8 },
+                            { id: 8, content: "Tubarão", isCorrect: false, pileId: 9 },
+                            { id: 9, content: "Sardinha", isCorrect: false, pileId: 10 },
+                            { id: 10, content: "Jacaré", isCorrect: false, pileId: 11 },
+                            { id: 11, content: "Galinha", isCorrect: false, pileId: 12 }
+                        ]
                     }
                 ],
                 activeGame: null,
@@ -1197,34 +1227,76 @@
                 };
                 this.state.editingStep = 1;
                 this.syncEditorUI();
+                this.updateSecretCardCounter(); // Adicionado para inicializar o contador
                 this.switchView('creator');
             },
+
 
             editGame: function(id) {
                 const g = this.state.games.find(x => x.id === id);
                 this.state.editingGame = JSON.parse(JSON.stringify(g));
                 this.state.editingStep = 1;
                 this.syncEditorUI();
+                this.updateSecretCardCounter();
                 this.switchView('creator');
             },
 
             syncEditorUI: function() {
-                document.getElementById('edit-game-name').value = this.state.editingGame.name;
-                document.getElementById('edit-game-model').value = this.state.editingGame.model || "Código Secreto";
-                document.getElementById('edit-game-enunciado').value = this.state.editingGame.disciplineInfo.enunciado || "";
-                document.getElementById('edit-game-explicacao').value = this.state.editingGame.disciplineInfo.explicacao || "";
-                document.getElementById('edit-game-regra').value = this.state.editingGame.disciplineInfo.regra || "";
-                document.getElementById('edit-game-objetivo').value = this.state.editingGame.disciplineInfo.objetivo || "";
-                document.getElementById('edit-game-diff').value = this.state.editingGame.difficulty;
-                document.getElementById('edit-game-disciplina').value = this.state.editingGame.disciplineInfo.disciplina || "Biologia";
-                document.getElementById('edit-game-conteudo').value = this.state.editingGame.disciplineInfo.conteudo || "";
-                document.getElementById('edit-game-serie').value = this.state.editingGame.disciplineInfo.serie || "6.º ano";
+                // Se não houver jogo sendo editado, aborta para evitar erros
+                if (!this.state.editingGame) return;
+                const eg = this.state.editingGame;
+
+                // Garante que disciplineInfo existe para não quebrar ao ler subpropriedades
+                if (!eg.disciplineInfo) {
+                    eg.disciplineInfo = {};
+                }
+
+                // Preenche os campos de Informações Gerais de forma segura
+                if (document.getElementById('edit-game-name')) {
+                    document.getElementById('edit-game-name').value = eg.name || "";
+                }
+                if (document.getElementById('edit-game-model')) {
+                    document.getElementById('edit-game-model').value = eg.model || "Código Secreto";
+                }
+                if (document.getElementById('edit-game-diff')) {
+                    document.getElementById('edit-game-diff').value = eg.difficulty;
+                }
+
+                // Preenche os campos da aba de Disciplina, Série e Conteúdo de forma segura
+                if (document.getElementById('edit-game-disciplina')) {
+                    document.getElementById('edit-game-disciplina').value = eg.disciplineInfo.disciplina || "Biologia";
+                }
+                if (document.getElementById('edit-game-conteudo')) {
+                    document.getElementById('edit-game-conteudo').value = eg.disciplineInfo.conteudo || "";
+                }
+                if (document.getElementById('edit-game-serie')) {
+                    document.getElementById('edit-game-serie').value = eg.disciplineInfo.serie || "6.º ano";
+                }
+                if (document.getElementById('edit-game-regra')) {
+                    document.getElementById('edit-game-regra').value = eg.disciplineInfo.regra || "";
+                }
+                if (document.getElementById('edit-game-objetivo')) {
+                    document.getElementById('edit-game-objetivo').value = eg.disciplineInfo.objetivo || "";
+                }
+                if (document.getElementById('edit-game-enunciado')) {
+                    document.getElementById('edit-game-enunciado').value = eg.disciplineInfo.enunciado || "";
+                }
+                if (document.getElementById('edit-game-explicacao')) {
+                    document.getElementById('edit-game-explicacao').value = eg.disciplineInfo.explicacao || "";
+                }
+
+                // Atualiza o título exibido no topo do editor
+                if (document.getElementById('editor-title-display')) {
+                    document.getElementById('editor-title-display').innerText = eg.name || "Novo Jogo";
+                }
+
+                // Executa todas as funções originais de atualização da interface
                 this.renderAuthorsList();
                 this.updateDesignPreviews();
                 this.updateDifficultyInfo();
                 this.updateCreatorPreview();
                 this.setEditorStep(this.state.editingStep);
-                document.getElementById('editor-title-display').innerText = this.state.editingGame.name || "Novo Jogo";
+                this.updateSecretCardCounter();
                 this.renderEditorGrid();
             },
 
@@ -1266,39 +1338,55 @@
                 if (nextBtn) nextBtn.innerText = nextLabelMap[step] || 'Próximo';
                 if (prevBtn) prevBtn.classList.toggle('hidden', step === 1);
                 if (step === 5 && nextBtn) nextBtn.innerText = 'Finalizar';
+                
+                this.updateCreatorNavButtons();
                 this.updateCreatorPreview();
+
+                // Rola a área de criação para o topo
+                const creatorContent = document.querySelector('#view-creator > .flex-1.min-h-0.overflow-y-auto');
+                if (creatorContent) {
+                    creatorContent.scrollTo({ top: 0, behavior: 'smooth' });
+                }
             },
 
             persistEditorFields: function() {
                 if (!this.state.editingGame) return;
-                const eg = this.state.editingGame;
-                eg.name = document.getElementById('edit-game-name')?.value || eg.name;
-                eg.model = document.getElementById('edit-game-model')?.value || eg.model;
-                eg.difficulty = parseInt(document.getElementById('edit-game-diff')?.value) || eg.difficulty;
-                eg.disciplineInfo.disciplina = document.getElementById('edit-game-disciplina')?.value || eg.disciplineInfo.disciplina;
-                eg.disciplineInfo.conteudo = document.getElementById('edit-game-conteudo')?.value || eg.disciplineInfo.conteudo;
-                eg.disciplineInfo.serie = document.getElementById('edit-game-serie')?.value || eg.disciplineInfo.serie;
-                eg.disciplineInfo.regra = document.getElementById('edit-game-regra')?.value || eg.disciplineInfo.regra;
-                eg.disciplineInfo.objetivo = document.getElementById('edit-game-objetivo')?.value || eg.disciplineInfo.objetivo;
-                eg.disciplineInfo.enunciado = document.getElementById('edit-game-enunciado')?.value || eg.disciplineInfo.enunciado;
-                eg.disciplineInfo.explicacao = document.getElementById('edit-game-explicacao')?.value || eg.disciplineInfo.explicacao;
-                const diffConfig = this.getDifficultyConfig(eg.difficulty);
-                eg.attemptLimit = diffConfig.attemptLimit;
-                eg.shuffleMode = diffConfig.shuffleMode;
-                eg.newCardsOnReplay = diffConfig.newCardsOnReplay;
-                eg.cardCount = diffConfig.cardCount;
-                this.renderAuthorsList();
+
+                // Captura os dados básicos da aba de Informações Gerais
+                const nameInput = document.getElementById('edit-game-name');
+                if (nameInput) this.state.editingGame.name = nameInput.value || "Jogo sem Nome";
+
+                const modelInput = document.getElementById('edit-game-model');
+                if (modelInput) this.state.editingGame.model = modelInput.value || "Código Secreto";
+
+                const diffInput = document.getElementById('edit-game-diff');
+                if (diffInput) this.state.editingGame.difficulty = parseInt(diffInput.value) || 1;
+
+                // Captura exatamente os campos da aba que você mostrou na imagem (Disciplina, Conteúdo, Série, etc.)
+                if (!this.state.editingGame.disciplineInfo) {
+                    this.state.editingGame.disciplineInfo = {};
+                }
+
+                const discInput = document.getElementById('edit-game-disciplina');
+                const contInput = document.getElementById('edit-game-conteudo');
+                const serieInput = document.getElementById('edit-game-serie');
+                const regraInput = document.getElementById('edit-game-regra');
+                const objInput = document.getElementById('edit-game-objetivo');
+                const enunInput = document.getElementById('edit-game-enunciado');
+                const expInput = document.getElementById('edit-game-explicacao');
+
+                if (discInput) this.state.editingGame.disciplineInfo.disciplina = discInput.value;
+                if (contInput) this.state.editingGame.disciplineInfo.conteudo = contInput.value;
+                if (serieInput) this.state.editingGame.disciplineInfo.serie = serieInput.value;
+                if (regraInput) this.state.editingGame.disciplineInfo.regra = regraInput.value;
+                if (objInput) this.state.editingGame.disciplineInfo.objetivo = objInput.value;
+                if (enunInput) this.state.editingGame.disciplineInfo.enunciado = enunInput.value;
+                if (expInput) this.state.editingGame.disciplineInfo.explicacao = expInput.value;
             },
 
             nextStep: function() {
                 this.persistEditorFields();
-                if (this.state.editingStep === 4) {
-                    const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
-                    if (correctCount !== 6) {
-                        alert('Você deve selecionar exatamente 6 cartas para o Código Secreto para poder prosseguir.');
-                        return;
-                    }
-                }
+                
                 if (this.state.editingStep < 5) {
                     this.setEditorStep(this.state.editingStep + 1);
                 } else {
@@ -1311,6 +1399,29 @@
                     this.persistEditorFields();
                     this.setEditorStep(this.state.editingStep - 1);
                 }
+            },
+
+            updateCreatorNavButtons: function() {
+                const nextBtn = document.getElementById('creator-next-btn');
+                const validationMsg = document.getElementById('creator-validation-msg');
+                if (!nextBtn || !validationMsg) return;
+
+                let isStepValid = true;
+                let message = '';
+
+                if (this.state.editingStep === 4) {
+                    const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
+                    if (correctCount !== 6) {
+                        isStepValid = false;
+                        message = 'Você precisa selecionar exatamente 6 cartas para o Código Secreto.';
+                    }
+                }
+
+                nextBtn.disabled = !isStepValid;
+                nextBtn.classList.toggle('bg-slate-400', !isStepValid);
+                nextBtn.classList.toggle('cursor-not-allowed', !isStepValid);
+                validationMsg.innerText = message;
+                validationMsg.classList.toggle('hidden', isStepValid);
             },
 
             updateCreatorPreview: function() {
@@ -1495,10 +1606,24 @@
             },
 
             toggleCardCorrect: function(idx) {
+                if (!this.state.editingGame) return;
                 const card = this.state.editingGame.cards[idx];
+                
+                // CONTA QUANTAS JÁ ESTÃO SELECIONADAS Atualmente
+                const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
+
+                // SE NÃO ESTAVA MARCADA E JÁ CHEGOU A 6, BLOQUEIA A 7ª
+                if (!card.isCorrect && correctCount >= 6) {
+                    alert("Você já selecionou o limite máximo de 6 cartas para o Código Secreto.");
+                    return;
+                }
+
+                // Inverte o estado se passou na validação
                 card.isCorrect = !card.isCorrect;
+                
                 this.renderEditorGrid();
                 this.updateSecretCardCounter();
+                this.updateCreatorNavButtons(); // <-- ADICIONADO: Atualiza o botão de navegação
             },
 
             openHelp: function() {
@@ -1616,14 +1741,60 @@
             },
 
             confirmCard: function() {
-                const card = this.state.editingGame.cards[this.state.editingCardIndex];
-                card.content = document.getElementById('modal-input-text').value;
-                card.isCorrect = document.getElementById('modal-input-correct').checked;
-                this.renderEditorGrid();
-                this.closeModal();
-            },
+                    // 1. Converte o índice atual para número para evitar conflitos de comparação
+                    const idx = this.state.editingCardIdx !== null ? parseInt(this.state.editingCardIdx) : null;
+                    
+                    // Validação de segurança básica para garantir que o objeto existe
+                    if (idx === null || !this.state.editingGame || !this.state.editingGame.cards) {
+                        this.closeModal();
+                        return;
+                    }
+
+                    const text = document.getElementById('modal-input-text').value.trim();
+                    const isCorrectChecked = document.getElementById('modal-input-correct').checked;
+                    
+                    // 2. Conta de forma ultra-segura quantas cartas JÁ ESTÃO MARCADAS (ignorando a carta atual)
+                    let correctCount = 0;
+                    for (let i = 0; i < this.state.editingGame.cards.length; i++) {
+                        const c = this.state.editingGame.cards[i];
+                        if (c && c.isCorrect && i !== idx) {
+                            correctCount++;
+                        }
+                    }
+
+                    // 3. TRAVA: Se o usuário marcou o checkbox mas já temos 6 outras cartas, bloqueia!
+                    if (isCorrectChecked && correctCount >= 6) {
+                        alert("Você já selecionou o limite máximo de 6 cartas para o Código Secreto. Desmarque outra carta antes de marcar esta.");
+                        return; // Para a execução aqui e não fecha o modal
+                    }
+
+                    // 4. Se passou na validação, garante que o objeto da carta existe na posição
+                    if (!this.state.editingGame.cards[idx]) {
+                        this.state.editingGame.cards[idx] = { id: idx, content: "", isCorrect: false };
+                    }
+
+                    // 5. Grava as alterações com sucesso
+                    this.state.editingGame.cards[idx].content = text;
+                    this.state.editingGame.cards[idx].isCorrect = isCorrectChecked;
+
+                    // 6. Atualiza a tela e fecha o modal
+                    this.closeModal();
+                    this.renderEditorGrid();
+                    this.updateSecretCardCounter();
+                    this.updateCreatorNavButtons(); // <-- ADICIONADO: Atualiza o botão de navegação
+                },
 
             saveGame: function() {
+                if (!this.state.editingGame) return;
+
+                // TRAVA DE SEGURANÇA: Valida se existem exatamente 6 cartas para o código secreto
+                const totalSecretas = this.state.editingGame.cards.filter(c => c.isCorrect).length;
+                if (totalSecretas !== 6) {
+                    alert(`Atenção: Você precisa selecionar exatamente 6 cartas para o Código Secreto. Atualmente você tem ${totalSecretas} selecionadas.`);
+                    return; // Impede o salvamento e mantém o usuário na tela de criação
+                }
+
+                // Salva os dados do formulário
                 const eg = this.state.editingGame;
                 eg.name = document.getElementById('edit-game-name').value || "Jogo sem Nome";
                 eg.model = document.getElementById('edit-game-model').value || "Código Secreto";
@@ -1638,12 +1809,14 @@
                     enunciado: document.getElementById('edit-game-enunciado').value || "",
                     explicacao: document.getElementById('edit-game-explicacao').value || ""
                 };
+                
                 const diffConfig = this.getDifficultyConfig(eg.difficulty);
                 eg.attemptLimit = diffConfig.attemptLimit;
                 eg.shuffleMode = diffConfig.shuffleMode;
                 eg.newCardsOnReplay = diffConfig.newCardsOnReplay;
                 eg.cardCount = diffConfig.cardCount;
 
+                // Atualiza ou insere o jogo na lista global
                 const existingIndex = this.state.games.findIndex(x => x.id === eg.id);
                 if (existingIndex > -1) {
                     this.state.games[existingIndex] = eg;
@@ -1651,6 +1824,7 @@
                     this.state.games.push(eg);
                 }
 
+                // Atualiza a tela principal e retorna ao dashboard
                 this.renderDashboard();
                 this.switchView('dashboard');
             },
@@ -1695,27 +1869,45 @@
                 if (previewBack) previewBack.src = this.state.editingGame.backDesign || 'imagens/verso/verso01.png';
             },
 
-            toggleFrontDesign: function() {
+            toggleFrontDesign: function(direction) {
                 const fronts = [
                     'imagens/frente/frente01.png',
-                    'imagens/frente/frente02.png',
-                    'imagens/frente/frente03.png'
+                    // Adicione mais imagens de frente aqui se existirem
                 ];
+                if (fronts.length <= 1) return;
+
                 const current = this.state.editingGame.frontDesign;
-                const nextIndex = (fronts.indexOf(current) + 1) % fronts.length;
-                this.state.editingGame.frontDesign = fronts[nextIndex];
+                let currentIndex = fronts.indexOf(current);
+                if (currentIndex === -1) currentIndex = 0;
+
+                if (direction === 'next') {
+                    currentIndex = (currentIndex + 1) % fronts.length;
+                } else if (direction === 'prev') {
+                    currentIndex = (currentIndex - 1 + fronts.length) % fronts.length;
+                }
+                
+                this.state.editingGame.frontDesign = fronts[currentIndex];
                 this.updateDesignPreviews();
             },
 
-            toggleBackDesign: function() {
+            toggleBackDesign: function(direction) {
                 const backs = [
                     'imagens/verso/verso01.png',
-                    'imagens/verso/verso02.png',
-                    'imagens/verso/verso03.png'
+                    // Adicione mais imagens de verso aqui se existirem
                 ];
+                if (backs.length <= 1) return;
+
                 const current = this.state.editingGame.backDesign;
-                const nextIndex = (backs.indexOf(current) + 1) % backs.length;
-                this.state.editingGame.backDesign = backs[nextIndex];
+                let currentIndex = backs.indexOf(current);
+                if (currentIndex === -1) currentIndex = 0;
+
+                if (direction === 'next') {
+                    currentIndex = (currentIndex + 1) % backs.length;
+                } else if (direction === 'prev') {
+                    currentIndex = (currentIndex - 1 + backs.length) % backs.length;
+                }
+
+                this.state.editingGame.backDesign = backs[currentIndex];
                 this.updateDesignPreviews();
             },
 
@@ -1971,31 +2163,7 @@
         }
     </script>
 </body>
-</html>
-            revealSolution: function() {
-                const correctCards = this.state.activeGame.originalCards.filter(c => c.isCorrect).slice(0, 4);
-                const frontDesign = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
-
-                correctCards.forEach((card, i) => {
-                    const cardContainer = document.getElementById(`solution-card-${i}`);
-                    const frontFace = cardContainer.querySelector('.solution-card-front');
-                    
-                    frontFace.className = 'solution-card-front game-card p-2 flex flex-col justify-center items-center text-center';
-                    frontFace.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)), url('${frontDesign}')`;
-                    frontFace.innerHTML = `<p class="text-[10px] leading-tight font-semibold text-slate-700">${card.content}</p>`;
-                    cardContainer.style.minHeight = '0';
-                    cardContainer.classList.add('flipped');
-                });
-            },
-        };
-
-        // Previne fechamento acidental de modais
-        window.onclick = function(event) {
-            const modal = document.getElementById('modal-card');
-            if (event.target == modal) app.closeModal();
-            const authorModal = document.getElementById('modal-author');
-            if (event.target == authorModal) app.closeAuthorModal();
-        }
+</html> }
     </script>
 </body>
 </html>
