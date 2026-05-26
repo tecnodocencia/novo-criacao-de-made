@@ -983,6 +983,15 @@
                     target.classList.add('active');
                 }
 
+                const sidebar = document.querySelector('aside');
+                if (sidebar) {
+                    if (viewId === 'player') {
+                        sidebar.classList.add('hidden');
+                    } else {
+                        sidebar.classList.remove('hidden');
+                    }
+                }
+
                 document.querySelectorAll('.nav-btn').forEach(b => {
                     if(b.getAttribute('data-view') === viewId) {
                         b.className = "nav-btn w-full flex items-center p-3 rounded-xl transition bg-emerald-600 text-white";
