@@ -462,9 +462,9 @@
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Série</label>
                                     <select id="edit-game-serie" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
-                                        <option value="1º ano – EF">1º ano – EF</option>
-                                        <option value="2º ano – EF">2º ano – EF</option>
-                                        <option value="3º ano – EF">3º ano – EF</option>
+                                        <option value="1º ano">1º ano</option>
+                                        <option value="2º ano">2º ano</option>
+                                        <option value="3º ano">3º ano</option>
                                         <option value="4º ano">4º ano</option>
                                         <option value="5º ano">5º ano</option>
                                         <option value="6º ano">6º ano</option>
@@ -542,7 +542,7 @@
                                     <textarea id="edit-game-enunciado" rows="3" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="O que o aluno deve fazer?">Escolha as 6 cartas que representam animais mamíferos e coloque-as na ordem correta para desvendar o código secreto.</textarea>
                                 </div>
                                 <div>
-                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação Pedagógica (Feedback Final)</label>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
                                     <textarea id="edit-game-explicacao" rows="4" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Texto exibido ao final revelando o porquê da resposta...">Observe as 12 possibilidades de cartas que estão no banco. Clique na carta escolhida para adicioná-la à sua tentativa na mesa. Repita o processo até que todos os 6 espaços estejam preenchidos. Clique no botão para validar a resposta. Observe o feedback do jogo verificando se as bolinhas do lado direito da tela estão pintadas de branco ou de preto. Se estiver pintada de branco significa que você colocou uma carta certa na posição errada. Se estiver pintada de preto significa que você colocou uma carta certa na posição correta. Se estiver transparente significa que essa carta não faz parte do código secreto.</textarea>
                                 </div>
                             </div>
@@ -659,11 +659,11 @@
                     <div class="flex gap-4">
                         <label class="flex-1 flex items-center gap-3 p-4 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 transition">
                             <input type="radio" name="modal-card-correct" value="true" class="text-emerald-600 focus:ring-emerald-500">
-                            <span class="text-sm font-semibold text-slate-700">Sim (Código)</span>
+                            <span class="text-sm font-semibold text-slate-700">Sim</span>
                         </label>
                         <label class="flex-1 flex items-center gap-3 p-4 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 transition">
                             <input type="radio" name="modal-card-correct" value="false" class="text-emerald-600 focus:ring-emerald-500">
-                            <span class="text-sm font-semibold text-slate-700">Não (Distrator)</span>
+                            <span class="text-sm font-semibold text-slate-700">Não</span>
                         </label>
                     </div>
                 </div>
@@ -969,7 +969,7 @@
                     model: "Código Secreto",
                     frontDesign: "imagens/frente/frente01.png",
                     backDesign: "imagens/verso/verso01.png",
-                    disciplineInfo: { disciplina: "Biologia", conteudo: "", serie: "1º ano – EF", autores: [] },
+                    disciplineInfo: { disciplina: "Biologia", conteudo: "Mamífero", serie: "1º ano", autores: [] },
                     regra: 'Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.',
                     objetivo: 'Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.',
                     enunciado: 'Escolha as 6 cartas que representam animais mamíferos e coloque-as na ordem correta para desvendar o código secreto.',
@@ -1001,7 +1001,7 @@
                 if (document.getElementById('edit-game-model')) document.getElementById('edit-game-model').value = eg.model || "Código Secreto";
                 if (document.getElementById('edit-game-disciplina')) document.getElementById('edit-game-disciplina').value = eg.disciplineInfo.disciplina || "Biologia";
                 if (document.getElementById('edit-game-conteudo')) document.getElementById('edit-game-conteudo').value = eg.disciplineInfo.conteudo || "";
-                if (document.getElementById('edit-game-serie')) document.getElementById('edit-game-serie').value = eg.disciplineInfo.serie || "1º ano – EF";
+                if (document.getElementById('edit-game-serie')) document.getElementById('edit-game-serie').value = eg.disciplineInfo.serie || "1º ano";
                 
                 if (document.getElementById('edit-game-regra')) document.getElementById('edit-game-regra').value = eg.regra || "";
                 if (document.getElementById('edit-game-objetivo')) document.getElementById('edit-game-objetivo').value = eg.objetivo || "";
@@ -1025,7 +1025,7 @@
                 if (!this.state.editingGame.disciplineInfo) this.state.editingGame.disciplineInfo = {};
                 this.state.editingGame.disciplineInfo.disciplina = document.getElementById('edit-game-disciplina')?.value || "Biologia";
                 this.state.editingGame.disciplineInfo.conteudo = document.getElementById('edit-game-conteudo')?.value || "";
-                this.state.editingGame.disciplineInfo.serie = document.getElementById('edit-game-serie')?.value || "1º ano – EF";
+                this.state.editingGame.disciplineInfo.serie = document.getElementById('edit-game-serie')?.value || "1º ano";
                 
                 this.state.editingGame.regra = document.getElementById('edit-game-regra')?.value || "";
                 this.state.editingGame.objetivo = document.getElementById('edit-game-objetivo')?.value || "";
