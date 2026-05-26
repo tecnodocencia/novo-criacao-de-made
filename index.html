@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MADE - Prototipagem Local</title>
-    <!-- Tailwind via CDN - Funciona em file:// -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome via CDN -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         /* Estilos Base */
@@ -94,7 +92,7 @@
             font-weight: 800;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-        color: #0f172a;
+            color: #0f172a;
         }
 
         .game-card .card-label-row {
@@ -143,145 +141,6 @@
             padding: 20px;
         }
 
-        .hand-row {
-            position: relative;
-            min-height: 30px;
-            margin-top: 4px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 0.25rem;
-            overflow: visible;
-            max-height: 40px;
-            padding-top: 0.2rem;
-            padding-bottom: 0.1rem;
-            transition: max-height 0.25s ease, margin-top 0.25s ease, padding 0.25s ease, align-items 0.25s ease;
-        }
-
-        .hand-row:hover {
-            max-height: 150px;
-            overflow: visible;
-            align-items: flex-end;
-            padding-bottom: 1rem;
-        }
-
-        .hand-hint {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.7rem 1rem;
-            border-radius: 9999px;
-            background: rgba(255,255,255,0.88);
-            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-            color: #134e4a;
-            font-size: 0.82rem;
-            font-weight: 700;
-            border: 1px solid rgba(16, 185, 129, 0.18);
-        }
-
-        .hand-hint i {
-            width: 1.5rem;
-            height: 1.5rem;
-            display: grid;
-            place-items: center;
-            border-radius: 9999px;
-            background: rgba(16, 185, 129, 0.12);
-            color: #047857;
-        }
-
-        .hand-card {
-            width: 82px;
-            height: 120px;
-            border-radius: 24px;
-            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-            border: 1px solid rgba(148, 163, 184, 0.24);
-            box-shadow: 0 24px 50px rgba(15, 23, 42, 0.12);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 0.75rem;
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: #1f2937;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
-
-        .hand-card:hover {
-            transform: scale(1.04);
-            box-shadow: 0 32px 70px rgba(15, 23, 42, 0.18);
-        }
-
-        .hand-expand-note {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.65rem 0.9rem;
-            border-radius: 9999px;
-            background: rgba(255,255,255,0.92);
-            color: #0f766e;
-            font-size: 0.78rem;
-            font-weight: 700;
-            border: 1px solid rgba(16, 185, 129, 0.18);
-            white-space: nowrap;
-            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
-        }
-
-        .hand-expand-note i {
-            width: 1.4rem;
-            height: 1.4rem;
-            display: grid;
-            place-items: center;
-            border-radius: 9999px;
-            background: rgba(16, 185, 129, 0.14);
-            color: #047857;
-        }
-
-        .hand-card span {
-            font-size: 0.75rem;
-            color: #4b5563;
-        }
-
-        .card-back {
-            width: 120px;
-            height: 160px;
-            border-radius: 28px;
-            background: linear-gradient(135deg, #047857 0%, #10b981 100%);
-            border: 1px solid rgba(255,255,255,0.35);
-            box-shadow: 0 24px 50px rgba(15, 23, 42, 0.18);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            position: relative;
-        }
-
-        .card-back::before {
-            content: '';
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            right: 12px;
-            bottom: 12px;
-            border-radius: 22px;
-            background: radial-gradient(circle at top left, rgba(255,255,255,0.12), transparent 30%);
-        }
-
-        .card-back span {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hand-card.selected {
-            border-color: rgba(16, 185, 129, 0.5);
-            box-shadow: 0 28px 60px rgba(15, 23, 42, 0.18);
-        }
-
         .deck-stack {
             position: relative;
             width: 120px;
@@ -317,9 +176,6 @@
         .deck-stack.shuffling .deck-card-back-3,
         .deck-stack.shuffling .deck-card-back-2,
         .deck-stack.shuffling .deck-card-back-1,
-        .deck-stack.shuffling .deck-card-back-3,
-        .deck-stack.shuffling .deck-card-back-2,
-        .deck-stack.shuffling .deck-card-back-1,
         .deck-stack.shuffling .deck-card-back-main {
             animation: deck-shuffle 0.7s ease-in-out infinite;
         }
@@ -341,10 +197,6 @@
             transform: translateY(0) !important;
         }
 
-        /* Utilitário para a logo itálica do MADE */
-        .made-italic { font-style: italic; letter-spacing: -0.05em; }
-
-        /* Slots de palpite atual */
         .guess-slot {
             width: 32px;
             height: 32px;
@@ -394,16 +246,6 @@
             background: transparent;
             border: none;
             cursor: pointer;
-        }
-
-        .card-design-select {
-            background: white;
-            border: 2px solid rgba(148, 163, 184, 0.24);
-            border-radius: 1rem;
-            padding: 0.9rem 1rem;
-            width: 100%;
-            outline: none;
-            color: #1f2937;
         }
 
         .card-preview {
@@ -456,7 +298,7 @@
             height: 100%;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
-            border-radius: 1.25rem; /* 20px */
+            border-radius: 1.25rem;
             overflow: hidden;
         }
         .solution-card-front {
@@ -472,7 +314,6 @@
 </head>
 <body class="overflow-hidden">
 
-    <!-- TELA DE LOGIN -->
     <section id="view-login" class="view-section active flex-col items-center justify-start sm:justify-center py-8 overflow-y-auto bg-[#f4f4f0] text-slate-900">
         <div class="text-center space-y-6 p-8 rounded-[40px] shadow-2xl bg-[#fdfbf8] border border-[#f0ece7] max-w-md w-full">
             <div class="inline-flex items-center justify-center rounded-3xl bg-[#fff5e9] p-4 shadow-inner shadow-[#e7dfd6]/80">
@@ -522,10 +363,8 @@
         </div>
     </section>
 
-    <!-- LAYOUT PRINCIPAL -->
     <div id="main-layout" class="hidden h-screen w-full flex bg-[#f4fef5]">
         
-        <!-- SIDEBAR -->
         <aside class="w-64 bg-white border-r flex flex-col shrink-0 shadow-sm">
             <div class="p-8 flex items-center justify-center">
                 <img src="Criação vermelho sem.png" alt="Logo MADE" class="h-10 w-auto object-contain" />
@@ -545,10 +384,8 @@
             </div>
         </aside>
 
-        <!-- ÁREA DE CONTEÚDO -->
         <main class="flex-1 flex flex-col overflow-hidden min-h-screen">
             
-            <!-- VIEW: DASHBOARD -->
             <section id="view-dashboard" class="view-section flex-col p-8 overflow-y-auto active">
                 <div class="flex justify-between items-center mb-8">
                     <h2 class="text-2xl font-bold text-slate-800">Materiais Criados</h2>
@@ -557,11 +394,9 @@
                     </button>
                 </div>
                 <div id="dashboard-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Cards via JS -->
-                </div>
+                    </div>
             </section>
 
-            <!-- VIEW: EDITOR -->
             <section id="view-creator" class="view-section flex-col bg-white hidden h-full">
                 <header class="h-20 border-b px-8 flex items-center justify-between shrink-0 bg-white z-10">
                     <div>
@@ -574,19 +409,24 @@
                         <div class="space-y-4">
                             <div class="flex items-center justify-between gap-3">
                                 <div>
-                                    <p class="text-[10px] uppercase tracking-[0.28em] text-slate-500 font-bold">Passo <span id="creator-step-current">1</span> de 5</p>
+                                    <p class="text-[10px] uppercase tracking-[0.28em] text-slate-500 font-bold">Passo <span id="creator-step-current">1</span> de 4</p>
                                     <h3 class="text-lg font-black text-slate-900" id="creator-step-title">Dados do Jogo</h3>
                                 </div>
                             </div>
                             <div class="relative h-2 rounded-full bg-slate-200 overflow-hidden mt-4">
-                                <div id="creator-progress-fill" class="absolute inset-y-0 left-0 bg-emerald-600 rounded-full transition-all duration-300" style="width:20%"></div>
+                                <div id="creator-progress-fill" class="absolute inset-y-0 left-0 bg-emerald-600 rounded-full transition-all duration-300" style="width:25%"></div>
                             </div>
                         </div>
+
                         <div id="creator-step-1" class="creator-step">
                             <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
                                 <div class="space-y-4">
                                     <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Informações iniciais</p>
                                     <p class="text-sm text-slate-600">Preencha os dados básicos do jogo e os autores.</p>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Título do Jogo</label>
+                                    <input id="edit-game-name" type="text" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Jogo dos Mamíferos">
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Modelo</label>
@@ -647,6 +487,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div id="creator-step-2" class="creator-step hidden">
                             <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
                                 <div class="space-y-3">
@@ -687,29 +528,26 @@
                                         </button>
                                     </div>
                                 </div>
-                                <p class="text-xs text-slate-500 mt-2">Use as setas para alterar o design da carta.</p>
                             </div>
                         </div>
+
                         <div id="creator-step-3" class="creator-step hidden">
                             <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
                                 <div class="space-y-3">
-                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Detalhes finais</p>
-                                    <p class="text-sm text-slate-600">Defina o título, o enunciado e a explicação do jogo.</p>
-                                </div>
-                                <div>
-                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Título do Jogo</label>
-                                    <input id="edit-game-name" type="text" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Frações e Decimais">
+                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Enunciado e feedbacks</p>
+                                    <p class="text-sm text-slate-600">Escreva o comando inicial para o aluno e o texto que explica a resposta.</p>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Enunciado</label>
-                                    <textarea id="edit-game-enunciado" rows="5" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Explique a proposta do jogo...">Escolha as cartas corretas que representam apenas animais mamíferos na ordem correta.</textarea>
+                                    <textarea id="edit-game-enunciado" rows="3" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="O que o aluno deve fazer?">Escolha as 6 cartas que representam animais mamíferos e coloque-as na ordem correta para desvendar o código secreto.</textarea>
                                 </div>
                                 <div>
-                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
-                                    <textarea id="edit-game-explicacao" rows="5" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Breve explicação do conteúdo...">Observe as 12 possibilidades de cartas que estão do lado esquerdo da tela. Clique e arraste a carta escolhida para o retângulo vazio de cartas na posição que achar correta. Repita o processo até que todos os retângulos estejam preenchidos. Clique no botão para verificar a resposta. Observe o feedback do jogo verificando se as bolinhas do lado direito da tela estão pintadas de branco ou de preto. Se estiver pintada de branco significa que você colocou uma carta certa na posição errada. Se estiver pintada de preto significa que você colocou uma carta certa na posição correta. Se estiver transparente significa que essa carta não faz parte do código secreto.</textarea>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação Pedagógica (Feedback Final)</label>
+                                    <textarea id="edit-game-explicacao" rows="4" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Texto exibido ao final revelando o porquê da resposta...">Observe as 12 possibilidades de cartas que estão no banco. Clique na carta escolhida para adicioná-la à sua tentativa na mesa. Repita o processo até que todos os 6 espaços estejam preenchidos. Clique no botão para validar a resposta. Observe o feedback do jogo verificando se as bolinhas do lado direito da tela estão pintadas de branco ou de preto. Se estiver pintada de branco significa que você colocou uma carta certa na posição errada. Se estiver pintada de preto significa que você colocou uma carta certa na posição correta. Se estiver transparente significa que essa carta não faz parte do código secreto.</textarea>
                                 </div>
                             </div>
                         </div>
+
                         <div id="creator-step-4" class="creator-step hidden">
                             <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
                                 <div class="space-y-3">
@@ -717,71 +555,34 @@
                                     <p class="text-sm text-slate-600">Preencha as cartas do jogo. Clique em cada carta para editar o conteúdo.</p>
                                 </div>
                                 <div>
-                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Nível de Dificuldade</label>
-                                    <select id="edit-game-diff" onchange="app.updateDifficultyInfo()" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
-                                        <option value="1">Nível 1 — 10 tentativas</option>
-                                        <option value="2">Nível 2 — 8 tentativas</option>
-                                        <option value="3">Nível 3 — 6 tentativas</option>
-                                        <option value="4">Nível 4 — 5 tentativas</option>
-                                    </select>
-                                </div>
-                                <div id="creator-difficulty-info" class="rounded-[28px] border border-slate-200 bg-emerald-50 p-4 text-slate-700 space-y-2">
-                                    <p class="text-sm font-black">EM JOGAR NOVAMENTE</p>
-                                    <p class="text-sm" id="creator-difficulty-description">10 tentativas - apenas embaralhamento</p>
+                                    <div class="rounded-[28px] border border-slate-200 bg-emerald-50 p-4 text-slate-700 space-y-2">
+                                        <p class="text-sm font-black">SOBRE AS CARTAS</p>
+                                        <p class="text-sm"> Crie 12 cartas no total. Destas, <strong>exatamente 6</strong> devem ser marcadas como parte do "Código Secreto". As outras 6 servirão como distratores. </p>
+                                    </div>
                                 </div>
                                 <div class="rounded-[28px] border border-slate-200 bg-slate-50 p-4">
                                     <div class="flex justify-between items-center mb-4">
                                         <p class="text-sm font-black text-slate-700">Cartas do Jogo</p>
-                                        <p id="secret-card-counter" class="text-sm font-bold text-slate-500"></p>
+                                        <p id="secret-card-counter" class="text-sm font-bold text-slate-500">0 / 6 selecionadas</p>
                                     </div>
                                     <div id="editor-grid" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4"></div>
                                 </div>
                             </div>
                         </div>
-                        <div id="creator-step-5" class="creator-step hidden">
-                            <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
-                                <div class="space-y-3">
-                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Testagem preliminar</p>
-                                    <p class="text-sm text-slate-600">Revise os dados e teste o jogo antes de finalizar.</p>
-                                </div>
-                                <div class="rounded-3xl border border-emerald-100 bg-emerald-50 p-4 space-y-4">
-                                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                        <div class="space-y-2">
-                                            <p class="text-sm font-black text-slate-700">Resumo do Material</p>
-                                            <p class="text-sm text-slate-700"><strong>Disciplina:</strong> <span id="preview-disciplina">-</span></p>
-                                            <p class="text-sm text-slate-700"><strong>Conteúdo:</strong> <span id="preview-conteudo">-</span></p>
-                                            <p class="text-sm text-slate-700"><strong>Série:</strong> <span id="preview-serie">-</span></p>
-                                            <p class="text-sm text-slate-700"><strong>Dificuldade:</strong> <span id="preview-difficulty">Nível 1</span></p>
-                                            <p class="text-sm text-slate-700"><strong>Tentativas:</strong> <span id="preview-attempts">10</span></p>
-                                            <p class="text-sm text-slate-700"><strong>Replay:</strong> <span id="preview-shuffle">apenas embaralhamento</span></p>
-                                        </div>
-                                        <div class="grid grid-cols-2 gap-3">
-                                            <div class="rounded-3xl bg-white border border-slate-200 p-3 text-center">
-                                                <p class="text-[10px] uppercase text-slate-400 mb-2">Frente</p>
-                                                <img id="preview-final-front" src="imagens/frente/frente01.png" alt="Design frente" class="mx-auto h-24 w-full object-contain rounded-3xl shadow-sm" />
-                                            </div>
-                                            <div class="rounded-3xl bg-white border border-slate-200 p-3 text-center">
-                                                <p class="text-[10px] uppercase text-slate-400 mb-2">Verso</p>
-                                                <img id="preview-final-back" src="imagens/verso/verso01.png" alt="Design verso" class="mx-auto h-24 w-full object-contain rounded-3xl shadow-sm" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="button" onclick="app.playPreview()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-3xl font-bold uppercase text-xs tracking-[0.25em]">Testar Jogo</button>
-                            </div>
-                        </div>
-                        <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                            <button id="creator-prev-btn" onclick="app.prevStep()" class="w-full sm:max-w-[240px] py-3 bg-white text-slate-700 rounded-3xl font-bold border border-slate-200 transition hidden">Voltar</button>
-                            <button id="creator-next-btn" onclick="app.nextStep()" class="w-full sm:max-w-[240px] py-3 bg-slate-900 text-white rounded-3xl font-bold uppercase text-xs tracking-[0.25em]">Criar Jogo</button>
-                        </div>
-                        <div id="creator-validation-msg" class="text-center text-sm text-red-600 font-semibold mt-3 hidden">
-                            <!-- Mensagem de validação aparecerá aqui -->
-                        </div>
+
+                        <div id="creator-validation-message" class="text-sm font-semibold text-red-500 hidden mt-4"></div>
                     </aside>
                 </div>
+                <footer class="h-20 border-t px-8 flex items-center justify-between shrink-0 bg-white">
+                    <button id="creator-prev-btn" onclick="app.creatorPrevStep()" class="px-6 py-3 border border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-sm transition hidden">
+                        Voltar
+                    </button>
+                    <button id="creator-next-btn" onclick="app.creatorNextStep()" class="ml-auto bg-slate-900 text-white px-6 py-3 font-bold rounded-xl text-sm transition">
+                        Próximo
+                    </button>
+                </footer>
             </section>
 
-            <!-- VIEW: PLAYER (MODO JOGO) -->
             <section id="view-player" class="view-section flex-1 flex flex-col p-6 hidden table-surface overflow-hidden">
                 <div class="flex-1 flex flex-col gap-4 overflow-hidden min-h-0">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -791,277 +592,284 @@
                             </button>
                             <div>
                                 <h2 class="text-xl md:text-2xl font-black text-slate-900" id="play-name-display">---</h2>
-                                <p class="text-xs md:text-sm text-slate-500 mt-1" id="play-meta-display">---</p>
+                                <p class="text-xs md:text-sm text-slate-500 font-semibold" id="play-meta-display">Biologia • Código Secreto</p>
                             </div>
                         </div>
-                        <button onclick="app.openHelp()" class="w-11 h-11 rounded-full bg-white/90 border border-slate-200 shadow-sm hover:bg-white transition flex items-center justify-center">
-                            <i class="fa-solid fa-circle-question text-slate-500"></i>
-                        </button>
+                        <div class="flex items-center gap-3">
+                            <button onclick="app.openDifficultyModal()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition">
+                                <i class="fa-solid fa-sliders mr-2"></i>Alterar Dificuldade
+                            </button>
+                            <div class="bg-white/80 border border-slate-200 rounded-2xl px-4 py-2 flex items-center gap-4 text-xs font-black text-slate-700">
+                                <div>TENTATIVAS: <span id="play-attempts-counter" class="text-emerald-600">0/10</span></div>
+                                <div class="w-px h-4 bg-slate-300"></div>
+                                <div>NÍVEL: <span id="play-difficulty-display" class="text-amber-600">1</span></div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <!-- GAME BOARD CONTAINER -->
-                    <div class="flex-1 grid grid-cols-1 lg:grid-cols-[420px_minmax(0,1fr)] gap-6 overflow-hidden min-h-0">
-                        <!-- COLUNA 1: BANCO DE CARTAS -->
-                        <div class="board-pane p-5 flex flex-col gap-4">
-                            <h3 class="text-slate-700 uppercase tracking-[0.2em] text-xs font-bold px-1">Banco de Cartas</h3>
-                            <div id="play-item-bank" class="grid grid-cols-3 gap-4 overflow-y-auto custom-scrollbar pr-2">
-                                <!-- Itens do banco gerados via JS -->
+
+                    <div class="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-6 min-h-0">
+                        <div class="lg:col-span-3 flex flex-col min-h-0 bg-white/60 border border-white/80 rounded-[36px] p-5 shadow-sm">
+                            <div class="mb-4">
+                                <h3 class="font-black text-slate-900 text-sm tracking-wide uppercase">Banco de Cartas</h3>
+                                <p class="text-xs text-slate-500 mt-1" id="play-enunciado-display">Escolha as cartas abaixo:</p>
                             </div>
+                            <div id="play-item-bank" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 overflow-y-auto pr-1 flex-1 custom-scrollbar">
+                                </div>
                         </div>
-                        <!-- COLUNA 2: ÁREA DE JOGO PRINCIPAL -->
-                        <div class="flex flex-col gap-4 overflow-hidden min-h-0">
-                            <!-- CÓDIGO SECRETO -->
-                            <div id="solution-row-container" class="pb-2 w-full max-w-sm shrink-0 mx-auto">
-                                <h3 class="text-slate-600 uppercase tracking-[0.2em] text-xs font-bold px-1 mb-3 text-center">Código Secreto</h3>
-                                <div id="solution-row" class="grid grid-cols-6 gap-2 mx-auto">
-                                    <!-- Cartas da solução geradas via JS -->
-                                </div>
+
+                        <div class="lg:col-span-1 flex flex-col min-h-0 bg-white/90 border border-slate-200/60 rounded-[36px] p-5 shadow-sm">
+                            <h3 class="font-black text-slate-900 text-sm tracking-wide uppercase mb-4">Sua Tentativa</h3>
+                            <div class="grid grid-cols-6 gap-2 mb-4">
+                                <div onclick="app.toggleSelection(null, 0)" id="guess-slot-0" class="guess-slot cursor-pointer">1</div>
+                                <div onclick="app.toggleSelection(null, 1)" id="guess-slot-1" class="guess-slot cursor-pointer">2</div>
+                                <div onclick="app.toggleSelection(null, 2)" id="guess-slot-2" class="guess-slot cursor-pointer">3</div>
+                                <div onclick="app.toggleSelection(null, 3)" id="guess-slot-3" class="guess-slot cursor-pointer">4</div>
+                                <div onclick="app.toggleSelection(null, 4)" id="guess-slot-4" class="guess-slot cursor-pointer">5</div>
+                                <div onclick="app.toggleSelection(null, 5)" id="guess-slot-5" class="guess-slot cursor-pointer">6</div>
                             </div>
-                            <!-- MESA DE JOGO E VALIDAÇÃO -->
-                            <div class="flex-1 board-pane p-5 flex flex-col gap-4 overflow-hidden max-w-3xl mx-auto w-full">
-                                <!-- SENHA SECRETA (AGORA DENTRO DO PAINEL) -->
-                                <div id="solution-row-container" class="pb-4 w-full max-w-sm shrink-0 mx-auto border-b border-slate-300/70" style="display: none;">
-                                    <h3 class="text-slate-600 uppercase tracking-[0.2em] text-xs font-bold px-1 mb-3 text-center">Código Secreto</h3>
-                                    <div id="solution-row" class="grid grid-cols-6 gap-2 mx-auto" style="display: none;">
-                                        <!-- Cartas da solução geradas via JS -->
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <h3 class="text-slate-700 uppercase tracking-[0.2em] text-xs font-bold px-1">Mesa de Jogo e Validação</h3>
-                                    <span class="text-slate-600 font-black" id="play-counter">0/8</span>
-                                </div>
-                                <div id="play-history" class="flex-1 flex flex-col gap-4 overflow-y-auto custom-scrollbar pr-2">
-                                    <!-- Histórico e área de tentativa atual gerados via JS -->
-                                </div>
-                                <div id="play-actions" class="mt-auto pt-4">
-                                    <button id="btn-validate" onclick="app.validateGuess()" disabled class="w-full py-4 rounded-2xl font-black text-xs tracking-widest bg-slate-300 text-slate-500 cursor-not-allowed transition">
-                                        VALIDAR TENTATIVA
-                                    </button>
-                                </div>
+                            <div id="play-actions" class="mb-4">
+                                <button id="btn-validate" onclick="app.validateGuess()" class="w-full py-5 rounded-2xl font-black text-xs tracking-widest bg-slate-300 text-slate-500 cursor-not-allowed transition" disabled>
+                                    VALIDAR CÓDIGO
+                                </button>
                             </div>
+                            <div class="w-px bg-slate-200 my-2"></div>
+                            <div class="flex-1 overflow-y-auto custom-scrollbar pr-1" id="play-history-list">
+                                </div>
                         </div>
                     </div>
                 </div>
             </section>
-
         </main>
     </div>
 
-    <!-- MODAL DE EDIÇÃO DE CARTA -->
-    <div id="modal-card" class="fixed inset-0 bg-emerald-900/20 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-        <div class="bg-white w-full max-w-md rounded-[40px] shadow-2xl overflow-hidden">
-            <div class="p-10 space-y-6">
-                <div>
-                    <h3 class="text-2xl font-black text-slate-800 mb-2" id="modal-card-title">Carta X</h3>
-                    <p class="text-sm text-slate-400">Edite o conteúdo desta carta pedagógica.</p>
-                </div>
-                <div>
-                    <label class="text-[10px] font-black text-slate-500 uppercase mb-2 block tracking-widest">Texto da Carta</label>
-                    <textarea id="modal-input-text" class="w-full h-32 p-4 bg-slate-50 border-2 border-transparent focus:border-emerald-500 rounded-3xl outline-none text-sm transition" placeholder="Ex: O que é um triângulo isósceles?"></textarea>
-                </div>
-                <label class="flex items-center p-5 bg-slate-50 rounded-3xl cursor-pointer hover:bg-emerald-50 transition border-2 border-transparent hover:border-emerald-100">
-                    <input type="checkbox" id="modal-input-correct" class="w-5 h-5 accent-emerald-600">
-                    <span class="ml-4 text-sm font-bold text-slate-700">Esta carta faz parte do CÓDIGO SECRETO</span>
-                </label>
-                <div class="flex space-x-3 pt-4">
-                    <button onclick="app.closeModal()" class="flex-1 py-4 font-bold text-slate-400 hover:text-slate-600">Cancelar</button>
-                    <button onclick="app.confirmCard()" class="flex-1 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold shadow-lg shadow-emerald-200">Confirmar</button>
-                </div>
+    <div id="modal-card" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white w-full max-w-md rounded-[36px] shadow-2xl p-8 space-y-6">
+            <div>
+                <h3 class="text-2xl font-black text-slate-900">Editar Carta</h3>
+                <p class="text-xs text-slate-400 font-bold uppercase mt-1 tracking-widest">Configurações da carta</p>
             </div>
-        </div>
-    </div>
-    <div id="modal-help" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-        <div class="bg-white w-full max-w-3xl rounded-[36px] shadow-2xl overflow-hidden">
-            <div class="p-8 space-y-6">
-                <div class="flex items-start justify-between gap-4">
-                    <div>
-                        <h3 class="text-3xl font-black text-slate-900">Como Jogar</h3>
-                        <p class="text-sm text-slate-500 mt-2">Descubra como montar sua tentativa e interpretar as cores.</p>
-                    </div>
-                    <button onclick="app.closeHelp()" class="w-11 h-11 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center justify-center">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
+            <input type="hidden" id="modal-card-index">
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo Textual</label>
+                    <textarea id="modal-card-content" rows="3" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Digite o termo ou frase da carta..."></textarea>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="rounded-3xl border border-slate-200 p-6 bg-slate-50">
-                        <h4 class="text-lg font-bold text-slate-900 mb-3">Passos principais</h4>
-                        <div class="space-y-4 text-sm text-slate-600">
-                            <div class="flex gap-3 items-start">
-                                <div class="mt-1 text-emerald-600"><i class="fa-solid fa-hand-pointer"></i></div>
-                                <div><strong>1.</strong> Clique nas cartas do tabuleiro para selecioná-las.</div>
-                            </div>
-                            <div class="flex gap-3 items-start">
-                                <div class="mt-1 text-emerald-600"><i class="fa-solid fa-arrow-down"></i></div>
-                                <div><strong>2.</strong> As cartas selecionadas aparecem aqui na mão abaixo.</div>
-                            </div>
-                            <div class="flex gap-3 items-start">
-                                <div class="mt-1 text-emerald-600"><i class="fa-solid fa-check"></i></div>
-                                <div><strong>3.</strong> Clique em <strong>Validar na Mesa</strong> para registrar a tentativa.</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="rounded-3xl border border-slate-200 p-6 bg-slate-50">
-                        <h4 class="text-lg font-bold text-slate-900 mb-3">O que significam as cores</h4>
-                        <div class="space-y-4 text-sm text-slate-600">
-                            <div class="flex items-center gap-3">
-                                <span class="w-9 h-9 rounded-full bg-emerald-500 shadow-inner"></span>
-                                <div>Verde: acerto exato ou positivo.</div>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <span class="w-9 h-9 rounded-full bg-slate-500 shadow-inner"></span>
-                                <div>Cinza: tentativa feita, mas não corresponde.</div>
-                            </div>
-                        </div>
-                        <div class="mt-6 rounded-3xl border border-emerald-100 bg-white p-4 shadow-sm">
-                            <div class="text-xs uppercase tracking-[0.24em] text-emerald-700 font-black mb-2">Tutorial rápido</div>
-                            <div class="grid grid-cols-1 gap-3 text-sm text-slate-600">
-                                <div class="rounded-3xl bg-emerald-50 p-4">
-                                    <div class="font-bold text-slate-900">Cartas do Código Secreto</div>
-                                    <div class="text-xs">Essas são as cartas que compõem o código que você deve descobrir.</div>
-                                </div>
-                                <div class="rounded-3xl bg-slate-100 p-4">
-                                    <div class="font-bold text-slate-900">Opções de Distração</div>
-                                    <div class="text-xs">Essas cartas confundem, mas ajudam a deduzir a combinação.</div>
-                                </div>
-                            </div>
-                        </div>
+                <div>
+                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Pertence ao Código Secreto?</label>
+                    <div class="flex gap-4">
+                        <label class="flex-1 flex items-center gap-3 p-4 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 transition">
+                            <input type="radio" name="modal-card-correct" value="true" class="text-emerald-600 focus:ring-emerald-500">
+                            <span class="text-sm font-semibold text-slate-700">Sim (Código)</span>
+                        </label>
+                        <label class="flex-1 flex items-center gap-3 p-4 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 transition">
+                            <input type="radio" name="modal-card-correct" value="false" class="text-emerald-600 focus:ring-emerald-500">
+                            <span class="text-sm font-semibold text-slate-700">Não (Distrator)</span>
+                        </label>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div id="modal-history" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-        <div class="bg-white w-full max-w-2xl rounded-[36px] shadow-2xl overflow-hidden">
-            <div class="p-8 space-y-6">
-                <div class="flex items-start justify-between gap-4">
-                    <div>
-                        <h3 class="text-3xl font-black text-slate-900">Histórico de Tentativas</h3>
-                        <p class="text-sm text-slate-500 mt-2">Veja todas as tentativas em ordem cronológica.</p>
-                    </div>
-                    <button onclick="app.closeHistory()" class="w-11 h-11 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center justify-center">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-                <div id="modal-history-list" class="space-y-3 max-h-[420px] overflow-y-auto pr-2 custom-scrollbar"></div>
+            <div class="flex gap-3">
+                <button onclick="app.closeCardModal()" class="flex-1 py-4 border border-slate-200 hover:bg-slate-50 font-bold rounded-2xl text-sm transition">Cancelar</button>
+                <button onclick="app.saveCardModal()" class="flex-1 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl text-sm transition shadow-lg shadow-emerald-100">Salvar</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL DE ADIÇÃO DE AUTOR -->
-    <div id="modal-author" class="fixed inset-0 bg-emerald-900/20 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-        <div class="bg-white w-full max-w-md rounded-[40px] shadow-2xl overflow-hidden">
-            <div class="p-10 space-y-6">
+    <div id="modal-author" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white w-full max-w-sm rounded-[36px] shadow-2xl p-8 space-y-6">
+            <div>
+                <h3 class="text-xl font-black text-slate-900">Novo Autor</h3>
+                <p class="text-xs text-slate-400 font-bold uppercase mt-1 tracking-widest">Nome completo</p>
+            </div>
+            <input id="modal-input-author" type="text" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Prof. Carlos Silva" onkeypress="app.handleModalAuthorKeypress(event)">
+            <div class="flex gap-3">
+                <button onclick="app.closeAuthorModal()" class="flex-1 py-3 border border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-sm transition">Cancelar</button>
+                <button onclick="app.confirmAuthor()" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-difficulty" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white w-full max-w-lg rounded-[36px] shadow-2xl p-8 space-y-6">
+            <div class="text-center">
+                <h3 class="text-2xl font-black text-slate-900">Selecione a Dificuldade</h3>
+                <p class="text-sm text-slate-500 mt-2">Escolha o nível estratégico antes de iniciar as tentativas do Código Secreto.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button onclick="app.startGameWithDifficulty(1)" class="difficulty-btn group text-left p-5 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition">
+                    <h4 class="font-black text-slate-800 group-hover:text-emerald-700">Nível 1</h4>
+                    <p class="text-sm text-slate-600">10 tentativas</p>
+                </button>
+                <button onclick="app.startGameWithDifficulty(2)" class="difficulty-btn group text-left p-5 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition">
+                    <h4 class="font-black text-slate-800 group-hover:text-emerald-700">Nível 2</h4>
+                    <p class="text-sm text-slate-600">8 tentativas</p>
+                </button>
+                <button onclick="app.startGameWithDifficulty(3)" class="difficulty-btn group text-left p-5 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition">
+                    <h4 class="font-black text-slate-800 group-hover:text-emerald-700">Nível 3</h4>
+                    <p class="text-sm text-slate-600">6 tentativas</p>
+                </button>
+                <button onclick="app.startGameWithDifficulty(4)" class="difficulty-btn group text-left p-5 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition">
+                    <h4 class="font-black text-slate-800 group-hover:text-emerald-700">Nível 4</h4>
+                    <p class="text-sm text-slate-600">5 tentativas</p>
+                </button>
+            </div>
+            <div class="text-center">
+                <button onclick="app.closeDifficultyModal()" class="px-6 py-2.5 border border-slate-200 text-slate-500 hover:bg-slate-50 font-bold rounded-xl text-xs transition">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-solution" class="fixed inset-0 bg-slate-900/50 backdrop-blur-md hidden items-center justify-center z-50 p-4 overflow-y-auto">
+        <div class="bg-white w-full max-w-4xl rounded-[40px] shadow-2xl overflow-hidden my-8 flex flex-col max-h-[90vh]">
+            <div class="p-8 border-b border-slate-100 shrink-0 bg-slate-50 flex items-center justify-between">
                 <div>
-                    <h3 class="text-2xl font-black text-slate-800 mb-2">Adicionar Autor</h3>
-                    <p class="text-sm text-slate-400">Digite o nome do autor para adicioná-lo à lista.</p>
+                    <h3 class="text-2xl font-black text-slate-900 flex items-center gap-2">
+                        <i id="solution-icon" class="fa-solid fa-square-poll-vertical"></i>
+                        <span id="solution-title">Resultado do Jogo</span>
+                    </h3>
+                    <p id="solution-subtitle" class="text-xs text-slate-500 font-bold uppercase tracking-wider mt-1"></p>
                 </div>
-                <div>
-                    <label class="text-[10px] font-black text-slate-500 uppercase mb-2 block tracking-widest">Nome do Autor</label>
-                    <input id="modal-input-author" type="text" class="w-full p-4 bg-slate-50 border-2 border-transparent focus:border-emerald-500 rounded-3xl outline-none text-sm transition" placeholder="Ex: João da Silva" onkeydown="app.handleModalAuthorKeypress(event)">
+                <button onclick="app.closeSolutionModal()" class="w-11 h-11 rounded-full bg-white border shadow-sm hover:bg-slate-50 transition flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-slate-500"></i>
+                </button>
+            </div>
+            <div class="p-8 space-y-8 overflow-y-auto custom-scrollbar flex-1">
+                <div class="space-y-4">
+                    <h4 class="text-xs font-black uppercase tracking-[0.2em] text-slate-400">O Código Secreto Era:</h4>
+                    <div id="solution-cards-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                        <div id="solution-card-0" class="solution-card-container">
+                            <div class="solution-card-inner">
+                                <div class="solution-card-front"></div>
+                                <div class="solution-card-back"></div>
+                            </div>
+                        </div>
+                        <div id="solution-card-1" class="solution-card-container">
+                            <div class="solution-card-inner">
+                                <div class="solution-card-front"></div>
+                                <div class="solution-card-back"></div>
+                            </div>
+                        </div>
+                        <div id="solution-card-2" class="solution-card-container">
+                            <div class="solution-card-inner">
+                                <div class="solution-card-front"></div>
+                                <div class="solution-card-back"></div>
+                            </div>
+                        </div>
+                        <div id="solution-card-3" class="solution-card-container">
+                            <div class="solution-card-inner">
+                                <div class="solution-card-front"></div>
+                                <div class="solution-card-back"></div>
+                            </div>
+                        </div>
+                        <div id="solution-card-4" class="solution-card-container">
+                            <div class="solution-card-inner">
+                                <div class="solution-card-front"></div>
+                                <div class="solution-card-back"></div>
+                            </div>
+                        </div>
+                        <div id="solution-card-5" class="solution-card-container">
+                            <div class="solution-card-inner">
+                                <div class="solution-card-front"></div>
+                                <div class="solution-card-back"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex space-x-3 pt-4">
-                    <button onclick="app.closeAuthorModal()" class="flex-1 py-4 font-bold text-slate-400 hover:text-slate-600">Cancelar</button>
-                    <button onclick="app.confirmAuthor()" class="flex-1 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold shadow-lg shadow-emerald-200">Adicionar</button>
+
+                <div class="rounded-3xl border border-slate-200/60 bg-slate-50/60 p-6 space-y-3">
+                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest">Explicação Pedagógica</h4>
+                    <p id="solution-explanation" class="text-slate-700 leading-relaxed text-sm whitespace-pre-line"></p>
                 </div>
+            </div>
+            <div class="p-6 border-t bg-slate-50 shrink-0 flex flex-col sm:flex-row gap-3 justify-end">
+                <button onclick="app.closeSolutionModal(); app.switchView('dashboard');" class="px-6 py-3 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-bold rounded-xl text-sm transition">
+                    Sair para o Início
+                </button>
+                <button onclick="app.closeSolutionModal(); app.replayGame();" class="px-6 py-3 bg-emerald-600 text-white font-bold rounded-xl text-sm transition shadow-lg shadow-emerald-200 hover:bg-emerald-700">
+                    Jogar Novamente
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        // Objeto Global do Aplicativo
-        const app = {
+        window.app = {
             state: {
                 authMode: 'login',
                 activeUser: null,
                 users: [
-                    { email: 'teste@gmail.com', password: '123456', role: 'professor' }
+                    { email: "teste@gmail.com", password: "123456", role: "professor" }
                 ],
-                games: [
-                    {   
-                        id: 1,
-                        name: "Código Secreto: Mamíferos",
-                        model: "Código Secreto",
-                        difficulty: 1,
-                        attemptLimit: 10,
-                        shuffleMode: 'apenas embaralhamento',
-                        newCardsOnReplay: 0,
-                        cardCount: 12,
-                        frontDesign: "imagens/frente/frente01.png",
-                        backDesign: "imagens/verso/verso01.png",
-                        disciplineInfo: {
-                            disciplina: "Biologia",
-                            conteudo: "Mamíferos",
-                            serie: "6º ano",
-                            autores: ["Equipe MADE"],
-                            regra: "Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.",
-                            objetivo: "Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.",
-                            enunciado: "Escolha as 6 cartas que representam animais mamíferos e coloque-as na ordem correta para desvendar o código secreto.",
-                            explicacao: "Observe as 12 possibilidades de cartas que estão no banco. Clique na carta escolhida para adicioná-la à sua tentativa na mesa. Repita o processo até que todos os 6 espaços estejam preenchidos. Clique no botão para validar a resposta. Observe o feedback: um pino preto significa que você acertou a carta e a posição. Um pino branco significa que a carta pertence ao código, mas está na posição errada."
-                        },
-                        cards: [
-                            { id: 0, content: "Baleia", isCorrect: true, pileId: 1 },
-                            { id: 1, content: "Morcego", isCorrect: true, pileId: 2 },
-                            { id: 2, content: "Ornitorrinco", isCorrect: true, pileId: 3 },
-                            { id: 3, content: "Leão", isCorrect: true, pileId: 4 },
-                            { id: 4, content: "Golfinho", isCorrect: true, pileId: 5 },
-                            { id: 5, content: "Ser Humano", isCorrect: true, pileId: 6 },
-                            { id: 6, content: "Pinguim", isCorrect: false, pileId: 7 },
-                            { id: 7, content: "Tartaruga", isCorrect: false, pileId: 8 },
-                            { id: 8, content: "Tubarão", isCorrect: false, pileId: 9 },
-                            { id: 9, content: "Sardinha", isCorrect: false, pileId: 10 },
-                            { id: 10, content: "Jacaré", isCorrect: false, pileId: 11 },
-                            { id: 11, content: "Galinha", isCorrect: false, pileId: 12 }
-                        ]
-                    }
-                ],
-                activeGame: null,
+                games: [],
                 editingGame: null,
-                editingCardIndex: null,
                 editingStep: 1,
-                currentGuess: [],
+                activeGame: null,
+                currentGuess: [null, null, null, null, null, null],
                 attempts: [],
-                gameOver: false
+                gameOver: null,
+                selectedGameIdForPlay: null,
+                currentDifficulty: 1
             },
 
             difficultyRules: {
-                1: { label: 'Nível 1', attempts: 10, shuffle: 'apenas embaralhamento', newCardsOnReplay: 0, description: '10 tentativas - apenas embaralhamento' },
-                2: { label: 'Nível 2', attempts: 8, shuffle: 'embaralhamento + 1 carta nova', newCardsOnReplay: 1, description: '8 tentativas - embaralhamento + 1 carta nova' },
-                3: { label: 'Nível 3', attempts: 6, shuffle: 'embaralhamento + 2 cartas novas', newCardsOnReplay: 2, description: '6 tentativas - embaralhamento + 2 cartas novas' },
-                4: { label: 'Nível 4', attempts: 5, shuffle: 'embaralhamento + 3 cartas novas', newCardsOnReplay: 3, description: '5 tentativas - embaralhamento + 3 cartas novas' }
+                1: { attempts: 10 },
+                2: { attempts: 8 },
+                3: { attempts: 6 },
+                4: { attempts: 5 }
             },
 
-            getDifficultyConfig: function(level) {
-                return this.difficultyRules[level] || this.difficultyRules[1];
+            frontDesigns: ['imagens/frente/frente01.png', 'imagens/frente/frente02.png', 'imagens/frente/frente03.png'],
+            backDesigns: ['imagens/verso/verso01.png', 'imagens/verso/verso02.png', 'imagens/verso/verso03.png'],
+
+            init: function() {
+                this.loadDefaultGames();
+                this.renderDashboard();
             },
 
-            applyDifficultySettings: function(game) {
-                const cfg = this.getDifficultyConfig(game.difficulty);
-                game.attemptLimit = cfg.attempts;
-                game.shuffleMode = cfg.shuffle;
-                game.newCardsOnReplay = cfg.newCardsOnReplay;
-                game.cardCount = game.cardCount || game.cards.length;
-                return game;
+            loadDefaultGames: function() {
+                this.state.games = [{
+                    id: "default-game-1",
+                    name: "Jogo dos Mamíferos",
+                    model: "Código Secreto",
+                    frontDesign: "imagens/frente/frente01.png",
+                    backDesign: "imagens/verso/verso01.png",
+                    disciplineInfo: {
+                        disciplina: "Biologia",
+                        conteudo: "Mamíferos",
+                        serie: "6º ano",
+                        autores: ["Profª Maria Silva", "Prof. João Souza"]
+                    },
+                    regra: "Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.",
+                    objetivo: "Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.",
+                    enunciado: "Escolha as 6 cartas que representam animais mamíferos e coloque-as na ordem correta para desvendar o código secreto.",
+                    explicacao: "Observe as 12 possibilidades de cartas que estão no banco. Clique na carta escolhida para adicioná-la à sua tentativa na mesa. Repita o processo até que todos os 6 espaços estejam preenchidos. Clique no botão para validar a resposta. Observe o feedback: um pino preto significa que você acertou a carta e a posição. Um pino branco significa que a carta pertence ao código, mas está na posição errada.",
+                    cards: [
+                        { id: 0, content: "Baleia", isCorrect: true, pileId: 1 },
+                        { id: 1, content: "Morcego", isCorrect: true, pileId: 2 },
+                        { id: 2, content: "Ornitorrinco", isCorrect: true, pileId: 3 },
+                        { id: 3, content: "Leão", isCorrect: true, pileId: 4 },
+                        { id: 4, content: "Golfinho", isCorrect: true, pileId: 5 },
+                        { id: 5, content: "Ser Humano", isCorrect: true, pileId: 6 },
+                        { id: 6, content: "Pinguim", isCorrect: false, pileId: 7 },
+                        { id: 7, content: "Tartaruga", isCorrect: false, pileId: 8 },
+                        { id: 8, content: "Sapo", isCorrect: false, pileId: 9 },
+                        { id: 9, content: "Cobra", isCorrect: false, pileId: 10 },
+                        { id: 10, content: "Tubarão", isCorrect: false, pileId: 11 },
+                        { id: 11, content: "Jacaré", isCorrect: false, pileId: 12 }
+                    ]
+                }];
             },
 
             setAuthMode: function(mode) {
                 this.state.authMode = mode;
-                const loginForm = document.getElementById('login-form');
-                const registerForm = document.getElementById('register-form');
-                const loginBtn = document.getElementById('auth-login-btn');
-                const registerBtn = document.getElementById('auth-register-btn');
-                if (loginForm && registerForm && loginBtn && registerBtn) {
-                    loginForm.classList.toggle('hidden', mode !== 'login');
-                    registerForm.classList.toggle('hidden', mode !== 'register');
-                    loginBtn.classList.toggle('bg-[#f5e7d6]', mode === 'login');
-                    loginBtn.classList.toggle('text-[#bb3e44]', mode === 'login');
-                    registerBtn.classList.toggle('bg-[#f5e7d6]', mode === 'register');
-                    registerBtn.classList.toggle('text-[#bb3e44]', mode === 'register');
-                }
-                const feedback = document.getElementById('auth-feedback');
-                if (feedback) {
-                    feedback.classList.add('hidden');
-                    feedback.innerText = '';
-                }
+                document.getElementById('login-form').classList.toggle('hidden', mode !== 'login');
+                document.getElementById('register-form').classList.toggle('hidden', mode !== 'register');
+                document.getElementById('auth-login-btn').classList.toggle('bg-[#f5e7d6]', mode === 'login');
+                document.getElementById('auth-login-btn').classList.toggle('text-[#bb3e44]', mode === 'login');
+                document.getElementById('auth-register-btn').classList.toggle('bg-[#f5e7d6]', mode === 'register');
+                document.getElementById('auth-register-btn').classList.toggle('text-[#bb3e44]', mode === 'register');
             },
 
             login: function() {
@@ -1069,18 +877,12 @@
                 const password = document.getElementById('auth-password')?.value;
                 const feedback = document.getElementById('auth-feedback');
                 if (!email || !password) {
-                    if (feedback) {
-                        feedback.classList.remove('hidden');
-                        feedback.innerText = 'Preencha email e senha para entrar.';
-                    }
+                    if (feedback) { feedback.classList.remove('hidden'); feedback.innerText = 'Preencha email e senha para entrar.'; }
                     return;
                 }
                 const user = this.state.users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
                 if (!user) {
-                    if (feedback) {
-                        feedback.classList.remove('hidden');
-                        feedback.innerText = 'Email ou senha incorretos.';
-                    }
+                    if (feedback) { feedback.classList.remove('hidden'); feedback.innerText = 'Email ou senha incorretos.'; }
                     return;
                 }
                 this.state.activeUser = user;
@@ -1092,83 +894,52 @@
             register: function() {
                 const email = document.getElementById('register-email')?.value.trim();
                 const password = document.getElementById('register-password')?.value;
-                const confirmPassword = document.getElementById('register-password-confirm')?.value;
+                const confirm = document.getElementById('register-password-confirm')?.value;
                 const role = document.getElementById('register-role')?.value;
                 const feedback = document.getElementById('auth-feedback');
-                if (!email || !password || !confirmPassword || !role) {
-                    if (feedback) {
-                        feedback.classList.remove('hidden');
-                        feedback.innerText = 'Preencha todos os campos para cadastrar.';
-                    }
+
+                if(!email || !password || !confirm) {
+                    if (feedback) { feedback.classList.remove('hidden'); feedback.innerText = 'Preencha todos os campos.'; }
                     return;
                 }
-                if (password !== confirmPassword) {
-                    if (feedback) {
-                        feedback.classList.remove('hidden');
-                        feedback.innerText = 'As senhas não coincidem.';
-                    }
-                    return;
-                }
-                if (this.state.users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
-                    if (feedback) {
-                        feedback.classList.remove('hidden');
-                        feedback.innerText = 'Este email já está cadastrado.';
-                    }
+                if(password !== confirm) {
+                    if (feedback) { feedback.classList.remove('hidden'); feedback.innerText = 'As senhas não coincidem.'; }
                     return;
                 }
                 this.state.users.push({ email, password, role });
-                if (feedback) {
-                    feedback.classList.remove('hidden');
-                    feedback.classList.remove('text-red-500');
-                    feedback.classList.add('text-emerald-700');
-                    feedback.innerText = 'Cadastro realizado! Faça login para continuar.';
-                }
-                this.setAuthMode('login');
+                if (feedback) { feedback.classList.remove('hidden'); feedback.innerText = 'Conta criada com sucesso! Mude para aba Login.'; }
             },
 
             switchView: function(viewId) {
-                const sections = ['dashboard', 'creator', 'player'];
-                sections.forEach(s => {
-                    const el = document.getElementById('view-' + s);
-                    if(el) {
-                        el.classList.add('hidden');
-                        el.classList.remove('active', 'flex-row', 'flex-col');
-                    }
-                });
+                document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+                document.querySelectorAll('.view-section').forEach(s => s.classList.add('hidden'));
                 
-                const target = document.getElementById('view-' + (viewId === 'dashboard' ? 'dashboard' : viewId));
-                if (target) {
+                const target = document.getElementById(`view-view-${viewId}`) || document.getElementById(`view-${viewId}`);
+                if(target) {
                     target.classList.remove('hidden');
                     target.classList.add('active');
-                    if (viewId === 'player') target.classList.add('flex-row');
-                    else target.classList.add('flex-col');
                 }
 
-                const sidebar = document.querySelector('aside');
-                if (sidebar) {
-                    sidebar.classList.toggle('hidden', viewId === 'player');
-                }
-
-                document.querySelectorAll('.nav-btn').forEach(btn => {
-                    btn.classList.remove('bg-emerald-600', 'text-white');
-                    btn.classList.add('text-slate-500');
-                    if(btn.dataset.view === viewId) {
-                        btn.classList.add('bg-emerald-600', 'text-white');
+                document.querySelectorAll('.nav-btn').forEach(b => {
+                    if(b.getAttribute('data-view') === viewId) {
+                        b.className = "nav-btn w-full flex items-center p-3 rounded-xl transition bg-emerald-600 text-white";
+                    } else {
+                        b.className = "nav-btn w-full flex items-center p-3 rounded-xl transition text-slate-500 hover:bg-emerald-50";
                     }
                 });
             },
 
             renderDashboard: function() {
                 const grid = document.getElementById('dashboard-grid');
+                if(!grid) return;
                 grid.innerHTML = '';
-                
+
                 this.state.games.forEach(game => {
                     const card = document.createElement('div');
                     card.className = "bg-white p-6 rounded-[32px] border border-slate-200 shadow-sm hover:shadow-md transition group";
                     card.innerHTML = `
                         <div class="flex justify-between items-start mb-4">
                             <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-black">M</div>
-                            <span class="text-[9px] font-black bg-emerald-50 text-emerald-700 px-2 py-1 rounded">NÍVEL ${game.difficulty}</span>
                         </div>
                         <h3 class="text-lg font-bold text-slate-800 mb-4">${game.name || 'Sem título'}</h3>
                         <div class="space-y-2 text-sm text-slate-500 mb-4">
@@ -1176,20 +947,15 @@
                             <p><strong class="text-slate-800">Disciplina:</strong> ${game.disciplineInfo?.disciplina || '-'}</p>
                             <p><strong class="text-slate-800">Conteúdo:</strong> ${game.disciplineInfo?.conteudo || '-'}</p>
                             <p><strong class="text-slate-800">Série:</strong> ${game.disciplineInfo?.serie || '-'}</p>
-                            <p><strong class="text-slate-800">Tentativas:</strong> ${game.attemptLimit || '-'}</p>
-                            <p><strong class="text-slate-800">Replay:</strong> ${game.shuffleMode || '-'}</p>
-                            <p><strong class="text-slate-800">Cartas:</strong> ${game.cardCount || (game.cards?.length ?? '-')}</p>
                             <p><strong class="text-slate-800">Autores:</strong> ${game.disciplineInfo?.autores?.length ? game.disciplineInfo.autores.join(', ') : '-'}</p>
                         </div>
-                        <div class="rounded-3xl bg-slate-50 p-4 text-slate-700 mb-4">
-                            <p class="text-[10px] uppercase tracking-[0.24em] font-black text-slate-500 mb-2">Resumo da criação</p>
-                            <p class="text-sm mb-2"><strong>Regra:</strong> ${game.disciplineInfo?.regra || '-'}</p>
-                            <p class="text-sm mb-2"><strong>Objetivo:</strong> ${game.disciplineInfo?.objetivo || '-'}</p>
-                            <p class="text-sm"><strong>Enunciado:</strong> ${game.disciplineInfo?.enunciado || '-'}</p>
-                        </div>
-                        <div class="flex items-center justify-between gap-2">
-                            <button onclick="app.playGame(${game.id})" class="flex-1 py-3 bg-emerald-600 text-white rounded-2xl text-xs font-bold shadow-lg shadow-emerald-100 active:scale-95 transition">Jogar</button>
-                            <button onclick="app.editGame(${game.id})" class="flex-1 py-3 bg-slate-50 text-slate-500 rounded-2xl text-xs font-bold border hover:bg-slate-100 transition">Editar</button>
+                        <div class="rounded-3xl border border-slate-100 bg-slate-50 p-2 flex gap-2">
+                            <button onclick="app.openDifficultySelect('${game.id}')" class="flex-1 bg-emerald-600 text-white font-bold py-3 px-4 rounded-2xl text-xs shadow-lg shadow-emerald-100 transition hover:bg-emerald-700 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-play"></i> Jogar
+                            </button>
+                            <button onclick="app.editGame('${game.id}')" class="bg-white border border-slate-200 text-slate-600 font-bold py-3 px-4 rounded-2xl text-xs transition hover:bg-slate-50">
+                                Editar
+                            </button>
                         </div>
                     `;
                     grid.appendChild(card);
@@ -1198,39 +964,23 @@
 
             newGame: function() {
                 this.state.editingGame = {
-                    id: Date.now(),
+                    id: "game-" + Date.now(),
                     name: "",
                     model: "Código Secreto",
-                    difficulty: 1,
-                    attemptLimit: 10,
-                    shuffleMode: 'apenas embaralhamento',
-                    newCardsOnReplay: 0,
-                    cardCount: 12,
                     frontDesign: "imagens/frente/frente01.png",
                     backDesign: "imagens/verso/verso01.png",
-                    disciplineInfo: {
-                        disciplina: "Biologia",
-                        conteudo: "Mamíferos",
-                        serie: "6º ano",
-                        autores: [],
-                        regra: "Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.",
-                        objetivo: "Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.",
-                        enunciado: "Escolha as cartas corretas que representam apenas animais mamíferos na ordem correta.",
-                        explicacao: "Observe as 12 possibilidades de cartas que estão do lado esquerdo da tela. Clique e arraste a carta escolhida para o retângulo vazio de cartas na posição que achar correta. Repita o processo até que todos os retângulos estejam preenchidos. Clique no botão para verificar a resposta. Observe o feedback do jogo verificando se as bolinhas do lado direito da tela estão pintadas de branco ou de preto. Se estiver pintada de branco significa que você colocou uma carta certa na posição errada. Se estiver pintada de preto significa que você colocou uma carta certa na posição correta. Se estiver transparente significa que essa carta não faz parte do código secreto."
-                    },
-                    cards: Array.from({length: 12}, (_, i) => ({ 
-                        id: i, 
-                        content: "", 
-                        isCorrect: false, 
-                        pileId: i + 1 
-                    }))
+                    disciplineInfo: { disciplina: "Biologia", conteudo: "", serie: "1º ano – EF", autores: [] },
+                    regra: 'Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.',
+                    objetivo: 'Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.',
+                    enunciado: 'Escolha as 6 cartas que representam animais mamíferos e coloque-as na ordem correta para desvendar o código secreto.',
+                    explicacao: 'Observe as 12 possibilidades de cartas que estão no banco. Clique na carta escolhida para adicioná-la à sua tentativa na mesa. Repita o processo até que todos os 6 espaços estejam preenchidos. Clique no botão para validar a resposta. Observe o feedback do jogo verificando se as bolinhas do lado direito da tela estão pintadas de branco ou de preto. Se estiver pintada de branco significa que você colocou uma carta certa na posição errada. Se estiver pintada de preto significa que você colocou uma carta certa na posição correta. Se estiver transparente significa que essa carta não faz parte do código secreto.',
+                    cards: Array.from({length: 12}, (_, i) => ({ id: i, content: "", isCorrect: false, pileId: i + 1 }))
                 };
                 this.state.editingStep = 1;
                 this.syncEditorUI();
-                this.updateSecretCardCounter(); // Adicionado para inicializar o contador
+                this.updateSecretCardCounter();
                 this.switchView('creator');
             },
-
 
             editGame: function(id) {
                 const g = this.state.games.find(x => x.id === id);
@@ -1242,317 +992,126 @@
             },
 
             syncEditorUI: function() {
-                // Se não houver jogo sendo editado, aborta para evitar erros
                 if (!this.state.editingGame) return;
                 const eg = this.state.editingGame;
 
-                // Garante que disciplineInfo existe para não quebrar ao ler subpropriedades
-                if (!eg.disciplineInfo) {
-                    eg.disciplineInfo = {};
-                }
+                if (!eg.disciplineInfo) { eg.disciplineInfo = {}; }
 
-                // Preenche os campos de Informações Gerais de forma segura
-                if (document.getElementById('edit-game-name')) {
-                    document.getElementById('edit-game-name').value = eg.name || "";
-                }
-                if (document.getElementById('edit-game-model')) {
-                    document.getElementById('edit-game-model').value = eg.model || "Código Secreto";
-                }
-                if (document.getElementById('edit-game-diff')) {
-                    document.getElementById('edit-game-diff').value = eg.difficulty;
-                }
-
-                // Preenche os campos da aba de Disciplina, Série e Conteúdo de forma segura
-                if (document.getElementById('edit-game-disciplina')) {
-                    document.getElementById('edit-game-disciplina').value = eg.disciplineInfo.disciplina || "Biologia";
-                }
-                if (document.getElementById('edit-game-conteudo')) {
-                    document.getElementById('edit-game-conteudo').value = eg.disciplineInfo.conteudo || "";
-                }
-                if (document.getElementById('edit-game-serie')) {
-                    document.getElementById('edit-game-serie').value = eg.disciplineInfo.serie || "6.º ano";
-                }
-                if (document.getElementById('edit-game-regra')) {
-                    document.getElementById('edit-game-regra').value = eg.disciplineInfo.regra || "";
-                }
-                if (document.getElementById('edit-game-objetivo')) {
-                    document.getElementById('edit-game-objetivo').value = eg.disciplineInfo.objetivo || "";
-                }
-                if (document.getElementById('edit-game-enunciado')) {
-                    document.getElementById('edit-game-enunciado').value = eg.disciplineInfo.enunciado || "";
-                }
-                if (document.getElementById('edit-game-explicacao')) {
-                    document.getElementById('edit-game-explicacao').value = eg.disciplineInfo.explicacao || "";
-                }
-
-                // Atualiza o título exibido no topo do editor
-                if (document.getElementById('editor-title-display')) {
-                    document.getElementById('editor-title-display').innerText = eg.name || "Novo Jogo";
-                }
-
-                // Executa todas as funções originais de atualização da interface
-                this.renderAuthorsList();
-                this.updateDesignPreviews();
-                this.updateDifficultyInfo();
-                this.updateCreatorPreview();
-                this.setEditorStep(this.state.editingStep);
-                this.updateSecretCardCounter();
-                this.renderEditorGrid();
-            },
-
-            setEditorStep: function(step) {
-                this.state.editingStep = step;
-                const total = 5;
-                for (let i = 1; i <= total; i++) {
-                    const stepEl = document.getElementById(`creator-step-${i}`);
-                    const rightEl = document.getElementById(`creator-right-step-${i}`);
-                    const dot = document.getElementById(`creator-step-dot-${i}`);
-                    if (stepEl) stepEl.classList.toggle('hidden', i !== step);
-                    if (rightEl) rightEl.classList.toggle('hidden', i !== step);
-                    if (dot) dot.classList.toggle('bg-emerald-600', i <= step);
-                }
-                const progressFill = document.getElementById('creator-progress-fill');
-                if (progressFill) progressFill.style.width = `${(step / total) * 100}%`;
-
-                const titleMap = {
-                    1: 'Dados do Jogo',
-                    2: 'Regras e Aparência',
-                    3: 'Título e Explicação',
-                    4: 'Criação de Cartas',
-                    5: 'Teste e Finalizar'
-                };
-                const nextLabelMap = {
-                    1: 'Próximo',
-                    2: 'Detalhes finais',
-                    3: 'Criação de Cartas',
-                    4: 'Testagem Preliminar do Jogo',
-                    5: 'Finalizar'
-                };
-                const prevBtn = document.getElementById('creator-prev-btn');
-                const nextBtn = document.getElementById('creator-next-btn');
-                const stepLabel = document.getElementById('creator-step-current');
-                const stepTitle = document.getElementById('creator-step-title');
-
-                if (stepLabel) stepLabel.innerText = step;
-                if (stepTitle) stepTitle.innerText = titleMap[step] || 'Editor';
-                if (nextBtn) nextBtn.innerText = nextLabelMap[step] || 'Próximo';
-                if (prevBtn) prevBtn.classList.toggle('hidden', step === 1);
-                if (step === 5 && nextBtn) nextBtn.innerText = 'Finalizar';
+                if (document.getElementById('edit-game-name')) document.getElementById('edit-game-name').value = eg.name || "";
+                if (document.getElementById('edit-game-model')) document.getElementById('edit-game-model').value = eg.model || "Código Secreto";
+                if (document.getElementById('edit-game-disciplina')) document.getElementById('edit-game-disciplina').value = eg.disciplineInfo.disciplina || "Biologia";
+                if (document.getElementById('edit-game-conteudo')) document.getElementById('edit-game-conteudo').value = eg.disciplineInfo.conteudo || "";
+                if (document.getElementById('edit-game-serie')) document.getElementById('edit-game-serie').value = eg.disciplineInfo.serie || "1º ano – EF";
                 
-                this.updateCreatorNavButtons();
-                this.updateCreatorPreview();
+                if (document.getElementById('edit-game-regra')) document.getElementById('edit-game-regra').value = eg.regra || "";
+                if (document.getElementById('edit-game-objetivo')) document.getElementById('edit-game-objetivo').value = eg.objetivo || "";
+                if (document.getElementById('edit-game-enunciado')) document.getElementById('edit-game-enunciado').value = eg.enunciado || "";
+                if (document.getElementById('edit-game-explicacao')) document.getElementById('edit-game-explicacao').value = eg.explicacao || "";
 
-                // Rola a área de criação para o topo
-                const creatorContent = document.querySelector('#view-creator > .flex-1.min-h-0.overflow-y-auto');
-                if (creatorContent) {
-                    creatorContent.scrollTo({ top: 0, behavior: 'smooth' });
-                }
+                document.getElementById('preview-front').src = eg.frontDesign || 'imagens/frente/frente01.png';
+                document.getElementById('preview-back').src = eg.backDesign || 'imagens/verso/verso01.png';
+
+                this.renderAuthorsList();
+                this.renderEditorGrid();
+                this.showStep(this.state.editingStep);
             },
 
             persistEditorFields: function() {
                 if (!this.state.editingGame) return;
-
-                // Captura os dados básicos da aba de Informações Gerais
-                const nameInput = document.getElementById('edit-game-name');
-                if (nameInput) this.state.editingGame.name = nameInput.value || "Jogo sem Nome";
-
-                const modelInput = document.getElementById('edit-game-model');
-                if (modelInput) this.state.editingGame.model = modelInput.value || "Código Secreto";
-
-                const diffInput = document.getElementById('edit-game-diff');
-                if (diffInput) this.state.editingGame.difficulty = parseInt(diffInput.value) || 1;
-
-                // Captura exatamente os campos da aba que você mostrou na imagem (Disciplina, Conteúdo, Série, etc.)
-                if (!this.state.editingGame.disciplineInfo) {
-                    this.state.editingGame.disciplineInfo = {};
-                }
-
-                const discInput = document.getElementById('edit-game-disciplina');
-                const contInput = document.getElementById('edit-game-conteudo');
-                const serieInput = document.getElementById('edit-game-serie');
-                const regraInput = document.getElementById('edit-game-regra');
-                const objInput = document.getElementById('edit-game-objetivo');
-                const enunInput = document.getElementById('edit-game-enunciado');
-                const expInput = document.getElementById('edit-game-explicacao');
-
-                if (discInput) this.state.editingGame.disciplineInfo.disciplina = discInput.value;
-                if (contInput) this.state.editingGame.disciplineInfo.conteudo = contInput.value;
-                if (serieInput) this.state.editingGame.disciplineInfo.serie = serieInput.value;
-                if (regraInput) this.state.editingGame.disciplineInfo.regra = regraInput.value;
-                if (objInput) this.state.editingGame.disciplineInfo.objetivo = objInput.value;
-                if (enunInput) this.state.editingGame.disciplineInfo.enunciado = enunInput.value;
-                if (expInput) this.state.editingGame.disciplineInfo.explicacao = expInput.value;
-            },
-
-            nextStep: function() {
-                this.persistEditorFields();
                 
-                if (this.state.editingStep < 5) {
-                    this.setEditorStep(this.state.editingStep + 1);
-                } else {
-                    this.saveGame();
-                }
+                this.state.editingGame.name = document.getElementById('edit-game-name')?.value || "Jogo sem Nome";
+                this.state.editingGame.model = document.getElementById('edit-game-model')?.value || "Código Secreto";
+                
+                if (!this.state.editingGame.disciplineInfo) this.state.editingGame.disciplineInfo = {};
+                this.state.editingGame.disciplineInfo.disciplina = document.getElementById('edit-game-disciplina')?.value || "Biologia";
+                this.state.editingGame.disciplineInfo.conteudo = document.getElementById('edit-game-conteudo')?.value || "";
+                this.state.editingGame.disciplineInfo.serie = document.getElementById('edit-game-serie')?.value || "1º ano – EF";
+                
+                this.state.editingGame.regra = document.getElementById('edit-game-regra')?.value || "";
+                this.state.editingGame.objetivo = document.getElementById('edit-game-objetivo')?.value || "";
+                this.state.editingGame.enunciado = document.getElementById('edit-game-enunciado')?.value || "";
+                this.state.editingGame.explicacao = document.getElementById('edit-game-explicacao')?.value || "";
             },
 
-            prevStep: function() {
-                if (this.state.editingStep > 1) {
-                    this.persistEditorFields();
-                    this.setEditorStep(this.state.editingStep - 1);
-                }
-            },
+            showStep: function(step) {
+                this.state.editingStep = step;
+                document.querySelectorAll('.creator-step').forEach(el => el.classList.add('hidden'));
+                
+                const activeEl = document.getElementById(`creator-step-${step}`);
+                if (activeEl) activeEl.classList.remove('hidden');
 
-            updateCreatorNavButtons: function() {
+                const progressFill = document.getElementById('creator-progress-fill');
+                if (progressFill) progressFill.style.width = `${(step / 4) * 100}%`;
+
+                const titleMap = { 1: 'Dados do Jogo', 2: 'Regras e Aparência', 3: 'Enunciado e Feedbacks', 4: 'Criação de Cartas' };
+                const stepLabel = document.getElementById('creator-step-current');
+                const stepTitle = document.getElementById('creator-step-title');
+                
+                if (stepLabel) stepLabel.innerText = step;
+                if (stepTitle) stepTitle.innerText = titleMap[step] || 'Editor';
+
+                const prevBtn = document.getElementById('creator-prev-btn');
                 const nextBtn = document.getElementById('creator-next-btn');
-                const validationMsg = document.getElementById('creator-validation-msg');
-                if (!nextBtn || !validationMsg) return;
 
-                let isStepValid = true;
-                let message = '';
+                if (prevBtn) prevBtn.classList.toggle('hidden', step === 1);
+                if (nextBtn) nextBtn.innerText = step === 4 ? 'Finalizar' : 'Próximo';
 
-                if (this.state.editingStep === 4) {
-                    const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
-                    if (correctCount !== 6) {
-                        isStepValid = false;
-                        message = 'Você precisa selecionar exatamente 6 cartas para o Código Secreto.';
-                    }
-                }
-
-                nextBtn.disabled = !isStepValid;
-                nextBtn.classList.toggle('bg-slate-400', !isStepValid);
-                nextBtn.classList.toggle('cursor-not-allowed', !isStepValid);
-                validationMsg.innerText = message;
-                validationMsg.classList.toggle('hidden', isStepValid);
+                document.getElementById('creator-validation-message').classList.add('hidden');
             },
 
-            updateCreatorPreview: function() {
-                const disciplina = document.getElementById('preview-disciplina');
-                const conteudo = document.getElementById('preview-conteudo');
-                const serie = document.getElementById('preview-serie');
-                const difficulty = document.getElementById('preview-difficulty');
-                const attempts = document.getElementById('preview-attempts');
-                const shuffle = document.getElementById('preview-shuffle');
-                const frontPreview = document.getElementById('preview-final-front');
-                const backPreview = document.getElementById('preview-final-back');
-                const diffConfig = this.getDifficultyConfig(this.state.editingGame.difficulty);
-                if (disciplina) disciplina.innerText = this.state.editingGame.disciplineInfo.disciplina || '-';
-                if (conteudo) conteudo.innerText = this.state.editingGame.disciplineInfo.conteudo || '-';
-                if (serie) serie.innerText = this.state.editingGame.disciplineInfo.serie || '-';
-                if (difficulty) difficulty.innerText = `Nível ${this.state.editingGame.difficulty}`;
-                if (attempts) attempts.innerText = diffConfig.attemptLimit;
-                if (shuffle) shuffle.innerText = diffConfig.shuffleMode || diffConfig.shuffle || 'apenas embaralhamento';
-                if (frontPreview) frontPreview.src = this.state.editingGame.frontDesign || 'imagens/frente/frente01.png';
-                if (backPreview) backPreview.src = this.state.editingGame.backDesign || 'imagens/verso/verso01.png';
-            },
-
-            getDifficultyConfig: function(level) {
-                const map = {
-                    1: { attemptLimit: 10, shuffleMode: 'apenas embaralhamento', newCardsOnReplay: 0, cardCount: 12, description: '10 tentativas - apenas embaralhamento' },
-                    2: { attemptLimit: 8, shuffleMode: 'embaralhamento e troca', newCardsOnReplay: 2, cardCount: 12, description: '8 tentativas - embaralhamento + 1 carta nova' },
-                    3: { attemptLimit: 6, shuffleMode: 'embaralhamento completo', newCardsOnReplay: 3, cardCount: 12, description: '6 tentativas - embaralhamento + 2 cartas novas' },
-                    4: { attemptLimit: 5, shuffleMode: 'embaralhamento completo', newCardsOnReplay: 4, cardCount: 12, description: ' 5 tentativas - embaralhamento + 3 cartas novas' }
-                };
-                return map[level] || map[1];
-            },
-
-            updateDifficultyInfo: function() {
-                const diff = parseInt(document.getElementById('edit-game-diff')?.value) || this.state.editingGame.difficulty;
-                const info = this.getDifficultyConfig(diff);
-                const infoLabel = document.getElementById('creator-difficulty-description');
-                if (infoLabel) infoLabel.innerText = info.description;
-                this.state.editingGame.difficulty = diff;
-                this.state.editingGame.attemptLimit = info.attemptLimit;
-                this.state.editingGame.shuffleMode = info.shuffleMode;
-                this.state.editingGame.newCardsOnReplay = info.newCardsOnReplay;
-                this.state.editingGame.cardCount = info.cardCount;
-            },
-
-            updatePlayDetails: function() {
-                const attemptsDisplay = document.getElementById('play-attempts-display');
-                const shuffleDisplay = document.getElementById('play-shuffle-display');
-                const cardsDisplay = document.getElementById('play-cards-display');
-                if(attemptsDisplay) attemptsDisplay.innerText = `Máx. ${this.state.activeGame.attemptLimit} tentativas`;
-                if(shuffleDisplay) shuffleDisplay.innerText = this.state.activeGame.shuffleMode || 'apenas embaralhamento';
-                if(cardsDisplay) cardsDisplay.innerText = `${this.state.activeGame.cardCount} cartas`;
-            },
-
-            buildPlayDeck: function(game) {
-                const original = game.originalCards || game.cards || [];
-                const correctCards = original.filter(c => c.isCorrect);
-                let distractors = original.filter(c => !c.isCorrect);
-                this.shuffleArray(distractors);
-
-                if (game.newCardsOnReplay > 0 && game.replayCount) {
-                    const offset = (game.replayCount * game.newCardsOnReplay) % distractors.length;
-                    distractors = distractors.slice(offset).concat(distractors.slice(0, offset));
-                }
-
-                const totalCount = Math.max(game.cardCount || original.length, correctCards.length);
-                const needed = Math.max(totalCount - correctCards.length, 0);
-                const selected = distractors.slice(0, needed);
-                const deck = [...correctCards, ...selected];
-                return deck.sort(() => Math.random() - 0.5);
-            },
-
-            shuffleArray: function(array) {
-                for (let i = array.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [array[i], array[j]] = [array[j], array[i]];
-                }
-                return array;
-            },
-
-            replayGame: function() {
-                if (!this.state.activeGame) return;
-                this.state.activeGame.replayCount = (this.state.activeGame.replayCount || 0) + 1;
-                this.state.activeGame.cards = this.buildPlayDeck(this.state.activeGame);
-                this.state.currentGuess = [];
-                this.state.attempts = [];
-                this.state.gameOver = false;
-                this.updatePlayUI();
-                this.renderPlayGrid(true);
-                this.renderHand();
-                this.updatePlayDesigns();
-            },
-
-            playPreview: function() {
+            creatorNextStep: function() {
                 this.persistEditorFields();
-                const previewGame = JSON.parse(JSON.stringify(this.state.editingGame));
-                previewGame.id = `preview-${Date.now()}`;
-                previewGame.originalCards = JSON.parse(JSON.stringify(this.state.editingGame.cards));
-                previewGame.replayCount = 0;
-                this.state.activeGame = this.applyDifficultySettings(previewGame);
-                this.state.activeGame.cards = this.buildPlayDeck(this.state.activeGame);
-                this.state.currentGuess = [];
-                this.state.attempts = [];
-                this.state.gameOver = false;
+                const current = this.state.editingStep;
 
-                document.getElementById('play-name-display').innerText = this.state.activeGame.name;
-                document.getElementById('play-meta-display').innerText = `Dificuldade: Nível ${this.state.activeGame.difficulty}`;
-                const deckCountEl = document.getElementById('deck-count-number');
-                if (deckCountEl) deckCountEl.innerText = this.state.activeGame.cards.length;
+                if (current === 1) {
+                    if (!this.state.editingGame.name.trim()) { this.showValidationError("Insira o título do jogo."); return; }
+                    if (!this.state.editingGame.disciplineInfo.conteudo.trim()) { this.showValidationError("Insira o conteúdo do jogo."); return; }
+                }
+                if (current === 4) {
+                    const filledCount = this.state.editingGame.cards.filter(c => c.content.trim() !== "").length;
+                    if (filledCount < 12) { this.showValidationError("Preencha o texto de todas as 12 cartas antes de finalizar."); return; }
+                    const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
+                    if (correctCount !== 6) { this.showValidationError("Exatamente 6 cartas precisam ser marcadas como Código Secreto."); return; }
+                    
+                    this.saveGame();
+                    return;
+                }
+                this.showStep(current + 1);
+            },
 
-                this.renderPlayGrid(true);
-                this.renderHand();
-                this.updatePlayUI();
-                this.updatePlayDesigns();
-                this.switchView('player');
+            creatorPrevStep: function() {
+                this.persistEditorFields();
+                if (this.state.editingStep > 1) {
+                    this.showStep(this.state.editingStep - 1);
+                }
+            },
+
+            showValidationError: function(msg) {
+                const el = document.getElementById('creator-validation-message');
+                if (el) { el.innerText = msg; el.classList.remove('hidden'); }
+            },
+
+            saveGame: function() {
+                const idx = this.state.games.findIndex(g => g.id === this.state.editingGame.id);
+                if(idx !== -1) this.state.games[idx] = this.state.editingGame;
+                else this.state.games.push(this.state.editingGame);
+                this.state.editingGame = null;
+                this.renderDashboard();
+                this.switchView('dashboard');
             },
 
             renderEditorGrid: function() {
                 const grid = document.getElementById('editor-grid');
-                if (!grid) return;
+                if(!grid || !this.state.editingGame) return;
                 grid.innerHTML = '';
 
                 this.state.editingGame.cards.forEach((card, idx) => {
                     const cardEl = document.createElement('div');
-                    // A classe 'empty' é removida para garantir um estilo consistente
                     cardEl.className = `game-card flex flex-col p-4 cursor-pointer transition-all ${card.content ? '' : 'empty'}`;
                     cardEl.onclick = (e) => {
                         if (e.target.closest('.status-badge')) return;
                         this.openCardModal(idx);
                     };
-                    
-                    // O conteúdo da carta é agora construído de forma unificada
                     cardEl.innerHTML = `
                         <p class="text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Carta ${card.pileId}</p>
                         ${card.content ? `
@@ -1567,9 +1126,7 @@
                         <div class="mt-auto">
                             <button onclick="app.toggleCardCorrect(${idx})" class="status-badge w-full inline-flex items-center justify-center gap-2 px-3 py-2 rounded-full text-white text-[10px] font-bold uppercase tracking-wider transition-colors ${card.isCorrect ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-red-500 hover:bg-red-600'}">
                                 <i class="fa-solid ${card.isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i>
-                                <span>
-                                    ${card.isCorrect ? 'É Código Secreto' : 'Não é Código'}
-                                </span>
+                                <span>${card.isCorrect ? 'É Código Secreto' : 'Não é Código'}</span>
                             </button>
                         </div>
                     `;
@@ -1577,394 +1134,193 @@
                 });
             },
 
+            toggleCardCorrect: function(idx) {
+                if(!this.state.editingGame) return;
+                const card = this.state.editingGame.cards[idx];
+                if (!card.isCorrect) {
+                    const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
+                    if(correctCount >= 6) { alert("Você já atingiu o limite de 6 cartas corretas."); return; }
+                }
+                card.isCorrect = !card.isCorrect;
+                this.renderEditorGrid();
+                this.updateSecretCardCounter();
+            },
+
             updateSecretCardCounter: function() {
                 const counterEl = document.getElementById('secret-card-counter');
                 if (!counterEl || !this.state.editingGame) return;
-
                 const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
-                const requiredCount = 6;
-
-                counterEl.innerText = `${correctCount} / ${requiredCount} selecionadas`;
-                if (correctCount === requiredCount) {
-                    counterEl.className = 'text-sm font-bold text-emerald-600';
-                } else {
-                    counterEl.className = 'text-sm font-bold text-red-600';
-                }
+                counterEl.innerText = `${correctCount} / 6 selecionadas`;
             },
 
             openCardModal: function(idx) {
-                this.state.editingCardIndex = idx;
+                this.state.selectedCardIndex = idx;
                 const card = this.state.editingGame.cards[idx];
-                document.getElementById('modal-card-title').innerText = `Carta ${card.pileId}`;
-                document.getElementById('modal-input-text').value = card.content;
-                document.getElementById('modal-input-correct').checked = card.isCorrect;
+                document.getElementById('modal-card-index').value = idx;
+                document.getElementById('modal-card-content').value = card.content || "";
+                
+                const radios = document.getElementsByName('modal-card-correct');
+                radios[0].checked = card.isCorrect === true;
+                radios[1].checked = card.isCorrect === false;
+
                 document.getElementById('modal-card').style.display = 'flex';
             },
 
-            closeModal: function() {
+            closeCardModal: function() {
                 document.getElementById('modal-card').style.display = 'none';
             },
 
-            toggleCardCorrect: function(idx) {
-                if (!this.state.editingGame) return;
-                const card = this.state.editingGame.cards[idx];
-                
-                // CONTA QUANTAS JÁ ESTÃO SELECIONADAS Atualmente
-                const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
+            saveCardModal: function() {
+                const idx = parseInt(document.getElementById('modal-card-index').value);
+                const content = document.getElementById('modal-card-content').value.trim();
+                const isCorrectChecked = document.querySelector('input[name="modal-card-correct"]:checked').value === "true";
 
-                // SE NÃO ESTAVA MARCADA E JÁ CHEGOU A 6, BLOQUEIA A 7ª
-                if (!card.isCorrect && correctCount >= 6) {
-                    alert("Você já selecionou o limite máximo de 6 cartas para o Código Secreto.");
-                    return;
+                if (!content) { alert("O conteúdo da carta não pode ser vazio."); return; }
+
+                if (isCorrectChecked && !this.state.editingGame.cards[idx].isCorrect) {
+                    const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
+                    if(correctCount >= 6) { alert("Você já atingiu o limite de 6 cartas corretas."); return; }
                 }
 
-                // Inverte o estado se passou na validação
-                card.isCorrect = !card.isCorrect;
-                
+                this.state.editingGame.cards[idx].content = content;
+                this.state.editingGame.cards[idx].isCorrect = isCorrectChecked;
+
+                this.closeCardModal();
                 this.renderEditorGrid();
                 this.updateSecretCardCounter();
-                this.updateCreatorNavButtons(); // <-- ADICIONADO: Atualiza o botão de navegação
             },
 
-            openHelp: function() {
-                document.getElementById('modal-help').classList.remove('hidden');
+            openDifficultySelect: function(gameId) {
+                this.state.selectedGameIdForPlay = gameId;
+                this.openDifficultyModal();
             },
 
-            closeHelp: function() {
-                document.getElementById('modal-help').classList.add('hidden');
+            openDifficultyModal: function() {
+                document.getElementById('modal-difficulty').style.display = 'flex';
             },
 
-            toggleInfoPanel: function() {
-                const panel = document.getElementById('discipline-panel');
-                if (!panel) return;
-                panel.classList.toggle('hidden');
+            closeDifficultyModal: function() {
+                document.getElementById('modal-difficulty').style.display = 'none';
             },
 
-            handleAuthorInput: function(event) {
-                if (event.key !== 'Enter') return;
-                event.preventDefault();
-                const input = document.getElementById('edit-game-author-input');
-                if (!input) return;
-                const value = input.value.trim();
-                if (!value) return;
-                this.addAuthor(value);
-                input.value = '';
-            },
-
-            addAuthor: function(name) {
-                const authors = this.state.editingGame.disciplineInfo.autores;
-                if (!authors.includes(name)) {
-                    authors.push(name);
-                    this.renderAuthorsList();
+            startGameWithDifficulty: function(level) {
+                this.state.currentDifficulty = level;
+                this.closeDifficultyModal();
+                if(this.state.selectedGameIdForPlay) {
+                    this.playGame(this.state.selectedGameIdForPlay);
+                } else if(this.state.activeGame) {
+                    this.replayGame();
                 }
             },
 
-            removeAuthor: function(index) {
-                const authors = this.state.editingGame.disciplineInfo.autores;
-                authors.splice(index, 1);
-                this.renderAuthorsList();
-            },
-
-            renderAuthorsList: function() {
-                const list = document.getElementById('edit-game-authors-list');
-                if (!list) return;
-                list.innerHTML = '';
-                const authors = this.state.editingGame.disciplineInfo.autores || [];
-                authors.forEach((author, idx) => {
-                    const chip = document.createElement('div');
-                    chip.className = 'author-chip';
-                    chip.innerHTML = `
-                        <span>${author}</span>
-                        <button type="button" onclick="app.removeAuthor(${idx})">×</button>
-                    `;
-                    list.appendChild(chip);
-                });
-            },
-
-            openAuthorModal: function() {
-                const modal = document.getElementById('modal-author');
-                const input = document.getElementById('modal-input-author');
-                if (modal && input) {
-                    modal.style.display = 'flex';
-                    input.value = '';
-                    input.focus();
-                }
-            },
-
-            closeAuthorModal: function() {
-                const modal = document.getElementById('modal-author');
-                if (modal) modal.style.display = 'none';
-            },
-
-            handleModalAuthorKeypress: function(event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                    this.confirmAuthor();
-                } else if (event.key === 'Escape') {
-                    this.closeAuthorModal();
-                }
-            },
-
-            confirmAuthor: function() {
-                const input = document.getElementById('modal-input-author');
-                if (!input) return;
-                const value = input.value.trim();
-                if (!value) return;
-                this.addAuthor(value);
-                this.closeAuthorModal();
-            },
-
-            openHistory: function() {
-                const modal = document.getElementById('modal-history');
-                const list = document.getElementById('modal-history-list');
-                if (!modal || !list) return;
-                list.innerHTML = '';
-                this.state.attempts.forEach((att, index) => {
-                    const row = document.createElement('div');
-                    row.className = 'flex items-center justify-between gap-3 bg-slate-50 rounded-3xl p-4 border border-slate-100';
-                    row.innerHTML = `
-                        <div class="flex items-center gap-2 overflow-x-auto pr-2">
-                            ${att.guess.map(id => `<span class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-[11px]">${this.state.activeGame.cards.find(x => x.id === id).pileId}</span>`).join('')}
-                        </div>
-                        <div class="flex items-center gap-1">
-                            ${Array.from({length: att.black}).map(() => '<div class="w-3 h-3 rounded-full bg-emerald-500"></div>').join('')}
-                            ${Array.from({length: att.white}).map(() => '<div class="w-3 h-3 rounded-full bg-slate-500"></div>').join('')}
-                        </div>
-                    `;
-                    list.appendChild(row);
-                });
-                modal.classList.remove('hidden');
-            },
-
-            closeHistory: function() {
-                document.getElementById('modal-history').classList.add('hidden');
-            },
-
-            confirmCard: function() {
-                    // 1. Converte o índice atual para número para evitar conflitos de comparação
-                    const idx = this.state.editingCardIdx !== null ? parseInt(this.state.editingCardIdx) : null;
-                    
-                    // Validação de segurança básica para garantir que o objeto existe
-                    if (idx === null || !this.state.editingGame || !this.state.editingGame.cards) {
-                        this.closeModal();
-                        return;
-                    }
-
-                    const text = document.getElementById('modal-input-text').value.trim();
-                    const isCorrectChecked = document.getElementById('modal-input-correct').checked;
-                    
-                    // 2. Conta de forma ultra-segura quantas cartas JÁ ESTÃO MARCADAS (ignorando a carta atual)
-                    let correctCount = 0;
-                    for (let i = 0; i < this.state.editingGame.cards.length; i++) {
-                        const c = this.state.editingGame.cards[i];
-                        if (c && c.isCorrect && i !== idx) {
-                            correctCount++;
-                        }
-                    }
-
-                    // 3. TRAVA: Se o usuário marcou o checkbox mas já temos 6 outras cartas, bloqueia!
-                    if (isCorrectChecked && correctCount >= 6) {
-                        alert("Você já selecionou o limite máximo de 6 cartas para o Código Secreto. Desmarque outra carta antes de marcar esta.");
-                        return; // Para a execução aqui e não fecha o modal
-                    }
-
-                    // 4. Se passou na validação, garante que o objeto da carta existe na posição
-                    if (!this.state.editingGame.cards[idx]) {
-                        this.state.editingGame.cards[idx] = { id: idx, content: "", isCorrect: false };
-                    }
-
-                    // 5. Grava as alterações com sucesso
-                    this.state.editingGame.cards[idx].content = text;
-                    this.state.editingGame.cards[idx].isCorrect = isCorrectChecked;
-
-                    // 6. Atualiza a tela e fecha o modal
-                    this.closeModal();
-                    this.renderEditorGrid();
-                    this.updateSecretCardCounter();
-                    this.updateCreatorNavButtons(); // <-- ADICIONADO: Atualiza o botão de navegação
-                },
-
-            saveGame: function() {
-                if (!this.state.editingGame) return;
-
-                // TRAVA DE SEGURANÇA: Valida se existem exatamente 6 cartas para o código secreto
-                const totalSecretas = this.state.editingGame.cards.filter(c => c.isCorrect).length;
-                if (totalSecretas !== 6) {
-                    alert(`Atenção: Você precisa selecionar exatamente 6 cartas para o Código Secreto. Atualmente você tem ${totalSecretas} selecionadas.`);
-                    return; // Impede o salvamento e mantém o usuário na tela de criação
-                }
-
-                // Salva os dados do formulário
-                const eg = this.state.editingGame;
-                eg.name = document.getElementById('edit-game-name').value || "Jogo sem Nome";
-                eg.model = document.getElementById('edit-game-model').value || "Código Secreto";
-                eg.difficulty = parseInt(document.getElementById('edit-game-diff').value);
-                eg.disciplineInfo = {
-                    disciplina: document.getElementById('edit-game-disciplina').value || "Biologia",
-                    conteudo: document.getElementById('edit-game-conteudo').value || "",
-                    serie: document.getElementById('edit-game-serie').value || "6º ano",
-                    autores: eg.disciplineInfo.autores || [],
-                    regra: document.getElementById('edit-game-regra').value || "",
-                    objetivo: document.getElementById('edit-game-objetivo').value || "",
-                    enunciado: document.getElementById('edit-game-enunciado').value || "",
-                    explicacao: document.getElementById('edit-game-explicacao').value || ""
-                };
-                
-                const diffConfig = this.getDifficultyConfig(eg.difficulty);
-                eg.attemptLimit = diffConfig.attemptLimit;
-                eg.shuffleMode = diffConfig.shuffleMode;
-                eg.newCardsOnReplay = diffConfig.newCardsOnReplay;
-                eg.cardCount = diffConfig.cardCount;
-
-                // Atualiza ou insere o jogo na lista global
-                const existingIndex = this.state.games.findIndex(x => x.id === eg.id);
-                if (existingIndex > -1) {
-                    this.state.games[existingIndex] = eg;
-                } else {
-                    this.state.games.push(eg);
-                }
-
-                // Atualiza a tela principal e retorna ao dashboard
-                this.renderDashboard();
-                this.switchView('dashboard');
-            },
-
-            // LOGICA DE JOGO
             playGame: function(id) {
-                const g = this.state.games.find(x => x.id === id);
-                this.state.activeGame = JSON.parse(JSON.stringify(g));
-                this.state.activeGame.originalCards = JSON.parse(JSON.stringify(g.cards));
-                this.state.activeGame.replayCount = 0;
-                this.state.activeGame = this.applyDifficultySettings(this.state.activeGame);
-                this.state.activeGame.cards = this.buildPlayDeck(this.state.activeGame);
-                this.state.currentGuess = [];
-                this.state.currentGuess = Array(6).fill(null);
+                const game = this.state.games.find(x => x.id === id);
+                if(!game) return;
+
+                const config = this.difficultyRules[this.state.currentDifficulty];
+
+                this.state.activeGame = {
+                    id: game.id,
+                    name: game.name,
+                    disciplineInfo: game.disciplineInfo,
+                    enunciado: game.enunciado,
+                    explicacao: game.explicacao,
+                    frontDesign: game.frontDesign,
+                    backDesign: game.backDesign,
+                    originalCards: JSON.parse(JSON.stringify(game.cards)),
+                    shuffledCards: this.shuffleArray(JSON.parse(JSON.stringify(game.cards))),
+                    attemptLimit: config.attempts
+                };
+
+                this.state.currentGuess = [null, null, null, null, null, null];
                 this.state.attempts = [];
                 this.state.gameOver = null;
 
-                document.getElementById('play-name-display').innerText = this.state.activeGame.name;
-                document.getElementById('play-meta-display').innerText = `Dificuldade: Nível ${this.state.activeGame.difficulty}`;
+                document.getElementById('play-name-display').innerText = game.name || 'Sem título';
+                document.getElementById('play-meta-display').innerText = `${game.disciplineInfo?.disciplina || '-'} • Código Secreto`;
+                document.getElementById('play-enunciado-display').innerText = game.enunciado || '';
                 
-                this.renderPlayGrid(true);
-                this.renderSolutionRow();
                 this.updatePlayUI();
-                this.updatePlayDesigns();
                 this.switchView('player');
             },
 
-            updatePlayDesigns: function() {
-                const design = this.state.activeGame.backDesign || "imagens/verso/verso01.png";
-                document.querySelectorAll('.deck-card-back').forEach(el => {
-                    el.style.backgroundImage = `url('${design}')`;
-                    el.style.backgroundSize = 'cover';
-                    el.style.backgroundPosition = 'center';
-                    el.style.backgroundBlendMode = 'overlay';
-                });
-            },
-
-            updateDesignPreviews: function() {
-                const previewFront = document.getElementById('preview-front');
-                const previewBack = document.getElementById('preview-back');
-                if (previewFront) previewFront.src = this.state.editingGame.frontDesign || 'imagens/frente/frente01.png';
-                if (previewBack) previewBack.src = this.state.editingGame.backDesign || 'imagens/verso/verso01.png';
-            },
-
-            toggleFrontDesign: function(direction) {
-                const fronts = [
-                    'imagens/frente/frente01.png',
-                    // Adicione mais imagens de frente aqui se existirem
-                ];
-                if (fronts.length <= 1) return;
-
-                const current = this.state.editingGame.frontDesign;
-                let currentIndex = fronts.indexOf(current);
-                if (currentIndex === -1) currentIndex = 0;
-
-                if (direction === 'next') {
-                    currentIndex = (currentIndex + 1) % fronts.length;
-                } else if (direction === 'prev') {
-                    currentIndex = (currentIndex - 1 + fronts.length) % fronts.length;
-                }
-                
-                this.state.editingGame.frontDesign = fronts[currentIndex];
-                this.updateDesignPreviews();
-            },
-
-            toggleBackDesign: function(direction) {
-                const backs = [
-                    'imagens/verso/verso01.png',
-                    // Adicione mais imagens de verso aqui se existirem
-                ];
-                if (backs.length <= 1) return;
-
-                const current = this.state.editingGame.backDesign;
-                let currentIndex = backs.indexOf(current);
-                if (currentIndex === -1) currentIndex = 0;
-
-                if (direction === 'next') {
-                    currentIndex = (currentIndex + 1) % backs.length;
-                } else if (direction === 'prev') {
-                    currentIndex = (currentIndex - 1 + backs.length) % backs.length;
-                }
-
-                this.state.editingGame.backDesign = backs[currentIndex];
-                this.updateDesignPreviews();
-            },
-
-            renderPlayGrid: function(animate = false) {
-                // This function is being replaced by renderItemBank and the new history/active row rendering
-                this.renderItemBank();
+            replayGame: function() {
+                if(!this.state.activeGame) return;
+                const config = this.difficultyRules[this.state.currentDifficulty];
+                this.state.activeGame.shuffledCards = this.shuffleArray(JSON.parse(JSON.stringify(this.state.activeGame.originalCards)));
+                this.state.activeGame.attemptLimit = config.attempts;
+                this.state.currentGuess = [null, null, null, null, null, null];
+                this.state.attempts = [];
+                this.state.gameOver = null;
                 this.updatePlayUI();
-
-                if (animate) {
-                    this.animateDealToTable();
-                }
             },
 
-            animateDealToTable: function() {
-                const deckStack = document.querySelector('.deck-stack'); // This element is removed, so this might need adjustment or removal
-                const cards = Array.from(document.querySelectorAll('#play-item-bank .game-card'));
-                if (deckStack) {
-                    deckStack.classList.add('shuffling');
+            shuffleArray: function(arr) {
+                for (let i = arr.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [arr[i], arr[arr[j]]] = [arr[j], arr[i]];
+                }
+                return arr;
+            },
+
+            updatePlayUI: function() {
+                if(!this.state.activeGame) return;
+                
+                document.getElementById('play-attempts-counter').innerText = `${this.state.attempts.length} / ${this.state.activeGame.attemptLimit}`;
+                document.getElementById('play-difficulty-display').innerText = this.state.currentDifficulty;
+
+                // Renderização Banco
+                const bank = document.getElementById('play-item-bank');
+                bank.innerHTML = '';
+                const frontDesign = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
+
+                this.state.activeGame.shuffledCards.forEach(card => {
+                    const isSelectedInGuess = this.state.currentGuess.includes(card.id);
+                    const cardEl = document.createElement('div');
+                    cardEl.className = `game-card p-4 flex flex-col justify-between cursor-pointer border rounded-2xl text-center select-none ${isSelectedInGuess ? 'card-selected opacity-40 pointer-events-none' : ''}`;
+                    cardEl.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url('${frontDesign}')`;
+                    cardEl.style.backgroundSize = 'cover';
+                    cardEl.onclick = () => this.toggleSelection(card.id);
+                    cardEl.innerHTML = `<p class="text-xs font-bold text-slate-800 m-auto">${card.content}</p>`;
+                    bank.appendChild(cardEl);
+                });
+
+                // Slots da Mesa
+                for (let i = 0; i < 6; i++) {
+                    const slot = document.getElementById(`guess-slot-${i}`);
+                    const cId = this.state.currentGuess[i];
+                    if(cId !== null && cId !== undefined) {
+                        const card = this.state.activeGame.originalCards.find(x => x.id === cId);
+                        slot.innerText = card ? card.content.substring(0,3) : (i + 1);
+                        slot.className = "guess-slot cursor-pointer filled text-[10px]";
+                    } else {
+                        slot.innerText = i + 1;
+                        slot.className = "guess-slot cursor-pointer";
+                    }
                 }
 
-                setTimeout(() => {
-                    if (deckStack) {
-                        deckStack.classList.remove('shuffling');
-                    }
-                    cards.forEach((card, index) => {
-                        setTimeout(() => {
-                            card.classList.add('dealt');
-                        }, index * 80);
-                    });
-                }, 700);
+                this.updateValidationButton();
+                this.renderHistoryList();
             },
 
             toggleSelection: function(cardId, slotIndex = null) {
                 if(this.state.gameOver) return;
-
-                if (slotIndex !== null) { // Clicou num slot da mesa
-                    this.state.currentGuess[slotIndex] = null; // Esvazia o slot
-                } else { // Clicou num item do banco
-                    const emptySlotIndex = this.state.currentGuess.findIndex(slot => slot === null || slot === undefined);
-                    if (emptySlotIndex !== -1) {
-                        this.state.currentGuess[emptySlotIndex] = cardId;
+                if (slotIndex !== null) {
+                    this.state.currentGuess[slotIndex] = null;
+                } else {
+                    const emptyIdx = this.state.currentGuess.findIndex(slot => slot === null);
+                    if (emptyIdx !== -1) {
+                        this.state.currentGuess[emptyIdx] = cardId;
                     }
                 }
-
                 this.updatePlayUI();
-                this.updateValidationButton();
-            },
-
-            renderHand: function() {
-                // This function is obsolete and is being removed. The .hand-row element is also removed from HTML.
             },
 
             updateValidationButton: function() {
                 const btn = document.getElementById('btn-validate');
                 if(!btn) return;
-
-                if(this.state.currentGuess.filter(c => c !== null).length === 6) {
+                const completed = this.state.currentGuess.filter(c => c !== null).length === 6;
+                if(completed && !this.state.gameOver) {
                     btn.disabled = false;
                     btn.className = "w-full py-5 rounded-2xl font-black text-xs tracking-widest bg-slate-900 text-white shadow-xl shadow-slate-900/20 cursor-pointer active:scale-95 transition";
                 } else {
@@ -1974,196 +1330,211 @@
             },
 
             validateGuess: function() {
-                const correctIds = this.state.activeGame.originalCards.filter(c => c.isCorrect).map(c => c.id).slice(0, 6);
-                const limit = this.state.activeGame.attemptLimit || 8;
-                
+                const correctCards = this.state.activeGame.originalCards.filter(c => c.isCorrect);
                 let black = 0;
                 let white = 0;
-                const guess = [...this.state.currentGuess];
-                const solution = [...correctIds];
 
-                for(let i=0; i<6; i++) {
-                    if(guess[i] === solution[i]) {
-                        black++;
-                        guess[i] = -1;
-                        solution[i] = -2;
-                    }
-                }
-                for(let i=0; i<6; i++) {
-                    if(guess[i] === -1) continue;
-                    const found = solution.indexOf(guess[i]);
-                    if(found > -1) {
-                        white++;
-                        solution[found] = -2;
-                    }
-                }
+                let remainingSecret = [];
+                let remainingGuess = [];
 
-                this.state.attempts.push({ black, white, guess: [...this.state.currentGuess] });
-                this.state.currentGuess = Array(6).fill(null);
-                
-                if(black === 6) this.state.gameOver = 'win';
-                else if(this.state.attempts.length >= limit) this.state.gameOver = 'lose';
-
-                this.updatePlayUI();
-                if (this.state.gameOver === 'win') this.revealSolution();
-            },
-
-            updatePlayUI: function() {
-                const history = document.getElementById('play-history');
-                const counter = document.getElementById('play-counter');
-                
-                const limit = this.state.activeGame.attemptLimit || 8;
-                if(counter) counter.innerText = `${this.state.attempts.length}/${limit}`;
-                
-                if(!history) return;
-
-                history.innerHTML = '';
-
-                // Renderizar tentativas passadas
-                this.state.attempts.forEach((att, index) => {
-                    history.appendChild(this.createCombinedRow(att, att.guess, index, false));
-                });
-
-                // Renderizar área de tentativa atual (se o jogo não acabou)
-                if (!this.state.gameOver) {
-                    history.appendChild(this.createCombinedRow(null, this.state.currentGuess, this.state.attempts.length, true));
-                }
-
-                history.scrollTop = history.scrollHeight;
-
-                if(this.state.gameOver) {
-                    const win = this.state.gameOver === 'win';
-                    const actions = document.getElementById('play-actions');
-                    if(actions) {
-                        actions.innerHTML = `
-                            <div class="p-4 rounded-[24px] text-center ${win ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'} border">
-                                <h4 class="text-lg font-black ${win ? 'text-emerald-600' : 'text-red-600'} mb-1">${win ? 'VITÓRIA!' : 'FIM DE JOGO'}</h4>
-                                <p class="text-xs ${win ? 'text-emerald-800' : 'text-red-800'} font-semibold mb-4">${win ? 'Código Secreto descoberto com sucesso!' : 'Você não tem mais tentativas. Reinicie para jogar novamente.'}</p>
-                                <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                                    <button onclick="app.switchView('dashboard')" class="flex-1 bg-white text-slate-700 px-4 py-3 rounded-xl font-bold text-xs border border-slate-200 transition hover:bg-slate-50">Sair</button>
-                                    <button onclick="app.replayGame()" class="flex-1 bg-emerald-600 text-white px-4 py-3 rounded-xl font-bold text-xs shadow-lg shadow-emerald-200 transition hover:bg-emerald-700">Jogar Novamente</button>
-                                </div>
-                            </div>
-                        `;
-                    }
-                } else {
-                    this.updateValidationButton();
-                }
-            },
-
-            renderItemBank: function() {
-                const bank = document.getElementById('play-item-bank');
-                if (!bank) return;
-                bank.innerHTML = '';
-                const bankItems = this.state.activeGame.originalCards.slice(0, 12);
-    
-                bankItems.forEach(card => {
-                    const design = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
-                    const cardEl = document.createElement('div');
-                    cardEl.className = 'game-card p-4 cursor-pointer';
-                    cardEl.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.82), rgba(255,255,255,0.82)), url('${design}')`;
-                    cardEl.style.backgroundSize = 'cover';
-                    cardEl.style.backgroundPosition = 'center';
-                    cardEl.onclick = () => this.toggleSelection(card.id);
-                    cardEl.innerHTML = `
-                        <span class="text-[10px] font-black text-slate-400 uppercase">Carta ${card.pileId}</span>
-                        <p class="text-sm font-semibold text-slate-700 leading-6 mt-2">${card.content || 'Carta vazia'}</p>
-                    `;
-                    bank.appendChild(cardEl);
-                });
-            },
-
-            createAttemptRow: function(guess, attemptIndex, isActive) {
-                const row = document.createElement('div');
-                row.className = `grid grid-cols-6 gap-2`; // Reduced gap for tighter packing
-                
-                const slotsHtml = (guess || []).map((cardId, slotIndex) => {
-                    if (cardId !== null) {
-                        const card = this.state.activeGame.originalCards.find(c => c.id === cardId);
-                        const design = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
-                        return `
-                            <div class="game-card p-2 flex flex-col justify-start text-center ${isActive ? 'cursor-pointer' : ''}" 
-                                 style="min-height: 0; aspect-ratio: 4/5.5; background-image: linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)), url('${design}'); background-size: cover; background-position: center;"
-                                 ${isActive ? `onclick="app.toggleSelection(null, ${slotIndex})"` : ''}>
-                                <span class="block text-[9px] font-black text-slate-500 uppercase mb-1">C.${card.pileId}</span>
-                                <p class="text-[10px] leading-tight font-semibold text-slate-700">${card.content}</p>
-                            </div>`;
-                    }
-                    // Slot vazio
-                    return `<div class="h-full rounded-lg bg-slate-200/50 border-2 border-dashed border-slate-300/80" style="aspect-ratio: 4/5.5;"></div>`;
-                }).join('');
-
-                row.innerHTML = slotsHtml;
-                return row;
-            },
-
-            createCombinedRow: function(attemptResult, guess, attemptIndex, isActive) {
-                const row = document.createElement('div');
-                row.className = `flex items-center gap-4 p-3 rounded-3xl ${isActive ? 'bg-white/60' : 'bg-slate-100/50'}`;
-
-                const attemptCardsHTML = this.createAttemptRow(guess, attemptIndex, isActive).outerHTML;
-                
-                let feedbackPegsHTML = '';
-                if (attemptResult) {
-                    const blackPegs = Array(attemptResult.black).fill('<div class="w-4 h-4 rounded-full bg-emerald-500 border-2 border-white shadow-md"></div>').join('');
-                    const whitePegs = Array(attemptResult.white).fill('<div class="w-4 h-4 rounded-full bg-slate-400 border-2 border-white shadow-md"></div>').join('');
-                    feedbackPegsHTML = `<div class="grid grid-cols-2 gap-1.5 w-10">${blackPegs}${whitePegs}</div>`;
-                } else {
-                    feedbackPegsHTML = `<div class="grid grid-cols-2 gap-1.5 w-10">${Array(6).fill('<div class="w-4 h-4 rounded-full bg-slate-200"></div>').join('')}</div>`;
-                }
-
-                row.innerHTML = `<div class="flex-1">${attemptCardsHTML}</div><div class="shrink-0">${feedbackPegsHTML}</div>`;
-                return row;
-            },
-
-            renderSolutionRow: function() {
-                const solutionRow = document.getElementById('solution-row');
-                if (!solutionRow) return;
-                solutionRow.innerHTML = '';
-
-                const backDesign = this.state.activeGame.backDesign || "imagens/verso/verso01.png";
-
+                // 1º Passo: Verificar Pinos Pretos (Cartas certas no local exato)
                 for (let i = 0; i < 6; i++) {
-                    const cardContainer = document.createElement('div');
-                    cardContainer.id = `solution-card-${i}`;
-                    cardContainer.className = 'solution-card-container';
-                    cardContainer.innerHTML = `
-                        <div class="solution-card-inner">
-                            <div class="solution-card-back" style="background-image: url('${backDesign}')"></div>
-                            <div class="solution-card-front"></div>
-                        </div>
-                    `;
-                    solutionRow.appendChild(cardContainer);
+                    const guessedCardId = this.state.currentGuess[i];
+                    const secretCardAtPos = correctCards[i];
+
+                    if (secretCardAtPos && guessedCardId === secretCardAtPos.id) {
+                        black++;
+                    } else {
+                        if (secretCardAtPos) remainingSecret.push(secretCardAtPos.id);
+                        remainingGuess.push(guessedCardId);
+                    }
+                }
+
+                // 2º Passo: Verificar Pinos Brancos (Pertence ao código secreto, mas em local errado)
+                remainingGuess.forEach(gId => {
+                    const secretCard = this.state.activeGame.originalCards.find(x => x.id === gId);
+                    if (secretCard && secretCard.isCorrect) {
+                        const idx = remainingSecret.indexOf(gId);
+                        if (idx !== -1) {
+                            white++;
+                            remainingSecret.splice(idx, 1);
+                        }
+                    }
+                });
+
+                const result = { black, white };
+                this.state.attempts.push({ guess: [...this.state.currentGuess], result });
+
+                if (black === 6) {
+                    this.state.gameOver = 'win';
+                } else if (this.state.attempts.length >= this.state.activeGame.attemptLimit) {
+                    this.state.gameOver = 'lose';
+                }
+
+                this.state.currentGuess = [null, null, null, null, null, null];
+                this.updatePlayUI();
+
+                if (this.state.gameOver) {
+                    this.openSolutionModal();
                 }
             },
 
-            revealSolution: function() {
-                const correctCards = this.state.activeGame.originalCards.filter(c => c.isCorrect).slice(0, 6);
+            renderHistoryList: function() {
+                const list = document.getElementById('play-history-list');
+                if(!list) return;
+                list.innerHTML = '';
+
+                this.state.attempts.forEach((att, idx) => {
+                    const item = document.createElement('div');
+                    item.className = "flex flex-col gap-2 p-3 bg-slate-100 rounded-2xl mb-2 text-xs border";
+                    
+                    let cardsHTML = '<div class="flex gap-1 flex-wrap">';
+                    att.guess.forEach(cId => {
+                        const card = this.state.activeGame.originalCards.find(x => x.id === cId);
+                        cardsHTML += `<span class="bg-white px-1.5 py-1 border rounded text-[10px] text-slate-700 font-medium">${card ? card.content.substring(0,5) : '?'}</span>`;
+                    });
+                    cardsHTML += '</div>';
+
+                    let pegsHTML = '<div class="flex gap-1">';
+                    for(let b=0; b<att.result.black; b++) pegsHTML += '<div class="w-3 h-3 rounded-full bg-slate-900 border border-white"></div>';
+                    for(let w=0; w<att.result.white; w++) pegsHTML += '<div class="w-3 h-3 rounded-full bg-white border border-slate-400"></div>';
+                    pegsHTML += '</div>';
+
+                    item.innerHTML = `
+                        <div class="flex justify-between font-bold text-slate-500">
+                            <span>Tentativa #${idx+1}</span>
+                            ${pegsHTML}
+                        </div>
+                        ${cardsHTML}
+                    `;
+                    list.appendChild(item);
+                });
+            },
+
+            openSolutionModal: function() {
+                const modal = document.getElementById('modal-solution');
+                if(!modal || !this.state.activeGame) return;
+
+                const win = this.state.gameOver === 'win';
+                
+                // Cálculo de pontuação baseado nas tentativas utilizadas
+                let score = 0;
+                const attemptsUsed = this.state.attempts.length;
+                if(win) {
+                    const maxAttempts = this.state.activeGame.attemptLimit;
+                    score = Math.max(10, Math.round(((maxAttempts - attemptsUsed + 1) / maxAttempts) * 100));
+                }
+
+                document.getElementById('solution-title').innerText = win ? 'Parabéns, Você Venceu!' : 'Fim de Jogo!';
+                document.getElementById('solution-subtitle').innerText = win ? `Código Secreto desvendado! Pontuação: ${score} pts` : 'Suas tentativas acabaram.';
+                
+                const icon = document.getElementById('solution-icon');
+                if(win) {
+                    icon.className = "fa-solid fa-trophy text-amber-500 text-3xl animate-bounce";
+                } else {
+                    icon.className = "fa-solid fa-circle-xmark text-red-500 text-3xl";
+                }
+
+                document.getElementById('solution-explanation').innerText = this.state.activeGame.explicacao || '';
+
+                modal.style.display = 'flex';
+
+                const correctCards = this.state.activeGame.originalCards.filter(c => c.isCorrect);
                 const frontDesign = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
 
                 correctCards.forEach((card, i) => {
                     const cardContainer = document.getElementById(`solution-card-${i}`);
-                    const frontFace = cardContainer.querySelector('.solution-card-front');
-                    
-                    frontFace.className = 'solution-card-front game-card p-2 flex flex-col justify-center items-center text-center';
-                    frontFace.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)), url('${frontDesign}')`;
-                    frontFace.innerHTML = `<p class="text-[10px] leading-tight font-semibold text-slate-700">${card.content}</p>`;
-                    cardContainer.style.minHeight = '0';
-                    cardContainer.classList.add('flipped');
+                    if(cardContainer) {
+                        const frontFace = cardContainer.querySelector('.solution-card-front');
+                        frontFace.className = 'solution-card-front game-card p-2 flex flex-col justify-center items-center text-center';
+                        frontFace.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)), url('${frontDesign}')`;
+                        frontFace.innerHTML = `<p class="text-[10px] leading-tight font-semibold text-slate-700">${card.content}</p>`;
+                        cardContainer.style.minHeight = '0';
+                        cardContainer.classList.add('flipped');
+                    }
                 });
             },
+
+            closeSolutionModal: function() {
+                document.getElementById('modal-solution').style.display = 'none';
+                document.querySelectorAll('.solution-card-container').forEach(c => c.classList.remove('flipped'));
+            },
+
+            openAuthorModal: function() {
+                document.getElementById('modal-author').style.display = 'flex';
+                document.getElementById('modal-input-author').value = '';
+                document.getElementById('modal-input-author').focus();
+            },
+
+            closeAuthorModal: function() {
+                document.getElementById('modal-author').style.display = 'none';
+            },
+
+            handleModalAuthorKeypress: function(event) {
+                if (event.key === 'Enter') { event.preventDefault(); this.confirmAuthor(); }
+            },
+
+            confirmAuthor: function() {
+                const input = document.getElementById('modal-input-author');
+                if (!input) return;
+                const value = input.value.trim();
+                if (value && this.state.editingGame) {
+                    if (!this.state.editingGame.disciplineInfo.autores.includes(value)) {
+                        this.state.editingGame.disciplineInfo.autores.push(value);
+                        this.renderAuthorsList();
+                    }
+                }
+                this.closeAuthorModal();
+            },
+
+            removeAuthor: function(idx) {
+                if(this.state.editingGame) {
+                    this.state.editingGame.disciplineInfo.autores.splice(idx, 1);
+                    this.renderAuthorsList();
+                }
+            },
+
+            renderAuthorsList: function() {
+                const list = document.getElementById('edit-game-authors-list');
+                if(!list || !this.state.editingGame) return;
+                list.innerHTML = '';
+                (this.state.editingGame.disciplineInfo.autores || []).forEach((author, idx) => {
+                    const chip = document.createElement('div');
+                    chip.className = 'author-chip';
+                    chip.innerHTML = `<span>${author}</span><button type="button" onclick="app.removeAuthor(${idx})">×</button>`;
+                    list.appendChild(chip);
+                });
+            },
+
+            toggleFrontDesign: function(dir) {
+                if(!this.state.editingGame) return;
+                let idx = this.frontDesigns.indexOf(this.state.editingGame.frontDesign);
+                if(dir==='next') idx = (idx + 1) % this.frontDesigns.length;
+                else idx = (idx - 1 + this.frontDesigns.length) % this.frontDesigns.length;
+                this.state.editingGame.frontDesign = this.frontDesigns[idx];
+                document.getElementById('preview-front').src = this.state.editingGame.frontDesign;
+            },
+
+            toggleBackDesign: function(dir) {
+                if(!this.state.editingGame) return;
+                let idx = this.backDesigns.indexOf(this.state.editingGame.backDesign);
+                if(dir==='next') idx = (idx + 1) % this.backDesigns.length;
+                else idx = (idx - 1 + this.backDesigns.length) % this.backDesigns.length;
+                this.state.editingGame.backDesign = this.backDesigns[idx];
+                document.getElementById('preview-back').src = this.state.editingGame.backDesign;
+            }
         };
 
-        // Previne fechamento acidental de modais
-        window.onclick = function(event) {
-            const modal = document.getElementById('modal-card');
-            if (event.target == modal) app.closeModal();
-            const authorModal = document.getElementById('modal-author');
-            if (event.target == authorModal) app.closeAuthorModal();
-        }
-    </script>
-</body>
-</html> }
+        window.onload = function() {
+            app.init();
+
+            // Previne fechamento acidental de modais no clique fora
+            window.onclick = function(event) {
+                if (event.target == document.getElementById('modal-card')) app.closeCardModal();
+                if (event.target == document.getElementById('modal-author')) app.closeAuthorModal();
+                if (event.target == document.getElementById('modal-difficulty')) app.closeDifficultyModal();
+            }
+        };
     </script>
 </body>
 </html>
