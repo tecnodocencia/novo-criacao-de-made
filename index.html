@@ -310,6 +310,121 @@
             border: 1px solid rgba(255,255,255,0.3);
             box-shadow: 0 10px 20px rgba(15, 23, 42, 0.1);
         }
+
+        .bank-card {
+            position: relative;
+            height: 170px;
+            border-radius: 24px;
+            cursor: grab;
+            user-select: none;
+        }
+
+        .bank-card::before,
+        .bank-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            background: white;
+            border: 2px solid #d1d5db;
+        }
+
+        .bank-card::before {
+            transform: translate(6px, 6px);
+            z-index: 0;
+        }
+
+        .bank-card::after {
+            transform: translate(12px, 12px);
+            z-index: -1;
+        }
+
+        .bank-card-inner {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            border-radius: 24px;
+            background: white;
+            border: 2px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            font-weight: 900;
+            text-align: center;
+        }
+
+        .drop-slot {
+            width: 150px;
+            height: 200px;
+            border: 4px dashed #94a3b8;
+            border-radius: 24px;
+            background: rgba(255,255,255,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .secret-card-slot {
+            width: 150px;
+            height: 200px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #047857, #10b981);
+            border: 3px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .history-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 18px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .history-cards {
+            display: flex;
+            gap: 8px;
+        }
+
+        .history-mini-card {
+            width: 60px;
+            height: 80px;
+            border-radius: 14px;
+            background: white;
+            border: 2px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+            text-align: center;
+            padding: 4px;
+        }
+
+        .feedback-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+        }
+
+        .feedback-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 999px;
+            border: 2px solid #94a3b8;
+        }
+
+        .feedback-dot.correct {
+            background: black;
+        }
+
+        .feedback-dot.partial {
+            background: white;
+        }
     </style>
 </head>
 <body class="overflow-hidden">
@@ -639,64 +754,75 @@
                 </footer>
             </section>
 
-            <section id="view-player" class="view-section flex-1 flex flex-col p-6 hidden table-surface overflow-hidden">
-                <div class="flex-1 flex flex-col gap-4 overflow-hidden min-h-0">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div class="flex items-center gap-3">
-                            <button id="back-to-editor-btn" onclick="app.backToCreator()" class="w-11 h-11 rounded-full bg-white/90 border border-slate-200 shadow-sm hover:bg-white transition flex items-center justify-center hidden">
-                                <i class="fa-solid fa-arrow-left text-slate-500"></i>
-                            </button>
-                            <button onclick="app.switchView('dashboard')" class="w-11 h-11 rounded-full bg-white/90 border border-slate-200 shadow-sm hover:bg-white transition flex items-center justify-center">
-                                <i class="fa-solid fa-arrow-left text-slate-500"></i>
-                            </button>
-                            <div>
-                                <h2 class="text-xl md:text-2xl font-black text-slate-900" id="play-name-display">---</h2>
-                                <p class="text-xs md:text-sm text-slate-500 font-semibold" id="play-meta-display">Biologia • Código Secreto</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <button onclick="app.openDifficultyModal()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition">
-                                <i class="fa-solid fa-sliders mr-2"></i>Alterar Dificuldade
-                            </button>
-                            <div class="bg-white/80 border border-slate-200 rounded-2xl px-4 py-2 flex items-center gap-4 text-xs font-black text-slate-700">
-                                <div>TENTATIVAS: <span id="play-attempts-counter" class="text-emerald-600">0/10</span></div>
-                                <div class="w-px h-4 bg-slate-300"></div>
-                                <div>NÍVEL: <span id="play-difficulty-display" class="text-amber-600">1</span></div>
-                            </div>
-                        </div>
-                    </div>
+            <section id="view-player" class="view-section hidden flex-col h-screen bg-[#f5f5ee] overflow-hidden">
 
-                    <div class="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-6 min-h-0">
-                        <div class="lg:col-span-3 flex flex-col min-h-0 bg-white/60 border border-white/80 rounded-[36px] p-5 shadow-sm">
-                            <div class="mb-4">
-                                <h3 class="font-black text-slate-900 text-sm tracking-wide uppercase">Banco de Cartas</h3>
-                                <p class="text-xs text-slate-500 mt-1" id="play-enunciado-display">Escolha as cartas abaixo:</p>
-                            </div>
-                            <div id="play-item-bank" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 overflow-y-auto pr-1 flex-1 custom-scrollbar">
-                                </div>
+                <div class="flex-1 flex overflow-hidden">
+
+                    <!-- ESQUERDA -->
+                    <div class="w-[320px] border-r border-slate-300 bg-white p-4 overflow-y-auto">
+
+                        <h2 class="font-black text-lg mb-4">
+                            Cartas
+                        </h2>
+
+                        <div id="play-item-bank"
+                            class="grid grid-cols-2 gap-4">
                         </div>
 
-                        <div class="lg:col-span-1 flex flex-col min-h-0 bg-white/90 border border-slate-200/60 rounded-[36px] p-5 shadow-sm">
-                            <h3 class="font-black text-slate-900 text-sm tracking-wide uppercase mb-4">Sua Tentativa</h3>
-                            <div class="grid grid-cols-6 gap-2 mb-4">
-                                <div onclick="app.toggleSelection(null, 0)" id="guess-slot-0" class="guess-slot cursor-pointer">1</div>
-                                <div onclick="app.toggleSelection(null, 1)" id="guess-slot-1" class="guess-slot cursor-pointer">2</div>
-                                <div onclick="app.toggleSelection(null, 2)" id="guess-slot-2" class="guess-slot cursor-pointer">3</div>
-                                <div onclick="app.toggleSelection(null, 3)" id="guess-slot-3" class="guess-slot cursor-pointer">4</div>
-                                <div onclick="app.toggleSelection(null, 4)" id="guess-slot-4" class="guess-slot cursor-pointer">5</div>
-                                <div onclick="app.toggleSelection(null, 5)" id="guess-slot-5" class="guess-slot cursor-pointer">6</div>
-                            </div>
-                            <div id="play-actions" class="mb-4">
-                                <button id="btn-validate" onclick="app.validateGuess()" class="w-full py-5 rounded-2xl font-black text-xs tracking-widest bg-slate-300 text-slate-500 cursor-not-allowed transition" disabled>
-                                    VALIDAR CÓDIGO
-                                </button>
-                            </div>
-                            <div class="w-px bg-slate-200 my-2"></div>
-                            <div class="flex-1 overflow-y-auto custom-scrollbar pr-1" id="play-history-list">
-                                </div>
-                        </div>
                     </div>
+
+
+                    <!-- CENTRO -->
+                    <div class="flex-1 flex flex-col items-center justify-start p-6 overflow-hidden">
+
+                        <!-- CARTAS SECRETAS -->
+                        <div class="flex gap-4 mb-8">
+
+                            <div class="secret-card-slot" id="secret-slot-0"></div>
+                            <div class="secret-card-slot" id="secret-slot-1"></div>
+                            <div class="secret-card-slot" id="secret-slot-2"></div>
+                            <div class="secret-card-slot" id="secret-slot-3"></div>
+
+                        </div>
+
+
+                        <!-- ÁREA DE ESCOLHA -->
+                        <div class="flex gap-4 mb-8">
+
+                            <div class="drop-slot" data-slot="0"></div>
+                            <div class="drop-slot" data-slot="1"></div>
+                            <div class="drop-slot" data-slot="2"></div>
+                            <div class="drop-slot" data-slot="3"></div>
+
+                        </div>
+
+
+                        <button
+                            id="btn-validate"
+                            onclick="app.validateGuess()"
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-4 rounded-2xl font-black tracking-wider"
+                            >
+                            VALIDAR
+                        </button>
+
+                    </div>
+
+
+                    <!-- DIREITA -->
+                    <div class="w-[360px] border-l border-slate-300 bg-white p-4 overflow-y-auto">
+
+                        <h2 class="font-black text-lg mb-4">
+                            Histórico
+                        </h2>
+
+                        <div id="play-history-list"
+                            class="flex flex-col gap-4">
+                        </div>
+
+                    </div>
+
                 </div>
+
             </section>
         </main>
     </div>
@@ -865,7 +991,7 @@
                 editingGame: null,
                 editingStep: 1,
                 activeGame: null,
-                currentGuess: [null, null, null, null, null, null],
+                currentGuess: [null, null, null, null],
                 attempts: [],
                 gameOver: null,
                 selectedGameIdForPlay: null,
@@ -1028,6 +1154,125 @@
                         </div>
                     `;
                     grid.appendChild(card);
+                });
+            },
+
+            createSecretCode: function(game) {
+                const correctCards = game.cards.filter(card => card.isCorrect);
+
+                const secret = [];
+
+                for(let i = 0; i < 4; i++) {
+                    const randomCard = correctCards[Math.floor(Math.random() * correctCards.length)];
+
+                    secret.push({
+                        ...randomCard,
+                        instanceId: crypto.randomUUID()
+                    });
+                }
+
+                return secret;
+            },
+
+            renderPlayBank: function() {
+                const bank = document.getElementById('play-item-bank');
+                bank.innerHTML = '';
+
+                this.state.activeGame.cards.forEach(card => {
+                    const div = document.createElement('div');
+                    div.className = 'bank-card';
+                    div.draggable = true;
+                    div.dataset.cardId = card.id;
+
+                    div.innerHTML = `
+                        <div class="bank-card-inner">
+                            ${card.content}
+                        </div>
+                    `;
+
+                    div.addEventListener('dragstart', e => {
+                        e.dataTransfer.setData('cardId', card.id);
+                    });
+
+                    bank.appendChild(div);
+                });
+            },
+
+            setupDropZones: function() {
+                const slots = document.querySelectorAll('.drop-slot');
+                slots.forEach(slot => {
+                    slot.addEventListener('dragover', e => {
+                        e.preventDefault();
+                    });
+                    slot.addEventListener('drop', e => {
+                        e.preventDefault();
+                        const cardId = e.dataTransfer.getData('cardId');
+                        const card = this.state.activeGame.cards.find(c => String(c.id) === String(cardId));
+                        const index = Number(slot.dataset.slot);
+                        this.state.currentGuess[index] = {
+                            ...card,
+                            instanceId: crypto.randomUUID()
+                        };
+                        this.renderCurrentGuess();
+                    });
+                });
+            },
+
+            renderCurrentGuess: function() {
+                const slots = document.querySelectorAll('.drop-slot');
+                slots.forEach((slot, index) => {
+                    const card = this.state.currentGuess[index];
+                    if(!card) {
+                        slot.innerHTML = '';
+                        return;
+                    }
+                    slot.innerHTML = `
+                        <div class="bank-card-inner w-full h-full">
+                            ${card.content}
+                        </div>
+                    `;
+                });
+            },
+
+            addHistoryRow: function(guess, black, white) {
+                const history = document.getElementById('play-history-list');
+                const row = document.createElement('div');
+                row.className = 'history-row';
+
+                let dots = [];
+                for(let i = 0; i < black; i++) {
+                    dots.push('<div class="feedback-dot correct"></div>');
+                }
+                for(let i = 0; i < white; i++) {
+                    dots.push('<div class="feedback-dot partial"></div>');
+                }
+                while(dots.length < 4) {
+                    dots.push('<div class="feedback-dot"></div>');
+                }
+
+                row.innerHTML = `
+                    <div class="history-cards">
+                        ${guess.map(card => `
+                            <div class="history-mini-card">
+                                ${card.content}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="feedback-grid">
+                        ${dots.join('')}
+                    </div>
+                `;
+                history.prepend(row);
+            },
+
+            revealSecretCards: function() {
+                this.state.secretCode.forEach((card, index) => {
+                    const slot = document.getElementById(`secret-slot-${index}`);
+                    slot.innerHTML = `
+                        <div class="bank-card-inner w-full h-full">
+                            ${card.content}
+                        </div>
+                    `;
                 });
             },
 
@@ -1214,32 +1459,24 @@
                 this.state.isTestingFromCreator = true;
                 const gameForTest = JSON.parse(JSON.stringify(this.state.editingGame));
                 
-                const config = this.difficultyRules[this.state.currentDifficulty];
-
                 this.state.activeGame = {
                     id: gameForTest.id,
                     name: gameForTest.name,
+                    cards: gameForTest.cards,
                     disciplineInfo: gameForTest.disciplineInfo,
                     enunciado: gameForTest.enunciado,
                     explicacao: gameForTest.explicacao,
-                    frontDesign: gameForTest.frontDesign,
-                    backDesign: gameForTest.backDesign,
-                    originalCards: JSON.parse(JSON.stringify(gameForTest.cards)),
-                    shuffledCards: this.shuffleArray(JSON.parse(JSON.stringify(gameForTest.cards))),
-                    attemptLimit: config.attempts
                 };
-
-                this.state.currentGuess = [null, null, null, null, null, null];
-                this.state.attempts = [];
-                this.state.gameOver = null;
-
-                document.getElementById('play-name-display').innerText = gameForTest.name || 'Sem título';
-                document.getElementById('play-meta-display').innerText = `${gameForTest.disciplineInfo?.disciplina || '-'} • Código Secreto`;
-                document.getElementById('play-enunciado-display').innerText = gameForTest.enunciado || '';
+                
+                this.state.secretCode = this.createSecretCode(this.state.activeGame);
+                this.state.currentGuess = [null, null, null, null];
+                this.renderPlayBank();
+                this.setupDropZones();
+                this.renderCurrentGuess();
+                const history = document.getElementById('play-history-list');
+                history.innerHTML = '';
                 
                 document.getElementById('back-to-editor-btn').classList.remove('hidden');
-
-                this.updatePlayUI();
                 this.switchView('player');
             },
 
@@ -1370,42 +1607,36 @@
                 const game = this.state.games.find(x => x.id === id);
                 if(!game) return;
 
-                const config = this.difficultyRules[this.state.currentDifficulty];
-
                 this.state.activeGame = {
                     id: game.id,
                     name: game.name,
+                    cards: game.cards,
                     disciplineInfo: game.disciplineInfo,
                     enunciado: game.enunciado,
                     explicacao: game.explicacao,
-                    frontDesign: game.frontDesign,
-                    backDesign: game.backDesign,
-                    originalCards: JSON.parse(JSON.stringify(game.cards)),
-                    shuffledCards: this.shuffleArray(JSON.parse(JSON.stringify(game.cards))),
-                    attemptLimit: config.attempts
                 };
 
-                this.state.currentGuess = [null, null, null, null, null, null];
-                this.state.attempts = [];
-                this.state.gameOver = null;
-
-                document.getElementById('play-name-display').innerText = game.name || 'Sem título';
-                document.getElementById('play-meta-display').innerText = `${game.disciplineInfo?.disciplina || '-'} • Código Secreto`;
-                document.getElementById('play-enunciado-display').innerText = game.enunciado || '';
+                this.state.secretCode = this.createSecretCode(this.state.activeGame);
+                this.state.currentGuess = [null, null, null, null];
+                this.renderPlayBank();
+                this.setupDropZones();
+                this.renderCurrentGuess();
+                const history = document.getElementById('play-history-list');
+                history.innerHTML = '';
                 
-                this.updatePlayUI();
                 this.switchView('player');
             },
 
             replayGame: function() {
                 if(!this.state.activeGame) return;
-                const config = this.difficultyRules[this.state.currentDifficulty];
-                this.state.activeGame.shuffledCards = this.shuffleArray(JSON.parse(JSON.stringify(this.state.activeGame.originalCards)));
-                this.state.activeGame.attemptLimit = config.attempts;
-                this.state.currentGuess = [null, null, null, null, null, null];
-                this.state.attempts = [];
-                this.state.gameOver = null;
-                this.updatePlayUI();
+
+                this.state.secretCode = this.createSecretCode(this.state.activeGame);
+                this.state.currentGuess = [null, null, null, null];
+                this.renderPlayBank();
+                this.setupDropZones();
+                this.renderCurrentGuess();
+                const history = document.getElementById('play-history-list');
+                history.innerHTML = '';
             },
 
             shuffleArray: function(arr) {
@@ -1416,120 +1647,51 @@
                 return arr;
             },
 
-            updatePlayUI: function() {
-                if(!this.state.activeGame) return;
-                
-                document.getElementById('play-attempts-counter').innerText = `${this.state.attempts.length} / ${this.state.activeGame.attemptLimit}`;
-                document.getElementById('play-difficulty-display').innerText = this.state.currentDifficulty;
-
-                // Renderização Banco
-                const bank = document.getElementById('play-item-bank');
-                bank.innerHTML = '';
-                const frontDesign = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
-
-                this.state.activeGame.shuffledCards.forEach(card => {
-                    const isSelectedInGuess = this.state.currentGuess.includes(card.id);
-                    const cardEl = document.createElement('div');
-                    cardEl.className = `game-card p-4 flex flex-col justify-between cursor-pointer border rounded-2xl text-center select-none ${isSelectedInGuess ? 'card-selected opacity-40 pointer-events-none' : ''}`;
-                    cardEl.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url('${frontDesign}')`;
-                    cardEl.style.backgroundSize = 'cover';
-                    cardEl.onclick = () => this.toggleSelection(card.id);
-                    cardEl.innerHTML = `<p class="text-xs font-bold text-slate-800 m-auto">${card.content}</p>`;
-                    bank.appendChild(cardEl);
-                });
-
-                // Slots da Mesa
-                for (let i = 0; i < 6; i++) {
-                    const slot = document.getElementById(`guess-slot-${i}`);
-                    const cId = this.state.currentGuess[i];
-                    if(cId !== null && cId !== undefined) {
-                        const card = this.state.activeGame.originalCards.find(x => x.id === cId);
-                        slot.innerText = card ? card.content.substring(0,3) : (i + 1);
-                        slot.className = "guess-slot cursor-pointer filled text-[10px]";
-                    } else {
-                        slot.innerText = i + 1;
-                        slot.className = "guess-slot cursor-pointer";
-                    }
-                }
-
-                this.updateValidationButton();
-                this.renderHistoryList();
-            },
-
-            toggleSelection: function(cardId, slotIndex = null) {
-                if(this.state.gameOver) return;
-                if (slotIndex !== null) {
-                    this.state.currentGuess[slotIndex] = null;
-                } else {
-                    const emptyIdx = this.state.currentGuess.findIndex(slot => slot === null);
-                    if (emptyIdx !== -1) {
-                        this.state.currentGuess[emptyIdx] = cardId;
-                    }
-                }
-                this.updatePlayUI();
-            },
-
-            updateValidationButton: function() {
-                const btn = document.getElementById('btn-validate');
-                if(!btn) return;
-                const completed = this.state.currentGuess.filter(c => c !== null).length === 6;
-                if(completed && !this.state.gameOver) {
-                    btn.disabled = false;
-                    btn.className = "w-full py-5 rounded-2xl font-black text-xs tracking-widest bg-slate-900 text-white shadow-xl shadow-slate-900/20 cursor-pointer active:scale-95 transition";
-                } else {
-                    btn.disabled = true;
-                    btn.className = "w-full py-5 rounded-2xl font-black text-xs tracking-widest bg-slate-300 text-slate-500 cursor-not-allowed transition";
-                }
-            },
-
             validateGuess: function() {
-                const correctCards = this.state.activeGame.originalCards.filter(c => c.isCorrect);
+                const guess = [...this.state.currentGuess];
+
+                if(guess.some(g => !g)) {
+                    alert('Complete os 4 espaços');
+                    return;
+                }
+
+                const secret = [...this.state.secretCode];
+
                 let black = 0;
                 let white = 0;
 
-                let remainingSecret = [];
-                let remainingGuess = [];
+                const usedSecret = [];
+                const usedGuess = [];
 
-                // 1º Passo: Verificar Pinos Pretos (Cartas certas no local exato)
-                for (let i = 0; i < 6; i++) {
-                    const guessedCardId = this.state.currentGuess[i];
-                    const secretCardAtPos = correctCards[i];
-
-                    if (secretCardAtPos && guessedCardId === secretCardAtPos.id) {
+                for(let i = 0; i < 4; i++) {
+                    if(secret[i].content === guess[i].content) {
                         black++;
-                    } else {
-                        if (secretCardAtPos) remainingSecret.push(secretCardAtPos.id);
-                        remainingGuess.push(guessedCardId);
+                        usedSecret.push(i);
+                        usedGuess.push(i);
                     }
                 }
 
-                // 2º Passo: Verificar Pinos Brancos (Pertence ao código secreto, mas em local errado)
-                remainingGuess.forEach(gId => {
-                    const secretCard = this.state.activeGame.originalCards.find(x => x.id === gId);
-                    if (secretCard && secretCard.isCorrect) {
-                        const idx = remainingSecret.indexOf(gId);
-                        if (idx !== -1) {
+                for(let i = 0; i < 4; i++) {
+                    if(usedGuess.includes(i)) continue;
+                    for(let j = 0; j < 4; j++) {
+                        if(usedSecret.includes(j)) continue;
+                        if(guess[i].content === secret[j].content) {
                             white++;
-                            remainingSecret.splice(idx, 1);
+                            usedSecret.push(j);
+                            break;
                         }
                     }
-                });
-
-                const result = { black, white };
-                this.state.attempts.push({ guess: [...this.state.currentGuess], result });
-
-                if (black === 6) {
-                    this.state.gameOver = 'win';
-                } else if (this.state.attempts.length >= this.state.activeGame.attemptLimit) {
-                    this.state.gameOver = 'lose';
                 }
 
-                this.state.currentGuess = [null, null, null, null, null, null];
-                this.updatePlayUI();
+                this.addHistoryRow(guess, black, white);
 
-                if (this.state.gameOver) {
-                    this.openSolutionModal();
+                if(black === 4) {
+                    this.revealSecretCards();
+                    alert('Você venceu!');
                 }
+
+                this.state.currentGuess = [null, null, null, null];
+                this.renderCurrentGuess();
             },
 
             renderHistoryList: function() {
