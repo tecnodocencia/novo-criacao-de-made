@@ -1097,10 +1097,12 @@
             },
 
             switchView: function(viewId) {
-                document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
-                document.querySelectorAll('.view-section').forEach(s => s.classList.add('hidden'));
+                document.querySelectorAll('.view-section').forEach(s => {
+                    s.classList.remove('active');
+                    s.classList.add('hidden');
+                });
                 
-                const target = document.getElementById(`view-view-${viewId}`) || document.getElementById(`view-${viewId}`);
+                const target = document.getElementById(`view-${viewId}`);
                 if(target) {
                     target.classList.remove('hidden');
                     target.classList.add('active');
