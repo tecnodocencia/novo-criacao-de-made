@@ -389,9 +389,6 @@
             <section id="view-dashboard" class="view-section flex-col p-8 overflow-y-auto active">
                 <div class="flex justify-between items-center mb-8">
                     <h2 class="text-2xl font-bold text-slate-800">Materiais Criados</h2>
-                    <button onclick="app.newGame()" class="bg-amber-400 text-slate-900 px-6 py-2 rounded-xl font-bold text-sm shadow-lg shadow-amber-200">
-                        Criar Jogo
-                    </button>
                 </div>
                 <div id="dashboard-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     </div>
@@ -503,7 +500,7 @@
                                     <textarea id="edit-game-objetivo" rows="4" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Explique o objetivo do aluno...">Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.</textarea>
                                 </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                                    <div class="flex items-center justify-center gap-3">
+                                    <div class="flex items-center justify-center gap-1">
                                         <button onclick="app.toggleFrontDesign('prev')" class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
                                             <i class="fa-solid fa-chevron-left"></i>
                                         </button>
@@ -515,7 +512,7 @@
                                             <i class="fa-solid fa-chevron-right"></i>
                                         </button>
                                     </div>
-                                    <div class="flex items-center justify-center gap-3">
+                                    <div class="flex items-center justify-center gap-1">
                                         <button onclick="app.toggleBackDesign('prev')" class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
                                             <i class="fa-solid fa-chevron-left"></i>
                                         </button>
