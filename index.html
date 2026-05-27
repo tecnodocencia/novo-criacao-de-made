@@ -1183,6 +1183,7 @@
             renderPlayBank: function() {
                 const bank = document.getElementById('play-item-bank');
                 bank.innerHTML = '';
+                const frontDesign = this.state.activeGame.frontDesign || 'imagens/frente/frente01.png';
 
                 this.state.activeGame.cards.forEach(card => {
                     const div = document.createElement('div');
@@ -1191,8 +1192,10 @@
                     div.dataset.cardId = card.id;
 
                     div.innerHTML = `
-                        <div class="bank-card-inner">
-                            ${card.content}
+                        <div class="bank-card-inner" style="background-image: url('${frontDesign}'); background-size: cover; background-position: center;">
+                            <div class="w-full h-full flex items-center justify-center p-2 bg-white/80 rounded-[22px]">
+                                ${card.content}
+                            </div>
                         </div>
                     `;
 
@@ -1274,8 +1277,9 @@
             revealSecretCards: function() {
                 this.state.secretCode.forEach((card, index) => {
                     const slot = document.getElementById(`secret-slot-${index}`);
+                    slot.style.backgroundImage = '';
                     slot.innerHTML = `
-                        <div class="bank-card-inner w-full h-full">
+                        <div class="bank-card-inner w-full h-full" style="background: white;">
                             ${card.content}
                         </div>
                     `;
@@ -1472,6 +1476,8 @@
                     disciplineInfo: gameForTest.disciplineInfo,
                     enunciado: gameForTest.enunciado,
                     explicacao: gameForTest.explicacao,
+                    frontDesign: gameForTest.frontDesign,
+                    backDesign: gameForTest.backDesign
                 };
                 
                 this.state.secretCode = this.createSecretCode(this.state.activeGame);
@@ -1484,6 +1490,7 @@
                 
                 document.getElementById('back-to-editor-btn').classList.remove('hidden');
                 this.switchView('player');
+                this.applyCardDesigns();
             },
 
             backToCreator: function() {
@@ -1620,6 +1627,8 @@
                     disciplineInfo: game.disciplineInfo,
                     enunciado: game.enunciado,
                     explicacao: game.explicacao,
+                    frontDesign: game.frontDesign,
+                    backDesign: game.backDesign
                 };
 
                 this.state.secretCode = this.createSecretCode(this.state.activeGame);
@@ -1631,6 +1640,7 @@
                 history.innerHTML = '';
                 
                 this.switchView('player');
+                this.applyCardDesigns();
             },
 
             replayGame: function() {
@@ -1643,6 +1653,19 @@
                 this.renderCurrentGuess();
                 const history = document.getElementById('play-history-list');
                 history.innerHTML = '';
+
+                this.applyCardDesigns();
+            },
+
+            applyCardDesigns: function() {
+                if (!this.state.activeGame) return;
+                const backDesign = this.state.activeGame.backDesign || 'imagens/verso/verso01.png';
+                document.querySelectorAll('.secret-card-slot').forEach(slot => {
+                    slot.innerHTML = '';
+                    slot.style.backgroundImage = `url('${backDesign}')`;
+                    slot.style.backgroundSize = 'cover';
+                    slot.style.backgroundPosition = 'center';
+                });
             },
 
             shuffleArray: function(arr) {
