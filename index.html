@@ -756,7 +756,7 @@
 
             <section id="view-player" class="view-section hidden flex-col h-screen bg-[#f5f5ee] overflow-hidden">
 
-                <button id="back-to-editor-btn" onclick="app.backToCreator()" class="hidden absolute top-4 right-4 bg-amber-500 text-white px-6 py-3 font-bold rounded-xl text-sm transition z-20">
+                <button id="back-from-player-btn" onclick="app.backFromPlayer()" class="hidden absolute top-4 right-4 bg-amber-500 text-white px-6 py-3 font-bold rounded-xl text-sm transition z-20">
                     Voltar para o Editor
                 </button>
 
@@ -1488,18 +1488,26 @@
                 const history = document.getElementById('play-history-list');
                 history.innerHTML = '';
                 
-                document.getElementById('back-to-editor-btn').classList.remove('hidden');
+                document.getElementById('back-from-player-btn').classList.remove('hidden');
                 this.switchView('player');
                 this.applyCardDesigns();
             },
 
-            backToCreator: function() {
-                this.state.isTestingFromCreator = false;
+            backFromPlayer: function() {
+                const isTesting = this.state.isTestingFromCreator;
+                
                 this.state.activeGame = null;
                 this.state.selectedGameIdForPlay = null;
-                document.getElementById('back-to-editor-btn').classList.add('hidden');
-                this.switchView('creator');
-                this.showStep(5); // Return to review step
+                this.state.isTestingFromCreator = false;
+
+                document.getElementById('back-from-player-btn').classList.add('hidden');
+
+                if (isTesting) {
+                    this.switchView('creator');
+                    this.showStep(5);
+                } else {
+                    this.switchView('dashboard');
+                }
             },
 
             renderEditorGrid: function() {
@@ -1616,7 +1624,7 @@
             },
 
             playGame: function(id) {
-                document.getElementById('back-to-editor-btn').classList.add('hidden');
+                this.state.isTestingFromCreator = false;
                 const game = this.state.games.find(x => x.id === id);
                 if(!game) return;
 
@@ -1641,6 +1649,7 @@
                 
                 this.switchView('player');
                 this.applyCardDesigns();
+                document.getElementById('back-from-player-btn').classList.remove('hidden');
             },
 
             replayGame: function() {
