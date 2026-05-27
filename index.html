@@ -757,7 +757,7 @@
             <section id="view-player" class="view-section hidden flex-col h-screen bg-[#f5f5ee] overflow-hidden">
 
                 <button id="back-from-player-btn" onclick="app.backFromPlayer()" class="hidden absolute top-4 right-4 bg-amber-500 text-white px-6 py-3 font-bold rounded-xl text-sm transition z-20">
-                    Voltar para o Editor
+                    Voltar
                 </button>
 
                 <div class="flex-1 flex overflow-hidden">
@@ -765,9 +765,14 @@
                     <!-- ESQUERDA -->
                     <div class="w-[320px] border-r border-slate-300 bg-white p-4 overflow-y-auto">
 
-                        <h2 class="font-black text-lg mb-4">
-                            Cartas
-                        </h2>
+                        <div class="mb-4">
+                            <h2 class="font-black text-lg">
+                                Cartas
+                            </h2>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+                                Clique ou arraste as cartas
+                            </p>
+                        </div>
 
                         <div id="play-item-bank"
                             class="grid grid-cols-2 gap-4">
@@ -815,9 +820,23 @@
                     <!-- DIREITA -->
                     <div class="w-[360px] border-l border-slate-300 bg-white p-4 overflow-y-auto">
 
-                        <h2 class="font-black text-lg mb-4">
-                            Histórico
-                        </h2>
+                        <div class="mb-6">
+                            <h2 class="font-black text-lg">
+                                Histórico
+                            </h2>
+                            <div id="attempt-counter" class="text-sm font-bold text-slate-600 mt-4">
+                                Tentativa <span id="current-attempt">1</span> | Restantes: <span id="total-attempts">0</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 mb-6">
+                            <button onclick="app.openDifficultyModal()" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[10px] font-black uppercase tracking-wider transition border border-slate-200">
+                                <i class="fa-solid fa-gears mr-1"></i> Dificuldade
+                            </button>
+                            <button onclick="app.showGameRules()" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[10px] font-black uppercase tracking-wider transition border border-slate-200">
+                                <i class="fa-solid fa-circle-info mr-1"></i> Regras
+                            </button>
+                        </div>
 
                         <div id="play-history-list"
                             class="flex flex-col gap-4">
@@ -829,6 +848,16 @@
 
             </section>
         </main>
+    </div>
+
+    <div id="modal-notification" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white w-full max-w-sm rounded-[36px] shadow-2xl p-8 space-y-6 text-center">
+            <div>
+                <h3 id="notification-title" class="text-xl font-black text-slate-900">Aviso</h3>
+            </div>
+            <p id="notification-message" class="text-slate-600"></p>
+            <button onclick="app.closeNotification()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition">OK</button>
+        </div>
     </div>
 
     <div id="modal-card" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
@@ -1033,8 +1062,8 @@
                     },
                     regra: "Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.",
                     objetivo: "Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.",
-                    enunciado: "Escolha as 6 cartas que representam animais mamíferos e coloque-as na ordem correta para desvendar o código secreto.",
-                    explicacao: "Observe as 12 possibilidades de cartas que estão no banco. Clique na carta escolhida para adicioná-la à sua tentativa na mesa. Repita o processo até que todos os 6 espaços estejam preenchidos. Clique no botão para validar a resposta. Observe o feedback: um pino preto significa que você acertou a carta e a posição. Um pino branco significa que a carta pertence ao código, mas está na posição errada.",
+                    enunciado: "Escolha as 4 cartas que representam animais mamíferos e coloque-as na ordem correta para desvendar o código secreto.",
+                    explicacao: "Observe as 12 possibilidades de cartas que estão no banco. Clique na carta escolhida para adicioná-la à sua tentativa na mesa. Repita o processo até que todos os 4 espaços estejam preenchidos. Clique no botão para validar a resposta. Observe o feedback: um pino preto significa que você acertou a carta e a posição. Um pino branco significa que a carta pertence ao código, mas está na posição errada.",
                     cards: [
                         { id: 0, content: "Baleia", isCorrect: true, pileId: 1 },
                         { id: 1, content: "Morcego", isCorrect: true, pileId: 2 },
@@ -1199,9 +1228,24 @@
                         </div>
                     `;
 
+                    // Suporte a Arrastar
                     div.addEventListener('dragstart', e => {
                         e.dataTransfer.setData('cardId', card.id);
                     });
+
+                    // Suporte a Clique
+                    div.onclick = () => {
+                        const nextSlot = this.state.currentGuess.findIndex(g => g === null);
+                        if (nextSlot !== -1) {
+                            this.state.currentGuess[nextSlot] = {
+                                ...card,
+                                instanceId: crypto.randomUUID()
+                            };
+                            this.renderCurrentGuess();
+                        } else {
+                            this.showNotification("Todos os espaços já estão preenchidos. Valide sua tentativa ou remova uma carta.");
+                        }
+                    };
 
                     bank.appendChild(div);
                 });
@@ -1224,7 +1268,42 @@
                         };
                         this.renderCurrentGuess();
                     });
+                    // Clique no slot para remover
+                    slot.onclick = () => {
+                        const index = Number(slot.dataset.slot);
+                        if (this.state.currentGuess[index]) {
+                            this.state.currentGuess[index] = null;
+                            this.renderCurrentGuess();
+                        }
+                    };
                 });
+            },
+
+            showGameRules: function() {
+                const rules = `
+                    <div class="text-left space-y-4">
+                        <p><strong>Como Jogar:</strong> Escolha 4 cartas clicando nelas ou arrastando-as para os espaços vazios.</p>
+                        <p><strong>Objetivo:</strong> Descobrir a combinação secreta de 4 cartas na ordem correta.</p>
+                        <div class="p-4 bg-slate-50 rounded-2xl space-y-3 border border-slate-200">
+                            <p class="font-black text-xs uppercase tracking-widest text-slate-500">Significado dos Pinos:</p>
+                            <div class="flex items-center gap-3">
+                                <div class="w-5 h-5 rounded-full bg-black border-2 border-slate-400"></div>
+                                <p class="text-sm"><strong>Pino Preto:</strong> Você acertou uma carta e a posição dela.</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-5 h-5 rounded-full bg-white border-2 border-slate-400"></div>
+                                <p class="text-sm"><strong>Pino Branco:</strong> A carta existe no código, mas está na posição errada.</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-400 italic">* Se não houver pino, a carta não faz parte do código secreto.</p>
+                    </div>
+                `;
+                
+                // Usando uma notificação customizada temporária para as regras
+                const modal = document.getElementById('modal-notification');
+                document.getElementById('notification-title').innerText = 'Regras do Jogo';
+                document.getElementById('notification-message').innerHTML = rules;
+                modal.style.display = 'flex';
             },
 
             renderCurrentGuess: function() {
@@ -1255,9 +1334,7 @@
                 for(let i = 0; i < white; i++) {
                     dots.push('<div class="feedback-dot partial"></div>');
                 }
-                while(dots.length < 4) {
-                    dots.push('<div class="feedback-dot"></div>');
-                }
+                // Removido o preenchimento de pinos vazios conforme solicitado
 
                 row.innerHTML = `
                     <div class="history-cards">
@@ -1277,6 +1354,7 @@
             revealSecretCards: function() {
                 this.state.secretCode.forEach((card, index) => {
                     const slot = document.getElementById(`secret-slot-${index}`);
+                    if(!slot) return;
                     slot.style.backgroundImage = '';
                     slot.innerHTML = `
                         <div class="bank-card-inner w-full h-full" style="background: white;">
@@ -1296,8 +1374,8 @@
                     disciplineInfo: { disciplina: "Biologia", conteudo: "Mamífero", serie: "1º ano", autores: [] },
                     regra: 'Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.',
                     objetivo: 'Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.',
-                    enunciado: 'Escolha as 6 cartas que representam animais mamíferos e coloque-as na ordem correta para desvendar o código secreto.',
-                    explicacao: 'Observe as 12 possibilidades de cartas que estão no banco. Clique na carta escolhida para adicioná-la à sua tentativa na mesa. Repita o processo até que todos os 6 espaços estejam preenchidos. Clique no botão para validar a resposta. Observe o feedback do jogo verificando se as bolinhas do lado direito da tela estão pintadas de branco ou de preto. Se estiver pintada de branco significa que você colocou uma carta certa na posição errada. Se estiver pintada de preto significa que você colocou uma carta certa na posição correta. Se estiver transparente significa que essa carta não faz parte do código secreto.',
+                    enunciado: 'Escolha as 4 cartas que representam animais mamíferos e coloque-as na ordem correta para desvendar o código secreto.',
+                    explicacao: 'Observe as 12 possibilidades de cartas que estão no banco. Clique na carta escolhida para adicioná-la à sua tentativa na mesa. Repita o processo até que todos os 4 espaços estejam preenchidos. Clique no botão para validar a resposta. Observe o feedback do jogo verificando se as bolinhas do lado direito da tela estão pintadas de branco ou de preto. Se estiver pintada de branco significa que você colocou uma carta certa na posição errada. Se estiver pintada de preto significa que você colocou uma carta certa na posição correta. Se estiver transparente significa que essa carta não faz parte do código secreto.',
                     cards: Array.from({length: 12}, (_, i) => ({ id: "new-" + i, content: "", isCorrect: false, pileId: i + 1 }))
                 };
                 this.state.editingStep = 1;
@@ -1403,7 +1481,7 @@
                     const filledCount = this.state.editingGame.cards.filter(c => c.content.trim() !== "").length;
                     if (filledCount < 12) { this.showValidationError("Preencha o texto de todas as 12 cartas antes de finalizar."); return; }
                     const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
-                    if (correctCount !== 6) { this.showValidationError("Exatamente 6 cartas precisam ser marcadas como Código Secreto."); return; }
+                    if (correctCount !== 4) { this.showValidationError("Exatamente 4 cartas precisam ser marcadas como Código Secreto."); return; }
                 }
                 if (current < 5) {
                     this.showStep(current + 1);
@@ -1477,9 +1555,11 @@
                     enunciado: gameForTest.enunciado,
                     explicacao: gameForTest.explicacao,
                     frontDesign: gameForTest.frontDesign,
-                    backDesign: gameForTest.backDesign
+                    backDesign: gameForTest.backDesign,
+                    maxAttempts: this.difficultyRules[this.state.currentDifficulty].attempts
                 };
                 
+                this.state.attempts = [];
                 this.state.secretCode = this.createSecretCode(this.state.activeGame);
                 this.state.currentGuess = [null, null, null, null];
                 this.renderPlayBank();
@@ -1491,6 +1571,7 @@
                 document.getElementById('back-from-player-btn').classList.remove('hidden');
                 this.switchView('player');
                 this.applyCardDesigns();
+                this.updateAttemptCounter();
             },
 
             backFromPlayer: function() {
@@ -1549,7 +1630,7 @@
                 const card = this.state.editingGame.cards[idx];
                 if (!card.isCorrect) {
                     const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
-                    if(correctCount >= 6) { alert("Você já atingiu o limite de 6 cartas corretas."); return; }
+                    if(correctCount >= 4) { this.showNotification("Você já atingiu o limite de 4 cartas corretas."); return; }
                 }
                 card.isCorrect = !card.isCorrect;
                 this.renderEditorGrid();
@@ -1560,7 +1641,7 @@
                 const counterEl = document.getElementById('secret-card-counter');
                 if (!counterEl || !this.state.editingGame) return;
                 const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
-                counterEl.innerText = `${correctCount} / 6 selecionadas`;
+                counterEl.innerText = `${correctCount} / 4 selecionadas`;
             },
 
             openCardModal: function(idx) {
@@ -1585,11 +1666,11 @@
                 const content = document.getElementById('modal-card-content').value.trim();
                 const isCorrectChecked = document.querySelector('input[name="modal-card-correct"]:checked').value === "true";
 
-                if (!content) { alert("O conteúdo da carta não pode ser vazio."); return; }
+                if (!content) { this.showNotification("O conteúdo da carta não pode ser vazio."); return; }
 
                 if (isCorrectChecked && !this.state.editingGame.cards[idx].isCorrect) {
                     const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
-                    if(correctCount >= 6) { alert("Você já atingiu o limite de 6 cartas corretas."); return; }
+                    if(correctCount >= 4) { this.showNotification("Você já atingiu o limite de 4 cartas corretas."); return; }
                 }
 
                 this.state.editingGame.cards[idx].content = content;
@@ -1628,6 +1709,8 @@
                 const game = this.state.games.find(x => x.id === id);
                 if(!game) return;
 
+                const maxAttempts = this.difficultyRules[this.state.currentDifficulty].attempts;
+
                 this.state.activeGame = {
                     id: game.id,
                     name: game.name,
@@ -1636,9 +1719,11 @@
                     enunciado: game.enunciado,
                     explicacao: game.explicacao,
                     frontDesign: game.frontDesign,
-                    backDesign: game.backDesign
+                    backDesign: game.backDesign,
+                    maxAttempts: maxAttempts
                 };
 
+                this.state.attempts = [];
                 this.state.secretCode = this.createSecretCode(this.state.activeGame);
                 this.state.currentGuess = [null, null, null, null];
                 this.renderPlayBank();
@@ -1650,6 +1735,7 @@
                 this.switchView('player');
                 this.applyCardDesigns();
                 document.getElementById('back-from-player-btn').classList.remove('hidden');
+                this.updateAttemptCounter();
             },
 
             replayGame: function() {
@@ -1657,6 +1743,7 @@
 
                 this.state.secretCode = this.createSecretCode(this.state.activeGame);
                 this.state.currentGuess = [null, null, null, null];
+                this.state.attempts = [];
                 this.renderPlayBank();
                 this.setupDropZones();
                 this.renderCurrentGuess();
@@ -1664,6 +1751,7 @@
                 history.innerHTML = '';
 
                 this.applyCardDesigns();
+                this.updateAttemptCounter();
             },
 
             applyCardDesigns: function() {
@@ -1675,6 +1763,18 @@
                     slot.style.backgroundSize = 'cover';
                     slot.style.backgroundPosition = 'center';
                 });
+            },
+
+            updateAttemptCounter: function() {
+                if (!this.state.activeGame) return;
+                const current = this.state.attempts.length;
+                const total = this.state.activeGame.maxAttempts || 10;
+
+                const currentEl = document.getElementById('current-attempt');
+                const totalEl = document.getElementById('total-attempts');
+
+                if(currentEl) currentEl.innerText = (current + 1);
+                if(totalEl) totalEl.innerText = (total - current);
             },
 
             shuffleArray: function(arr) {
@@ -1689,7 +1789,7 @@
                 const guess = [...this.state.currentGuess];
 
                 if(guess.some(g => !g)) {
-                    alert('Complete os 4 espaços');
+                    this.showNotification('Complete os 4 espaços para validar a sua tentativa.');
                     return;
                 }
 
@@ -1720,12 +1820,21 @@
                         }
                     }
                 }
-
+                
+                this.state.attempts.push({ guess, result: { black, white } });
                 this.addHistoryRow(guess, black, white);
+                this.updateAttemptCounter();
 
                 if(black === 4) {
                     this.revealSecretCards();
-                    alert('Você venceu!');
+                    this.showNotification('Parabéns, você venceu!', 'Vitória!');
+                    return;
+                }
+
+                if (this.state.attempts.length >= this.state.activeGame.maxAttempts) {
+                    this.revealSecretCards();
+                    this.showNotification('Fim de jogo! Você não tem mais tentativas.', 'Fim de Jogo');
+                    return;
                 }
 
                 this.state.currentGuess = [null, null, null, null];
@@ -1774,7 +1883,7 @@
                 let score = 0;
                 const attemptsUsed = this.state.attempts.length;
                 if(win) {
-                    const maxAttempts = this.state.activeGame.attemptLimit;
+                    const maxAttempts = this.state.activeGame.maxAttempts;
                     score = Math.max(10, Math.round(((maxAttempts - attemptsUsed + 1) / maxAttempts) * 100));
                 }
 
@@ -1792,7 +1901,7 @@
 
                 modal.style.display = 'flex';
 
-                const correctCards = this.state.activeGame.originalCards.filter(c => c.isCorrect);
+                const correctCards = this.state.activeGame.cards.filter(c => c.isCorrect);
                 const frontDesign = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
 
                 correctCards.forEach((card, i) => {
@@ -1875,6 +1984,16 @@
                 else idx = (idx - 1 + this.backDesigns.length) % this.backDesigns.length;
                 this.state.editingGame.backDesign = this.backDesigns[idx];
                 document.getElementById('preview-back').src = this.state.editingGame.backDesign;
+            },
+
+            showNotification: function(message, title = 'Aviso') {
+                document.getElementById('notification-title').innerText = title;
+                document.getElementById('notification-message').innerText = message;
+                document.getElementById('modal-notification').style.display = 'flex';
+            },
+
+            closeNotification: function() {
+                document.getElementById('modal-notification').style.display = 'none';
             }
         };
 
@@ -1886,6 +2005,7 @@
                 if (event.target == document.getElementById('modal-card')) app.closeCardModal();
                 if (event.target == document.getElementById('modal-author')) app.closeAuthorModal();
                 if (event.target == document.getElementById('modal-difficulty')) app.closeDifficultyModal();
+                if (event.target == document.getElementById('modal-notification')) app.closeNotification();
             }
         };
     </script>
