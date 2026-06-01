@@ -693,11 +693,13 @@
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Regra</label>
-                                    <textarea id="edit-game-regra" rows="4" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Descreva a regra do jogo...">Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.</textarea>
+                                    <div class="mb-2"><button type="button" onclick="app.wrapSelectionInRed('edit-game-regra')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button></div>
+                                    <div id="edit-game-regra" contenteditable="true" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.</div>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Objetivo</label>
-                                    <textarea id="edit-game-objetivo" rows="4" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Explique o objetivo do aluno...">Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.</textarea>
+                                    <div class="mb-2"><button type="button" onclick="app.wrapSelectionInRed('edit-game-objetivo')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button></div>
+                                    <div id="edit-game-objetivo" contenteditable="true" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.</div>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-4 tracking-widest">Design das Cartas</label>
@@ -1566,8 +1568,8 @@
                 }
 
                 if (document.getElementById('edit-game-conteudo')) document.getElementById('edit-game-conteudo').value = eg.disciplineInfo.conteudo || "";
-                if (document.getElementById('edit-game-regra')) document.getElementById('edit-game-regra').value = eg.regra || "";
-                if (document.getElementById('edit-game-objetivo')) document.getElementById('edit-game-objetivo').value = eg.objetivo || "";
+                if (document.getElementById('edit-game-regra')) document.getElementById('edit-game-regra').innerHTML = eg.regra || "";
+                if (document.getElementById('edit-game-objetivo')) document.getElementById('edit-game-objetivo').innerHTML = eg.objetivo || "";
                 if (document.getElementById('edit-game-enunciado')) document.getElementById('edit-game-enunciado').value = eg.enunciado || "";
                 if (document.getElementById('edit-game-explicacao')) document.getElementById('edit-game-explicacao').value = eg.explicacao || "";
 
@@ -1605,8 +1607,8 @@
                     this.state.editingGame.disciplineInfo.serie = serieSelect?.value || '1º ano';
                 }
 
-                this.state.editingGame.regra = document.getElementById('edit-game-regra')?.value || "";
-                this.state.editingGame.objetivo = document.getElementById('edit-game-objetivo')?.value || "";
+                this.state.editingGame.regra = document.getElementById('edit-game-regra')?.innerHTML || "";
+                this.state.editingGame.objetivo = document.getElementById('edit-game-objetivo')?.innerHTML || "";
                 this.state.editingGame.enunciado = document.getElementById('edit-game-enunciado')?.value || "";
                 this.state.editingGame.explicacao = document.getElementById('edit-game-explicacao')?.value || "";
             },
@@ -2194,17 +2196,18 @@
                 document.getElementById('edit-game-serie-outro-wrap').classList.add('hidden');
             },
 
-            wrapSelectionInRed: function(textareaId) {
-                const ta = document.getElementById(textareaId);
-                if(!ta) return;
-                const start = ta.selectionStart;
-                const end = ta.selectionEnd;
-                if (start === end) return; // nothing selected
-                const before = ta.value.substring(0, start);
-                const selected = ta.value.substring(start, end);
-                const after = ta.value.substring(end);
-                const wrapped = `<strong style="color:#b91c1c">${selected}</strong>`;
-                ta.value = before + wrapped + after;
+            wrapSelectionInRed: function(elementId) {
+                const el = document.getElementById(elementId);
+                if(!el) return;
+                const selection = window.getSelection();
+                if (selection.toString().length === 0) return;
+                
+                const range = selection.getRangeAt(0);
+                const span = document.createElement('strong');
+                span.style.color = '#b91c1c';
+                span.appendChild(range.extractContents());
+                range.insertNode(span);
+                selection.removeAllRanges();
             },
 
             handleCardImageUpload: function(side, e) {
