@@ -763,7 +763,8 @@
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Enunciado</label>
-                                    <textarea id="edit-game-enunciado" rows="3" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="O que o aluno deve fazer?">Escolha as 6 cartas que representam animais mamíferos e coloque-as na ordem correta para desvendar o código secreto.</textarea>
+                                    <div class="mb-2"><button type="button" onclick="app.wrapSelectionInRed('edit-game-enunciado')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button></div>
+                                    <div id="edit-game-enunciado" contenteditable="true" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-20 max-h-48 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolha as 6 cartas que representam animais <strong style="color:#b91c1c">Mamíferos</strong> e coloque-as na ordem correta para desvendar o código secreto.</div>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
@@ -1570,7 +1571,7 @@
                 if (document.getElementById('edit-game-conteudo')) document.getElementById('edit-game-conteudo').value = eg.disciplineInfo.conteudo || "";
                 if (document.getElementById('edit-game-regra')) document.getElementById('edit-game-regra').innerHTML = eg.regra || "";
                 if (document.getElementById('edit-game-objetivo')) document.getElementById('edit-game-objetivo').innerHTML = eg.objetivo || "";
-                if (document.getElementById('edit-game-enunciado')) document.getElementById('edit-game-enunciado').value = eg.enunciado || "";
+                if (document.getElementById('edit-game-enunciado')) document.getElementById('edit-game-enunciado').innerHTML = eg.enunciado || "";
                 if (document.getElementById('edit-game-explicacao')) document.getElementById('edit-game-explicacao').value = eg.explicacao || "";
 
                 document.getElementById('preview-front').src = eg.frontDesign || 'imagens/frente/frente01.png';
@@ -1609,7 +1610,7 @@
 
                 this.state.editingGame.regra = document.getElementById('edit-game-regra')?.innerHTML || "";
                 this.state.editingGame.objetivo = document.getElementById('edit-game-objetivo')?.innerHTML || "";
-                this.state.editingGame.enunciado = document.getElementById('edit-game-enunciado')?.value || "";
+                this.state.editingGame.enunciado = document.getElementById('edit-game-enunciado')?.innerHTML || "";
                 this.state.editingGame.explicacao = document.getElementById('edit-game-explicacao')?.value || "";
             },
 
