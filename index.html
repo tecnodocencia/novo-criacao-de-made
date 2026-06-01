@@ -472,7 +472,7 @@
                 </div>
 
                 <div class="space-y-3 px-2">
-                    <h2 class="text-3xl font-black text-slate-900 tracking-tight">Bem-vindo</h2>
+                    <h2 class="text-3xl font-black text-slate-900 tracking-tight">Bem-vindo(a)(e)</h2>
                     <p class="text-slate-400 font-semibold text-sm">Acesse sua conta para começar a criar materiais.</p>
                 </div>
 
@@ -608,13 +608,19 @@
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Modelo</label>
-                                    <select id="edit-game-model" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
-                                        <option value="Código Secreto">Código Secreto</option>
-                                    </select>
+                                        <select id="edit-game-model" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" style="display:none;">
+                                            <option value="Código Secreto">Código Secreto</option>
+                                        </select>
+                                        <div id="model-choices" class="grid grid-cols-2 gap-3 mt-3">
+                                            <div class="cursor-pointer rounded-xl border p-2 text-center" onclick="app.selectModel('Código Secreto', this)">
+                                                <img src="imagens/verso/Cópia de Imagem Código Secreto.png" alt="Código Secreto" class="mx-auto h-24 object-contain" />
+                                                <div class="text-xs font-bold mt-2">Código Secreto</div>
+                                            </div>
+                                        </div>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Disciplina</label>
-                                    <select id="edit-game-disciplina" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
+                                    <select id="edit-game-disciplina" onchange="app.handleDisciplinaSelectChange(event)" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
                                         <option value="Biologia">Biologia</option>
                                         <option value="Dança">Dança</option>
                                         <option value="Educação Física">Educação Física</option>
@@ -632,6 +638,12 @@
                                         <option value="Teatro">Teatro</option>
                                         <option value="Outro">Outro</option>
                                     </select>
+                                    <div id="edit-game-disciplina-outro-wrap" class="mt-2 hidden">
+                                        <div class="flex gap-2">
+                                            <input id="edit-game-disciplina-outro" type="text" placeholder="Especifique a Disciplina" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" />
+                                            <button onclick="app.clearDisciplinaOutro()" class="px-3 bg-red-500 text-white rounded-2xl">Remover</button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo</label>
@@ -639,7 +651,7 @@
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Série</label>
-                                    <select id="edit-game-serie" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
+                                    <select id="edit-game-serie" onchange="app.handleSerieSelectChange(event)" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
                                         <option value="1º ano">1º ano</option>
                                         <option value="2º ano">2º ano</option>
                                         <option value="3º ano">3º ano</option>
@@ -655,6 +667,12 @@
                                         <option value="Ensino Superior">Ensino Superior</option>
                                         <option value="Outro">Outro</option>
                                     </select>
+                                    <div id="edit-game-serie-outro-wrap" class="mt-2 hidden">
+                                        <div class="flex gap-2">
+                                            <input id="edit-game-serie-outro" type="text" placeholder="Especifique a Série" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" />
+                                            <button onclick="app.clearSerieOutro()" class="px-3 bg-red-500 text-white rounded-2xl">Remover</button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
@@ -674,10 +692,12 @@
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Regra</label>
+                                    <div class="mb-2"><button type="button" onclick="app.wrapSelectionInRed('edit-game-regra')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button></div>
                                     <textarea id="edit-game-regra" rows="4" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Descreva a regra do jogo...">Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.</textarea>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Objetivo</label>
+                                    <div class="mb-2"><button type="button" onclick="app.wrapSelectionInRed('edit-game-objetivo')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button></div>
                                     <textarea id="edit-game-objetivo" rows="4" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Explique o objetivo do aluno...">Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.</textarea>
                                 </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
@@ -939,6 +959,22 @@
                     <textarea id="modal-card-content" rows="3" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Digite o termo ou frase da carta..."></textarea>
                 </div>
                 <div>
+                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Imagem (Frente)</label>
+                    <div class="flex gap-2 items-center">
+                        <input id="modal-card-front-file" type="file" accept="image/*" onchange="app.handleCardImageUpload('front', event)" class="flex-1" />
+                        <button onclick="app.removeCardImage('front')" class="px-3 bg-red-500 text-white rounded-2xl">Remover</button>
+                    </div>
+                    <img id="modal-card-front-preview" src="" alt="Prévia frente" class="w-full h-28 object-cover rounded-lg mt-2 hidden" />
+                </div>
+                <div>
+                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Imagem (Verso)</label>
+                    <div class="flex gap-2 items-center">
+                        <input id="modal-card-back-file" type="file" accept="image/*" onchange="app.handleCardImageUpload('back', event)" class="flex-1" />
+                        <button onclick="app.removeCardImage('back')" class="px-3 bg-red-500 text-white rounded-2xl">Remover</button>
+                    </div>
+                    <img id="modal-card-back-preview" src="" alt="Prévia verso" class="w-full h-28 object-cover rounded-lg mt-2 hidden" />
+                </div>
+                <div>
                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Pertence ao Código Secreto?</label>
                     <div class="flex gap-4">
                         <label class="flex-1 flex items-center gap-3 p-4 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 transition">
@@ -1105,8 +1141,25 @@
                 4: { attempts: 5 }
             },
 
-            frontDesigns: ['imagens/frente/frente01.png', 'imagens/frente/frente02.png', 'imagens/frente/frente03.png'],
-            backDesigns: ['imagens/verso/verso01.png', 'imagens/verso/verso02.png', 'imagens/verso/verso03.png'],
+            frontDesigns: [
+                'imagens/frente/frente01.png',
+                'imagens/frente/Cópia de Frente da Carta - Tipo 2.png',
+                'imagens/frente/Cópia de Frente da Carta - Tipo 3.png'
+            ],
+            backDesigns: [
+                'imagens/verso/verso01.png',
+                'imagens/verso/Cópia de Imagem Código Secreto.png',
+                'imagens/verso/Cópia de Trás da carta - Esportes.png',
+                'imagens/verso/Cópia de Trás da Carta - Humanas.png',
+                'imagens/verso/Cópia de Trás da Carta - Línguas.png',
+                'imagens/verso/Cópia de Trás da Carta - Matemática 1.png',
+                'imagens/verso/Cópia de Trás da Carta - Matemática 2.png',
+                'imagens/verso/Cópia de Trás da Carta - Natureza.png',
+                'imagens/verso/Cópia de Trás da Carta Matemática 1 sem moldura.png',
+                'imagens/verso/Cópia de Trás da Carta Matemática 2 sem moldura.png',
+                'imagens/verso/Cópia de Trás da Carta Natureza sem moldura.png',
+                'imagens/verso/Cópia de Trás da Carta Qui Fis.png'
+            ],
 
             init: function() {
                 this.loadDefaultGames();
@@ -1126,8 +1179,8 @@
                         serie: "6º ano",
                         autores: ["Profª Maria Silva", "Prof. João Souza"]
                     },
-                    regra: "Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.",
-                    objetivo: "Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.",
+                    regra: "Escolher as cartas corretas sobre <strong style=\"color:#b91c1c\">Mamíferos</strong>. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.",
+                        objetivo: "Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre <strong style=\"color:#b91c1c\">Mamíferos</strong> da área de <strong style=\"color:#b91c1c\">Biologia</strong>, acertando o conteúdo e a ordem que as cartas foram selecionadas.",
                     enunciado: "Escolha as 4 cartas que representam animais mamíferos e coloque-as na ordem correta para desvendar o código secreto.",
                     explicacao: "Observe as 12 possibilidades de cartas que estão no banco. Clique na carta escolhida para adicioná-la à sua tentativa na mesa. Repita o processo até que todos os 4 espaços estejam preenchidos. Clique no botão para validar a resposta. Observe o feedback: um pino preto significa que você acertou a carta e a posição. Um pino branco significa que a carta pertence ao código, mas está na posição errada.",
                     cards: [
@@ -1286,9 +1339,11 @@
                     div.draggable = true;
                     div.dataset.cardId = card.id;
 
+                    const useBg = card.frontImage || frontDesign;
+
                     div.innerHTML = `
-                        <div class="bank-card-inner" style="background-image: url('${frontDesign}'); background-size: cover; background-position: center;">
-                            <div class="w-full h-full flex items-center justify-center p-2 bg-white/80 rounded-[22px]">
+                        <div class="bank-card-inner" style="background-image: url('${useBg}'); background-size: cover; background-position: center;">
+                            <div class="w-full h-full flex items-center justify-center p-2 ${card.frontImage ? 'bg-transparent' : 'bg-white/80'} rounded-[22px]">
                                 ${card.content}
                             </div>
                         </div>
@@ -1346,10 +1401,13 @@
             },
 
             showGameRules: function() {
-                const rules = `
+                // Use regra HTML from activeGame (play) or editingGame (creator)
+                const source = this.state.activeGame || this.state.editingGame || {};
+                const rulesHtml = source.regra || '<p>Regra não definida.</p>';
+                const objectiveHtml = source.objetivo || '';
+                const template = `
                     <div class="text-left space-y-4">
-                        <p><strong>Como Jogar:</strong> Escolha 4 cartas clicando nelas ou arrastando-as para os espaços vazios.</p>
-                        <p><strong>Objetivo:</strong> Descobrir a combinação secreta de 4 cartas na ordem correta.</p>
+                        <div>${rulesHtml}</div>
                         <div class="p-4 bg-slate-50 rounded-2xl space-y-3 border border-slate-200">
                             <p class="font-black text-xs uppercase tracking-widest text-slate-500">Significado dos Pinos:</p>
                             <div class="flex items-center gap-3">
@@ -1361,14 +1419,14 @@
                                 <p class="text-sm"><strong>Pino Branco:</strong> A carta existe no código, mas está na posição errada.</p>
                             </div>
                         </div>
+                        <div>${objectiveHtml}</div>
                         <p class="text-xs text-slate-400 italic">* Se não houver pino, a carta não faz parte do código secreto.</p>
                     </div>
                 `;
-                
-                // Usando uma notificação customizada temporária para as regras
+
                 const modal = document.getElementById('modal-notification');
                 document.getElementById('notification-title').innerText = 'Regras do Jogo';
-                document.getElementById('notification-message').innerHTML = rules;
+                document.getElementById('notification-message').innerHTML = template;
                 modal.style.display = 'flex';
             },
 
@@ -1438,8 +1496,8 @@
                     frontDesign: "imagens/frente/frente01.png",
                     backDesign: "imagens/verso/verso01.png",
                     disciplineInfo: { disciplina: "Biologia", conteudo: "Mamífero", serie: "1º ano", autores: [] },
-                    regra: 'Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.',
-                    objetivo: 'Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.',
+                    regra: 'Escolher as cartas corretas sobre <strong style="color:#b91c1c">Mamíferos</strong>. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.',
+                    objetivo: 'Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre <strong style="color:#b91c1c">Mamíferos</strong> da área de <strong style="color:#b91c1c">Biologia</strong>, acertando o conteúdo e a ordem que as cartas foram selecionadas.',
                     enunciado: 'Escolha as 4 cartas que representam animais mamíferos e coloque-as na ordem correta para desvendar o código secreto.',
                     explicacao: 'Observe as 12 possibilidades de cartas que estão no banco. Clique na carta escolhida para adicioná-la à sua tentativa na mesa. Repita o processo até que todos os 4 espaços estejam preenchidos. Clique no botão para validar a resposta. Observe o feedback do jogo verificando se as bolinhas do lado direito da tela estão pintadas de branco ou de preto. Se estiver pintada de branco significa que você colocou uma carta certa na posição errada. Se estiver pintada de preto significa que você colocou uma carta certa na posição correta. Se estiver transparente significa que essa carta não faz parte do código secreto.',
                     cards: Array.from({length: 12}, (_, i) => ({ id: "new-" + i, content: "", isCorrect: false, pileId: i + 1 }))
@@ -1467,10 +1525,39 @@
 
                 if (document.getElementById('edit-game-name')) document.getElementById('edit-game-name').value = eg.name || "";
                 if (document.getElementById('edit-game-model')) document.getElementById('edit-game-model').value = eg.model || "Código Secreto";
-                if (document.getElementById('edit-game-disciplina')) document.getElementById('edit-game-disciplina').value = eg.disciplineInfo.disciplina || "Biologia";
+                // Highlight model choice
+                document.querySelectorAll('#model-choices > div').forEach(d => d.style.borderColor = '#e5e7eb');
+                const chosen = Array.from(document.querySelectorAll('#model-choices > div')).find(d => d.innerText.trim().includes(eg.model || ''));
+                if (chosen) chosen.style.borderColor = '#10b981';
+
+                // Disciplina / Serie handling (support custom 'Outro')
+                const disciplinaSelect = document.getElementById('edit-game-disciplina');
+                const serieSelect = document.getElementById('edit-game-serie');
+                const discVal = eg.disciplineInfo.disciplina || 'Biologia';
+                const serieVal = eg.disciplineInfo.serie || '1º ano';
+
+                // If disciplina value doesn't exist among options, show outro input
+                const discOption = Array.from(disciplinaSelect.options).find(o => o.value === discVal);
+                if (!discOption) {
+                    document.getElementById('edit-game-disciplina-outro-wrap').classList.remove('hidden');
+                    document.getElementById('edit-game-disciplina-outro').value = discVal;
+                    disciplinaSelect.value = 'Outro';
+                } else {
+                    disciplinaSelect.value = discVal;
+                    document.getElementById('edit-game-disciplina-outro-wrap').classList.add('hidden');
+                }
+
+                const serieOption = Array.from(serieSelect.options).find(o => o.value === serieVal);
+                if (!serieOption) {
+                    document.getElementById('edit-game-serie-outro-wrap').classList.remove('hidden');
+                    document.getElementById('edit-game-serie-outro').value = serieVal;
+                    serieSelect.value = 'Outro';
+                } else {
+                    serieSelect.value = serieVal;
+                    document.getElementById('edit-game-serie-outro-wrap').classList.add('hidden');
+                }
+
                 if (document.getElementById('edit-game-conteudo')) document.getElementById('edit-game-conteudo').value = eg.disciplineInfo.conteudo || "";
-                if (document.getElementById('edit-game-serie')) document.getElementById('edit-game-serie').value = eg.disciplineInfo.serie || "1º ano";
-                
                 if (document.getElementById('edit-game-regra')) document.getElementById('edit-game-regra').value = eg.regra || "";
                 if (document.getElementById('edit-game-objetivo')) document.getElementById('edit-game-objetivo').value = eg.objetivo || "";
                 if (document.getElementById('edit-game-enunciado')) document.getElementById('edit-game-enunciado').value = eg.enunciado || "";
@@ -1486,15 +1573,30 @@
 
             persistEditorFields: function() {
                 if (!this.state.editingGame) return;
-                
+
                 this.state.editingGame.name = document.getElementById('edit-game-name')?.value || "Jogo sem Nome";
-                this.state.editingGame.model = document.getElementById('edit-game-model')?.value || "Código Secreto";
-                
+                // model is set via select or image click
+                this.state.editingGame.model = this.state.editingGame.model || document.getElementById('edit-game-model')?.value || "Código Secreto";
+
                 if (!this.state.editingGame.disciplineInfo) this.state.editingGame.disciplineInfo = {};
-                this.state.editingGame.disciplineInfo.disciplina = document.getElementById('edit-game-disciplina')?.value || "Biologia";
+                const disciplinaSelect = document.getElementById('edit-game-disciplina');
+                if (disciplinaSelect && disciplinaSelect.value === 'Outro') {
+                    const outro = document.getElementById('edit-game-disciplina-outro')?.value.trim() || 'Outro';
+                    this.state.editingGame.disciplineInfo.disciplina = outro;
+                } else {
+                    this.state.editingGame.disciplineInfo.disciplina = disciplinaSelect?.value || 'Biologia';
+                }
+
                 this.state.editingGame.disciplineInfo.conteudo = document.getElementById('edit-game-conteudo')?.value || "";
-                this.state.editingGame.disciplineInfo.serie = document.getElementById('edit-game-serie')?.value || "1º ano";
-                
+
+                const serieSelect = document.getElementById('edit-game-serie');
+                if (serieSelect && serieSelect.value === 'Outro') {
+                    const outro = document.getElementById('edit-game-serie-outro')?.value.trim() || 'Outro';
+                    this.state.editingGame.disciplineInfo.serie = outro;
+                } else {
+                    this.state.editingGame.disciplineInfo.serie = serieSelect?.value || '1º ano';
+                }
+
                 this.state.editingGame.regra = document.getElementById('edit-game-regra')?.value || "";
                 this.state.editingGame.objetivo = document.getElementById('edit-game-objetivo')?.value || "";
                 this.state.editingGame.enunciado = document.getElementById('edit-game-enunciado')?.value || "";
@@ -1592,8 +1694,9 @@
                 setSpan('review-game-autores', (eg.disciplineInfo.autores || []).join(', ') || 'Nenhum');
 
                 setSpan('review-game-enunciado', eg.enunciado);
-                setSpan('review-game-regra', eg.regra);
-                setSpan('review-game-objetivo', eg.objetivo);
+                // regra and objetivo may contain HTML (formatted red/strong text)
+                const rEl = document.getElementById('review-game-regra'); if (rEl) rEl.innerHTML = eg.regra || '-';
+                const oEl = document.getElementById('review-game-objetivo'); if (oEl) oEl.innerHTML = eg.objetivo || '-';
                 setSpan('review-game-explicacao', eg.explicacao);
 
                 document.getElementById('review-preview-front').src = eg.frontDesign || 'imagens/frente/frente01.png';
@@ -1661,7 +1764,6 @@
                 const grid = document.getElementById('editor-grid');
                 if(!grid || !this.state.editingGame) return;
                 grid.innerHTML = '';
-
                 this.state.editingGame.cards.forEach((card, idx) => {
                     const cardEl = document.createElement('div');
                     cardEl.className = `game-card flex flex-col p-4 cursor-pointer transition-all ${card.content ? '' : 'empty'}`;
@@ -1669,8 +1771,12 @@
                         if (e.target.closest('.status-badge')) return;
                         this.openCardModal(idx);
                     };
+
+                    const frontPreview = card.frontImage ? `<div class="mb-2"><img src="${card.frontImage}" alt="frente" class="w-full h-28 object-cover rounded-lg" /></div>` : '';
+
                     cardEl.innerHTML = `
                         <p class="text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Carta ${card.pileId}</p>
+                        ${frontPreview}
                         ${card.content ? `
                             <div class="flex-1 flex items-center justify-center text-center mb-2">
                                 <p class="text-sm font-semibold text-slate-800 text-center leading-6">${card.content}</p>
@@ -1715,10 +1821,20 @@
                 const card = this.state.editingGame.cards[idx];
                 document.getElementById('modal-card-index').value = idx;
                 document.getElementById('modal-card-content').value = card.content || "";
-                
+
                 const radios = document.getElementsByName('modal-card-correct');
                 radios[0].checked = card.isCorrect === true;
                 radios[1].checked = card.isCorrect === false;
+
+                // image previews
+                const frontPreview = document.getElementById('modal-card-front-preview');
+                const backPreview = document.getElementById('modal-card-back-preview');
+                if (card.frontImage) { frontPreview.src = card.frontImage; frontPreview.classList.remove('hidden'); } else { frontPreview.src = ''; frontPreview.classList.add('hidden'); }
+                if (card.backImage) { backPreview.src = card.backImage; backPreview.classList.remove('hidden'); } else { backPreview.src = ''; backPreview.classList.add('hidden'); }
+
+                // clear file inputs
+                document.getElementById('modal-card-front-file').value = '';
+                document.getElementById('modal-card-back-file').value = '';
 
                 document.getElementById('modal-card').style.display = 'flex';
             },
@@ -1739,8 +1855,12 @@
                     if(correctCount >= 6) { this.showNotification("Você já atingiu o limite de 6 cartas possíveis."); return; }
                 }
 
+
                 this.state.editingGame.cards[idx].content = content;
                 this.state.editingGame.cards[idx].isCorrect = isCorrectChecked;
+
+                // images (kept in card.frontImage/card.backImage if present)
+                // nothing else to do here because uploads write directly to the card when selected
 
                 this.closeCardModal();
                 this.renderEditorGrid();
@@ -2032,6 +2152,89 @@
                     chip.innerHTML = `<span>${author}</span><button type="button" onclick="app.removeAuthor(${idx})">×</button>`;
                     list.appendChild(chip);
                 });
+            },
+
+            // Model selection by clicking an image
+            selectModel: function(modelName, el) {
+                if (!this.state.editingGame) return;
+                this.state.editingGame.model = modelName;
+                document.querySelectorAll('#model-choices > div').forEach(d => d.style.borderColor = '#e5e7eb');
+                if (el) el.style.borderColor = '#10b981';
+            },
+
+            handleDisciplinaSelectChange: function(e) {
+                const val = e.target.value;
+                if (val === 'Outro') {
+                    document.getElementById('edit-game-disciplina-outro-wrap').classList.remove('hidden');
+                    document.getElementById('edit-game-disciplina-outro').focus();
+                } else {
+                    document.getElementById('edit-game-disciplina-outro-wrap').classList.add('hidden');
+                }
+            },
+
+            clearDisciplinaOutro: function() {
+                const sel = document.getElementById('edit-game-disciplina');
+                sel.value = sel.options[0].value;
+                document.getElementById('edit-game-disciplina-outro').value = '';
+                document.getElementById('edit-game-disciplina-outro-wrap').classList.add('hidden');
+            },
+
+            handleSerieSelectChange: function(e) {
+                const val = e.target.value;
+                if (val === 'Outro') {
+                    document.getElementById('edit-game-serie-outro-wrap').classList.remove('hidden');
+                    document.getElementById('edit-game-serie-outro').focus();
+                } else {
+                    document.getElementById('edit-game-serie-outro-wrap').classList.add('hidden');
+                }
+            },
+
+            clearSerieOutro: function() {
+                const sel = document.getElementById('edit-game-serie');
+                sel.value = sel.options[0].value;
+                document.getElementById('edit-game-serie-outro').value = '';
+                document.getElementById('edit-game-serie-outro-wrap').classList.add('hidden');
+            },
+
+            wrapSelectionInRed: function(textareaId) {
+                const ta = document.getElementById(textareaId);
+                if(!ta) return;
+                const start = ta.selectionStart;
+                const end = ta.selectionEnd;
+                if (start === end) return; // nothing selected
+                const before = ta.value.substring(0, start);
+                const selected = ta.value.substring(start, end);
+                const after = ta.value.substring(end);
+                const wrapped = `<strong style="color:#b91c1c">${selected}</strong>`;
+                ta.value = before + wrapped + after;
+            },
+
+            handleCardImageUpload: function(side, e) {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const dataUrl = ev.target.result;
+                    const idx = this.state.selectedCardIndex;
+                    if (typeof idx === 'number' && this.state.editingGame && this.state.editingGame.cards[idx]) {
+                        if (side === 'front') this.state.editingGame.cards[idx].frontImage = dataUrl;
+                        else this.state.editingGame.cards[idx].backImage = dataUrl;
+                        // update preview immediately
+                        const frontPreview = document.getElementById('modal-card-front-preview');
+                        const backPreview = document.getElementById('modal-card-back-preview');
+                        if (side === 'front' && frontPreview) { frontPreview.src = dataUrl; frontPreview.classList.remove('hidden'); }
+                        if (side === 'back' && backPreview) { backPreview.src = dataUrl; backPreview.classList.remove('hidden'); }
+                    }
+                };
+                reader.readAsDataURL(file);
+            },
+
+            removeCardImage: function(side) {
+                const idx = this.state.selectedCardIndex;
+                if (typeof idx === 'number' && this.state.editingGame && this.state.editingGame.cards[idx]) {
+                    if (side === 'front') { this.state.editingGame.cards[idx].frontImage = null; document.getElementById('modal-card-front-preview').classList.add('hidden'); }
+                    if (side === 'back') { this.state.editingGame.cards[idx].backImage = null; document.getElementById('modal-card-back-preview').classList.add('hidden'); }
+                }
             },
 
             toggleFrontDesign: function(dir) {
