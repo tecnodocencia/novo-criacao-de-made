@@ -742,7 +742,6 @@
                                                 <input id="external-front-file" type="file" accept="image/png,image/jpeg,image/svg+xml" onchange="app.handleExternalFrontImageUpload(event)" class="flex-1 text-xs" />
                                                 <button type="button" onclick="app.removeExternalFrontImage()" class="px-3 py-2 bg-red-500 text-white rounded-lg text-xs font-semibold">Remover</button>
                                             </div>
-                                            <img id="external-front-preview" src="" alt="Prévia frente" class="w-full h-32 object-cover rounded-lg mt-2 hidden border border-slate-200" />
                                         </div>
                                         <div>
                                             <label class="text-[10px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">Imagem Verso</label>
@@ -750,7 +749,16 @@
                                                 <input id="external-back-file" type="file" accept="image/png,image/jpeg,image/svg+xml" onchange="app.handleExternalBackImageUpload(event)" class="flex-1 text-xs" />
                                                 <button type="button" onclick="app.removeExternalBackImage()" class="px-3 py-2 bg-red-500 text-white rounded-lg text-xs font-semibold">Remover</button>
                                             </div>
-                                            <img id="external-back-preview" src="" alt="Prévia verso" class="w-full h-32 object-cover rounded-lg mt-2 hidden border border-slate-200" />
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                                        <div class="card-preview hidden" id="external-front-preview-wrapper">
+                                            <img id="external-front-preview" src="" alt="Prévia frente">
+                                            <div class="card-preview-label">Frente Personalizada</div>
+                                        </div>
+                                        <div class="card-preview hidden" id="external-back-preview-wrapper">
+                                            <img id="external-back-preview" src="" alt="Prévia verso">
+                                            <div class="card-preview-label">Verso Personalizado</div>
                                         </div>
                                     </div>
                                 </div>
@@ -2255,60 +2263,58 @@
                 document.getElementById('preview-back').src = this.state.editingGame.backDesign;
             },
 
-            handleExternalFrontImageUpload: function(e) {
-                const file = e.target.files && e.target.files[0];
-                if (!file || !this.state.editingGame) return;
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    this.state.editingGame.externalFrontDesign = ev.target.result;
-                    const preview = document.getElementById('external-front-preview');
-                    if (preview) {
-                        preview.src = ev.target.result;
-                        preview.classList.remove('hidden');
-                    }
-                };
-                reader.readAsDataURL(file);
-            },
+            handleExternalFrontImageUpload: function(event) {
+                const file = event.target.files[0];
+                if (!file) return;
 
-            handleExternalBackImageUpload: function(e) {
-                const file = e.target.files && e.target.files[0];
-                if (!file || !this.state.editingGame) return;
                 const reader = new FileReader();
-                reader.onload = (ev) => {
-                    this.state.editingGame.externalBackDesign = ev.target.result;
-                    const preview = document.getElementById('external-back-preview');
-                    if (preview) {
-                        preview.src = ev.target.result;
-                        preview.classList.remove('hidden');
-                    }
+                reader.onload = (e) => {
+                    document.getElementById('external-front-preview').src = e.target.result;
+                    document.getElementById('external-front-preview-wrapper').classList.remove('hidden');
+                    if (this.state.editingGame) this.state.editingGame.frontDesign = e.target.result;
+                    document.getElementById('preview-front').src = e.target.result;
+                    document.getElementById('review-preview-front').src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             },
 
             removeExternalFrontImage: function() {
+                document.getElementById('external-front-file').value = '';
+                document.getElementById('external-front-preview').src = '';
+                document.getElementById('external-front-preview-wrapper').classList.add('hidden');
                 if (this.state.editingGame) {
-                    this.state.editingGame.externalFrontDesign = null;
-                    const input = document.getElementById('external-front-file');
-                    if (input) input.value = '';
-                    const preview = document.getElementById('external-front-preview');
-                    if (preview) {
-                        preview.src = '';
-                        preview.classList.add('hidden');
-                    }
+                    // Reverte para o primeiro design padrão
+                    this.state.editingGame.frontDesign = this.frontDesigns[0];
                 }
+                document.getElementById('preview-front').src = this.frontDesigns[0];
+                document.getElementById('review-preview-front').src = this.frontDesigns[0];
+            },
+
+            handleExternalBackImageUpload: function(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('external-back-preview').src = e.target.result;
+                    document.getElementById('external-back-preview-wrapper').classList.remove('hidden');
+                    if (this.state.editingGame) this.state.editingGame.backDesign = e.target.result;
+                    document.getElementById('preview-back').src = e.target.result;
+                    document.getElementById('review-preview-back').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
             },
 
             removeExternalBackImage: function() {
+                document.getElementById('external-back-file').value = '';
+                document.getElementById('external-back-preview').src = '';
+                document.getElementById('external-back-preview-wrapper').classList.add('hidden');
                 if (this.state.editingGame) {
-                    this.state.editingGame.externalBackDesign = null;
-                    const input = document.getElementById('external-back-file');
-                    if (input) input.value = '';
-                    const preview = document.getElementById('external-back-preview');
-                    if (preview) {
-                        preview.src = '';
-                        preview.classList.add('hidden');
-                    }
+                    // Reverte para o primeiro design padrão
+                    this.state.editingGame.backDesign = this.backDesigns[0];
                 }
+                document.getElementById('preview-back').src = this.backDesigns[0];
+                document.getElementById('review-preview-back').src = this.backDesigns[0];
             },
 
             showNotification: function(message, title = 'Aviso') {
