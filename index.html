@@ -391,8 +391,8 @@
         }
 
         .history-mini-card {
-            width: 60px;
-            height: 80px;
+            width: 75px;
+            height: 100px;
             border-radius: 14px;
             background: white;
             border: 2px solid #cbd5e1;
@@ -409,21 +409,30 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 6px;
+            width: fit-content;
         }
 
         .feedback-dot {
             width: 18px;
             height: 18px;
             border-radius: 999px;
-            border: 2px solid #94a3b8;
+            border: 2px solid #e2e8f0;
+            background-color: white;
         }
 
-        .feedback-dot.correct {
-            background: black;
+        .feedback-dot.green {
+            background-color: #22c55e;
+            border-color: #16a34a;
         }
 
-        .feedback-dot.partial {
-            background: white;
+        .feedback-dot.yellow {
+            background-color: #facc15;
+            border-color: #eab308;
+        }
+
+        .feedback-dot.white {
+            background-color: #ffffff;
+            border-color: #e2e8f0;
         }
     </style>
 </head>
@@ -783,10 +792,9 @@
 • Clique na carta escolhida para adicioná-la à sua tentativa na mesa. 
 • Repita o processo até que todos os 4 espaços estejam preenchidos. 
 • Clique no botão para validar a resposta. 
-• Observe o feedback do jogo verificando se as bolinhas do lado direito da tela estão pintadas de branco ou de preto. 
-• Se estiver pintada de branco significa que você colocou uma carta certa na posição errada. 
-• Se estiver pintada de preto significa que você colocou uma carta certa na posição correta. 
-• Se estiver transparente significa que essa carta não faz parte do código secreto.</textarea>
+• Observe o feedback do jogo: um pino verde significa que você acertou a carta e a posição. 
+• Um pino amarelo significa que a carta pertence ao código, mas está na posição errada. 
+• Um pino branco significa que essa carta não faz parte do código secreto.</textarea>
                                 </div>
                             </div>
                         </div>
@@ -949,7 +957,7 @@
 
 
                     <!-- DIREITA -->
-                    <div class="w-[360px] border-l border-slate-300 bg-white p-4 overflow-y-auto">
+                    <div class="w-[480px] border-l border-slate-300 bg-white p-4 overflow-y-auto">
 
                         <div class="mb-6">
                             <h2 class="font-black text-lg">
@@ -1215,7 +1223,7 @@
                     regra: "Escolher as cartas corretas sobre <strong style=\"color:#b91c1c\">Mamíferos</strong>. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.",
                         objetivo: "Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre <strong style=\"color:#b91c1c\">Mamíferos</strong> da área de <strong style=\"color:#b91c1c\">Biologia</strong>, acertando o conteúdo e a ordem que as cartas foram selecionadas.",
                     enunciado: "Escolha as 4 cartas que representam <strong style=\"color:#b91c1c\">animais mamíferos</strong> e coloque-as na ordem correta para desvendar o código secreto.",
-                    explicacao: "Observe as 12 possibilidades de cartas que estão no banco. Clique na carta escolhida para adicioná-la à sua tentativa na mesa. Repita o processo até que todos os 4 espaços estejam preenchidos. Clique no botão para validar a resposta. Observe o feedback: um pino preto significa que você acertou a carta e a posição. Um pino branco significa que a carta pertence ao código, mas está na posição errada.",
+                    explicacao: "Observe as 12 possibilidades de cartas que estão no banco. Clique na carta escolhida para adicioná-la à sua tentativa na mesa. Repita o processo até que todos os 4 espaços estejam preenchidos. Clique no botão para validar a resposta. Observe o feedback: um pino verde significa que você acertou a carta e a posição. Um pino amarelo significa que a carta pertence ao código, mas está na posição errada. Um pino branco significa que essa carta não faz parte do código secreto.",
                     cards: [
                         { id: 0, content: "Baleia", isCorrect: true, pileId: 1 },
                         { id: 1, content: "Morcego", isCorrect: true, pileId: 2 },
@@ -1444,16 +1452,19 @@
                         <div class="p-4 bg-slate-50 rounded-2xl space-y-3 border border-slate-200">
                             <p class="font-black text-xs uppercase tracking-widest text-slate-500">Significado dos Pinos:</p>
                             <div class="flex items-center gap-3">
-                                <div class="w-5 h-5 rounded-full bg-black border-2 border-slate-400"></div>
-                                <p class="text-sm"><strong>Pino Preto:</strong> Você acertou uma carta e a posição dela.</p>
+                                <div class="w-5 h-5 rounded-full bg-[#22c55e] border-2 border-[#16a34a]"></div>
+                                <p class="text-sm"><strong>Pino Verde:</strong> Você acertou uma carta e a posição dela.</p>
                             </div>
                             <div class="flex items-center gap-3">
-                                <div class="w-5 h-5 rounded-full bg-white border-2 border-slate-400"></div>
-                                <p class="text-sm"><strong>Pino Branco:</strong> A carta existe no código, mas está na posição errada.</p>
+                                <div class="w-5 h-5 rounded-full bg-[#facc15] border-2 border-[#eab308]"></div>
+                                <p class="text-sm"><strong>Pino Amarelo:</strong> A carta existe no código, mas está na posição errada.</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-5 h-5 rounded-full bg-white border-2 border-slate-200"></div>
+                                <p class="text-sm"><strong>Pino Branco:</strong> Essa carta não faz parte do código secreto.</p>
                             </div>
                         </div>
                         <div>${objectiveHtml}</div>
-                        <p class="text-xs text-slate-400 italic">* Se não houver pino, a carta não faz parte do código secreto.</p>
                     </div>
                 `;
 
@@ -1486,12 +1497,14 @@
 
                 let dots = [];
                 for(let i = 0; i < black; i++) {
-                    dots.push('<div class="feedback-dot correct"></div>');
+                    dots.push('<div class="feedback-dot green"></div>');
                 }
                 for(let i = 0; i < white; i++) {
-                    dots.push('<div class="feedback-dot partial"></div>');
+                    dots.push('<div class="feedback-dot yellow"></div>');
                 }
-                // Removido o preenchimento de pinos vazios conforme solicitado
+                for(let i = 0; i < (4 - black - white); i++) {
+                    dots.push('<div class="feedback-dot white"></div>');
+                }
 
                 row.innerHTML = `
                     <div class="history-cards">
@@ -1532,7 +1545,7 @@
                     regra: 'Escolher as cartas corretas sobre <strong style="color:#b91c1c">Mamíferos</strong>. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.',
                     objetivo: 'Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre <strong style="color:#b91c1c">Mamíferos</strong> da área de <strong style="color:#b91c1c">Biologia</strong>, acertando o conteúdo e a ordem que as cartas foram selecionadas.',
                     enunciado: 'Escolha as 4 cartas que representam <strong style="color:#b91c1c">animais mamíferos</strong> e coloque-as na ordem correta para desvendar o código secreto.',
-                    explicacao: '• Observe as 12 possibilidades de cartas que estão no banco. \n• Clique na carta escolhida para adicioná-la à sua tentativa na mesa. \n• Repita o processo até que todos os 4 espaços estejam preenchidos. \n• Clique no botão para validar a resposta. \n• Observe o feedback do jogo verificando se as bolinhas do lado direito da tela estão pintadas de branco ou de preto. \n• Se estiver pintada de branco significa que você colocou uma carta certa na posição errada. \n• Se estiver pintada de preto significa que você colocou uma carta certa na posição correta. \n• Se estiver transparente significa que essa carta não faz parte do código secreto.',
+                    explicacao: '• Observe as 12 possibilidades de cartas que estão no banco. \n• Clique na carta escolhida para adicioná-la à sua tentativa na mesa. \n• Repita o processo até que todos os 4 espaços estejam preenchidos. \n• Clique no botão para validar a resposta. \n• Observe o feedback do jogo: um pino verde significa que você acertou a carta e a posição. \n• Um pino amarelo significa que a carta pertence ao código, mas está na posição errada. \n• Um pino branco significa que essa carta não faz parte do código secreto.',
                     cards: Array.from({length: 12}, (_, i) => ({ id: "new-" + i, content: "", isCorrect: false, pileId: i + 1 }))
                 };
                 this.state.editingStep = 1;
