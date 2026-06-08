@@ -779,7 +779,14 @@
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
-                                    <textarea id="edit-game-explicacao" rows="4" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Texto exibido ao final revelando o porquê da resposta...">Observe as 12 possibilidades de cartas que estão no banco. Clique na carta escolhida para adicioná-la à sua tentativa na mesa. Repita o processo até que todos os 6 espaços estejam preenchidos. Clique no botão para validar a resposta. Observe o feedback do jogo verificando se as bolinhas do lado direito da tela estão pintadas de branco ou de preto. Se estiver pintada de branco significa que você colocou uma carta certa na posição errada. Se estiver pintada de preto significa que você colocou uma carta certa na posição correta. Se estiver transparente significa que essa carta não faz parte do código secreto.</textarea>
+                                    <textarea id="edit-game-explicacao" oninput="app.autoResizeTextarea(this)" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Texto exibido ao final revelando o porquê da resposta..." style="resize: none;">• Observe as 12 possibilidades de cartas que estão no banco. 
+• Clique na carta escolhida para adicioná-la à sua tentativa na mesa. 
+• Repita o processo até que todos os 4 espaços estejam preenchidos. 
+• Clique no botão para validar a resposta. 
+• Observe o feedback do jogo verificando se as bolinhas do lado direito da tela estão pintadas de branco ou de preto. 
+• Se estiver pintada de branco significa que você colocou uma carta certa na posição errada. 
+• Se estiver pintada de preto significa que você colocou uma carta certa na posição correta. 
+• Se estiver transparente significa que essa carta não faz parte do código secreto.</textarea>
                                 </div>
                             </div>
                         </div>
@@ -1181,6 +1188,12 @@
                 'imagens/verso/Cópia de Trás da Carta Qui Fis.png'
             ],
 
+            autoResizeTextarea: function(elem) {
+                if (!elem) return;
+                elem.style.height = 'inherit';
+                elem.style.height = `${elem.scrollHeight}px`;
+            },
+
             init: function() {
                 this.loadDefaultGames();
                 this.renderDashboard();
@@ -1519,7 +1532,7 @@
                     regra: 'Escolher as cartas corretas sobre <strong style="color:#b91c1c">Mamíferos</strong>. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.',
                     objetivo: 'Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre <strong style="color:#b91c1c">Mamíferos</strong> da área de <strong style="color:#b91c1c">Biologia</strong>, acertando o conteúdo e a ordem que as cartas foram selecionadas.',
                     enunciado: 'Escolha as 4 cartas que representam <strong style="color:#b91c1c">animais mamíferos</strong> e coloque-as na ordem correta para desvendar o código secreto.',
-                    explicacao: 'Observe as 12 possibilidades de cartas que estão no banco. Clique na carta escolhida para adicioná-la à sua tentativa na mesa. Repita o processo até que todos os 4 espaços estejam preenchidos. Clique no botão para validar a resposta. Observe o feedback do jogo verificando se as bolinhas do lado direito da tela estão pintadas de branco ou de preto. Se estiver pintada de branco significa que você colocou uma carta certa na posição errada. Se estiver pintada de preto significa que você colocou uma carta certa na posição correta. Se estiver transparente significa que essa carta não faz parte do código secreto.',
+                    explicacao: '• Observe as 12 possibilidades de cartas que estão no banco. \n• Clique na carta escolhida para adicioná-la à sua tentativa na mesa. \n• Repita o processo até que todos os 4 espaços estejam preenchidos. \n• Clique no botão para validar a resposta. \n• Observe o feedback do jogo verificando se as bolinhas do lado direito da tela estão pintadas de branco ou de preto. \n• Se estiver pintada de branco significa que você colocou uma carta certa na posição errada. \n• Se estiver pintada de preto significa que você colocou uma carta certa na posição correta. \n• Se estiver transparente significa que essa carta não faz parte do código secreto.',
                     cards: Array.from({length: 12}, (_, i) => ({ id: "new-" + i, content: "", isCorrect: false, pileId: i + 1 }))
                 };
                 this.state.editingStep = 1;
@@ -1581,7 +1594,10 @@
                 if (document.getElementById('edit-game-regra')) document.getElementById('edit-game-regra').innerHTML = eg.regra || "";
                 if (document.getElementById('edit-game-objetivo')) document.getElementById('edit-game-objetivo').innerHTML = eg.objetivo || "";
                 if (document.getElementById('edit-game-enunciado')) document.getElementById('edit-game-enunciado').innerHTML = eg.enunciado || "";
-                if (document.getElementById('edit-game-explicacao')) document.getElementById('edit-game-explicacao').value = eg.explicacao || "";
+                if (document.getElementById('edit-game-explicacao')) {
+                    document.getElementById('edit-game-explicacao').value = eg.explicacao || "";
+                    this.autoResizeTextarea(document.getElementById('edit-game-explicacao'));
+                }
 
                 document.getElementById('preview-front').src = eg.frontDesign || 'imagens/frente/frente01.png';
                 document.getElementById('preview-back').src = eg.backDesign || 'imagens/verso/Cópia de Trás da Carta - Natureza.png';
