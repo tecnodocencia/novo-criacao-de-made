@@ -723,7 +723,7 @@
                                                 <i class="fa-solid fa-chevron-left"></i>
                                             </button>
                                             <div class="card-preview">
-                                                <img id="preview-back" src="imagens/verso/verso01.png" alt="Pré-visualização verso">
+                                                <img id="preview-back" src="imagens/verso/Cópia de Trás da Carta - Natureza.png" alt="Pré-visualização verso">
                                                 <div class="card-preview-label">Verso da Carta</div>
                                             </div>
                                             <button onclick="app.toggleBackDesign('next')" class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
@@ -842,7 +842,7 @@
                                             <div class="card-preview-label">Frente da Carta</div>
                                         </div>
                                         <div class="card-preview">
-                                            <img id="review-preview-back" src="imagens/verso/verso01.png" alt="Pré-visualização verso">
+                                            <img id="review-preview-back" src="imagens/verso/Cópia de Trás da Carta - Natureza.png" alt="Pré-visualização verso">
                                             <div class="card-preview-label">Verso da Carta</div>
                                         </div>
                                     </div>
@@ -1169,8 +1169,6 @@
                 'imagens/frente/Cópia de Frente da Carta - Tipo 3.png'
             ],
             backDesigns: [
-                'imagens/verso/verso01.png',
-                'imagens/verso/Cópia de Imagem Código Secreto.png',
                 'imagens/verso/Cópia de Trás da carta - Esportes.png',
                 'imagens/verso/Cópia de Trás da Carta - Humanas.png',
                 'imagens/verso/Cópia de Trás da Carta - Línguas.png',
@@ -1194,7 +1192,7 @@
                     name: "Jogo dos Mamíferos",
                     model: "Código Secreto",
                     frontDesign: "imagens/frente/frente01.png",
-                    backDesign: "imagens/verso/verso01.png",
+                    backDesign: "imagens/verso/Cópia de Trás da Carta - Natureza.png",
                     disciplineInfo: {
                         disciplina: "Biologia",
                         conteudo: "Mamíferos",
@@ -1516,7 +1514,7 @@
                     name: "",
                     model: "Código Secreto",
                     frontDesign: "imagens/frente/frente01.png",
-                    backDesign: "imagens/verso/verso01.png",
+                    backDesign: "imagens/verso/Cópia de Trás da Carta - Natureza.png",
                     disciplineInfo: { disciplina: "Biologia", conteudo: "Mamífero", serie: "1º ano", autores: [] },
                     regra: 'Escolher as cartas corretas sobre <strong style="color:#b91c1c">Mamíferos</strong>. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.',
                     objetivo: 'Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre <strong style="color:#b91c1c">Mamíferos</strong> da área de <strong style="color:#b91c1c">Biologia</strong>, acertando o conteúdo e a ordem que as cartas foram selecionadas.',
@@ -1586,7 +1584,7 @@
                 if (document.getElementById('edit-game-explicacao')) document.getElementById('edit-game-explicacao').value = eg.explicacao || "";
 
                 document.getElementById('preview-front').src = eg.frontDesign || 'imagens/frente/frente01.png';
-                document.getElementById('preview-back').src = eg.backDesign || 'imagens/verso/verso01.png';
+                document.getElementById('preview-back').src = eg.backDesign || 'imagens/verso/Cópia de Trás da Carta - Natureza.png';
 
                 this.renderAuthorsList();
                 this.renderEditorGrid();
@@ -1722,7 +1720,7 @@
                 setSpan('review-game-explicacao', eg.explicacao);
 
                 document.getElementById('review-preview-front').src = eg.frontDesign || 'imagens/frente/frente01.png';
-                document.getElementById('review-preview-back').src = eg.backDesign || 'imagens/verso/verso01.png';
+                document.getElementById('review-preview-back').src = eg.backDesign || 'imagens/verso/Cópia de Trás da Carta - Natureza.png';
 
                 const grid = document.getElementById('review-cards-grid');
                 grid.innerHTML = '';
@@ -1954,7 +1952,7 @@
 
             applyCardDesigns: function() {
                 if (!this.state.activeGame) return;
-                const backDesign = this.state.activeGame.backDesign || 'imagens/verso/verso01.png';
+                const backDesign = this.state.activeGame.backDesign || 'imagens/verso/Cópia de Trás da Carta - Natureza.png';
                 document.querySelectorAll('.secret-card-slot').forEach(slot => {
                     slot.innerHTML = '';
                     slot.style.backgroundImage = `url('${backDesign}')`;
