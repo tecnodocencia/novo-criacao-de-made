@@ -211,14 +211,14 @@
 
         .card-preview {
             width: 100%;
-            min-height: 160px;
+            min-height: 220px;
             border-radius: 24px;
             background-size: cover;
             background-position: center;
             border: 1px solid rgba(148, 163, 184, 0.2);
             display: grid;
             place-items: center;
-            padding: 1rem;
+            padding: 1.5rem;
             background-color: #f8fafc;
             color: #0f172a;
             position: relative;
@@ -236,7 +236,7 @@
 
         .card-preview img {
             max-width: 100%;
-            max-height: 110px;
+            max-height: 160px;
             object-fit: contain;
             border-radius: 12px;
             position: relative;
@@ -460,6 +460,32 @@
         .feedback-dot.white {
             background-color: #ffffff;
             border-color: #e2e8f0;
+        }
+
+        /* Zoom Icon Style */
+        .zoom-icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 30;
+            background: rgba(255, 255, 255, 0.9);
+            color: #047857;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+
+        .zoom-icon:hover {
+            transform: scale(1.1);
+            background: #047857;
+            color: white;
         }
     </style>
 </head>
@@ -729,13 +755,19 @@
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Regra</label>
-                                    <div class="mb-2"><button type="button" onclick="app.wrapSelectionInRed('edit-game-regra')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button></div>
+                                    <div class="mb-2 flex gap-2">
+                                        <button type="button" onclick="app.wrapSelectionInRed('edit-game-regra')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button>
+                                        <button type="button" onclick="app.removeRedFromSelection('edit-game-regra')" class="px-3 py-1 text-xs bg-slate-100 text-slate-700 rounded-xl font-bold">Desmarcar</button>
+                                    </div>
                                     <p class="text-xs text-slate-500 italic mb-2">Aviso: Selecione o texto desejado e clique em 'Marcar Vermelho' para destacá-lo.</p>
                                     <div id="edit-game-regra" contenteditable="true" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.</div>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Objetivo</label>
-                                    <div class="mb-2"><button type="button" onclick="app.wrapSelectionInRed('edit-game-objetivo')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button></div>
+                                    <div class="mb-2 flex gap-2">
+                                        <button type="button" onclick="app.wrapSelectionInRed('edit-game-objetivo')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button>
+                                        <button type="button" onclick="app.removeRedFromSelection('edit-game-objetivo')" class="px-3 py-1 text-xs bg-slate-100 text-slate-700 rounded-xl font-bold">Desmarcar</button>
+                                    </div>
                                     <p class="text-xs text-slate-500 italic mb-2">Aviso: Selecione o texto desejado e clique em 'Marcar Vermelho' para destacá-lo.</p>
                                     <div id="edit-game-objetivo" contenteditable="true" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.</div>
                                 </div>
@@ -815,7 +847,7 @@
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
-                                    <textarea id="edit-game-explicacao" oninput="app.autoResizeTextarea(this)" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Texto exibido ao final revelando o porquê da resposta..." style="resize: none;">• Observe as 12 possibilidades de cartas que estão no banco. 
+                                    <textarea id="edit-game-explicacao" oninput="app.autoResizeTextarea(this)" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-[200px]" placeholder="Texto exibido ao final revelando o porquê da resposta..." style="resize: none;">• Observe as 12 possibilidades de cartas que estão no banco. 
 • Clique na carta escolhida para adicioná-la à sua tentativa na mesa. 
 • Repita o processo até que todos os 4 espaços estejam preenchidos. 
 • Clique no botão para validar a resposta. 
@@ -950,6 +982,12 @@
                     <!-- CENTRO -->
                     <div class="flex-1 flex flex-col items-center justify-start p-6 overflow-hidden">
 
+                        <!-- ENUNCIADO -->
+                        <div id="play-enunciado" class="w-full max-w-2xl bg-white/50 border border-slate-200 p-4 rounded-3xl mb-8 text-center shadow-sm">
+                            <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Enunciado</p>
+                            <div id="play-enunciado-content" class="text-sm font-semibold text-slate-700"></div>
+                        </div>
+
                         <!-- CARTAS SECRETAS -->
                         <div class="flex gap-4 mb-8">
 
@@ -999,7 +1037,10 @@
                             <button onclick="app.openDifficultyModal()" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[10px] font-black uppercase tracking-wider transition border border-slate-200">
                                 <i class="fa-solid fa-gears mr-1"></i> Dificuldade
                             </button>
-                            <button onclick="app.showGameRules()" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[10px] font-black uppercase tracking-wider transition border border-slate-200">
+                            <button onclick="app.askRestart()" class="py-2 px-3 bg-red-50 hover:bg-red-100 text-red-700 rounded-xl text-[10px] font-black uppercase tracking-wider transition border border-red-100">
+                                <i class="fa-solid fa-rotate-left mr-1"></i> Reiniciar
+                            </button>
+                            <button onclick="app.showGameRules()" class="col-span-2 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[10px] font-black uppercase tracking-wider transition border border-slate-200">
                                 <i class="fa-solid fa-circle-info mr-1"></i> Regras
                             </button>
                         </div>
@@ -1044,6 +1085,10 @@
                         <div class="flex items-center gap-2">
                             <input id="modal-card-image-file" type="file" accept="image/*" onchange="app.handleCardContentImageUpload(event)" class="text-xs flex-1" />
                             <button onclick="app.removeCardContentImage()" class="px-3 py-2 bg-red-500 text-white rounded-lg text-[10px] font-bold uppercase">Limpar</button>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider ml-1">Ou Link da Imagem</label>
+                            <input id="modal-card-image-url" type="text" oninput="app.handleCardImageUrlInput(event)" class="w-full p-3 border-2 border-slate-100 rounded-2xl outline-none focus:border-emerald-500 transition text-xs" placeholder="https://exemplo.com/imagem.png">
                         </div>
                         <div id="modal-card-image-preview-wrapper" class="hidden border-2 border-slate-100 rounded-2xl overflow-hidden bg-slate-50 aspect-video flex items-center justify-center">
                             <img id="modal-card-image-preview" src="" alt="Prévia" class="max-h-full max-w-full object-contain">
@@ -1175,7 +1220,7 @@
                 </div>
 
                 <div class="rounded-3xl border border-slate-200/60 bg-slate-50/60 p-6 space-y-3">
-                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest">Explicação Pedagógica</h4>
+                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest">Enunciado</h4>
                     <p id="solution-explanation" class="text-slate-700 leading-relaxed text-sm whitespace-pre-line"></p>
                 </div>
             </div>
@@ -1183,9 +1228,37 @@
                 <button onclick="app.closeSolutionModal(); app.switchView('dashboard');" class="px-6 py-3 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-bold rounded-xl text-sm transition">
                     Sair para o Início
                 </button>
-                <button onclick="app.closeSolutionModal(); app.replayGame();" class="px-6 py-3 bg-emerald-600 text-white font-bold rounded-xl text-sm transition shadow-lg shadow-emerald-200 hover:bg-emerald-700">
+                <button onclick="app.closeSolutionModal(); app.askRestart();" class="px-6 py-3 bg-emerald-600 text-white font-bold rounded-xl text-sm transition shadow-lg shadow-emerald-200 hover:bg-emerald-700">
                     Jogar Novamente
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-confirm" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white w-full max-w-sm rounded-[36px] shadow-2xl p-8 space-y-6 text-center">
+            <div>
+                <h3 id="confirm-title" class="text-xl font-black text-slate-900">Confirmar</h3>
+            </div>
+            <p id="confirm-message" class="text-slate-600"></p>
+            <div class="flex gap-3">
+                <button onclick="app.closeConfirm()" class="flex-1 py-3 border border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-sm transition">Cancelar</button>
+                <button id="confirm-btn-action" class="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-sm transition">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Visualização Ampliada (Lupa) -->
+    <div id="modal-preview" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center z-[60] p-4">
+        <div class="relative w-full max-w-lg">
+            <button onclick="app.closePreviewModal()" class="absolute -top-12 right-0 md:-right-12 md:top-0 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="bg-white w-full rounded-[40px] shadow-2xl overflow-hidden flex flex-col items-center p-8">
+                <div id="preview-card-container" class="w-full aspect-[4/5] bg-white rounded-3xl border-2 border-slate-100 shadow-inner flex items-center justify-center p-6 overflow-hidden mb-6">
+                    <!-- Conteúdo da carta ampliado será inserido aqui -->
+                </div>
+                <h3 id="preview-card-text" class="text-xl font-black text-slate-800 text-center uppercase tracking-wider"></h3>
             </div>
         </div>
     </div>
@@ -1211,10 +1284,10 @@
             },
 
             difficultyRules: {
-                1: { attempts: 10 },
-                2: { attempts: 8 },
-                3: { attempts: 6 },
-                4: { attempts: 5 }
+                1: { attempts: 10, repeat: false, swap: 0 },
+                2: { attempts: 8, repeat: false, swap: 1 },
+                3: { attempts: 6, repeat: true, swap: 2 },
+                4: { attempts: 5, repeat: true, swap: 3 }
             },
 
             frontDesigns: [
@@ -1296,18 +1369,18 @@
                         enunciado: "Observe as imagens e selecione as 4 que representam <strong style=\"color:#b91c1c\">mamíferos</strong>.",
                         explicacao: "As imagens representam diferentes classes de animais. Apenas mamíferos fazem parte do código.",
                         cards: [
-                            { id: 100, content: "Elefante", contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/African_Bush_Elephant.jpg/320px-African_Bush_Elephant.jpg", isCorrect: true, pileId: 1 },
-                            { id: 101, content: "Tigre", contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Walking_tiger_female.jpg/320px-Walking_tiger_female.jpg", isCorrect: true, pileId: 2 },
-                            { id: 102, content: "Cachorro", contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Blue_Heeler_retriever_mix.jpg/320px-Blue_Heeler_retriever_mix.jpg", isCorrect: true, pileId: 3 },
-                            { id: 103, content: "Gato", contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Cat_November_2010-1a.jpg/320px-Cat_November_2010-1a.jpg", isCorrect: true, pileId: 4 },
-                            { id: 104, content: "Canguru", contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Western_grey_kangaroo_bruny.jpg/320px-Western_grey_kangaroo_bruny.jpg", isCorrect: true, pileId: 5 },
-                            { id: 105, content: "Cavalo", contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Nokota___Horses_cropped.jpg/320px-Nokota___Horses_cropped.jpg", isCorrect: true, pileId: 6 },
-                            { id: 106, content: "Águia", contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Eurasian_Golden_Eagle_vertebral.jpg/320px-Eurasian_Golden_Eagle_vertebral.jpg", isCorrect: false, pileId: 7 },
-                            { id: 107, content: "Crocodilo", contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Nile_crocodile_at_St_Lucia_South_Africa_crop.jpg/320px-Nile_crocodile_at_St_Lucia_South_Africa_crop.jpg", isCorrect: false, pileId: 8 },
-                            { id: 108, content: "Peixe-Palhaço", contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Common_Clownfish_at_Steinhart_Aquarium.jpg/320px-Common_Clownfish_at_Steinhart_Aquarium.jpg", isCorrect: false, pileId: 9 },
-                            { id: 109, content: "Aranha", contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Araneus_diadematus_F_1.jpg/320px-Araneus_diadematus_F_1.jpg", isCorrect: false, pileId: 10 },
-                            { id: 110, content: "Borboleta", contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Common_tiger_butterfly_on_flower.jpg/320px-Common_tiger_butterfly_on_flower.jpg", isCorrect: false, pileId: 11 },
-                            { id: 111, content: "Sapo", contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Common_Toad_-_Bufo_bufo.jpg/320px-Common_Toad_-_Bufo_bufo.jpg", isCorrect: false, pileId: 12 }
+                            { id: 100, content: "Elefante", contentImage: "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=400", isCorrect: true, pileId: 1 },
+                            { id: 101, content: "Tigre", contentImage: "https://images.unsplash.com/photo-1477764250597-dffe9f601ae8?auto=format&fit=crop&w=400", isCorrect: true, pileId: 2 },
+                            { id: 102, content: "Cachorro", contentImage: "https://images.unsplash.com/photo-1559190394-df5a28aab5c5?auto=format&fit=crop&w=400", isCorrect: true, pileId: 3 },
+                            { id: 103, content: "Gato", contentImage: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=400", isCorrect: true, pileId: 4 },
+                            { id: 104, content: "Canguru", contentImage: "https://static.nationalgeographicbrasil.com/files/styles/image_3200/public/nationalgeographic2709937.webp?w=760&h=1054", isCorrect: true, pileId: 5 },
+                            { id: 105, content: "Cavalo", contentImage: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=400", isCorrect: true, pileId: 6 },
+                            { id: 106, content: "Águia", contentImage: "https://adilsoncardoso.com/wp-content/uploads/2022/04/A-aguia-1.jpg", isCorrect: false, pileId: 7 },
+                            { id: 107, content: "Crocodilo", contentImage: "https://images.unsplash.com/photo-1549240923-93a2e080e653?auto=format&fit=crop&w=400", isCorrect: false, pileId: 8 },
+                            { id: 108, content: "Peixe-Palhaço", contentImage: "https://images.unsplash.com/photo-1524704654690-b56c05c78a00?auto=format&fit=crop&w=400", isCorrect: false, pileId: 9 },
+                            { id: 109, content: "Pato", contentImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGw1voknMq3U4UqLdp_pHlMt5oBhZYhfBv9g&s", isCorrect: false, pileId: 10 },
+                            { id: 110, content: "Borboleta", contentImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrGJxmfhqYoyi3sB1Lw6XLL1MiqXq2jiPRHA&s", isCorrect: false, pileId: 11 },
+                            { id: 111, content: "Sapo", contentImage: "https://upload.wikimedia.org/wikipedia/commons/5/55/Bufotes_balearicus_female.jpg", isCorrect: false, pileId: 12 }
                         ]
                     }
                 ];
@@ -1436,18 +1509,12 @@
                 const correctCards = game.cards.filter(card => card.isCorrect);
                 const secret = [];
                 const level = this.state.currentDifficulty;
-                // Níveis 1 e 2: Não repete. Níveis 3 e 4: Pode repetir.
-                const canRepeat = (level >= 3);
-
-                if (!canRepeat && correctCards.length < 4) {
-                    for(let i = 0; i < 4; i++) {
-                        secret.push({...correctCards[i % correctCards.length], instanceId: crypto.randomUUID()});
-                    }
-                    return secret;
-                }
+                const rules = this.difficultyRules[level];
+                const canRepeat = rules.repeat;
 
                 const available = [...correctCards];
                 for(let i = 0; i < 4; i++) {
+                    if (available.length === 0) break;
                     const idx = Math.floor(Math.random() * available.length);
                     const card = available[idx];
                     secret.push({
@@ -1479,12 +1546,21 @@
                         : card.content;
 
                     div.innerHTML = `
+                        <div class="zoom-icon" title="Visualizar ampliado">
+                            <i class="fa-solid fa-magnifying-glass-plus"></i>
+                        </div>
                         <div class="bank-card-inner" style="background-image: url('${useBg}'); background-size: cover; background-position: center;">
                             <div class="w-full h-full flex items-center justify-center p-2 ${card.frontImage ? 'bg-transparent' : 'bg-white/80'} rounded-[22px] overflow-hidden">
                                 ${contentHtml}
                             </div>
                         </div>
                     `;
+
+                    // Suporte à Lupa
+                    div.querySelector('.zoom-icon').onclick = (e) => {
+                        e.stopPropagation();
+                        this.previewCard(card);
+                    };
 
                     // Suporte a Arrastar
                     div.addEventListener('dragstart', e => {
@@ -1507,6 +1583,31 @@
 
                     bank.appendChild(div);
                 });
+            },
+
+            previewCard: function(card) {
+                const modal = document.getElementById('modal-preview');
+                const container = document.getElementById('preview-card-container');
+                const text = document.getElementById('preview-card-text');
+                
+                const frontDesign = this.state.activeGame?.frontDesign || this.state.editingGame?.frontDesign || 'imagens/frente/frente01.png';
+                const useBg = card.frontImage || frontDesign;
+
+                container.style.backgroundImage = `url('${useBg}')`;
+                container.style.backgroundSize = 'cover';
+                container.style.backgroundPosition = 'center';
+
+                const contentHtml = card.contentImage 
+                    ? `<img src="${card.contentImage}" class="max-w-full max-h-full object-contain shadow-2xl rounded-2xl" />`
+                    : `<span class="text-4xl font-black text-slate-800 bg-white/80 p-6 rounded-[32px] border-2 border-slate-100 text-center">${card.content}</span>`;
+
+                container.innerHTML = contentHtml;
+                text.innerText = card.content || "Carta Selecionada";
+                modal.style.display = 'flex';
+            },
+
+            closePreviewModal: function() {
+                document.getElementById('modal-preview').style.display = 'none';
             },
 
             setupDropZones: function() {
@@ -1963,7 +2064,9 @@
                 const preview = document.getElementById('modal-card-image-preview');
                 const wrapper = document.getElementById('modal-card-image-preview-wrapper');
                 const fileInput = document.getElementById('modal-card-image-file');
+                const urlInput = document.getElementById('modal-card-image-url');
                 fileInput.value = '';
+                urlInput.value = (card.contentImage && !card.contentImage.startsWith('data:')) ? card.contentImage : '';
 
                 if (card.contentImage) {
                     preview.src = card.contentImage;
@@ -1982,6 +2085,7 @@
 
             closeCardModal: function() {
                 document.getElementById('modal-card').style.display = 'none';
+                this.state.tempContentImage = null;
             },
 
             handleCardContentImageUpload: function(event) {
@@ -1992,13 +2096,34 @@
                     const dataUrl = e.target.result;
                     document.getElementById('modal-card-image-preview').src = dataUrl;
                     document.getElementById('modal-card-image-preview-wrapper').classList.remove('hidden');
+                    document.getElementById('modal-card-image-url').value = '';
                     this.state.tempContentImage = dataUrl;
                 };
                 reader.readAsDataURL(file);
             },
 
+            handleCardImageUrlInput: function(event) {
+                const url = event.target.value.trim();
+                const preview = document.getElementById('modal-card-image-preview');
+                const wrapper = document.getElementById('modal-card-image-preview-wrapper');
+                
+                if (url) {
+                    preview.src = url;
+                    wrapper.classList.remove('hidden');
+                    document.getElementById('modal-card-image-file').value = '';
+                    this.state.tempContentImage = url;
+                } else {
+                    if (!this.state.editingGame.cards[this.state.selectedCardIndex].contentImage?.startsWith('data:')) {
+                        preview.src = '';
+                        wrapper.classList.add('hidden');
+                    }
+                    this.state.tempContentImage = null;
+                }
+            },
+
             removeCardContentImage: function() {
                 document.getElementById('modal-card-image-file').value = '';
+                document.getElementById('modal-card-image-url').value = '';
                 document.getElementById('modal-card-image-preview').src = '';
                 document.getElementById('modal-card-image-preview-wrapper').classList.add('hidden');
                 this.state.tempContentImage = null;
@@ -2011,6 +2136,11 @@
                 const idx = parseInt(document.getElementById('modal-card-index').value);
                 const content = document.getElementById('modal-card-content').value.trim();
                 const isCorrectChecked = document.querySelector('input[name="modal-card-correct"]:checked').value === "true";
+
+                const urlVal = document.getElementById('modal-card-image-url').value.trim();
+                if (urlVal) {
+                    this.state.tempContentImage = urlVal;
+                }
 
                 const hasImage = !!this.state.tempContentImage || !!this.state.editingGame.cards[idx].contentImage;
 
@@ -2064,7 +2194,11 @@
                     this.setupDropZones();
                     this.renderCurrentGuess();
                     const history = document.getElementById('play-history-list');
-                    history.innerHTML = '';
+                    if (history) history.innerHTML = '';
+                    
+                    const enunciadoContent = document.getElementById('play-enunciado-content');
+                    if (enunciadoContent) enunciadoContent.innerHTML = this.state.activeGame.enunciado || "";
+
                     document.getElementById('back-from-player-btn').classList.remove('hidden');
                     this.switchView('player');
                     this.applyCardDesigns();
@@ -2100,8 +2234,11 @@
                 this.setupDropZones();
                 this.renderCurrentGuess();
                 const history = document.getElementById('play-history-list');
-                history.innerHTML = '';
+                if (history) history.innerHTML = '';
                 
+                const enunciadoContent = document.getElementById('play-enunciado-content');
+                if (enunciadoContent) enunciadoContent.innerHTML = this.state.activeGame.enunciado || "";
+
                 this.switchView('player');
                 this.applyCardDesigns();
                 document.getElementById('back-from-player-btn').classList.remove('hidden');
@@ -2114,14 +2251,56 @@
             replayGame: function() {
                 if(!this.state.activeGame) return;
 
-                this.state.secretCode = this.createSecretCode(this.state.activeGame);
+                const level = this.state.currentDifficulty;
+                const rules = this.difficultyRules[level];
+                
+                if (rules.swap > 0 && this.state.secretCode && this.state.secretCode.length === 4) {
+                    // Swap N cards
+                    const correctCards = this.state.activeGame.cards.filter(c => c.isCorrect);
+                    const currentSecret = [...this.state.secretCode];
+                    const canRepeat = rules.repeat;
+                    
+                    // Choose N indices to swap
+                    const indicesToSwap = [];
+                    const possibleIndices = [0, 1, 2, 3];
+                    for(let i = 0; i < Math.min(rules.swap, 4); i++) {
+                        const rIdx = Math.floor(Math.random() * possibleIndices.length);
+                        indicesToSwap.push(possibleIndices.splice(rIdx, 1)[0]);
+                    }
+                    
+                    indicesToSwap.forEach(idx => {
+                        let available = [...correctCards];
+                        if (!canRepeat) {
+                            const currentContents = currentSecret.map(c => c.content);
+                            available = available.filter(c => !currentContents.includes(c.content));
+                        }
+                        
+                        if (available.length > 0) {
+                            const newCard = available[Math.floor(Math.random() * available.length)];
+                            currentSecret[idx] = { ...newCard, instanceId: crypto.randomUUID() };
+                        }
+                    });
+                    this.state.secretCode = currentSecret;
+                } else if (this.state.gameOver === 'win' || this.state.gameOver === 'loss' || !this.state.secretCode) {
+                    // Se o jogo acabou ou não tem código, gera um novo apenas se não for Nível 1
+                    // Na verdade, a regra é: Nível 1 REPETE o código.
+                    // Então só geramos se for o início da primeira partida (já feito no playGame)
+                    if (!this.state.secretCode) {
+                         this.state.secretCode = this.createSecretCode(this.state.activeGame);
+                    }
+                }
+
                 this.state.currentGuess = [null, null, null, null];
                 this.state.attempts = [];
+                this.state.gameOver = null;
                 this.renderPlayBank();
                 this.setupDropZones();
                 this.renderCurrentGuess();
                 const history = document.getElementById('play-history-list');
-                history.innerHTML = '';
+                if (history) history.innerHTML = '';
+                
+                const enunciadoContent = document.getElementById('play-enunciado-content');
+                if (enunciadoContent) enunciadoContent.innerHTML = this.state.activeGame.enunciado || "";
 
                 this.applyCardDesigns();
                 this.updateAttemptCounter();
@@ -2199,14 +2378,16 @@
                 this.updateAttemptCounter();
 
                 if(black === 4) {
+                    this.state.gameOver = 'win';
                     this.revealSecretCards();
-                    this.showNotification('Parabéns, você venceu!', 'Vitória!');
+                    this.openSolutionModal();
                     return;
                 }
 
                 if (this.state.attempts.length >= this.state.activeGame.maxAttempts) {
+                    this.state.gameOver = 'loss';
                     this.revealSecretCards();
-                    this.showNotification('Fim de jogo! Você não tem mais tentativas.', 'Fim de Jogo');
+                    this.openSolutionModal();
                     return;
                 }
 
@@ -2238,16 +2419,23 @@
                     icon.className = "fa-solid fa-circle-xmark text-red-500 text-3xl";
                 }
 
-                document.getElementById('solution-explanation').innerText = this.state.activeGame.explicacao || '';
+                document.getElementById('solution-explanation').innerHTML = this.state.activeGame.enunciado || '';
 
                 modal.style.display = 'flex';
 
                 const secret = this.state.secretCode;
                 const frontDesign = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
 
+                // Hide all solution card containers first
+                for(let i = 0; i < 6; i++) {
+                    const el = document.getElementById(`solution-card-${i}`);
+                    if(el) el.classList.add('hidden');
+                }
+
                 secret.forEach((card, i) => {
                     const cardContainer = document.getElementById(`solution-card-${i}`);
                     if(cardContainer) {
+                        cardContainer.classList.remove('hidden');
                         const frontFace = cardContainer.querySelector('.solution-card-front');
                         frontFace.className = 'solution-card-front bank-card-inner w-full h-full flex flex-col justify-center items-center text-center overflow-hidden';
                         frontFace.style.backgroundImage = `url('${frontDesign}')`;
@@ -2371,6 +2559,36 @@
                 selection.removeAllRanges();
             },
 
+            removeRedFromSelection: function(elementId) {
+                const el = document.getElementById(elementId);
+                if(!el) return;
+                const selection = window.getSelection();
+                if (selection.toString().length === 0) return;
+
+                const range = selection.getRangeAt(0);
+                const container = document.createElement('div');
+                container.appendChild(range.cloneContents());
+
+                // Se a seleção está dentro de um strong com a cor vermelha, ou contém um.
+                // Abordagem simples: extrair o conteúdo e remover a formatação de cor se for um strong.
+                // Para simplificar, podemos usar execCommand se disponível ou manipular o DOM.
+                
+                // Vamos tentar encontrar se o nó pai imediato ou algum ancestral dentro do elemento editável é o nosso 'strong' vermelho
+                let node = selection.anchorNode;
+                while (node && node !== el) {
+                    if (node.nodeName === 'STRONG' && node.style.color === 'rgb(185, 28, 28)') {
+                        // Removemos o strong mantendo o conteúdo
+                        const parent = node.parentNode;
+                        while (node.firstChild) {
+                            parent.insertBefore(node.firstChild, node);
+                        }
+                        parent.removeChild(node);
+                        return;
+                    }
+                    node = node.parentNode;
+                }
+            },
+
             handleCardImageUpload: function(side, e) {
                 const file = e.target.files && e.target.files[0];
                 if (!file) return;
@@ -2474,6 +2692,38 @@
 
             closeNotification: function() {
                 document.getElementById('modal-notification').style.display = 'none';
+            },
+
+            showConfirm: function(title, message, onConfirm) {
+                document.getElementById('confirm-title').innerText = title;
+                document.getElementById('confirm-message').innerText = message;
+                const btn = document.getElementById('confirm-btn-action');
+                btn.onclick = () => {
+                    onConfirm();
+                    this.closeConfirm();
+                };
+                document.getElementById('modal-confirm').style.display = 'flex';
+            },
+
+            closeConfirm: function() {
+                document.getElementById('modal-confirm').style.display = 'none';
+            },
+
+            askRestart: function() {
+                const level = this.state.currentDifficulty;
+                const rules = this.difficultyRules[level];
+                const swaps = rules.swap;
+                
+                let msg = "Você deseja realmente reiniciar a partida?";
+                if (swaps > 0) {
+                    msg += ` Como você está no Nível ${level}, ${swaps} ${swaps === 1 ? 'carta será substituída' : 'cartas serão substituídas'} no código secreto.`;
+                } else {
+                    msg += " No Nível 1, o código secreto será o mesmo.";
+                }
+
+                this.showConfirm("Reiniciar Partida", msg, () => {
+                    this.replayGame();
+                });
             }
         };
 
