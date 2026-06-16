@@ -227,6 +227,14 @@ window.app = {
             target.classList.add('active');
         }
 
+        // Se for a aba de configurações, preenche os dados do usuário
+        if (viewId === 'settings' && this.state.activeUser) {
+            const emailEl = document.getElementById('settings-user-email');
+            const roleEl = document.getElementById('settings-user-role');
+            if (emailEl) emailEl.innerText = this.state.activeUser.email;
+            if (roleEl) roleEl.innerText = this.state.activeUser.role || 'Usuário';
+        }
+
         const sidebar = document.querySelector('aside');
         if (sidebar) {
             if (viewId === 'player') {
