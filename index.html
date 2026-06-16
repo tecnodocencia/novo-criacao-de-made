@@ -1313,6 +1313,35 @@
         </div>
     </div>
 
+    <!-- MODAL: BIBLIOTECA DE IMAGENS -->
+    <div id="modal-library" class="modal-overlay hidden" style="z-index: 10001;">
+        <div class="bg-white w-full max-w-4xl rounded-[36px] shadow-2xl p-8 space-y-6">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-2xl font-black text-slate-900">Minha Biblioteca</h3>
+                    <p class="text-xs text-slate-400 font-bold uppercase mt-1 tracking-widest">Imagens já enviadas por você</p>
+                </div>
+                <button onclick="app.closeImageLibrary()" class="w-10 h-10 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200 transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div id="library-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 max-h-[60vh] overflow-y-auto p-2 custom-scrollbar">
+                <!-- Imagens serão carregadas aqui -->
+                <div class="col-span-full flex flex-col items-center justify-center py-12 text-slate-400">
+                    <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-4"></i>
+                    <p class="font-bold">Carregando suas imagens...</p>
+                </div>
+            </div>
+            
+            <div class="pt-4 border-t border-slate-100 flex justify-end">
+                <button onclick="app.closeImageLibrary()" class="px-8 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm hover:bg-slate-200 transition">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="js/app.js"></script>
 </body>
 </html>

@@ -81,5 +81,58 @@ export const dbService = {
     async logout() {
         const { error } = await supabase.auth.signOut()
         if (error) throw error
+    },
+
+    // --- STORAGE (IMAGENS) ---
+
+    /**
+     * Faz upload de um arquivo para o bucket 'imagens_jogos'
+     * @param {File|Blob} file O arquivo a ser enviado
+     * @param {string} path O caminho/nome do arquivo no bucket
+     */
+    async uploadImagem(file, path) {
+        const { data, error } = await supabase.storage
+            .from('imagens_jogos')
+            .upload(path, file, {
+                upsert: true,
+                contentType: file.type
+            })
+        
+        if (error) throw error
+        
+        // Retorna a URL pública do arquivo
+        const { data: { publicUrl } } = supabase.storage
+            .from('imagens_jogos')
+            .getPublicUrl(path)
+            
+        return publicUrl
+    },
+
+    /**
+     * Lista todas as imagens do usuário no bucket
+     * @param {string} userId ID do usuário logado
+     */
+    async listarImagensUsuario(userId) {
+        const { data, error } = await supabase.storage
+            .from('imagens_jogos')
+            .list(userId, {
+                limit: 100,
+                offset: 0,
+                sortBy: { column: 'name', order: 'desc' }
+            })
+        
+        if (error) throw error
+        
+        // Mapeia os arquivos para retornar suas URLs públicas
+        return data.map(file => {
+            const { data: { publicUrl } } = supabase.storage
+                .from('imagens_jogos')
+                .getPublicUrl(`${userId}/${file.name}`)
+            return {
+                name: file.name,
+                url: publicUrl,
+                created_at: file.created_at
+            }
+        })
     }
 }

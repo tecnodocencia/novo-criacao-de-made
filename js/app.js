@@ -917,6 +917,86 @@ window.app = {
         }
     },
 
+    openImageLibrary: async function() {
+        if (!this.state.activeUser) {
+            this.showNotification("Você precisa estar logado para acessar sua biblioteca.");
+            return;
+        }
+
+        const modal = document.getElementById('modal-library');
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+
+        const grid = document.getElementById('library-grid');
+        grid.innerHTML = `
+            <div class="col-span-full flex flex-col items-center justify-center py-12 text-slate-400">
+                <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-4"></i>
+                <p class="font-bold">Carregando suas imagens...</p>
+            </div>
+        `;
+
+        try {
+            const imagens = await dbService.listarImagensUsuario(this.state.activeUser.id);
+            this.renderLibrary(imagens);
+        } catch (error) {
+            console.error("Erro ao carregar biblioteca:", error);
+            grid.innerHTML = `
+                <div class="col-span-full text-center py-12 text-red-500">
+                    <i class="fa-solid fa-circle-exclamation text-3xl mb-4"></i>
+                    <p class="font-bold">Erro ao carregar imagens.</p>
+                </div>
+            `;
+        }
+    },
+
+    closeImageLibrary: function() {
+        const modal = document.getElementById('modal-library');
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+    },
+
+    renderLibrary: function(imagens) {
+        const grid = document.getElementById('library-grid');
+        if (imagens.length === 0) {
+            grid.innerHTML = `
+                <div class="col-span-full text-center py-12 text-slate-400">
+                    <i class="fa-solid fa-image-slash text-3xl mb-4"></i>
+                    <p class="font-bold">Sua biblioteca está vazia.</p>
+                    <p class="text-xs">Envie imagens nas cartas para que elas apareçam aqui.</p>
+                </div>
+            `;
+            return;
+        }
+
+        grid.innerHTML = '';
+        imagens.forEach(img => {
+            const item = document.createElement('div');
+            item.className = "group relative aspect-square bg-slate-50 rounded-2xl border-2 border-slate-100 overflow-hidden cursor-pointer hover:border-emerald-500 transition-all";
+            item.onclick = () => this.selectImageFromLibrary(img.url);
+
+            item.innerHTML = `
+                <img src="${img.url}" class="w-full h-full object-contain" />
+                <div class="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/20 flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-check text-white opacity-0 group-hover:opacity-100 text-2xl"></i>
+                </div>
+            `;
+            grid.appendChild(item);
+        });
+    },
+
+    selectImageFromLibrary: function(url) {
+        const preview = document.getElementById('modal-card-image-preview');
+        const wrapper = document.getElementById('modal-card-image-preview-wrapper');
+        const urlInput = document.getElementById('modal-card-image-url');
+
+        preview.src = url;
+        wrapper.classList.remove('hidden');
+        urlInput.value = '';
+        this.state.tempContentImage = url;
+        
+        this.closeImageLibrary();
+    },
+
     saveCardModal: function() {
         const idx = parseInt(document.getElementById('modal-card-index').value);
         const content = document.getElementById('modal-card-content').value.trim();
@@ -1396,19 +1476,24 @@ window.app = {
         document.getElementById('preview-back').src = this.state.editingGame.backDesign;
     },
 
-    handleExternalFrontImageUpload: function(event) {
+    handleExternalFrontImageUpload: async function(event) {
         const file = event.target.files[0];
         if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            document.getElementById('external-front-preview').src = e.target.result;
+        try {
+            const userId = this.state.activeUser?.id || 'public';
+            const fileName = `${userId}/design/front-${Date.now()}-${file.name}`;
+            const publicUrl = await dbService.uploadImagem(file, fileName);
+
+            document.getElementById('external-front-preview').src = publicUrl;
             document.getElementById('external-front-preview-wrapper').classList.remove('hidden');
-            if (this.state.editingGame) this.state.editingGame.frontDesign = e.target.result;
-            document.getElementById('preview-front').src = e.target.result;
-            document.getElementById('review-preview-front').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
+            if (this.state.editingGame) this.state.editingGame.frontDesign = publicUrl;
+            document.getElementById('preview-front').src = publicUrl;
+            document.getElementById('review-preview-front').src = publicUrl;
+        } catch (error) {
+            console.error(error);
+            this.showNotification("Erro ao enviar frente da carta.");
+        }
     },
 
     removeExternalFrontImage: function() {
@@ -1422,19 +1507,24 @@ window.app = {
         document.getElementById('review-preview-front').src = this.frontDesigns[0];
     },
 
-    handleExternalBackImageUpload: function(event) {
+    handleExternalBackImageUpload: async function(event) {
         const file = event.target.files[0];
         if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            document.getElementById('external-back-preview').src = e.target.result;
+        try {
+            const userId = this.state.activeUser?.id || 'public';
+            const fileName = `${userId}/design/back-${Date.now()}-${file.name}`;
+            const publicUrl = await dbService.uploadImagem(file, fileName);
+
+            document.getElementById('external-back-preview').src = publicUrl;
             document.getElementById('external-back-preview-wrapper').classList.remove('hidden');
-            if (this.state.editingGame) this.state.editingGame.backDesign = e.target.result;
-            document.getElementById('preview-back').src = e.target.result;
-            document.getElementById('review-preview-back').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
+            if (this.state.editingGame) this.state.editingGame.backDesign = publicUrl;
+            document.getElementById('preview-back').src = publicUrl;
+            document.getElementById('review-preview-back').src = publicUrl;
+        } catch (error) {
+            console.error(error);
+            this.showNotification("Erro ao enviar verso da carta.");
+        }
     },
 
     removeExternalBackImage: function() {
@@ -1500,5 +1590,8 @@ window.addEventListener('DOMContentLoaded', () => {
         if (event.target == document.getElementById('modal-author')) app.closeAuthorModal();
         if (event.target == document.getElementById('modal-difficulty')) app.closeDifficultyModal();
         if (event.target == document.getElementById('modal-notification')) app.closeNotification();
+    }
+});
+cation')) app.closeNotification();
     }
 });
