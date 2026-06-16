@@ -1745,6 +1745,3 @@ window.addEventListener('DOMContentLoaded', () => {
         if (event.target == document.getElementById('modal-notification')) app.closeNotification();
     }
 });
-cation')) app.closeNotification();
-    }
-});
