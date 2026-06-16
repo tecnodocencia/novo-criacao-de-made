@@ -76,5 +76,10 @@ export const dbService = {
         
         if (error) throw error
         return data.user
+    },
+
+    async logout() {
+        const { error } = await supabase.auth.signOut()
+        if (error) throw error
     }
 }

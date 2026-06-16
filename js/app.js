@@ -196,6 +196,25 @@ window.app = {
         }
     },
 
+    logout: async function() {
+        try {
+            await dbService.logout();
+            this.state.activeUser = null;
+            document.getElementById('main-layout').classList.add('hidden');
+            document.getElementById('view-login').classList.add('active');
+            document.getElementById('view-login').classList.remove('hidden');
+            this.setAuthMode('login');
+            
+            // Limpa campos de input
+            const emailInput = document.getElementById('auth-email');
+            const passInput = document.getElementById('auth-password');
+            if(emailInput) emailInput.value = '';
+            if(passInput) passInput.value = '';
+        } catch (error) {
+            console.error("Erro ao sair:", error);
+        }
+    },
+
     switchView: function(viewId) {
         document.querySelectorAll('.view-section').forEach(s => {
             s.classList.remove('active');
