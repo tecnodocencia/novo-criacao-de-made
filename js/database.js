@@ -33,20 +33,22 @@ export const dbService = {
         const { data: { user } } = await supabase.auth.getUser()
         if (!user) throw new Error("Usuário não autenticado")
 
-        // Mapeamento EXATO para as colunas do seu banco (agora incluindo user_id)
+        // Mapeamento EXATO para as colunas do seu banco
         const payload = {
             name: jogo.name,
             model: jogo.model,
-            frontdesign: jogo.frontDesign,
-            backdesign: jogo.backDesign,
-            disciplineinfo: jogo.disciplineInfo,
-            regra: jogo.regra,
-            objetivo: jogo.objetivo,
-            enunciado: jogo.enunciado,
-            explicacao: jogo.explicacao,
-            cards: jogo.cards,
-            user_id: user.id // Vincula o jogo ao usuário logado
+            frontdesign: jogo.frontDesign || null,
+            backdesign: jogo.backDesign || null,
+            disciplineinfo: jogo.disciplineInfo || null,
+            regra: jogo.regra || "",
+            objetivo: jogo.objetivo || "",
+            enunciado: jogo.enunciado || "",
+            explicacao: jogo.explicacao || "",
+            cards: jogo.cards || [],
+            user_id: user.id
         }
+
+        console.log("Enviando payload para o Supabase:", payload);
 
         // Se o jogo já tem um ID que não seja temporário
         const isNew = !jogo.id || String(jogo.id).startsWith('game-')
