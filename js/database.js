@@ -9,36 +9,46 @@ export const dbService = {
     // --- JOGOS ---
     
     async listarJogos() {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) return []
+
         const { data, error } = await supabase
             .from('jogos')
             .select('*')
+            .eq('user_id', user.id) // Filtra para mostrar apenas os jogos do usuário logado
             .order('created_at', { ascending: false })
         
         if (error) throw error
-        return data
+        
+        // Mapeamento de volta para camelCase para manter compatibilidade com o app.js
+        return data.map(jogo => ({
+            ...jogo,
+            frontDesign: jogo.frontdesign,
+            backDesign: jogo.backdesign,
+            disciplineInfo: jogo.disciplineinfo
+        }))
     },
 
     async salvarJogo(jogo) {
         const { data: { user } } = await supabase.auth.getUser()
         if (!user) throw new Error("Usuário não autenticado")
 
-        // Sanitização do payload para evitar erro 400 por campos inexistentes no banco
-        // Ajuste estes campos de acordo com as colunas reais da sua tabela 'jogos'
+        // Mapeamento EXATO para as colunas do seu banco (agora incluindo user_id)
         const payload = {
             name: jogo.name,
             model: jogo.model,
-            frontDesign: jogo.frontDesign,
-            backDesign: jogo.backDesign,
-            disciplineInfo: jogo.disciplineInfo,
+            frontdesign: jogo.frontDesign,
+            backdesign: jogo.backDesign,
+            disciplineinfo: jogo.disciplineInfo,
             regra: jogo.regra,
             objetivo: jogo.objetivo,
             enunciado: jogo.enunciado,
             explicacao: jogo.explicacao,
             cards: jogo.cards,
-            user_id: user.id
+            user_id: user.id // Vincula o jogo ao usuário logado
         }
 
-        // Se o jogo já tem um ID que não seja temporário, incluímos no payload para o upsert
+        // Se o jogo já tem um ID que não seja temporário
         const isNew = !jogo.id || String(jogo.id).startsWith('game-')
         if (!isNew) {
             payload.id = jogo.id
@@ -50,7 +60,9 @@ export const dbService = {
             .select()
         
         if (error) {
-            console.error("Erro no Supabase:", error)
+            const errorMsg = `Erro Supabase (${error.code}): ${error.message}${error.hint ? ' - ' + error.hint : ''}`
+            console.error("Erro detalhado:", error)
+            alert(errorMsg)
             throw error
         }
         return data[0]
