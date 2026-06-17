@@ -19,13 +19,29 @@ export const dbService = {
     },
 
     async salvarJogo(jogo) {
-        // Se o jogo já tem um ID que não seja temporário, tentamos um upsert
-        const isNew = !jogo.id || jogo.id.startsWith('game-')
-        
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) throw new Error("Usuário não autenticado")
+
+        // Sanitização do payload para evitar erro 400 por campos inexistentes no banco
+        // Ajuste estes campos de acordo com as colunas reais da sua tabela 'jogos'
         const payload = {
-            ...jogo,
-            // Garantimos que o ID seja tratado corretamente pelo Supabase se for novo
-            id: isNew ? undefined : jogo.id 
+            name: jogo.name,
+            model: jogo.model,
+            frontDesign: jogo.frontDesign,
+            backDesign: jogo.backDesign,
+            disciplineInfo: jogo.disciplineInfo,
+            regra: jogo.regra,
+            objetivo: jogo.objetivo,
+            enunciado: jogo.enunciado,
+            explicacao: jogo.explicacao,
+            cards: jogo.cards,
+            user_id: user.id
+        }
+
+        // Se o jogo já tem um ID que não seja temporário, incluímos no payload para o upsert
+        const isNew = !jogo.id || String(jogo.id).startsWith('game-')
+        if (!isNew) {
+            payload.id = jogo.id
         }
 
         const { data, error } = await supabase
@@ -33,7 +49,10 @@ export const dbService = {
             .upsert([payload])
             .select()
         
-        if (error) throw error
+        if (error) {
+            console.error("Erro no Supabase:", error)
+            throw error
+        }
         return data[0]
     },
 
