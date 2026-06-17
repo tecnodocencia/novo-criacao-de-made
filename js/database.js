@@ -110,19 +110,25 @@ export const dbService = {
      * @param {string} path O caminho/nome do arquivo no bucket
      */
     async uploadImagem(file, path) {
+        // Sanitização básica do path/nome do arquivo para evitar caracteres especiais
+        const cleanPath = path.normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-').toLowerCase()
+
         const { data, error } = await supabase.storage
             .from('imagens_jogos')
-            .upload(path, file, {
+            .upload(cleanPath, file, {
                 upsert: true,
                 contentType: file.type
             })
         
-        if (error) throw error
+        if (error) {
+            console.error("Erro no upload Supabase:", error)
+            throw error
+        }
         
         // Retorna a URL pública do arquivo
         const { data: { publicUrl } } = supabase.storage
             .from('imagens_jogos')
-            .getPublicUrl(path)
+            .getPublicUrl(cleanPath)
             
         return publicUrl
     },

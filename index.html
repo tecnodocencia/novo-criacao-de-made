@@ -632,10 +632,6 @@
                         <i class="fa-solid fa-gear mr-3 w-5"></i>
                         <span class="font-semibold text-sm">Configurações</span>
                     </button>
-                    <button onclick="app.logout()" class="w-full flex items-center p-3 rounded-xl transition text-red-500 hover:bg-red-50">
-                        <i class="fa-solid fa-right-from-bracket mr-3 w-5"></i>
-                        <span class="font-semibold text-sm">Sair da Conta</span>
-                    </button>
                 </div>
             </nav>
             <div class="p-6 border-t text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center">
@@ -884,7 +880,6 @@
                                         <div>
                                             <label class="text-[10px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">Imagem Frente</label>
                                             <div class="flex gap-2 items-center">
-                                                <input id="external-front-file" type="file" accept="image/png,image/jpeg,image/svg+xml" onchange="app.handleExternalFrontImageUpload(event)" class="flex-1 text-xs" />
                                                 <button onclick="app.openImageLibrary('front-design')" class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[10px] font-bold uppercase flex items-center gap-2">
                                                     <i class="fa-solid fa-images"></i> Biblioteca
                                                 </button>
@@ -894,7 +889,6 @@
                                         <div>
                                             <label class="text-[10px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">Imagem Verso</label>
                                             <div class="flex gap-2 items-center">
-                                                <input id="external-back-file" type="file" accept="image/png,image/jpeg,image/svg+xml" onchange="app.handleExternalBackImageUpload(event)" class="flex-1 text-xs" />
                                                 <button onclick="app.openImageLibrary('back-design')" class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[10px] font-bold uppercase flex items-center gap-2">
                                                     <i class="fa-solid fa-images"></i> Biblioteca
                                                 </button>
