@@ -116,13 +116,14 @@ export const dbService = {
         const { data, error } = await supabase.storage
             .from('imagens_jogos')
             .upload(cleanPath, file, {
-                upsert: true,
-                contentType: file.type
+                cacheControl: '3600',
+                contentType: file.type || 'application/octet-stream'
             })
         
         if (error) {
-            console.error("Erro no upload Supabase:", error)
-            throw error
+            console.error("Erro detalhado no upload Supabase:", error)
+            // Lança o erro com a mensagem do Supabase para o app capturar
+            throw new Error(error.message || "Erro desconhecido no upload")
         }
         
         // Retorna a URL pública do arquivo

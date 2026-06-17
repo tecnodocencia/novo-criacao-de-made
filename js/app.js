@@ -855,7 +855,8 @@ window.app = {
             this.refreshLibraryManager();
             this.showNotification("Imagem enviada com sucesso!", "Sucesso");
         } catch (error) {
-            this.showNotification("Erro ao enviar imagem.");
+            console.error("Erro no upload:", error);
+            this.showNotification("Erro ao enviar imagem: " + (error.message || "Erro desconhecido"));
         }
     },
 
