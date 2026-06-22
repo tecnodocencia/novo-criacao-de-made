@@ -12,6 +12,8 @@ window.app = {
         editingGame: null,
         editingStep: 1,
         activeGame: null,
+        codeSizeOption: 4,
+        currentCodeSize: 4,
         currentGuess: [null, null, null, null],
         attempts: [],
         gameOver: null,
@@ -23,8 +25,8 @@ window.app = {
     difficultyRules: {
         1: { attempts: 10, repeat: false, swap: 0 },
         2: { attempts: 8, repeat: false, swap: 1 },
-        3: { attempts: 6, repeat: true, swap: 2 },
-        4: { attempts: 5, repeat: true, swap: 3 }
+        3: { attempts: 6, repeat: false, swap: 2 },
+        4: { attempts: 5, repeat: false, swap: 3 }
     },
 
     frontDesigns: [
@@ -49,6 +51,20 @@ window.app = {
         if (!elem) return;
         elem.style.height = 'inherit';
         elem.style.height = `${elem.scrollHeight}px`;
+    },
+
+    insertSpecialChar: function(char) {
+        const textarea = document.getElementById('modal-card-content');
+        if (!textarea) return;
+        
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const text = textarea.value;
+        
+        textarea.value = text.substring(0, start) + char + text.substring(end);
+        
+        textarea.focus();
+        textarea.selectionStart = textarea.selectionEnd = start + char.length;
     },
 
     init: async function() {
@@ -304,9 +320,10 @@ window.app = {
         const level = this.state.currentDifficulty;
         const rules = this.difficultyRules[level];
         const canRepeat = rules.repeat;
+        const size = this.state.currentCodeSize || 4;
 
         const available = [...correctCards];
-        for(let i = 0; i < 4; i++) {
+        for(let i = 0; i < size; i++) {
             if (available.length === 0) break;
             const idx = Math.floor(Math.random() * available.length);
             const card = available[idx];
@@ -324,10 +341,13 @@ window.app = {
 
     renderPlayBank: function() {
         const bank = document.getElementById('play-item-bank');
+        if (!bank || !this.state.activeGame) return;
         bank.innerHTML = '';
         const frontDesign = this.state.activeGame.frontDesign || 'imagens/frente/frente01.png';
 
-        this.state.activeGame.cards.forEach(card => {
+        const shuffledCards = this.shuffleArray([...this.state.activeGame.cards]);
+
+        shuffledCards.forEach(card => {
             const div = document.createElement('div');
             div.className = 'bank-card';
             div.draggable = true;
@@ -485,11 +505,13 @@ window.app = {
 
     addHistoryRow: function(guess, black, white) {
         const history = document.getElementById('play-history-list');
+        if (!history) return;
         history.querySelectorAll('.history-row').forEach(r => r.classList.remove('recent'));
 
         const row = document.createElement('div');
         row.className = 'history-row recent';
 
+        const size = this.state.currentCodeSize || 4;
         let dots = [];
         for(let i = 0; i < black; i++) {
             dots.push('<div class="feedback-dot green"></div>');
@@ -497,7 +519,7 @@ window.app = {
         for(let i = 0; i < white; i++) {
             dots.push('<div class="feedback-dot yellow"></div>');
         }
-        for(let i = 0; i < (4 - black - white); i++) {
+        for(let i = 0; i < (size - black - white); i++) {
             dots.push('<div class="feedback-dot white"></div>');
         }
 
@@ -696,8 +718,8 @@ window.app = {
             if (!this.state.editingGame.disciplineInfo.conteudo.trim()) { this.showValidationError("Insira o conteúdo do jogo."); return; }
         }
         if (current === 4) {
-            const filledCount = this.state.editingGame.cards.filter(c => c.content.trim() !== "").length;
-            if (filledCount < 12) { this.showValidationError("Preencha o texto de todas as 12 cartas antes de finalizar."); return; }
+            const filledCount = this.state.editingGame.cards.filter(c => c.content.trim() !== "" || !!c.contentImage).length;
+            if (filledCount < 12) { this.showValidationError("Preencha todas as 12 cartas com texto ou imagem antes de finalizar."); return; }
             const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
             if (correctCount !== 6) { this.showValidationError("Exatamente 6 cartas precisam ser marcadas como possíveis para o código."); return; }
         }
@@ -744,6 +766,10 @@ window.app = {
             const el = document.getElementById(id);
             if (el) el.innerText = text || '-';
         };
+        const setHtml = (id, html) => {
+            const el = document.getElementById(id);
+            if (el) el.innerHTML = html || '-';
+        };
 
         setSpan('review-game-name', eg.name);
         setSpan('review-game-disciplina', eg.disciplineInfo.disciplina);
@@ -751,7 +777,7 @@ window.app = {
         setSpan('review-game-serie', eg.disciplineInfo.serie);
         setSpan('review-game-autores', (eg.disciplineInfo.autores || []).join(', ') || 'Nenhum');
 
-        setSpan('review-game-enunciado', eg.enunciado);
+        setHtml('review-game-enunciado', eg.enunciado);
         const rEl = document.getElementById('review-game-regra'); if (rEl) rEl.innerHTML = eg.regra || '-';
         const oEl = document.getElementById('review-game-objetivo'); if (oEl) oEl.innerHTML = eg.objetivo || '-';
         setSpan('review-game-explicacao', eg.explicacao);
@@ -764,7 +790,10 @@ window.app = {
         eg.cards.forEach(card => {
             const cardEl = document.createElement('div');
             cardEl.className = `p-3 rounded-xl border flex flex-col items-center justify-center text-center text-xs font-semibold ${card.isCorrect ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-slate-50 border-slate-200 text-slate-700'}`;
-            cardEl.innerHTML = `<p>${card.content}</p>`;
+            const contentHtml = card.contentImage
+                ? `<img src="${card.contentImage}" class="max-w-full max-h-20 object-contain rounded-lg mb-1" />${card.content ? `<p class="mt-1">${card.content}</p>` : ''}`
+                : `<p>${card.content}</p>`;
+            cardEl.innerHTML = contentHtml;
             grid.appendChild(cardEl);
         });
     },
@@ -858,6 +887,37 @@ window.app = {
             console.error("Erro no upload:", error);
             this.showNotification("Erro ao enviar imagem: " + (error.message || "Erro desconhecido"));
         }
+    },
+
+    handleModalLibraryFileUpload: async function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        if (!this.state.activeUser) {
+            this.showNotification("Você precisa estar logado para enviar imagens.");
+            return;
+        }
+
+        const grid = document.getElementById('library-grid');
+        const loadingEl = document.createElement('div');
+        loadingEl.className = 'col-span-full flex items-center justify-center py-4 text-slate-400 gap-2';
+        loadingEl.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span class="text-sm font-bold">Enviando imagem...</span>';
+        grid.prepend(loadingEl);
+
+        try {
+            const userId = this.state.activeUser.id;
+            const fileName = `${userId}/${Date.now()}-${file.name}`;
+            await dbService.uploadImagem(file, fileName);
+            // Reload the library grid inside the modal
+            const imagens = await dbService.listarImagensUsuario(userId);
+            this.renderLibrary(imagens);
+            this.showNotification("Imagem enviada com sucesso! Clique nela para selecioná-la.", "Sucesso");
+        } catch (error) {
+            loadingEl.remove();
+            console.error("Erro no upload:", error);
+            this.showNotification("Erro ao enviar imagem: " + (error.message || "Erro desconhecido"));
+        }
+        // Reset the file input so the same file can be re-uploaded if needed
+        event.target.value = '';
     },
 
     openImageLibrary: async function(targetType = 'card-content') {
@@ -1113,6 +1173,8 @@ window.app = {
     },
 
     openDifficultyModal: function() {
+        // Set the default active button state
+        this.setCodeSize(this.state.codeSizeOption || 4);
         document.getElementById('modal-difficulty').style.display = 'flex';
     },
 
@@ -1120,8 +1182,29 @@ window.app = {
         document.getElementById('modal-difficulty').style.display = 'none';
     },
 
+    setCodeSize: function(size) {
+        this.state.codeSizeOption = size;
+        document.querySelectorAll('.code-size-btn').forEach(btn => {
+            const btnSize = btn.dataset.size;
+            if (btnSize === String(size)) {
+                btn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-600');
+                btn.classList.remove('bg-white', 'text-slate-700');
+            } else {
+                btn.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-600');
+                btn.classList.add('bg-white', 'text-slate-700');
+            }
+        });
+    },
+
     startGameWithDifficulty: function(level) {
         this.state.currentDifficulty = level;
+
+        // Resolve the actual code size
+        const sizeOption = this.state.codeSizeOption || 4;
+        this.state.currentCodeSize = (sizeOption === 'random')
+            ? (Math.floor(Math.random() * 4) + 3)  // 3, 4, 5 or 6
+            : parseInt(sizeOption);
+
         this.closeDifficultyModal();
         
         if (this.state.isTestingFromCreator) {
@@ -1132,7 +1215,8 @@ window.app = {
             };
             this.state.attempts = [];
             this.state.secretCode = this.createSecretCode(this.state.activeGame);
-            this.state.currentGuess = [null, null, null, null];
+            this.state.currentGuess = Array(this.state.currentCodeSize).fill(null);
+            this.renderGameSlots();
             this.renderPlayBank();
             this.setupDropZones();
             this.renderCurrentGuess();
@@ -1146,9 +1230,16 @@ window.app = {
             this.switchView('player');
             this.applyCardDesigns();
             this.updateAttemptCounter();
+            this.updateGameHeaderInfo();
 
-            const dupMsg = level >= 3 ? "O computador escolherá um número específico dessas 6 cartas para formar o segredo. Como você escolheu um nível estratégico avançado (3 ou 4), é possível que o código apresente cartas repetidas." : "O computador escolherá um número específico dessas 6 cartas para formar o segredo. Como você escolheu o nível estratégico 1 ou 2, o código não terá cartas repetidas.";
-            this.showNotification(dupMsg, "Nível de Dificuldade Selecionado");
+            const levelDescriptions = {
+                1: 'sem repetição de cartas e sem troca de cartas',
+                2: 'sem repetição de cartas e troca de 1 carta',
+                3: 'sem repetição de cartas e troca de 2 cartas',
+                4: 'sem repetição de cartas e troca de 3 cartas'
+            };
+            const dupMsg = `Nível ${level}: ${levelDescriptions[level]}. O código secreto terá ${this.state.currentCodeSize} cartas.`;
+            this.showNotification(dupMsg, "Jogo Iniciado!");
 
         } else if(this.state.selectedGameIdForPlay) {
             this.playGame(this.state.selectedGameIdForPlay);
@@ -1171,7 +1262,8 @@ window.app = {
 
         this.state.attempts = [];
         this.state.secretCode = this.createSecretCode(this.state.activeGame);
-        this.state.currentGuess = [null, null, null, null];
+        this.state.currentGuess = Array(this.state.currentCodeSize).fill(null);
+        this.renderGameSlots();
         this.renderPlayBank();
         this.setupDropZones();
         this.renderCurrentGuess();
@@ -1185,9 +1277,17 @@ window.app = {
         this.applyCardDesigns();
         document.getElementById('back-from-player-btn').classList.remove('hidden');
         this.updateAttemptCounter();
+        this.updateGameHeaderInfo();
 
-        const dupMsg = this.state.currentDifficulty >= 3 ? "O computador escolherá um número específico dessas 6 cartas para formar o segredo. Como você escolheu um nível estratégico avançado (3 ou 4), é possível que o código apresente cartas repetidas." : "O computador escolherá um número específico dessas 6 cartas para formar o segredo. Como você escolheu o nível estratégico 1 ou 2, o código não terá cartas repetidas.";
-        this.showNotification(dupMsg, "Nível de Dificuldade Selecionado");
+        const levelDescriptions = {
+            1: 'sem repetição de cartas e sem troca de cartas',
+            2: 'sem repetição de cartas e troca de 1 carta',
+            3: 'sem repetição de cartas e troca de 2 cartas',
+            4: 'sem repetição de cartas e troca de 3 cartas'
+        };
+        const level = this.state.currentDifficulty;
+        const dupMsg = `Nível ${level}: ${levelDescriptions[level]}. O código secreto terá ${this.state.currentCodeSize} cartas.`;
+        this.showNotification(dupMsg, "Jogo Iniciado!");
     },
 
     replayGame: function() {
@@ -1195,15 +1295,16 @@ window.app = {
 
         const level = this.state.currentDifficulty;
         const rules = this.difficultyRules[level];
+        const codeSize = this.state.currentCodeSize || 4;
         
-        if (rules.swap > 0 && this.state.secretCode && this.state.secretCode.length === 4) {
+        if (rules.swap > 0 && this.state.secretCode && this.state.secretCode.length === codeSize) {
             const correctCards = this.state.activeGame.cards.filter(c => c.isCorrect);
             const currentSecret = [...this.state.secretCode];
             const canRepeat = rules.repeat;
             
             const indicesToSwap = [];
-            const possibleIndices = [0, 1, 2, 3];
-            for(let i = 0; i < Math.min(rules.swap, 4); i++) {
+            const possibleIndices = Array.from({length: codeSize}, (_, i) => i);
+            for(let i = 0; i < Math.min(rules.swap, codeSize); i++) {
                 const rIdx = Math.floor(Math.random() * possibleIndices.length);
                 indicesToSwap.push(possibleIndices.splice(rIdx, 1)[0]);
             }
@@ -1227,9 +1328,10 @@ window.app = {
             }
         }
 
-        this.state.currentGuess = [null, null, null, null];
+        this.state.currentGuess = Array(this.state.currentCodeSize || 4).fill(null);
         this.state.attempts = [];
         this.state.gameOver = null;
+        this.renderGameSlots();
         this.renderPlayBank();
         this.setupDropZones();
         this.renderCurrentGuess();
@@ -1241,6 +1343,7 @@ window.app = {
 
         this.applyCardDesigns();
         this.updateAttemptCounter();
+        this.updateGameHeaderInfo();
     },
 
     applyCardDesigns: function() {
@@ -1252,6 +1355,60 @@ window.app = {
             slot.style.backgroundSize = 'cover';
             slot.style.backgroundPosition = 'center';
         });
+    },
+
+    renderGameSlots: function() {
+        const size = this.state.currentCodeSize || 4;
+        const secretContainer = document.getElementById('play-secret-slots');
+        const dropContainer = document.getElementById('play-drop-slots');
+
+        if (secretContainer) {
+            secretContainer.innerHTML = '';
+            for (let i = 0; i < size; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'secret-card-slot';
+                slot.id = `secret-slot-${i}`;
+                secretContainer.appendChild(slot);
+            }
+        }
+        if (dropContainer) {
+            dropContainer.innerHTML = '';
+            for (let i = 0; i < size; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'drop-slot';
+                slot.dataset.slot = i;
+                dropContainer.appendChild(slot);
+            }
+        }
+    },
+
+    updateGameHeaderInfo: function() {
+        if (!this.state.activeGame) return;
+        const g = this.state.activeGame;
+        const info = g.disciplineInfo || {};
+
+        const setEl = (id, text) => {
+            const el = document.getElementById(id);
+            if (el) el.innerText = text || '-';
+        };
+
+        setEl('play-header-title', g.name);
+        setEl('play-header-disciplina', info.disciplina);
+        setEl('play-header-conteudo', info.conteudo);
+        setEl('play-header-serie', info.serie);
+        setEl('play-header-autores', (info.autores || []).join(', ') || 'Não informado');
+    },
+
+    showPlayObjetivo: function() {
+        const g = this.state.activeGame;
+        if (!g) return;
+        this.showNotification(g.objetivo || 'Objetivo não definido.', 'Objetivo do Jogo');
+    },
+
+    showPlayExplicacao: function() {
+        const g = this.state.activeGame;
+        if (!g) return;
+        this.showNotification(g.explicacao || 'Explicação não definida.', 'Como Jogar');
     },
 
     updateAttemptCounter: function() {
@@ -1275,10 +1432,11 @@ window.app = {
     },
 
     validateGuess: function() {
+        const size = this.state.currentCodeSize || 4;
         const guess = [...this.state.currentGuess];
 
         if(guess.some(g => !g)) {
-            this.showNotification('Complete os 4 espaços para validar a sua tentativa.');
+            this.showNotification(`Complete os ${size} espaços para validar a sua tentativa.`);
             return;
         }
 
@@ -1290,7 +1448,7 @@ window.app = {
         const usedSecret = [];
         const usedGuess = [];
 
-        for(let i = 0; i < 4; i++) {
+        for(let i = 0; i < size; i++) {
             if(secret[i].content === guess[i].content) {
                 black++;
                 usedSecret.push(i);
@@ -1298,9 +1456,9 @@ window.app = {
             }
         }
 
-        for(let i = 0; i < 4; i++) {
+        for(let i = 0; i < size; i++) {
             if(usedGuess.includes(i)) continue;
-            for(let j = 0; j < 4; j++) {
+            for(let j = 0; j < size; j++) {
                 if(usedSecret.includes(j)) continue;
                 if(guess[i].content === secret[j].content) {
                     white++;
@@ -1314,7 +1472,7 @@ window.app = {
         this.addHistoryRow(guess, black, white);
         this.updateAttemptCounter();
 
-        if(black === 4) {
+        if(black === size) {
             this.state.gameOver = 'win';
             this.revealSecretCards();
             this.openSolutionModal();
@@ -1328,7 +1486,7 @@ window.app = {
             return;
         }
 
-        this.state.currentGuess = [null, null, null, null];
+        this.state.currentGuess = Array(size).fill(null);
         this.renderCurrentGuess();
     },
 

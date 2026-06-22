@@ -830,18 +830,18 @@
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Regra</label>
                                     <div class="mb-2 flex gap-2">
                                         <button type="button" onclick="app.wrapSelectionInRed('edit-game-regra')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button>
-                                        <button type="button" onclick="app.removeRedFromSelection('edit-game-regra')" class="px-3 py-1 text-xs bg-slate-100 text-slate-700 rounded-xl font-bold">Desmarcar</button>
+                                        <button type="button" onclick="app.removeRedFromSelection('edit-game-regra')" class="px-3 py-1 text-xs bg-slate-100 text-slate-700 rounded-xl font-bold">Retirar a Cor Vermelha</button>
                                     </div>
-                                    <p class="text-xs text-slate-500 italic mb-2">Aviso: Selecione o texto desejado e clique em 'Marcar Vermelho' para destacá-lo.</p>
+                                    <p class="text-xs text-red-600 font-bold mb-2">Aviso importante: Selecione (grife com o cursor) a parte do texto para marcar ou retirar a cor vermelha antes de clicar no respectivo botão.</p>
                                     <div id="edit-game-regra" contenteditable="true" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.</div>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Objetivo</label>
                                     <div class="mb-2 flex gap-2">
                                         <button type="button" onclick="app.wrapSelectionInRed('edit-game-objetivo')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button>
-                                        <button type="button" onclick="app.removeRedFromSelection('edit-game-objetivo')" class="px-3 py-1 text-xs bg-slate-100 text-slate-700 rounded-xl font-bold">Desmarcar</button>
+                                        <button type="button" onclick="app.removeRedFromSelection('edit-game-objetivo')" class="px-3 py-1 text-xs bg-slate-100 text-slate-700 rounded-xl font-bold">Retirar a Cor Vermelha</button>
                                     </div>
-                                    <p class="text-xs text-slate-500 italic mb-2">Aviso: Selecione o texto desejado e clique em 'Marcar Vermelho' para destacá-lo.</p>
+                                    <p class="text-xs text-red-600 font-bold mb-2">Aviso importante: Selecione (grife com o cursor) a parte do texto para marcar ou retirar a cor vermelha antes de clicar no respectivo botão.</p>
                                     <div id="edit-game-objetivo" contenteditable="true" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.</div>
                                 </div>
                                 <div>
@@ -918,9 +918,12 @@
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Enunciado</label>
-                                    <div class="mb-2"><button type="button" onclick="app.wrapSelectionInRed('edit-game-enunciado')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button></div>
-                                    <p class="text-xs text-slate-500 italic mb-2">Aviso: Selecione o texto desejado e clique em 'Marcar Vermelho' para destacá-lo.</p>
-                                    <div id="edit-game-enunciado" contenteditable="true" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-20 max-h-48 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolha as 6 cartas que representam animais <strong style="color:#b91c1c">Mamíferos</strong> e coloque-as na ordem correta para desvendar o código secreto.</div>
+                                    <div class="mb-2 flex gap-2">
+                                        <button type="button" onclick="app.wrapSelectionInRed('edit-game-enunciado')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button>
+                                        <button type="button" onclick="app.removeRedFromSelection('edit-game-enunciado')" class="px-3 py-1 text-xs bg-slate-100 text-slate-700 rounded-xl font-bold">Retirar a Cor Vermelha</button>
+                                    </div>
+                                    <p class="text-xs text-red-600 font-bold mb-2">Aviso importante: Selecione (grife com o cursor) a parte do texto para marcar ou retirar a cor vermelha antes de clicar no respectivo botão.</p>
+                                    <div id="edit-game-enunciado" contenteditable="true" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-20 max-h-48 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolha as cartas que representam animais <strong style="color:#b91c1c">Mamíferos</strong> e coloque-as na ordem correta para desvendar o código secreto.</div>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
@@ -1057,33 +1060,65 @@
 
 
                     <!-- CENTRO -->
-                    <div class="flex-1 flex flex-col items-center justify-start p-6 overflow-hidden">
+                    <div class="flex-1 flex flex-col items-center justify-start p-6 overflow-hidden overflow-y-auto">
+
+                        <!-- INFO DO JOGO -->
+                        <div class="w-full max-w-2xl mb-4">
+                            <div class="bg-white border border-slate-200 rounded-3xl px-5 py-3 shadow-sm">
+                                <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
+                                    <div>
+                                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Título</span>
+                                        <p id="play-header-title" class="text-sm font-black text-slate-800 leading-tight">-</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Disciplina</span>
+                                        <p id="play-header-disciplina" class="text-sm font-bold text-slate-700">-</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Conteúdo</span>
+                                        <p id="play-header-conteudo" class="text-sm font-bold text-slate-700">-</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Série</span>
+                                        <p id="play-header-serie" class="text-sm font-bold text-slate-700">-</p>
+                                    </div>
+                                    <div class="max-w-[160px]">
+                                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Autores</span>
+                                        <p id="play-header-autores" class="text-xs font-semibold text-slate-600 leading-tight">-</p>
+                                    </div>
+                                    <div class="flex gap-2 ml-auto">
+                                        <button onclick="app.showPlayObjetivo()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-[10px] font-black uppercase tracking-wider transition" title="Ver Objetivo">
+                                            <i class="fa-solid fa-bullseye mr-1"></i>Objetivo
+                                        </button>
+                                        <button onclick="app.showPlayExplicacao()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-[10px] font-black uppercase tracking-wider transition" title="Como Jogar">
+                                            <i class="fa-solid fa-circle-question mr-1"></i>Como Jogar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- ENUNCIADO -->
-                        <div id="play-enunciado" class="w-full max-w-2xl bg-white/50 border border-slate-200 p-4 rounded-3xl mb-8 text-center shadow-sm">
+                        <div id="play-enunciado" class="w-full max-w-2xl bg-white/50 border border-slate-200 p-4 rounded-3xl mb-6 text-center shadow-sm">
                             <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Enunciado</p>
                             <div id="play-enunciado-content" class="text-sm font-semibold text-slate-700"></div>
                         </div>
 
                         <!-- CARTAS SECRETAS -->
-                        <div class="flex gap-4 mb-8">
-
+                        <div id="play-secret-slots" class="flex gap-4 mb-8">
                             <div class="secret-card-slot" id="secret-slot-0"></div>
                             <div class="secret-card-slot" id="secret-slot-1"></div>
                             <div class="secret-card-slot" id="secret-slot-2"></div>
                             <div class="secret-card-slot" id="secret-slot-3"></div>
-
                         </div>
 
 
                         <!-- ÁREA DE ESCOLHA -->
-                        <div class="flex gap-4 mb-8">
-
+                        <div id="play-drop-slots" class="flex gap-4 mb-8">
                             <div class="drop-slot" data-slot="0"></div>
                             <div class="drop-slot" data-slot="1"></div>
                             <div class="drop-slot" data-slot="2"></div>
                             <div class="drop-slot" data-slot="3"></div>
-
                         </div>
 
 
@@ -1157,6 +1192,56 @@
                     <textarea id="modal-card-content" rows="2" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Digite o termo ou frase da carta..."></textarea>
                 </div>
                 <div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Símbolos e Fórmulas (Matemática/Química)</label>
+                    <div class="flex flex-wrap gap-1 bg-slate-50 p-2.5 rounded-2xl border border-slate-100 max-h-36 overflow-y-auto">
+                        <!-- Math basic operators -->
+                        <button type="button" onclick="app.insertSpecialChar('²')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">²</button>
+                        <button type="button" onclick="app.insertSpecialChar('³')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">³</button>
+                        <button type="button" onclick="app.insertSpecialChar('√')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">√</button>
+                        <button type="button" onclick="app.insertSpecialChar('π')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">π</button>
+                        <button type="button" onclick="app.insertSpecialChar('∞')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">∞</button>
+                        <button type="button" onclick="app.insertSpecialChar('±')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">±</button>
+                        <button type="button" onclick="app.insertSpecialChar('×')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">×</button>
+                        <button type="button" onclick="app.insertSpecialChar('÷')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">÷</button>
+                        <button type="button" onclick="app.insertSpecialChar('≠')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">≠</button>
+                        <button type="button" onclick="app.insertSpecialChar('≈')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">≈</button>
+                        <button type="button" onclick="app.insertSpecialChar('≤')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">≤</button>
+                        <button type="button" onclick="app.insertSpecialChar('≥')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">≥</button>
+                        <button type="button" onclick="app.insertSpecialChar('→')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">→</button>
+                        <button type="button" onclick="app.insertSpecialChar('⇌')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">⇌</button>
+                        <button type="button" onclick="app.insertSpecialChar('Δ')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">Δ</button>
+                        <!-- Subscripts -->
+                        <button type="button" onclick="app.insertSpecialChar('₀')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₀</button>
+                        <button type="button" onclick="app.insertSpecialChar('₁')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₁</button>
+                        <button type="button" onclick="app.insertSpecialChar('₂')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₂</button>
+                        <button type="button" onclick="app.insertSpecialChar('₃')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₃</button>
+                        <button type="button" onclick="app.insertSpecialChar('₄')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₄</button>
+                        <button type="button" onclick="app.insertSpecialChar('₅')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₅</button>
+                        <button type="button" onclick="app.insertSpecialChar('₆')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₆</button>
+                        <button type="button" onclick="app.insertSpecialChar('₇')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₇</button>
+                        <button type="button" onclick="app.insertSpecialChar('₈')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₈</button>
+                        <button type="button" onclick="app.insertSpecialChar('₉')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₉</button>
+                        <button type="button" onclick="app.insertSpecialChar('ₓ')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">ₓ</button>
+                        <!-- Superscripts -->
+                        <button type="button" onclick="app.insertSpecialChar('⁰')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">⁰</button>
+                        <button type="button" onclick="app.insertSpecialChar('¹')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">¹</button>
+                        <button type="button" onclick="app.insertSpecialChar('⁴')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">⁴</button>
+                        <button type="button" onclick="app.insertSpecialChar('⁵')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">⁵</button>
+                        <button type="button" onclick="app.insertSpecialChar('⁶')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">⁶</button>
+                        <button type="button" onclick="app.insertSpecialChar('⁷')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">⁷</button>
+                        <button type="button" onclick="app.insertSpecialChar('⁸')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">⁸</button>
+                        <button type="button" onclick="app.insertSpecialChar('⁹')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">⁹</button>
+                        <button type="button" onclick="app.insertSpecialChar('ⁿ')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">ⁿ</button>
+                        <!-- Greek/Misc -->
+                        <button type="button" onclick="app.insertSpecialChar('α')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">α</button>
+                        <button type="button" onclick="app.insertSpecialChar('β')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">β</button>
+                        <button type="button" onclick="app.insertSpecialChar('γ')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">γ</button>
+                        <button type="button" onclick="app.insertSpecialChar('λ')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">λ</button>
+                        <button type="button" onclick="app.insertSpecialChar('μ')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">μ</button>
+                        <button type="button" onclick="app.insertSpecialChar('θ')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">θ</button>
+                    </div>
+                </div>
+                <div>
                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo por Imagem (Opcional)</label>
                     <div class="flex flex-col gap-3">
                         <div class="flex items-center gap-2">
@@ -1210,29 +1295,53 @@
     </div>
 
     <div id="modal-difficulty" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-        <div class="bg-white w-full max-w-lg rounded-[36px] shadow-2xl p-8 space-y-6">
+        <div class="bg-white w-full max-w-xl rounded-[36px] shadow-2xl p-8 space-y-6">
             <div class="text-center">
-                <h3 class="text-2xl font-black text-slate-900">Selecione a Dificuldade</h3>
-                <p class="text-sm text-slate-500 mt-2">Escolha o nível estratégico antes de iniciar as tentativas do Código Secreto.</p>
+                <h3 class="text-2xl font-black text-slate-900">Configurar Partida</h3>
+                <p class="text-sm text-slate-500 mt-2">Defina a dificuldade e o tamanho do código secreto.</p>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <button onclick="app.startGameWithDifficulty(1)" class="difficulty-btn group text-left p-5 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition">
-                    <h4 class="font-black text-slate-800 group-hover:text-emerald-700">Nível 1</h4>
-                    <p class="text-sm text-slate-600">10 tentativas</p>
-                </button>
-                <button onclick="app.startGameWithDifficulty(2)" class="difficulty-btn group text-left p-5 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition">
-                    <h4 class="font-black text-slate-800 group-hover:text-emerald-700">Nível 2</h4>
-                    <p class="text-sm text-slate-600">8 tentativas</p>
-                </button>
-                <button onclick="app.startGameWithDifficulty(3)" class="difficulty-btn group text-left p-5 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition">
-                    <h4 class="font-black text-slate-800 group-hover:text-emerald-700">Nível 3</h4>
-                    <p class="text-sm text-slate-600">6 tentativas</p>
-                </button>
-                <button onclick="app.startGameWithDifficulty(4)" class="difficulty-btn group text-left p-5 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition">
-                    <h4 class="font-black text-slate-800 group-hover:text-emerald-700">Nível 4</h4>
-                    <p class="text-sm text-slate-600">5 tentativas</p>
-                </button>
+
+            <!-- CODE SIZE SELECTOR -->
+            <div>
+                <p class="text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3">Número de Cartas do Código Secreto</p>
+                <div class="flex gap-2 flex-wrap">
+                    <button onclick="app.setCodeSize(3)" data-size="3" class="code-size-btn flex-1 py-2.5 bg-white text-slate-700 border-2 border-slate-200 rounded-2xl font-black text-sm hover:border-emerald-500 transition">3</button>
+                    <button onclick="app.setCodeSize(4)" data-size="4" class="code-size-btn flex-1 py-2.5 bg-emerald-600 text-white border-2 border-emerald-600 rounded-2xl font-black text-sm hover:border-emerald-500 transition">4</button>
+                    <button onclick="app.setCodeSize(5)" data-size="5" class="code-size-btn flex-1 py-2.5 bg-white text-slate-700 border-2 border-slate-200 rounded-2xl font-black text-sm hover:border-emerald-500 transition">5</button>
+                    <button onclick="app.setCodeSize(6)" data-size="6" class="code-size-btn flex-1 py-2.5 bg-white text-slate-700 border-2 border-slate-200 rounded-2xl font-black text-sm hover:border-emerald-500 transition">6</button>
+                    <button onclick="app.setCodeSize('random')" data-size="random" class="code-size-btn flex-1 py-2.5 bg-white text-slate-700 border-2 border-slate-200 rounded-2xl font-black text-sm hover:border-emerald-500 transition">
+                        <i class="fa-solid fa-shuffle mr-1"></i>Aleatório
+                    </button>
+                </div>
             </div>
+
+            <!-- DIFFICULTY BUTTONS -->
+            <div>
+                <p class="text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3">Nível de Dificuldade</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <button onclick="app.startGameWithDifficulty(1)" class="difficulty-btn group text-left p-4 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition">
+                        <h4 class="font-black text-slate-800 group-hover:text-emerald-700">Nível 1</h4>
+                        <p class="text-xs text-slate-600 mt-0.5">10 tentativas</p>
+                        <p class="text-[10px] text-slate-500 mt-1">Sem repetição de cartas e sem troca de cartas</p>
+                    </button>
+                    <button onclick="app.startGameWithDifficulty(2)" class="difficulty-btn group text-left p-4 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition">
+                        <h4 class="font-black text-slate-800 group-hover:text-emerald-700">Nível 2</h4>
+                        <p class="text-xs text-slate-600 mt-0.5">8 tentativas</p>
+                        <p class="text-[10px] text-slate-500 mt-1">Sem repetição de cartas e troca de 1 carta</p>
+                    </button>
+                    <button onclick="app.startGameWithDifficulty(3)" class="difficulty-btn group text-left p-4 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition">
+                        <h4 class="font-black text-slate-800 group-hover:text-emerald-700">Nível 3</h4>
+                        <p class="text-xs text-slate-600 mt-0.5">6 tentativas</p>
+                        <p class="text-[10px] text-slate-500 mt-1">Sem repetição de cartas e troca de 2 cartas</p>
+                    </button>
+                    <button onclick="app.startGameWithDifficulty(4)" class="difficulty-btn group text-left p-4 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition">
+                        <h4 class="font-black text-slate-800 group-hover:text-emerald-700">Nível 4</h4>
+                        <p class="text-xs text-slate-600 mt-0.5">5 tentativas</p>
+                        <p class="text-[10px] text-slate-500 mt-1">Sem repetição de cartas e troca de 3 cartas</p>
+                    </button>
+                </div>
+            </div>
+
             <div class="text-center">
                 <button onclick="app.closeDifficultyModal()" class="px-6 py-2.5 border border-slate-200 text-slate-500 hover:bg-slate-50 font-bold rounded-xl text-xs transition">
                     Cancelar
@@ -1343,16 +1452,23 @@
     </div>
 
     <!-- MODAL: BIBLIOTECA DE IMAGENS -->
-    <div id="modal-library" class="modal-overlay hidden" style="z-index: 10001;">
+    <div id="modal-library" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4" style="z-index: 10001;">
         <div class="bg-white w-full max-w-4xl rounded-[36px] shadow-2xl p-8 space-y-6">
-            <div class="flex justify-between items-center">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <h3 class="text-2xl font-black text-slate-900">Minha Biblioteca</h3>
                     <p class="text-xs text-slate-400 font-bold uppercase mt-1 tracking-widest">Imagens já enviadas por você</p>
                 </div>
-                <button onclick="app.closeImageLibrary()" class="w-10 h-10 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200 transition">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <label class="cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-emerald-100 flex items-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        Enviar Imagem
+                        <input type="file" class="hidden" accept="image/*" onchange="app.handleModalLibraryFileUpload(event)">
+                    </label>
+                    <button onclick="app.closeImageLibrary()" class="w-10 h-10 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200 transition shrink-0">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
             </div>
 
             <div id="library-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 max-h-[60vh] overflow-y-auto p-2 custom-scrollbar">
