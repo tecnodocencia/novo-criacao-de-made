@@ -124,8 +124,13 @@ export const dbService = {
      * @param {string} path O caminho/nome do arquivo no bucket
      */
     async uploadImagem(file, path) {
-        // Sanitização básica do path/nome do arquivo para evitar caracteres especiais
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) throw new Error("Usuário não autenticado para upload")
+
+        // Sanitização básica do path
         const cleanPath = path.normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-').toLowerCase()
+
+        console.log(`Tentando upload para: imagens_jogos/${cleanPath} como usuário: ${user.id}`);
 
         const { data, error } = await supabase.storage
             .from('imagens_jogos')
