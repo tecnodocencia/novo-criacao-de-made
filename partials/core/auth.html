@@ -1,0 +1,113 @@
+        <!-- LADO ESQUERDO: Visual e Branding -->
+        <div class="hidden md:flex md:w-3/5 h-full bg-[#f8fafc] items-center justify-center p-8 lg:p-12 relative overflow-hidden">
+            <!-- Elementos decorativos de fundo -->
+            <div class="absolute -top-24 -left-24 w-96 h-96 bg-emerald-200/20 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] opacity-[0.03] pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/cubes.png');"></div>
+
+            <div class="relative z-10 text-center space-y-6 lg:space-y-8 max-w-xl px-4">
+                <div class="inline-flex items-center justify-center rounded-[40px] bg-white p-8 shadow-2xl shadow-emerald-900/5 mb-2 transform hover:scale-105 transition-transform duration-500">
+                    <img src="Criação vermelho sem.png" alt="Logo MADE" class="h-32 lg:h-40 w-auto object-contain" />
+                </div>
+                <div class="space-y-4">
+                    <h1 class="text-4xl lg:text-5xl font-black text-slate-800 leading-tight tracking-tight">
+                        Crie materiais que <br/>
+                        <span class="text-emerald-600">transformam o ensino</span>.
+                    </h1>
+                    <p class="text-slate-500 text-base lg:text-lg font-medium leading-relaxed max-w-md mx-auto">
+                        A plataforma MADE oferece ferramentas intuitivas para professores e alunos desenvolverem conteúdos educacionais autorais.
+                    </p>
+                </div>
+
+                <!-- Parceria Institucional Integrada -->
+                <div class="pt-6 lg:pt-8 flex flex-col items-center gap-4 lg:gap-6 border-t border-slate-200/50 w-full mx-auto">
+                    <p class="text-[9px] font-black uppercase tracking-[0.4em] text-slate-400">Realização</p>
+                    <div class="flex items-center justify-center gap-8 lg:gap-10">
+                        <img src="https://www.ufc.br/images/_images/a_universidade/identidade_visual/brasao/brasao2_vertical_cor_300dpi.png" alt="Brasão UFC" class="h-14 lg:h-16 w-auto grayscale hover:grayscale-0 transition-all duration-700 opacity-60 hover:opacity-100">
+                        <img src="imagens/icons/principal_UFC_virtual.png" alt="Principal UFC Virtual" class="h-14 lg:h-16 w-auto grayscale hover:grayscale-0 transition-all duration-700 opacity-60 hover:opacity-100">
+                        <img src="https://tecnodocencia.virtual.ufc.br/wp-content/uploads/2019/08/logo-dark-1.png" alt="Logo Tecnidocência" class="h-8 lg:h-10 w-auto grayscale hover:grayscale-0 transition-all duration-700 opacity-60 hover:opacity-100">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LADO DIREITO: Formulário de Acesso -->
+        <div class="flex-1 h-full flex items-center justify-center p-8 md:p-12 lg:p-16 bg-white overflow-y-auto">
+            <div class="w-full max-w-sm space-y-10">
+
+                <!-- Logo Mobile -->
+                <div class="md:hidden text-center mb-10">
+                    <img src="Criação vermelho sem.png" alt="Logo MADE" class="h-24 w-auto mx-auto object-contain" />
+                </div>
+
+                <div class="space-y-3 px-2">
+                    <h2 class="text-3xl font-black text-slate-900 tracking-tight">Bem-vindo(a)(e)</h2>
+                    <p class="text-slate-400 font-semibold text-sm">Acesse sua conta para começar a criar materiais.</p>
+                </div>
+
+                <div id="auth-mode-toggle" class="flex items-center gap-1 p-1.5 bg-slate-100 rounded-[22px] text-[11px] font-black uppercase tracking-widest text-slate-500">
+                    <button onclick="app.setAuthMode('login')" id="auth-login-btn" class="flex-1 py-3.5 rounded-[18px] bg-white text-emerald-700 shadow-sm transition-all duration-300">Login</button>
+                    <button onclick="app.setAuthMode('register')" id="auth-register-btn" class="flex-1 py-3.5 rounded-[18px] hover:bg-white/50 transition-all duration-300">Cadastro</button>
+                </div>
+
+                <div id="auth-form" class="space-y-6 px-2">
+                    <!-- LOGIN -->
+                    <div id="login-form" class="space-y-5">
+                        <div class="space-y-2">
+                            <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">E-mail</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-envelope absolute left-5 top-1/2 -translate-y-1/2 text-slate-300"></i>
+                                <input id="auth-email" type="email" placeholder="teste@gmail.com" class="w-full pl-12 pr-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">Senha</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-slate-300"></i>
+                                <input id="auth-password" type="password" placeholder="••••••" class="w-full pl-12 pr-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
+                            </div>
+                        </div>
+                        <button onclick="app.login()" class="w-full py-5 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-slate-300 transition-all active:scale-[0.98] mt-6 flex items-center justify-center gap-3">
+                            Entrar na Plataforma
+                            <i class="fa-solid fa-arrow-right-long"></i>
+                        </button>
+                    </div>
+
+                    <!-- CADASTRO -->
+                    <div id="register-form" class="hidden space-y-5">
+                        <div class="space-y-2">
+                            <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">E-mail</label>
+                            <input id="register-email" type="email" placeholder="seu@email.com" class="w-full px-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="space-y-2">
+                                <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">Senha</label>
+                                <input id="register-password" type="password" placeholder="••••••" class="w-full px-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">Confirmar</label>
+                                <input id="register-password-confirm" type="password" placeholder="••••••" class="w-full px-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">Eu sou</label>
+                            <select id="register-role" class="w-full px-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium appearance-none">
+                                <option value="professor">Professor</option>
+                                <option value="aluno">Aluno</option>
+                            </select>
+                        </div>
+                        <button onclick="app.register()" class="w-full py-5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-emerald-200 transition-all active:scale-[0.98] mt-6 flex items-center justify-center gap-3">
+                            Criar minha conta
+                            <i class="fa-solid fa-user-plus"></i>
+                        </button>
+                    </div>
+
+                    <p id="auth-feedback" class="text-xs text-center font-bold text-red-500 bg-red-50 p-3 rounded-xl hidden"></p>
+                </div>
+
+                <div class="pt-8 border-t border-slate-100 text-center space-y-4 px-2">
+                    <p class="text-[10px] font-bold text-slate-300 uppercase tracking-[0.3em]">Material Autoral Digital Educacional</p>
+                    <img src="https://www.ufc.br/images/_images/a_universidade/identidade_visual/brasao/brasao2_vertical_cor_300dpi.png" alt="Brasão UFC" class="h-10 w-auto mx-auto grayscale opacity-30 md:hidden">
+                </div>
+            </div>
+        </div>

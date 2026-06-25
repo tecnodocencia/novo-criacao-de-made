@@ -1,0 +1,41 @@
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-bold text-slate-800">Configurações da Conta</h2>
+                </div>
+
+                <div class="max-w-2xl bg-white rounded-[32px] border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-8 border-b border-slate-100 bg-slate-50/50">
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl font-black">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div>
+                                <h3 id="settings-user-email" class="text-xl font-bold text-slate-800">carregando...</h3>
+                                <p id="settings-user-role" class="text-sm font-bold text-emerald-600 uppercase tracking-widest">carregando...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-8 space-y-6">
+                        <div class="space-y-4">
+                            <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest">Informações da Plataforma</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                                    <p class="text-[10px] font-black text-slate-400 uppercase mb-1">Versão</p>
+                                    <p class="text-sm font-bold text-slate-700">Beta 0.1.0.4</p>
+                                </div>
+                                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                                    <p class="text-[10px] font-black text-slate-400 uppercase mb-1">Ambiente</p>
+                                    <p class="text-sm font-bold text-slate-700">Produção / Supabase</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-6 border-t border-slate-100">
+                            <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Ações da Conta</h4>
+                            <button onclick="app.logout()" class="flex items-center gap-3 px-6 py-3 bg-red-50 text-red-600 hover:bg-red-100 rounded-2xl font-bold text-sm transition-all border border-red-100">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                Sair da Conta
+                            </button>
+                        </div>
+                    </div>
+                </div>

@@ -1,0 +1,87 @@
+    <div id="modal-notification" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white w-full max-w-sm rounded-[36px] shadow-2xl p-8 space-y-6 text-center">
+            <div>
+                <h3 id="notification-title" class="text-xl font-black text-slate-900">Aviso</h3>
+            </div>
+            <p id="notification-message" class="text-slate-600"></p>
+            <button onclick="app.closeNotification()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition">OK</button>
+        </div>
+    </div>
+
+    <div id="modal-author" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white w-full max-w-sm rounded-[36px] shadow-2xl p-8 space-y-6">
+            <div>
+                <h3 class="text-xl font-black text-slate-900">Novo Autor</h3>
+                <p class="text-xs text-slate-400 font-bold uppercase mt-1 tracking-widest">Nome completo</p>
+            </div>
+            <input id="modal-input-author" type="text" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Prof. Carlos Silva" onkeypress="app.handleModalAuthorKeypress(event)">
+            <div class="flex gap-3">
+                <button onclick="app.closeAuthorModal()" class="flex-1 py-3 border border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-sm transition">Cancelar</button>
+                <button onclick="app.confirmAuthor()" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-confirm" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white w-full max-w-sm rounded-[36px] shadow-2xl p-8 space-y-6 text-center">
+            <div>
+                <h3 id="confirm-title" class="text-xl font-black text-slate-900">Confirmar</h3>
+            </div>
+            <p id="confirm-message" class="text-slate-600"></p>
+            <div class="flex gap-3">
+                <button onclick="app.closeConfirm()" class="flex-1 py-3 border border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-sm transition">Cancelar</button>
+                <button id="confirm-btn-action" class="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-sm transition">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Visualização Ampliada (Lupa) -->
+    <div id="modal-preview" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center z-[60] p-4">
+        <div class="relative w-full max-w-lg">
+            <button onclick="app.closePreviewModal()" class="absolute -top-12 right-0 md:-right-12 md:top-0 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="bg-white w-full rounded-[40px] shadow-2xl overflow-hidden flex flex-col items-center p-8">
+                <div id="preview-card-container" class="w-full aspect-[4/5] bg-white rounded-3xl border-2 border-slate-100 shadow-inner flex items-center justify-center p-6 overflow-hidden mb-6">
+                    <!-- Conteúdo da carta ampliado será inserido aqui -->
+                </div>
+                <h3 id="preview-card-text" class="text-xl font-black text-slate-800 text-center uppercase tracking-wider"></h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: BIBLIOTECA DE IMAGENS -->
+    <div id="modal-library" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4" style="z-index: 10001;">
+        <div class="bg-white w-full max-w-4xl rounded-[36px] shadow-2xl p-8 space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h3 class="text-2xl font-black text-slate-900">Minha Biblioteca</h3>
+                    <p class="text-xs text-slate-400 font-bold uppercase mt-1 tracking-widest">Imagens já enviadas por você</p>
+                </div>
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <label class="cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-emerald-100 flex items-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        Enviar Imagem
+                        <input type="file" class="hidden" accept="image/*" onchange="app.handleModalLibraryFileUpload(event)">
+                    </label>
+                    <button onclick="app.closeImageLibrary()" class="w-10 h-10 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200 transition shrink-0">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="library-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 max-h-[60vh] overflow-y-auto p-2 custom-scrollbar">
+                <!-- Imagens serão carregadas aqui -->
+                <div class="col-span-full flex flex-col items-center justify-center py-12 text-slate-400">
+                    <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-4"></i>
+                    <p class="font-bold">Carregando suas imagens...</p>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 flex justify-end">
+                <button onclick="app.closeImageLibrary()" class="px-8 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm hover:bg-slate-200 transition">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>

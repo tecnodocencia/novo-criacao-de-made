@@ -1,0 +1,300 @@
+                <header class="h-20 border-b px-8 flex items-center justify-between shrink-0 bg-white z-10">
+                    <div>
+                        <h2 class="font-bold text-lg" id="editor-title-display">Novo Jogo</h2>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase">Configuração</p>
+                    </div>
+                </header>
+                <div class="flex-1 min-h-0 overflow-y-auto">
+                    <aside class="flex-1 h-full min-h-0 p-10 bg-emerald-50/80 space-y-8 overflow-y-auto">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between gap-3">
+                                <div>
+                                    <p class="text-[10px] uppercase tracking-[0.28em] text-slate-500 font-bold">Passo <span id="creator-step-current">1</span> de 5</p>
+                                    <h3 class="text-lg font-black text-slate-900" id="creator-step-title">Dados do Jogo</h3>
+                                </div>
+                            </div>
+                            <div class="relative h-2 rounded-full bg-slate-200 overflow-hidden mt-4">
+                                <div id="creator-progress-fill" class="absolute inset-y-0 left-0 bg-emerald-600 rounded-full transition-all duration-300" style="width:25%"></div>
+                            </div>
+                        </div>
+
+                        <div id="creator-step-1" class="creator-step">
+                            <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+                                <div class="space-y-4">
+                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Informações iniciais</p>
+                                    <p class="text-sm text-slate-600">Preencha os dados básicos do jogo e os autores.</p>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Título do Jogo</label>
+                                    <input id="edit-game-name" type="text" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Jogo dos Mamíferos">
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Modelo</label>
+                                        <select id="edit-game-model" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" style="display:none;">
+                                            <option value="Código Secreto">Código Secreto</option>
+                                        </select>
+                                        <div id="model-choices" class="grid grid-cols-2 gap-3 mt-3">
+                                            <div class="cursor-pointer rounded-xl border p-3 text-center" onclick="app.selectModel('Código Secreto', this)">
+                                                <div class="w-full h-40 flex items-center justify-center overflow-visible">
+                                                    <img src="imagens/modelos/codigo_secreto.png" alt="Código Secreto" class="max-w-full max-h-full w-auto h-auto object-contain" />
+                                                </div>
+                                                <div class="text-xs font-bold mt-2">Código Secreto</div>
+                                            </div>
+                                        </div>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Disciplina</label>
+                                    <select id="edit-game-disciplina" onchange="app.handleDisciplinaSelectChange(event)" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
+                                        <option value="Biologia">Biologia</option>
+                                        <option value="Dança">Dança</option>
+                                        <option value="Educação Física">Educação Física</option>
+                                        <option value="Espanhol">Espanhol</option>
+                                        <option value="Filosofia">Filosofia</option>
+                                        <option value="Física">Física</option>
+                                        <option value="História">História</option>
+                                        <option value="Geografia">Geografia</option>
+                                        <option value="Inglês">Inglês</option>
+                                        <option value="Matemática">Matemática</option>
+                                        <option value="Música">Música</option>
+                                        <option value="Português">Português</option>
+                                        <option value="Química">Química</option>
+                                        <option value="Sociologia">Sociologia</option>
+                                        <option value="Teatro">Teatro</option>
+                                        <option value="Outro">Outro</option>
+                                    </select>
+                                    <div id="edit-game-disciplina-outro-wrap" class="mt-2 hidden">
+                                        <div class="flex gap-2">
+                                            <input id="edit-game-disciplina-outro" type="text" placeholder="Especifique a Disciplina" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" />
+                                            <button onclick="app.clearDisciplinaOutro()" class="px-3 bg-red-500 text-white rounded-2xl">Remover</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo</label>
+                                    <input id="edit-game-conteudo" type="text" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Mamíferos, Frações, Leitura...">
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Série</label>
+                                    <select id="edit-game-serie" onchange="app.handleSerieSelectChange(event)" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
+                                        <option value="1º ano">1º ano</option>
+                                        <option value="2º ano">2º ano</option>
+                                        <option value="3º ano">3º ano</option>
+                                        <option value="4º ano">4º ano</option>
+                                        <option value="5º ano">5º ano</option>
+                                        <option value="6º ano">6º ano</option>
+                                        <option value="7º ano">7º ano</option>
+                                        <option value="8º ano">8º ano</option>
+                                        <option value="9º ano">9º ano</option>
+                                        <option value="1º ano – EM">1º ano – EM</option>
+                                        <option value="2º ano – EM">2º ano – EM</option>
+                                        <option value="3º ano – EM">3º ano – EM</option>
+                                        <option value="Ensino Superior">Ensino Superior</option>
+                                        <option value="Outro">Outro</option>
+                                    </select>
+                                    <div id="edit-game-serie-outro-wrap" class="mt-2 hidden">
+                                        <div class="flex gap-2">
+                                            <input id="edit-game-serie-outro" type="text" placeholder="Especifique a Série" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" />
+                                            <button onclick="app.clearSerieOutro()" class="px-3 bg-red-500 text-white rounded-2xl">Remover</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <label class="text-[11px] font-black text-slate-500 uppercase tracking-widest">Autores</label>
+                                        <button type="button" onclick="app.openAuthorModal()" class="text-emerald-700 text-[11px] uppercase font-black">Adicionar</button>
+                                    </div>
+                                    <div id="edit-game-authors-list" class="mt-2 flex flex-wrap gap-2"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="creator-step-2" class="creator-step hidden">
+                            <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+                                <div class="space-y-3">
+                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Regras e aparência</p>
+                                    <p class="text-sm text-slate-600">Defina o funcionamento do jogo e escolha a aparência das cartas.</p>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Regra</label>
+                                    <div class="mb-2 flex gap-2">
+                                        <button type="button" onclick="app.wrapSelectionInRed('edit-game-regra')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button>
+                                        <button type="button" onclick="app.removeRedFromSelection('edit-game-regra')" class="px-3 py-1 text-xs bg-slate-100 text-slate-700 rounded-xl font-bold">Retirar a Cor Vermelha</button>
+                                    </div>
+                                    <p class="text-xs text-red-600 font-bold mb-2">Aviso importante: Selecione (grife com o cursor) a parte do texto para marcar ou retirar a cor vermelha antes de clicar no respectivo botão.</p>
+                                    <div id="edit-game-regra" contenteditable="true" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.</div>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Objetivo</label>
+                                    <div class="mb-2 flex gap-2">
+                                        <button type="button" onclick="app.wrapSelectionInRed('edit-game-objetivo')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button>
+                                        <button type="button" onclick="app.removeRedFromSelection('edit-game-objetivo')" class="px-3 py-1 text-xs bg-slate-100 text-slate-700 rounded-xl font-bold">Retirar a Cor Vermelha</button>
+                                    </div>
+                                    <p class="text-xs text-red-600 font-bold mb-2">Aviso importante: Selecione (grife com o cursor) a parte do texto para marcar ou retirar a cor vermelha antes de clicar no respectivo botão.</p>
+                                    <div id="edit-game-objetivo" contenteditable="true" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.</div>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-4 tracking-widest">Design das Cartas</label>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div class="flex items-center justify-center gap-1">
+                                            <button onclick="app.toggleFrontDesign('prev')" class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
+                                                <i class="fa-solid fa-chevron-left"></i>
+                                            </button>
+                                            <div class="card-preview">
+                                                <img id="preview-front" src="imagens/frente/frente01.png" alt="Pré-visualização frente">
+                                                <div class="card-preview-label">Frente da Carta</div>
+                                            </div>
+                                            <button onclick="app.toggleFrontDesign('next')" class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
+                                                <i class="fa-solid fa-chevron-right"></i>
+                                            </button>
+                                        </div>
+                                        <div class="flex items-center justify-center gap-1">
+                                            <button onclick="app.toggleBackDesign('prev')" class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
+                                                <i class="fa-solid fa-chevron-left"></i>
+                                            </button>
+                                            <div class="card-preview">
+                                                <img id="preview-back" src="imagens/verso/Cópia de Trás da Carta - Natureza.png" alt="Pré-visualização verso">
+                                                <div class="card-preview-label">Verso da Carta</div>
+                                            </div>
+                                            <button onclick="app.toggleBackDesign('next')" class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
+                                                <i class="fa-solid fa-chevron-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Envio Externo (Opcional)</label>
+                                    <p class="text-xs text-slate-600 mb-4">Você pode enviar um modelo customizado de frente e verso das cartas (em formato PNG, JPEG ou SVG).</p>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="text-[10px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">Imagem Frente</label>
+                                            <div class="flex gap-2 items-center">
+                                                <button onclick="app.openImageLibrary('front-design')" class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[10px] font-bold uppercase flex items-center gap-2">
+                                                    <i class="fa-solid fa-images"></i> Biblioteca
+                                                </button>
+                                                <button type="button" onclick="app.removeExternalFrontImage()" class="px-3 py-2 bg-red-500 text-white rounded-lg text-xs font-semibold">Remover</button>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="text-[10px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">Imagem Verso</label>
+                                            <div class="flex gap-2 items-center">
+                                                <button onclick="app.openImageLibrary('back-design')" class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[10px] font-bold uppercase flex items-center gap-2">
+                                                    <i class="fa-solid fa-images"></i> Biblioteca
+                                                </button>
+                                                <button type="button" onclick="app.removeExternalBackImage()" class="px-3 py-2 bg-red-500 text-white rounded-lg text-xs font-semibold">Remover</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                                        <div class="card-preview hidden" id="external-front-preview-wrapper">
+                                            <img id="external-front-preview" src="" alt="Prévia frente">
+                                            <div class="card-preview-label">Frente Personalizada</div>
+                                        </div>
+                                        <div class="card-preview hidden" id="external-back-preview-wrapper">
+                                            <img id="external-back-preview" src="" alt="Prévia verso">
+                                            <div class="card-preview-label">Verso Personalizado</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="creator-step-3" class="creator-step hidden">
+                            <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+                                <div class="space-y-3">
+                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Enunciado e feedbacks</p>
+                                    <p class="text-sm text-slate-600">Escreva o comando inicial para o aluno e o texto que explica a resposta.</p>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Enunciado</label>
+                                    <div class="mb-2 flex gap-2">
+                                        <button type="button" onclick="app.wrapSelectionInRed('edit-game-enunciado')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button>
+                                        <button type="button" onclick="app.removeRedFromSelection('edit-game-enunciado')" class="px-3 py-1 text-xs bg-slate-100 text-slate-700 rounded-xl font-bold">Retirar a Cor Vermelha</button>
+                                    </div>
+                                    <p class="text-xs text-red-600 font-bold mb-2">Aviso importante: Selecione (grife com o cursor) a parte do texto para marcar ou retirar a cor vermelha antes de clicar no respectivo botão.</p>
+                                    <div id="edit-game-enunciado" contenteditable="true" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-20 max-h-48 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolha as cartas que representam animais <strong style="color:#b91c1c">Mamíferos</strong> e coloque-as na ordem correta para desvendar o código secreto.</div>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
+                                    <textarea id="edit-game-explicacao" oninput="app.autoResizeTextarea(this)" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-[200px]" placeholder="Texto exibido ao final revelando o porquê da resposta..." style="resize: none;">• Observe as 12 possibilidades de cartas que estão no banco.
+• Clique na carta escolhida para adicioná-la à sua tentativa na mesa.
+• Repita o processo até que todos os espaços estejam preenchidos.
+• Clique no botão para validar a resposta.
+• Observe o feedback do jogo: um pino verde significa que você acertou a carta e a posição.
+• Um pino amarelo significa que a carta pertence ao código, mas está na posição errada.
+• Um pino branco significa que essa carta não faz parte do código secreto.</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="creator-step-4" class="creator-step hidden"></div>
+
+                        <div id="creator-step-5" class="creator-step hidden">
+                            <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+                                <div class="space-y-3">
+                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Revisão e Teste</p>
+                                    <p class="text-sm text-slate-600">Revise todas as informações do jogo. Se estiver tudo certo, teste o jogo antes de o salvar.</p>
+                                </div>
+
+                                <div class="space-y-4 pt-4 border-t border-slate-200">
+                                    <h4 class="text-sm font-black text-slate-700">Informações Gerais</h4>
+                                    <div class="text-sm text-slate-600 space-y-2">
+                                        <p><strong>Título:</strong> <span id="review-game-name">-</span></p>
+                                        <p><strong>Disciplina:</strong> <span id="review-game-disciplina">-</span></p>
+                                        <p><strong>Conteúdo:</strong> <span id="review-game-conteudo">-</span></p>
+                                        <p><strong>Série:</strong> <span id="review-game-serie">-</span></p>
+                                        <p><strong>Autores:</strong> <span id="review-game-autores">-</span></p>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-4 pt-4 border-t border-slate-200">
+                                    <h4 class="text-sm font-black text-slate-700">Instruções</h4>
+                                    <div class="text-sm text-slate-600 space-y-2">
+                                        <p><strong>Enunciado:</strong> <span id="review-game-enunciado">-</span></p>
+                                        <p><strong>Regra:</strong> <span id="review-game-regra">-</span></p>
+                                        <p><strong>Objetivo:</strong> <span id="review-game-objetivo">-</span></p>
+                                        <p><strong>Explicação Final:</strong> <span id="review-game-explicacao">-</span></p>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-4 pt-4 border-t border-slate-200">
+                                    <h4 class="text-sm font-black text-slate-700">Aparência</h4>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div class="card-preview">
+                                            <img id="review-preview-front" src="imagens/frente/frente01.png" alt="Pré-visualização frente">
+                                            <div class="card-preview-label">Frente da Carta</div>
+                                        </div>
+                                        <div class="card-preview">
+                                            <img id="review-preview-back" src="imagens/verso/Cópia de Trás da Carta - Natureza.png" alt="Pré-visualização verso">
+                                            <div class="card-preview-label">Verso da Carta</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-4 pt-4 border-t border-slate-200">
+                                    <h4 class="text-sm font-black text-slate-700">Cartas Criadas</h4>
+                                    <div id="review-cards-grid" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                                        <!-- As cartas da revisão serão inseridas aqui pelo JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="creator-validation-message" class="text-sm font-semibold text-red-500 hidden mt-4"></div>
+                    </aside>
+                </div>
+                <footer class="h-20 border-t px-8 flex items-center justify-between shrink-0 bg-white">
+                    <button id="creator-prev-btn" onclick="app.creatorPrevStep()" class="px-6 py-3 border border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-sm transition hidden">
+                        Voltar
+                    </button>
+                    <div id="creator-step-5-actions" class="ml-auto flex gap-3 hidden">
+                        <button onclick="app.testGameFromCreator()" class="bg-amber-500 text-white px-6 py-3 font-bold rounded-xl text-sm transition">
+                            Testar Jogo
+                        </button>
+                        <button onclick="app.saveGame()" class="bg-emerald-600 text-white px-6 py-3 font-bold rounded-xl text-sm transition">
+                            Salvar Jogo
+                        </button>
+                    </div>
+                    <button id="creator-next-btn" onclick="app.creatorNextStep()" class="ml-auto bg-slate-900 text-white px-6 py-3 font-bold rounded-xl text-sm transition">
+                        Próximo
+                    </button>
+                </footer>

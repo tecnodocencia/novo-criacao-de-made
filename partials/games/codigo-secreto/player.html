@@ -1,0 +1,148 @@
+                <button id="back-from-player-btn" onclick="app.backFromPlayer()" class="hidden absolute top-4 right-4 bg-amber-500 text-white px-6 py-3 font-bold rounded-xl text-sm transition z-20">
+                    Voltar
+                </button>
+
+                <div class="flex-1 flex overflow-hidden">
+
+                    <!-- ESQUERDA -->
+                    <div class="w-[440px] border-r border-slate-300 bg-white p-4 overflow-y-auto">
+
+                        <div class="mb-4">
+                            <h2 class="font-black text-lg">
+                                Cartas
+                            </h2>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+                                Clique ou arraste as cartas
+                            </p>
+                        </div>
+
+                        <div id="play-item-bank"
+                            class="grid grid-cols-3 gap-4">
+                        </div>
+
+                    </div>
+
+
+                    <!-- CENTRO -->
+                    <div class="flex-1 flex flex-col items-center justify-start p-6 overflow-hidden overflow-y-auto">
+
+                        <!-- INFO DO JOGO -->
+                        <div class="w-full max-w-2xl mb-4">
+                            <div class="bg-white border border-slate-200 rounded-3xl px-5 py-3 shadow-sm">
+                                <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
+                                    <div>
+                                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Título</span>
+                                        <p id="play-header-title" class="text-sm font-black text-slate-800 leading-tight">-</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Disciplina</span>
+                                        <p id="play-header-disciplina" class="text-sm font-bold text-slate-700">-</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Conteúdo</span>
+                                        <p id="play-header-conteudo" class="text-sm font-bold text-slate-700">-</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Série</span>
+                                        <p id="play-header-serie" class="text-sm font-bold text-slate-700">-</p>
+                                    </div>
+                                    <div class="max-w-[160px]">
+                                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Autores</span>
+                                        <p id="play-header-autores" class="text-xs font-semibold text-slate-600 leading-tight">-</p>
+                                    </div>
+                                    <div class="flex gap-2 ml-auto">
+                                        <button onclick="app.showPlayObjetivo()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-[10px] font-black uppercase tracking-wider transition" title="Ver Objetivo">
+                                            <i class="fa-solid fa-bullseye mr-1"></i>Objetivo
+                                        </button>
+                                        <button onclick="app.showPlayExplicacao()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-[10px] font-black uppercase tracking-wider transition" title="Como Jogar">
+                                            <i class="fa-solid fa-circle-question mr-1"></i>Como Jogar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ENUNCIADO -->
+                        <div id="play-enunciado" class="w-full max-w-2xl bg-white/50 border border-slate-200 p-4 rounded-3xl mb-6 text-center shadow-sm">
+                            <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Enunciado</p>
+                            <div id="play-enunciado-content" class="text-sm font-semibold text-slate-700"></div>
+                        </div>
+
+                        <!-- CARTAS SECRETAS -->
+                        <div id="play-secret-slots" class="flex gap-4 mb-8">
+                            <div class="secret-card-slot" id="secret-slot-0"></div>
+                            <div class="secret-card-slot" id="secret-slot-1"></div>
+                            <div class="secret-card-slot" id="secret-slot-2"></div>
+                            <div class="secret-card-slot" id="secret-slot-3"></div>
+                        </div>
+
+
+                        <!-- ÁREA DE ESCOLHA -->
+                        <div id="play-drop-slots" class="flex gap-4 mb-8">
+                            <div class="drop-slot" data-slot="0"></div>
+                            <div class="drop-slot" data-slot="1"></div>
+                            <div class="drop-slot" data-slot="2"></div>
+                            <div class="drop-slot" data-slot="3"></div>
+                        </div>
+
+
+                        <button
+                            id="btn-validate"
+                            onclick="app.validateGuess()"
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-4 rounded-2xl font-black tracking-wider"
+                            >
+                            VALIDAR
+                        </button>
+
+                    </div>
+
+
+                    <!-- DIREITA -->
+                    <div class="w-[480px] border-l border-slate-300 bg-white p-4 flex flex-col overflow-hidden">
+
+                        <div class="shrink-0 mb-6">
+                            <h2 class="font-black text-lg">
+                                Histórico
+                            </h2>
+                            <div id="attempt-counter" class="text-sm font-bold text-slate-600 mt-4">
+                                Tentativa <span id="current-attempt">1</span> | Restantes: <span id="total-attempts">0</span>
+                            </div>
+                            <div id="play-level-info" class="mt-3 grid grid-cols-2 gap-2 text-[10px] font-bold text-slate-500">
+                                <div class="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2">
+                                    <span class="block text-slate-400 uppercase tracking-wider text-[9px]">Nível</span>
+                                    <span id="level-info-nivel">-</span>
+                                </div>
+                                <div class="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2">
+                                    <span class="block text-slate-400 uppercase tracking-wider text-[9px]">Cartas do Código</span>
+                                    <span id="level-info-cartas">-</span>
+                                </div>
+                                <div class="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2">
+                                    <span class="block text-slate-400 uppercase tracking-wider text-[9px]">Repetição de Cartas</span>
+                                    <span id="level-info-repeticao">-</span>
+                                </div>
+                                <div class="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2">
+                                    <span class="block text-slate-400 uppercase tracking-wider text-[9px]">Troca ao Reiniciar</span>
+                                    <span id="level-info-troca">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="shrink-0 grid grid-cols-2 gap-2 mb-6">
+                            <button onclick="app.openDifficultyModal()" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[10px] font-black uppercase tracking-wider transition border border-slate-200">
+                                <i class="fa-solid fa-gears mr-1"></i> Dificuldade
+                            </button>
+                            <button onclick="app.askRestart()" class="py-2 px-3 bg-red-50 hover:bg-red-100 text-red-700 rounded-xl text-[10px] font-black uppercase tracking-wider transition border border-red-100">
+                                <i class="fa-solid fa-rotate-left mr-1"></i> Reiniciar
+                            </button>
+                            <button onclick="app.showGameRules()" class="col-span-2 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[10px] font-black uppercase tracking-wider transition border border-slate-200">
+                                <i class="fa-solid fa-circle-info mr-1"></i> Regras
+                            </button>
+                        </div>
+
+                        <div id="play-history-list"
+                            class="flex-1 flex flex-col gap-6 overflow-y-auto pt-4 pb-10 px-1">
+                        </div>
+
+                    </div>
+
+                </div>
