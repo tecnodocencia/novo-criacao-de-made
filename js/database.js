@@ -2,12 +2,24 @@
 import { supabase } from './supabase.js'
 
 /**
+ * Remap: converte objeto cru do Supabase (snake_case) para camelCase do app.
+ */
+function remapJogo(jogo) {
+    return {
+        ...jogo,
+        frontDesign: jogo.frontdesign,
+        backDesign: jogo.backdesign,
+        disciplineInfo: jogo.disciplineinfo
+    }
+}
+
+/**
  * Camada de abstração para o banco de dados.
  * Se você mudar de banco no futuro, basta alterar este arquivo.
  */
 export const dbService = {
     // --- JOGOS ---
-    
+
     async listarJogos() {
         const { data: { user } } = await supabase.auth.getUser()
         if (!user) return []
@@ -15,25 +27,17 @@ export const dbService = {
         const { data, error } = await supabase
             .from('jogos')
             .select('*')
-            .eq('user_id', user.id) // Filtra para mostrar apenas os jogos do usuário logado
+            .eq('user_id', user.id)
             .order('created_at', { ascending: false })
-        
+
         if (error) throw error
-        
-        // Mapeamento de volta para camelCase para manter compatibilidade com o app.js
-        return data.map(jogo => ({
-            ...jogo,
-            frontDesign: jogo.frontdesign,
-            backDesign: jogo.backdesign,
-            disciplineInfo: jogo.disciplineinfo
-        }))
+        return data.map(remapJogo)
     },
 
     async salvarJogo(jogo) {
         const { data: { user } } = await supabase.auth.getUser()
         if (!user) throw new Error("Usuário não autenticado")
 
-        // Mapeamento EXATO para as colunas do seu banco
         const payload = {
             name: jogo.name,
             model: jogo.model,
@@ -48,9 +52,11 @@ export const dbService = {
             user_id: user.id
         }
 
-        console.log("Enviando payload para o Supabase:", payload);
+        // Preserva share_code se o jogo já tinha um
+        if (jogo.share_code) payload.share_code = jogo.share_code
 
-        // Se o jogo já tem um ID que não seja temporário
+        console.log("Enviando payload para o Supabase:", payload)
+
         const isNew = !jogo.id || String(jogo.id).startsWith('game-')
         if (!isNew) {
             payload.id = jogo.id
@@ -60,14 +66,16 @@ export const dbService = {
             .from('jogos')
             .upsert([payload])
             .select()
-        
+
         if (error) {
             const errorMsg = `Erro Supabase (${error.code}): ${error.message}${error.hint ? ' - ' + error.hint : ''}`
             console.error("Erro detalhado:", error)
             alert(errorMsg)
             throw error
         }
-        return data[0]
+        // FIX: remapeia retorno para camelCase, evitando que disciplineInfo/autores
+        // fiquem undefined no state.games imediatamente após o save.
+        return remapJogo(data[0])
     },
 
     async excluirJogo(id) {
@@ -75,9 +83,84 @@ export const dbService = {
             .from('jogos')
             .delete()
             .eq('id', id)
-        
+
         if (error) throw error
         return true
+    },
+
+    // --- COMPARTILHAMENTO ---
+
+    /**
+     * Gera um código único de 6 chars para compartilhar o jogo publicamente.
+     * Salva o share_code no banco e retorna o código gerado.
+     */
+    async gerarCodigoCompartilhamento(jogoId) {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) throw new Error("Não autenticado")
+
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
+        const code = Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join('')
+
+        const { error } = await supabase
+            .from('jogos')
+            .update({ share_code: code })
+            .eq('id', jogoId)
+            .eq('user_id', user.id)
+
+        if (error) throw error
+        return code
+    },
+
+    /**
+     * Busca um jogo pelo share_code sem necessidade de autenticação.
+     * Requer RLS policy: SELECT WHERE share_code IS NOT NULL.
+     */
+    async obterJogoPorCodigo(shareCode) {
+        const { data, error } = await supabase
+            .from('jogos')
+            .select('*')
+            .eq('share_code', shareCode)
+            .single()
+
+        if (error) throw error
+        if (!data) throw new Error('Jogo não encontrado')
+        return remapJogo(data)
+    },
+
+    /**
+     * Salva resultado de uma partida pública na tabela public_plays.
+     */
+    async salvarResultadoPublico({ shareCode, playerName, score, attemptsUsed, won, difficultyLevel, codeSize }) {
+        const { error } = await supabase
+            .from('public_plays')
+            .insert([{
+                share_code: shareCode,
+                player_name: playerName,
+                score,
+                attempts_used: attemptsUsed,
+                won,
+                difficulty_level: difficultyLevel,
+                code_size: codeSize
+            }])
+
+        if (error) throw error
+    },
+
+    /**
+     * Retorna o ranking de um jogo compartilhado (top 20, só vitórias).
+     */
+    async listarRankingJogo(shareCode) {
+        const { data, error } = await supabase
+            .from('public_plays')
+            .select('*')
+            .eq('share_code', shareCode)
+            .eq('won', true)
+            .order('score', { ascending: false })
+            .order('played_at', { ascending: true })
+            .limit(20)
+
+        if (error) throw error
+        return data || []
     },
 
     // --- USUÁRIOS / AUTH ---

@@ -1,4 +1,6 @@
 // js/core/dashboard.js
+import { dbService } from '../database.js';
+
 export const dashboardMethods = {
     switchView: function(viewId) {
         document.querySelectorAll('.view-section').forEach(s => {
@@ -77,10 +79,57 @@ export const dashboardMethods = {
                     <button onclick="app.editGame('${game.id}')" class="bg-white border border-slate-200 text-slate-600 font-bold py-3 px-4 rounded-2xl text-xs transition hover:bg-slate-50">
                         Editar
                     </button>
+                    <button onclick="app.shareGame('${game.id}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-2xl text-xs transition flex items-center gap-1" title="Compartilhar jogo">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </button>
                 </div>
             `;
             grid.appendChild(card);
         });
+    },
+
+    shareGame: async function(gameId) {
+        const game = this.state.games.find(g => String(g.id) === String(gameId));
+        if (!game) return;
+
+        try {
+            let shareCode = game.share_code;
+            if (!shareCode) {
+                shareCode = await dbService.gerarCodigoCompartilhamento(gameId);
+                game.share_code = shareCode;
+            }
+
+            const origin = window.location.origin;
+            const path = window.location.pathname.replace(/index\.html$/, '').replace(/\/?$/, '/');
+            const playUrl = `${origin}${path}play.html?code=${shareCode}`;
+
+            document.getElementById('modal-share-url').value = playUrl;
+            document.getElementById('modal-share-game-name').innerText = game.name || 'Jogo';
+            document.getElementById('modal-share').style.display = 'flex';
+        } catch (err) {
+            console.error(err);
+            this.showNotification('Erro ao gerar link de compartilhamento: ' + err.message);
+        }
+    },
+
+    copyShareUrl: function() {
+        const input = document.getElementById('modal-share-url');
+        if (!input) return;
+        navigator.clipboard.writeText(input.value).then(() => {
+            const btn = document.getElementById('modal-share-copy-btn');
+            if (btn) {
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copiado!';
+                setTimeout(() => { btn.innerHTML = original; }, 2000);
+            }
+        }).catch(() => {
+            input.select();
+            document.execCommand('copy');
+        });
+    },
+
+    closeShareModal: function() {
+        document.getElementById('modal-share').style.display = 'none';
     },
 
     backFromPlayer: function() {

@@ -97,5 +97,6 @@ window.addEventListener('DOMContentLoaded', async () => {
         if (event.target == document.getElementById('modal-author')) app.closeAuthorModal();
         if (event.target == document.getElementById('modal-difficulty')) app.closeDifficultyModal();
         if (event.target == document.getElementById('modal-notification')) app.closeNotification();
+        if (event.target == document.getElementById('modal-share')) app.closeShareModal();
     }
 });

@@ -487,6 +487,27 @@
             background: #047857;
             color: white;
         }
+
+        /* Botão genérico de símbolo especial */
+        .sym-btn {
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: border-color 0.15s, color 0.15s;
+            flex-shrink: 0;
+        }
+        .sym-btn:hover {
+            border-color: #10b981;
+            color: #047857;
+        }
     </style>
 </head>
 <body class="overflow-hidden">
@@ -1212,53 +1233,244 @@
                     <textarea id="modal-card-content" rows="2" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition resize-none text-sm" placeholder="Digite o termo ou frase da carta..."></textarea>
                 </div>
                 <div>
-                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Símbolos e Fórmulas (Matemática/Química)</label>
-                    <div class="flex flex-wrap gap-1 bg-slate-50 p-2.5 rounded-2xl border border-slate-100 max-h-36 overflow-y-auto">
-                        <!-- Math basic operators -->
-                        <button type="button" onclick="app.insertSpecialChar('²')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">²</button>
-                        <button type="button" onclick="app.insertSpecialChar('³')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">³</button>
-                        <button type="button" onclick="app.insertSpecialChar('√')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">√</button>
-                        <button type="button" onclick="app.insertSpecialChar('π')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">π</button>
-                        <button type="button" onclick="app.insertSpecialChar('∞')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">∞</button>
-                        <button type="button" onclick="app.insertSpecialChar('±')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">±</button>
-                        <button type="button" onclick="app.insertSpecialChar('×')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">×</button>
-                        <button type="button" onclick="app.insertSpecialChar('÷')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">÷</button>
-                        <button type="button" onclick="app.insertSpecialChar('≠')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">≠</button>
-                        <button type="button" onclick="app.insertSpecialChar('≈')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">≈</button>
-                        <button type="button" onclick="app.insertSpecialChar('≤')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">≤</button>
-                        <button type="button" onclick="app.insertSpecialChar('≥')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">≥</button>
-                        <button type="button" onclick="app.insertSpecialChar('→')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">→</button>
-                        <button type="button" onclick="app.insertSpecialChar('⇌')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">⇌</button>
-                        <button type="button" onclick="app.insertSpecialChar('Δ')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">Δ</button>
-                        <!-- Subscripts -->
-                        <button type="button" onclick="app.insertSpecialChar('₀')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₀</button>
-                        <button type="button" onclick="app.insertSpecialChar('₁')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₁</button>
-                        <button type="button" onclick="app.insertSpecialChar('₂')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₂</button>
-                        <button type="button" onclick="app.insertSpecialChar('₃')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₃</button>
-                        <button type="button" onclick="app.insertSpecialChar('₄')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₄</button>
-                        <button type="button" onclick="app.insertSpecialChar('₅')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₅</button>
-                        <button type="button" onclick="app.insertSpecialChar('₆')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₆</button>
-                        <button type="button" onclick="app.insertSpecialChar('₇')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₇</button>
-                        <button type="button" onclick="app.insertSpecialChar('₈')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₈</button>
-                        <button type="button" onclick="app.insertSpecialChar('₉')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">₉</button>
-                        <button type="button" onclick="app.insertSpecialChar('ₓ')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">ₓ</button>
-                        <!-- Superscripts -->
-                        <button type="button" onclick="app.insertSpecialChar('⁰')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">⁰</button>
-                        <button type="button" onclick="app.insertSpecialChar('¹')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">¹</button>
-                        <button type="button" onclick="app.insertSpecialChar('⁴')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">⁴</button>
-                        <button type="button" onclick="app.insertSpecialChar('⁵')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">⁵</button>
-                        <button type="button" onclick="app.insertSpecialChar('⁶')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">⁶</button>
-                        <button type="button" onclick="app.insertSpecialChar('⁷')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">⁷</button>
-                        <button type="button" onclick="app.insertSpecialChar('⁸')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">⁸</button>
-                        <button type="button" onclick="app.insertSpecialChar('⁹')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">⁹</button>
-                        <button type="button" onclick="app.insertSpecialChar('ⁿ')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">ⁿ</button>
-                        <!-- Greek/Misc -->
-                        <button type="button" onclick="app.insertSpecialChar('α')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">α</button>
-                        <button type="button" onclick="app.insertSpecialChar('β')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">β</button>
-                        <button type="button" onclick="app.insertSpecialChar('γ')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">γ</button>
-                        <button type="button" onclick="app.insertSpecialChar('λ')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">λ</button>
-                        <button type="button" onclick="app.insertSpecialChar('μ')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">μ</button>
-                        <button type="button" onclick="app.insertSpecialChar('θ')" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-emerald-500 hover:text-emerald-700 transition">θ</button>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Símbolos e Fórmulas</label>
+                    <!-- Abas de categoria -->
+                    <div class="flex gap-1 mb-2 flex-wrap" id="sym-tabs">
+                        <button type="button" onclick="app.switchSymTab('mat')" id="sym-tab-mat" class="px-2 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-emerald-600 text-white transition">Matemática</button>
+                        <button type="button" onclick="app.switchSymTab('calc')" id="sym-tab-calc" class="px-2 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Cálculo</button>
+                        <button type="button" onclick="app.switchSymTab('quim')" id="sym-tab-quim" class="px-2 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Química</button>
+                        <button type="button" onclick="app.switchSymTab('frac')" id="sym-tab-frac" class="px-2 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Frações</button>
+                        <button type="button" onclick="app.switchSymTab('grego')" id="sym-tab-grego" class="px-2 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Grego</button>
+                        <button type="button" onclick="app.switchSymTab('conj')" id="sym-tab-conj" class="px-2 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Conjuntos</button>
+                        <button type="button" onclick="app.switchSymTab('geo')" id="sym-tab-geo" class="px-2 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Geometria</button>
+                        <button type="button" onclick="app.switchSymTab('sub')" id="sym-tab-sub" class="px-2 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Sub/Super</button>
+                    </div>
+                    <!-- Painel unificado: um div por categoria, mostrado/escondido via JS -->
+                    <div class="bg-slate-50 rounded-2xl border border-slate-100 max-h-32 overflow-y-auto p-2">
+
+                        <!-- Matemática geral -->
+                        <div id="sym-panel-mat" class="flex flex-wrap gap-1">
+                            <button type="button" onclick="app.insertSpecialChar('+')" class="sym-btn" title="Adição">+</button>
+                            <button type="button" onclick="app.insertSpecialChar('−')" class="sym-btn" title="Subtração">−</button>
+                            <button type="button" onclick="app.insertSpecialChar('×')" class="sym-btn" title="Multiplicação">×</button>
+                            <button type="button" onclick="app.insertSpecialChar('÷')" class="sym-btn" title="Divisão">÷</button>
+                            <button type="button" onclick="app.insertSpecialChar('·')" class="sym-btn" title="Ponto de multiplicação">·</button>
+                            <button type="button" onclick="app.insertSpecialChar('±')" class="sym-btn" title="Mais ou menos">±</button>
+                            <button type="button" onclick="app.insertSpecialChar('∓')" class="sym-btn" title="Menos ou mais">∓</button>
+                            <button type="button" onclick="app.insertSpecialChar('=')" class="sym-btn" title="Igual">=</button>
+                            <button type="button" onclick="app.insertSpecialChar('≠')" class="sym-btn" title="Diferente">≠</button>
+                            <button type="button" onclick="app.insertSpecialChar('≈')" class="sym-btn" title="Aproximado">≈</button>
+                            <button type="button" onclick="app.insertSpecialChar('≡')" class="sym-btn" title="Idêntico/congruente">≡</button>
+                            <button type="button" onclick="app.insertSpecialChar('≤')" class="sym-btn" title="Menor ou igual">≤</button>
+                            <button type="button" onclick="app.insertSpecialChar('≥')" class="sym-btn" title="Maior ou igual">≥</button>
+                            <button type="button" onclick="app.insertSpecialChar('<')" class="sym-btn" title="Menor">&lt;</button>
+                            <button type="button" onclick="app.insertSpecialChar('>')" class="sym-btn" title="Maior">&gt;</button>
+                            <button type="button" onclick="app.insertSpecialChar('√')" class="sym-btn" title="Raiz quadrada">√</button>
+                            <button type="button" onclick="app.insertSpecialChar('∛')" class="sym-btn" title="Raiz cúbica">∛</button>
+                            <button type="button" onclick="app.insertSpecialChar('∜')" class="sym-btn" title="Raiz quarta">∜</button>
+                            <button type="button" onclick="app.insertSpecialChar('π')" class="sym-btn" title="Pi">π</button>
+                            <button type="button" onclick="app.insertSpecialChar('∞')" class="sym-btn" title="Infinito">∞</button>
+                            <button type="button" onclick="app.insertSpecialChar('°')" class="sym-btn" title="Grau">°</button>
+                            <button type="button" onclick="app.insertSpecialChar('|')" class="sym-btn" title="Valor absoluto (barra)">|</button>
+                            <button type="button" onclick="app.insertSpecialChar('%')" class="sym-btn" title="Porcentagem">%</button>
+                            <button type="button" onclick="app.insertSpecialChar('‰')" class="sym-btn" title="Por mil">‰</button>
+                        </div>
+
+                        <!-- Cálculo -->
+                        <div id="sym-panel-calc" class="flex flex-wrap gap-1 hidden">
+                            <button type="button" onclick="app.insertSpecialChar('∫')" class="sym-btn" title="Integral">∫</button>
+                            <button type="button" onclick="app.insertSpecialChar('∬')" class="sym-btn" title="Integral dupla">∬</button>
+                            <button type="button" onclick="app.insertSpecialChar('∮')" class="sym-btn" title="Integral de linha">∮</button>
+                            <button type="button" onclick="app.insertSpecialChar('∂')" class="sym-btn" title="Derivada parcial">∂</button>
+                            <button type="button" onclick="app.insertSpecialChar('∑')" class="sym-btn" title="Somatório">∑</button>
+                            <button type="button" onclick="app.insertSpecialChar('∏')" class="sym-btn" title="Produtório">∏</button>
+                            <button type="button" onclick="app.insertSpecialChar('∇')" class="sym-btn" title="Nabla/Gradiente">∇</button>
+                            <button type="button" onclick="app.insertSpecialChar('Δ')" class="sym-btn" title="Delta (variação)">Δ</button>
+                            <button type="button" onclick="app.insertSpecialChar('lim')" class="sym-btn" title="Limite" style="width:auto;padding:0 6px">lim</button>
+                            <button type="button" onclick="app.insertSpecialChar('→')" class="sym-btn" title="Tende a">→</button>
+                            <button type="button" onclick="app.insertSpecialChar('∞')" class="sym-btn" title="Infinito">∞</button>
+                            <button type="button" onclick="app.insertSpecialChar('ℕ')" class="sym-btn" title="Naturais">ℕ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ℤ')" class="sym-btn" title="Inteiros">ℤ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ℚ')" class="sym-btn" title="Racionais">ℚ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ℝ')" class="sym-btn" title="Reais">ℝ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ℂ')" class="sym-btn" title="Complexos">ℂ</button>
+                            <button type="button" onclick="app.insertSpecialChar('∝')" class="sym-btn" title="Proporcional a">∝</button>
+                            <button type="button" onclick="app.insertSpecialChar('∴')" class="sym-btn" title="Portanto">∴</button>
+                            <button type="button" onclick="app.insertSpecialChar('∵')" class="sym-btn" title="Pois/Porque">∵</button>
+                            <button type="button" onclick="app.insertSpecialChar('⌊')" class="sym-btn" title="Piso (floor)">⌊</button>
+                            <button type="button" onclick="app.insertSpecialChar('⌋')" class="sym-btn" title="Piso (floor)">⌋</button>
+                            <button type="button" onclick="app.insertSpecialChar('⌈')" class="sym-btn" title="Teto (ceil)">⌈</button>
+                            <button type="button" onclick="app.insertSpecialChar('⌉')" class="sym-btn" title="Teto (ceil)">⌉</button>
+                        </div>
+
+                        <!-- Química -->
+                        <div id="sym-panel-quim" class="flex flex-wrap gap-1 hidden">
+                            <button type="button" onclick="app.insertSpecialChar('→')" class="sym-btn" title="Reação direta">→</button>
+                            <button type="button" onclick="app.insertSpecialChar('⇌')" class="sym-btn" title="Equilíbrio">⇌</button>
+                            <button type="button" onclick="app.insertSpecialChar('⇒')" class="sym-btn" title="Implica">⇒</button>
+                            <button type="button" onclick="app.insertSpecialChar('⇔')" class="sym-btn" title="Se e somente se">⇔</button>
+                            <button type="button" onclick="app.insertSpecialChar('↑')" class="sym-btn" title="Gás liberado (seta p/ cima)">↑</button>
+                            <button type="button" onclick="app.insertSpecialChar('↓')" class="sym-btn" title="Precipitado (seta p/ baixo)">↓</button>
+                            <button type="button" onclick="app.insertSpecialChar('←')" class="sym-btn" title="Reação inversa">←</button>
+                            <button type="button" onclick="app.insertSpecialChar('↔')" class="sym-btn" title="Reversível">↔</button>
+                            <button type="button" onclick="app.insertSpecialChar('Δ')" class="sym-btn" title="Calor/aquecimento">Δ</button>
+                            <button type="button" onclick="app.insertSpecialChar('°')" class="sym-btn" title="Grau">°</button>
+                            <button type="button" onclick="app.insertSpecialChar('∘')" class="sym-btn" title="Grau (composição)">∘</button>
+                            <button type="button" onclick="app.insertSpecialChar('±')" class="sym-btn" title="Mais ou menos">±</button>
+                            <button type="button" onclick="app.insertSpecialChar('·')" class="sym-btn" title="Ponto (ligação)">·</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁺')" class="sym-btn" title="Carga positiva">⁺</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁻')" class="sym-btn" title="Carga negativa">⁻</button>
+                            <button type="button" onclick="app.insertSpecialChar('½')" class="sym-btn" title="Um meio">½</button>
+                            <button type="button" onclick="app.insertSpecialChar('¼')" class="sym-btn" title="Um quarto">¼</button>
+                            <button type="button" onclick="app.insertSpecialChar('¾')" class="sym-btn" title="Três quartos">¾</button>
+                            <button type="button" onclick="app.insertSpecialChar('≡')" class="sym-btn" title="Tripla ligação">≡</button>
+                            <button type="button" onclick="app.insertSpecialChar('α')" class="sym-btn" title="Alfa">α</button>
+                            <button type="button" onclick="app.insertSpecialChar('β')" class="sym-btn" title="Beta">β</button>
+                            <button type="button" onclick="app.insertSpecialChar('γ')" class="sym-btn" title="Gama (radiação)">γ</button>
+                            <button type="button" onclick="app.insertSpecialChar('λ')" class="sym-btn" title="Lambda (comprimento de onda)">λ</button>
+                            <button type="button" onclick="app.insertSpecialChar('μ')" class="sym-btn" title="Micro (μmol)">μ</button>
+                        </div>
+
+                        <!-- Frações -->
+                        <div id="sym-panel-frac" class="flex flex-wrap gap-1 hidden">
+                            <button type="button" onclick="app.insertSpecialChar('½')" class="sym-btn" title="1/2">½</button>
+                            <button type="button" onclick="app.insertSpecialChar('⅓')" class="sym-btn" title="1/3">⅓</button>
+                            <button type="button" onclick="app.insertSpecialChar('⅔')" class="sym-btn" title="2/3">⅔</button>
+                            <button type="button" onclick="app.insertSpecialChar('¼')" class="sym-btn" title="1/4">¼</button>
+                            <button type="button" onclick="app.insertSpecialChar('¾')" class="sym-btn" title="3/4">¾</button>
+                            <button type="button" onclick="app.insertSpecialChar('⅕')" class="sym-btn" title="1/5">⅕</button>
+                            <button type="button" onclick="app.insertSpecialChar('⅖')" class="sym-btn" title="2/5">⅖</button>
+                            <button type="button" onclick="app.insertSpecialChar('⅗')" class="sym-btn" title="3/5">⅗</button>
+                            <button type="button" onclick="app.insertSpecialChar('⅘')" class="sym-btn" title="4/5">⅘</button>
+                            <button type="button" onclick="app.insertSpecialChar('⅙')" class="sym-btn" title="1/6">⅙</button>
+                            <button type="button" onclick="app.insertSpecialChar('⅚')" class="sym-btn" title="5/6">⅚</button>
+                            <button type="button" onclick="app.insertSpecialChar('⅐')" class="sym-btn" title="1/7">⅐</button>
+                            <button type="button" onclick="app.insertSpecialChar('⅛')" class="sym-btn" title="1/8">⅛</button>
+                            <button type="button" onclick="app.insertSpecialChar('⅜')" class="sym-btn" title="3/8">⅜</button>
+                            <button type="button" onclick="app.insertSpecialChar('⅝')" class="sym-btn" title="5/8">⅝</button>
+                            <button type="button" onclick="app.insertSpecialChar('⅞')" class="sym-btn" title="7/8">⅞</button>
+                            <button type="button" onclick="app.insertSpecialChar('⅑')" class="sym-btn" title="1/9">⅑</button>
+                            <button type="button" onclick="app.insertSpecialChar('⅒')" class="sym-btn" title="1/10">⅒</button>
+                        </div>
+
+                        <!-- Letras gregas -->
+                        <div id="sym-panel-grego" class="flex flex-wrap gap-1 hidden">
+                            <button type="button" onclick="app.insertSpecialChar('α')" class="sym-btn" title="alfa">α</button>
+                            <button type="button" onclick="app.insertSpecialChar('β')" class="sym-btn" title="beta">β</button>
+                            <button type="button" onclick="app.insertSpecialChar('γ')" class="sym-btn" title="gama">γ</button>
+                            <button type="button" onclick="app.insertSpecialChar('δ')" class="sym-btn" title="delta (min)">δ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ε')" class="sym-btn" title="épsilon">ε</button>
+                            <button type="button" onclick="app.insertSpecialChar('ζ')" class="sym-btn" title="zeta">ζ</button>
+                            <button type="button" onclick="app.insertSpecialChar('η')" class="sym-btn" title="eta">η</button>
+                            <button type="button" onclick="app.insertSpecialChar('θ')" class="sym-btn" title="teta">θ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ι')" class="sym-btn" title="iota">ι</button>
+                            <button type="button" onclick="app.insertSpecialChar('κ')" class="sym-btn" title="kapa">κ</button>
+                            <button type="button" onclick="app.insertSpecialChar('λ')" class="sym-btn" title="lambda">λ</button>
+                            <button type="button" onclick="app.insertSpecialChar('μ')" class="sym-btn" title="mi">μ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ν')" class="sym-btn" title="ni">ν</button>
+                            <button type="button" onclick="app.insertSpecialChar('ξ')" class="sym-btn" title="xi">ξ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ο')" class="sym-btn" title="ômicron">ο</button>
+                            <button type="button" onclick="app.insertSpecialChar('π')" class="sym-btn" title="pi">π</button>
+                            <button type="button" onclick="app.insertSpecialChar('ρ')" class="sym-btn" title="rô">ρ</button>
+                            <button type="button" onclick="app.insertSpecialChar('σ')" class="sym-btn" title="sigma (min)">σ</button>
+                            <button type="button" onclick="app.insertSpecialChar('τ')" class="sym-btn" title="tau">τ</button>
+                            <button type="button" onclick="app.insertSpecialChar('υ')" class="sym-btn" title="ípsilon">υ</button>
+                            <button type="button" onclick="app.insertSpecialChar('φ')" class="sym-btn" title="fi">φ</button>
+                            <button type="button" onclick="app.insertSpecialChar('χ')" class="sym-btn" title="qui">χ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ψ')" class="sym-btn" title="psi">ψ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ω')" class="sym-btn" title="ômega">ω</button>
+                            <button type="button" onclick="app.insertSpecialChar('Α')" class="sym-btn" title="Alfa">Α</button>
+                            <button type="button" onclick="app.insertSpecialChar('Β')" class="sym-btn" title="Beta">Β</button>
+                            <button type="button" onclick="app.insertSpecialChar('Γ')" class="sym-btn" title="Gama">Γ</button>
+                            <button type="button" onclick="app.insertSpecialChar('Δ')" class="sym-btn" title="Delta">Δ</button>
+                            <button type="button" onclick="app.insertSpecialChar('Θ')" class="sym-btn" title="Teta">Θ</button>
+                            <button type="button" onclick="app.insertSpecialChar('Λ')" class="sym-btn" title="Lambda">Λ</button>
+                            <button type="button" onclick="app.insertSpecialChar('Ξ')" class="sym-btn" title="Xi">Ξ</button>
+                            <button type="button" onclick="app.insertSpecialChar('Π')" class="sym-btn" title="Pi">Π</button>
+                            <button type="button" onclick="app.insertSpecialChar('Σ')" class="sym-btn" title="Sigma">Σ</button>
+                            <button type="button" onclick="app.insertSpecialChar('Φ')" class="sym-btn" title="Fi">Φ</button>
+                            <button type="button" onclick="app.insertSpecialChar('Ψ')" class="sym-btn" title="Psi">Ψ</button>
+                            <button type="button" onclick="app.insertSpecialChar('Ω')" class="sym-btn" title="Ômega">Ω</button>
+                        </div>
+
+                        <!-- Conjuntos e Lógica -->
+                        <div id="sym-panel-conj" class="flex flex-wrap gap-1 hidden">
+                            <button type="button" onclick="app.insertSpecialChar('∈')" class="sym-btn" title="Pertence">∈</button>
+                            <button type="button" onclick="app.insertSpecialChar('∉')" class="sym-btn" title="Não pertence">∉</button>
+                            <button type="button" onclick="app.insertSpecialChar('⊂')" class="sym-btn" title="Subconjunto">⊂</button>
+                            <button type="button" onclick="app.insertSpecialChar('⊃')" class="sym-btn" title="Superconjunto">⊃</button>
+                            <button type="button" onclick="app.insertSpecialChar('⊆')" class="sym-btn" title="Subconjunto ou igual">⊆</button>
+                            <button type="button" onclick="app.insertSpecialChar('⊇')" class="sym-btn" title="Superconjunto ou igual">⊇</button>
+                            <button type="button" onclick="app.insertSpecialChar('∩')" class="sym-btn" title="Interseção">∩</button>
+                            <button type="button" onclick="app.insertSpecialChar('∪')" class="sym-btn" title="União">∪</button>
+                            <button type="button" onclick="app.insertSpecialChar('∅')" class="sym-btn" title="Conjunto vazio">∅</button>
+                            <button type="button" onclick="app.insertSpecialChar('∀')" class="sym-btn" title="Para todo">∀</button>
+                            <button type="button" onclick="app.insertSpecialChar('∃')" class="sym-btn" title="Existe">∃</button>
+                            <button type="button" onclick="app.insertSpecialChar('∄')" class="sym-btn" title="Não existe">∄</button>
+                            <button type="button" onclick="app.insertSpecialChar('¬')" class="sym-btn" title="Negação">¬</button>
+                            <button type="button" onclick="app.insertSpecialChar('∧')" class="sym-btn" title="E lógico (conjunção)">∧</button>
+                            <button type="button" onclick="app.insertSpecialChar('∨')" class="sym-btn" title="Ou lógico (disjunção)">∨</button>
+                            <button type="button" onclick="app.insertSpecialChar('⇒')" class="sym-btn" title="Implica">⇒</button>
+                            <button type="button" onclick="app.insertSpecialChar('⇔')" class="sym-btn" title="Bicondicional">⇔</button>
+                            <button type="button" onclick="app.insertSpecialChar('∴')" class="sym-btn" title="Portanto">∴</button>
+                            <button type="button" onclick="app.insertSpecialChar('∵')" class="sym-btn" title="Porque">∵</button>
+                        </div>
+
+                        <!-- Geometria -->
+                        <div id="sym-panel-geo" class="flex flex-wrap gap-1 hidden">
+                            <button type="button" onclick="app.insertSpecialChar('∠')" class="sym-btn" title="Ângulo">∠</button>
+                            <button type="button" onclick="app.insertSpecialChar('∡')" class="sym-btn" title="Ângulo medido">∡</button>
+                            <button type="button" onclick="app.insertSpecialChar('⊥')" class="sym-btn" title="Perpendicular">⊥</button>
+                            <button type="button" onclick="app.insertSpecialChar('∥')" class="sym-btn" title="Paralelo">∥</button>
+                            <button type="button" onclick="app.insertSpecialChar('∦')" class="sym-btn" title="Não paralelo">∦</button>
+                            <button type="button" onclick="app.insertSpecialChar('≅')" class="sym-btn" title="Congruente">≅</button>
+                            <button type="button" onclick="app.insertSpecialChar('∼')" class="sym-btn" title="Semelhante">∼</button>
+                            <button type="button" onclick="app.insertSpecialChar('≈')" class="sym-btn" title="Aproximado">≈</button>
+                            <button type="button" onclick="app.insertSpecialChar('π')" class="sym-btn" title="Pi">π</button>
+                            <button type="button" onclick="app.insertSpecialChar('°')" class="sym-btn" title="Grau">°</button>
+                            <button type="button" onclick="app.insertSpecialChar('′')" class="sym-btn" title="Minuto de arco">′</button>
+                            <button type="button" onclick="app.insertSpecialChar('″')" class="sym-btn" title="Segundo de arco">″</button>
+                            <button type="button" onclick="app.insertSpecialChar('△')" class="sym-btn" title="Triângulo">△</button>
+                            <button type="button" onclick="app.insertSpecialChar('□')" class="sym-btn" title="Quadrado">□</button>
+                            <button type="button" onclick="app.insertSpecialChar('○')" class="sym-btn" title="Círculo">○</button>
+                            <button type="button" onclick="app.insertSpecialChar('⌀')" class="sym-btn" title="Diâmetro">⌀</button>
+                            <button type="button" onclick="app.insertSpecialChar('∞')" class="sym-btn" title="Infinito">∞</button>
+                        </div>
+
+                        <!-- Subscript / Superscript -->
+                        <div id="sym-panel-sub" class="flex flex-wrap gap-1 hidden">
+                            <span class="text-[9px] text-slate-400 font-bold uppercase w-full mb-1">Subscrito (índice)</span>
+                            <button type="button" onclick="app.insertSpecialChar('₀')" class="sym-btn">₀</button>
+                            <button type="button" onclick="app.insertSpecialChar('₁')" class="sym-btn">₁</button>
+                            <button type="button" onclick="app.insertSpecialChar('₂')" class="sym-btn">₂</button>
+                            <button type="button" onclick="app.insertSpecialChar('₃')" class="sym-btn">₃</button>
+                            <button type="button" onclick="app.insertSpecialChar('₄')" class="sym-btn">₄</button>
+                            <button type="button" onclick="app.insertSpecialChar('₅')" class="sym-btn">₅</button>
+                            <button type="button" onclick="app.insertSpecialChar('₆')" class="sym-btn">₆</button>
+                            <button type="button" onclick="app.insertSpecialChar('₇')" class="sym-btn">₇</button>
+                            <button type="button" onclick="app.insertSpecialChar('₈')" class="sym-btn">₈</button>
+                            <button type="button" onclick="app.insertSpecialChar('₉')" class="sym-btn">₉</button>
+                            <button type="button" onclick="app.insertSpecialChar('ₓ')" class="sym-btn">ₓ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ₐ')" class="sym-btn">ₐ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ₑ')" class="sym-btn">ₑ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ₒ')" class="sym-btn">ₒ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ₙ')" class="sym-btn">ₙ</button>
+                            <span class="text-[9px] text-slate-400 font-bold uppercase w-full mt-2 mb-1">Sobrescrito (expoente)</span>
+                            <button type="button" onclick="app.insertSpecialChar('⁰')" class="sym-btn">⁰</button>
+                            <button type="button" onclick="app.insertSpecialChar('¹')" class="sym-btn">¹</button>
+                            <button type="button" onclick="app.insertSpecialChar('²')" class="sym-btn">²</button>
+                            <button type="button" onclick="app.insertSpecialChar('³')" class="sym-btn">³</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁴')" class="sym-btn">⁴</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁵')" class="sym-btn">⁵</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁶')" class="sym-btn">⁶</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁷')" class="sym-btn">⁷</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁸')" class="sym-btn">⁸</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁹')" class="sym-btn">⁹</button>
+                            <button type="button" onclick="app.insertSpecialChar('ⁿ')" class="sym-btn">ⁿ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ⁱ')" class="sym-btn">ⁱ</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁺')" class="sym-btn">⁺</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁻')" class="sym-btn">⁻</button>
+                        </div>
                     </div>
                 </div>
                 <div>
@@ -1504,6 +1716,40 @@
                     Fechar
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL: COMPARTILHAR JOGO -->
+    <div id="modal-share" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm items-center justify-center z-50 p-4" style="display:none;">
+        <div class="bg-white w-full max-w-md rounded-[36px] shadow-2xl p-8 space-y-6">
+            <div class="flex items-start justify-between">
+                <div>
+                    <h3 class="text-2xl font-black text-slate-900">Compartilhar Jogo</h3>
+                    <p id="modal-share-game-name" class="text-sm font-bold text-emerald-700 mt-1"></p>
+                </div>
+                <button onclick="app.closeShareModal()" class="w-10 h-10 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200 transition shrink-0">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="bg-blue-50 border border-blue-100 rounded-2xl p-4 text-sm text-blue-800">
+                <p class="font-bold mb-1"><i class="fa-solid fa-circle-info mr-2"></i>Link publico gerado</p>
+                <p class="text-xs text-blue-600">Qualquer pessoa com este link pode jogar sem precisar de conta. Os resultados ficam no ranking do jogo.</p>
+            </div>
+            <div class="space-y-2">
+                <label class="text-[11px] font-black text-slate-500 uppercase tracking-widest block">Link para jogar</label>
+                <div class="flex gap-2">
+                    <input id="modal-share-url" type="text" readonly class="flex-1 p-3 border-2 border-slate-200 rounded-2xl text-xs font-mono bg-slate-50 text-slate-700 outline-none select-all cursor-text">
+                    <button id="modal-share-copy-btn" onclick="app.copyShareUrl()" class="px-4 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-2xl text-xs transition flex items-center gap-2 shrink-0">
+                        <i class="fa-solid fa-copy"></i> Copiar
+                    </button>
+                </div>
+            </div>
+            <div class="text-xs text-slate-400 text-center">
+                O link persiste: se o jogo for editado, o link continua funcionando com o conteudo mais recente.
+            </div>
+            <button onclick="app.closeShareModal()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-sm transition text-slate-700">
+                Fechar
+            </button>
         </div>
     </div>
 

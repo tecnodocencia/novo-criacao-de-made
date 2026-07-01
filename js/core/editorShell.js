@@ -197,6 +197,8 @@ export const editorShellMethods = {
     },
 
     saveGame: async function() {
+        // Sincroniza o DOM com o state antes de salvar (garante campos do passo atual)
+        this.persistEditorFields();
         try {
             const jogoSalvo = await dbService.salvarJogo(this.state.editingGame);
 
