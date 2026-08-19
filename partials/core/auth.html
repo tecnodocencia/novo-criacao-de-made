@@ -71,6 +71,47 @@
                             Entrar na Plataforma
                             <i class="fa-solid fa-arrow-right-long"></i>
                         </button>
+                        <button type="button" onclick="app.setAuthMode('forgot')" class="w-full text-center text-xs font-bold text-slate-400 hover:text-emerald-600 transition-colors">
+                            Esqueci minha senha
+                        </button>
+                    </div>
+
+                    <!-- ESQUECI SENHA -->
+                    <div id="forgot-form" class="hidden space-y-5">
+                        <p class="text-xs text-slate-400 font-semibold px-1 leading-relaxed">Informe seu email cadastrado e enviaremos um link para redefinir sua senha.</p>
+                        <div class="space-y-2">
+                            <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">E-mail</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-envelope absolute left-5 top-1/2 -translate-y-1/2 text-slate-300"></i>
+                                <input id="forgot-email" type="email" placeholder="seu@email.com" class="w-full pl-12 pr-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
+                            </div>
+                        </div>
+                        <button onclick="app.sendPasswordReset()" class="w-full py-5 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-slate-300 transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+                            Enviar link de redefinição
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                        <button type="button" onclick="app.setAuthMode('login')" class="w-full text-center text-xs font-bold text-slate-400 hover:text-emerald-600 transition-colors">
+                            Voltar para o login
+                        </button>
+                    </div>
+
+                    <!-- NOVA SENHA (via link recebido por email) -->
+                    <div id="recovery-form" class="hidden space-y-5">
+                        <p class="text-xs text-slate-400 font-semibold px-1 leading-relaxed">Defina sua nova senha de acesso.</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="space-y-2">
+                                <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">Nova senha</label>
+                                <input id="recovery-password" type="password" placeholder="••••••" class="w-full px-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">Confirmar</label>
+                                <input id="recovery-password-confirm" type="password" placeholder="••••••" class="w-full px-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
+                            </div>
+                        </div>
+                        <button onclick="app.updatePasswordAfterRecovery()" class="w-full py-5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-emerald-200 transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+                            Salvar nova senha
+                            <i class="fa-solid fa-check"></i>
+                        </button>
                     </div>
 
                     <!-- CADASTRO -->

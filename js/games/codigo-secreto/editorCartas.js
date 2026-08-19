@@ -76,6 +76,7 @@ export const editorCartasMethods = {
         radios[0].checked = card.isCorrect === true;
         radios[1].checked = card.isCorrect === false;
 
+        this.switchSymTab('todos');
         document.getElementById('modal-card').style.display = 'flex';
     },
 

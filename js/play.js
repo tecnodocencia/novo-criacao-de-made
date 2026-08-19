@@ -17,6 +17,40 @@ const gs = {
     currentResult: null  // { score, attemptsUsed, won } após o fim do jogo
 };
 
+// ─── Escala de fonte (acessibilidade) ────────────────────────────────────────
+// 5 níveis, variação modesta (-15% a +20%) para não estourar as dimensões FIXAS
+// em px de .bank-card/.drop-slot/.secret-card-slot/.history-mini-card (essas
+// nunca escalam, só o texto — ver comentário no <style> de play.html).
+const FONT_SCALES = [0.85, 0.925, 1, 1.1, 1.2];
+const FONT_SCALE_STORAGE_KEY = 'made_play_font_scale_idx';
+let fontScaleIndex = 2; // índice 2 = escala 1 = 100%
+
+function applyFontScale() {
+    const scale = FONT_SCALES[fontScaleIndex];
+    document.documentElement.style.setProperty('--play-font-scale', String(scale));
+
+    const indicator = document.getElementById('font-scale-indicator');
+    if (indicator) indicator.innerText = Math.round(scale * 100) + '%';
+
+    const decBtn = document.getElementById('btn-font-decrease');
+    const incBtn = document.getElementById('btn-font-increase');
+    if (decBtn) decBtn.disabled = fontScaleIndex === 0;
+    if (incBtn) incBtn.disabled = fontScaleIndex === FONT_SCALES.length - 1;
+
+    try { localStorage.setItem(FONT_SCALE_STORAGE_KEY, String(fontScaleIndex)); } catch (e) { /* localStorage indisponível — segue sem persistir */ }
+}
+
+function loadFontScale() {
+    try {
+        const saved = localStorage.getItem(FONT_SCALE_STORAGE_KEY);
+        const idx = saved !== null ? parseInt(saved, 10) : 2;
+        fontScaleIndex = (Number.isInteger(idx) && idx >= 0 && idx < FONT_SCALES.length) ? idx : 2;
+    } catch (e) {
+        fontScaleIndex = 2;
+    }
+    applyFontScale();
+}
+
 // ─── Utilitários ─────────────────────────────────────────────────────────────
 function escapeHtml(text) {
     if (text == null) return '';
@@ -223,7 +257,7 @@ function renderBankCards() {
                     ${innerContent}
                 </div>
                 <button class="zoom-icon" title="Ampliar">
-                    <i class="fa-solid fa-magnifying-glass-plus" style="font-size:9px;"></i>
+                    <i class="fa-solid fa-magnifying-glass-plus" style="font-size:calc(9px * var(--play-font-scale));"></i>
                 </button>
             </div>
         `;
@@ -335,7 +369,7 @@ function renderDropSlotContent(slotIndex) {
                     ${content}
                 </div>
                 <button onclick="playApp.removeFromSlot(${slotIndex})"
-                    style="position:absolute;top:4px;right:4px;width:18px;height:18px;border-radius:50%;background:rgba(239,68,68,0.85);color:white;border:none;cursor:pointer;font-size:9px;display:flex;align-items:center;justify-content:center;font-weight:900;line-height:1;">
+                    style="position:absolute;top:4px;right:4px;width:18px;height:18px;border-radius:50%;background:rgba(239,68,68,0.85);color:white;border:none;cursor:pointer;font-size:calc(9px * var(--play-font-scale));display:flex;align-items:center;justify-content:center;font-weight:900;line-height:1;">
                     ✕
                 </button>
             </div>
@@ -452,7 +486,7 @@ function addHistoryRow(guess, black, white) {
             inner = `<img src="${card.contentImage}" alt="${escapeHtml(card.content)}"
                 style="max-height:55px;max-width:100%;object-fit:contain;border-radius:6px;">`;
         } else {
-            inner = `<p style="font-size:8px;font-weight:900;text-align:center;line-height:1.2;">${escapeHtml(card.content)}</p>`;
+            inner = `<p style="font-size:calc(8px * var(--play-font-scale));font-weight:900;text-align:center;line-height:1.2;">${escapeHtml(card.content)}</p>`;
         }
         return `<div class="history-mini-card">${inner}</div>`;
     }).join('');
@@ -461,7 +495,7 @@ function addHistoryRow(guess, black, white) {
     row.className = 'history-row recent';
     row.innerHTML = `
         <div style="min-width:22px;text-align:center;">
-            <span style="font-size:8px;font-weight:900;color:#94a3b8;text-transform:uppercase;">${attemptNum}</span>
+            <span style="font-size:calc(8px * var(--play-font-scale));font-weight:900;color:#94a3b8;text-transform:uppercase;">${attemptNum}</span>
         </div>
         <div style="display:flex;gap:4px;flex-wrap:wrap;">${cardsHtml}</div>
         <div class="feedback-grid">${dotHtml}</div>
@@ -505,7 +539,7 @@ async function openSolutionModal(result) {
                 style="width:100%;height:100%;object-fit:cover;">`;
         } else {
             frontContent = `<div style="display:flex;align-items:center;justify-content:center;height:100%;padding:8px;">
-                <p style="font-size:11px;font-weight:900;text-align:center;line-height:1.3;color:#0f172a;">${escapeHtml(card.content)}</p>
+                <p style="font-size:calc(11px * var(--play-font-scale));font-weight:900;text-align:center;line-height:1.3;color:#0f172a;">${escapeHtml(card.content)}</p>
             </div>`;
         }
 
@@ -661,7 +695,7 @@ async function showRanking() {
                         ${placeLabel}
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="font-bold text-slate-800 truncate text-sm">${escapeHtml(play.player_name)}${isCurrentPlayer ? ' <span style="color:#047857;font-size:10px;">(voce)</span>' : ''}</p>
+                        <p class="font-bold text-slate-800 truncate text-sm">${escapeHtml(play.player_name)}${isCurrentPlayer ? ' <span style="color:#047857;font-size:calc(10px * var(--play-font-scale));">(voce)</span>' : ''}</p>
                         <p class="text-[10px] text-slate-400">${play.attempts_used} tentativa${play.attempts_used !== 1 ? 's' : ''} &bull; Nivel ${play.difficulty_level} &bull; ${play.code_size} cartas</p>
                     </div>
                     <span class="font-black text-emerald-600 text-lg shrink-0">${play.score}</span>
@@ -780,7 +814,25 @@ window.playApp = {
 
     showRanking,
     restartGame,
-    goToWelcome() { showScreen('welcome'); }
+    goToWelcome() { showScreen('welcome'); },
+
+    increaseFontSize() {
+        if (fontScaleIndex < FONT_SCALES.length - 1) {
+            fontScaleIndex++;
+            applyFontScale();
+        }
+    },
+    decreaseFontSize() {
+        if (fontScaleIndex > 0) {
+            fontScaleIndex--;
+            applyFontScale();
+        }
+    }
 };
+
+// Aplica a preferência de tamanho de fonte salva assim que o módulo carrega —
+// script type="module" é adiado (defer-like), então o DOM já existe aqui, antes
+// mesmo do DOMContentLoaded disparar init(). Evita flash de texto no tamanho padrão.
+loadFontScale();
 
 document.addEventListener('DOMContentLoaded', init);

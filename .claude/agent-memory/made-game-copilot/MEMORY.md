@@ -7,3 +7,4 @@
 - [Convenções e decisões de design](convencoes_decisoes.md) — coisas a não contradizer sem necessidade
 - [Sessão 2026-07-01: 5 melhorias implementadas](sessao_2026-07-01.md) — fix autor/remap, chars especiais (abas), overflow player, link público, ranking standalone
 - [Sessão 2026-08-19: 7 fixes no player público](sessao_2026-08-19.md) — frontDesign ausente, carta sumindo do banco, listener duplicado, ranking (colocação+ordinal), Parabéns, autores, freeze pós-vitória (root cause confirmada via Playwright)
+- [Feature: controle de fonte A-/A+ no player público](feature_controle_fonte_player_publico.md) — escala via CSS var --play-font-scale, cobre rem do Tailwind + overrides para text-[Npx] e inline styles, 5 níveis persistidos em localStorage

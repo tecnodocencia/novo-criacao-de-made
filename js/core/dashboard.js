@@ -65,11 +65,11 @@ export const dashboardMethods = {
                     <p><strong class="text-slate-800">Autores:</strong> ${game.disciplineInfo?.autores?.length ? game.disciplineInfo.autores.join(', ') : '-'}</p>
                     <div class="pt-2 border-t border-slate-100 mt-2 space-y-1">
                         <p class="text-[10px] font-black uppercase text-slate-400">Enunciado</p>
-                        <p class="text-xs line-clamp-2">${game.enunciado || '-'}</p>
+                        <p class="text-xs">${game.enunciado || '-'}</p>
                     </div>
                     <div class="space-y-1">
                         <p class="text-[10px] font-black uppercase text-slate-400">Regra</p>
-                        <p class="text-xs line-clamp-2">${game.regra || '-'}</p>
+                        <p class="text-xs">${game.regra || '-'}</p>
                     </div>
                 </div>
                 <div class="rounded-3xl border border-slate-100 bg-slate-50 p-2 flex gap-2">

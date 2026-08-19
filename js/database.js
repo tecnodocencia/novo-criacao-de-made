@@ -1,5 +1,5 @@
 // js/database.js
-import { supabase } from './supabase.js'
+import { supabase, passwordRecoveryPending } from './supabase.js'
 
 /**
  * Remap: converte objeto cru do Supabase (snake_case) para camelCase do app.
@@ -192,6 +192,26 @@ export const dbService = {
         
         if (error) throw error
         return data.user
+    },
+
+    async resetPasswordForEmail(email) {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + window.location.pathname
+        })
+        if (error) throw error
+    },
+
+    async updatePassword(newPassword) {
+        const { error } = await supabase.auth.updateUser({ password: newPassword })
+        if (error) throw error
+    },
+
+    onAuthStateChange(callback) {
+        return supabase.auth.onAuthStateChange(callback)
+    },
+
+    isPasswordRecoveryPending() {
+        return passwordRecoveryPending
     },
 
     async logout() {

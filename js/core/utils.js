@@ -51,9 +51,13 @@ export const utilsMethods = {
 
     switchSymTab: function(tabId) {
         const panels = document.querySelectorAll('[id^="sym-panel-"]');
-        panels.forEach(p => p.classList.add('hidden'));
-        const active = document.getElementById('sym-panel-' + tabId);
-        if (active) active.classList.remove('hidden');
+        if (tabId === 'todos') {
+            panels.forEach(p => p.classList.remove('hidden'));
+        } else {
+            panels.forEach(p => p.classList.add('hidden'));
+            const active = document.getElementById('sym-panel-' + tabId);
+            if (active) active.classList.remove('hidden');
+        }
 
         const tabs = document.querySelectorAll('[id^="sym-tab-"]');
         tabs.forEach(t => {

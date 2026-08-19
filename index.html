@@ -1221,7 +1221,7 @@
     </div>
 
     <div id="modal-card" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-        <div class="bg-white w-full max-w-md rounded-[36px] shadow-2xl p-8 space-y-6">
+        <div class="bg-white w-full max-w-2xl rounded-[36px] shadow-2xl p-8 space-y-6">
             <div>
                 <h3 class="text-2xl font-black text-slate-900">Editar Carta</h3>
                 <p class="text-xs text-slate-400 font-bold uppercase mt-1 tracking-widest">Configurações da carta</p>
@@ -1236,7 +1236,8 @@
                     <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Símbolos e Fórmulas</label>
                     <!-- Abas de categoria -->
                     <div class="flex gap-1 mb-2 flex-wrap" id="sym-tabs">
-                        <button type="button" onclick="app.switchSymTab('mat')" id="sym-tab-mat" class="px-2 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-emerald-600 text-white transition">Matemática</button>
+                        <button type="button" onclick="app.switchSymTab('todos')" id="sym-tab-todos" class="px-2 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-emerald-600 text-white transition">Todos</button>
+                        <button type="button" onclick="app.switchSymTab('mat')" id="sym-tab-mat" class="px-2 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Matemática</button>
                         <button type="button" onclick="app.switchSymTab('calc')" id="sym-tab-calc" class="px-2 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Cálculo</button>
                         <button type="button" onclick="app.switchSymTab('quim')" id="sym-tab-quim" class="px-2 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Química</button>
                         <button type="button" onclick="app.switchSymTab('frac')" id="sym-tab-frac" class="px-2 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Frações</button>
@@ -1246,7 +1247,7 @@
                         <button type="button" onclick="app.switchSymTab('sub')" id="sym-tab-sub" class="px-2 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Sub/Super</button>
                     </div>
                     <!-- Painel unificado: um div por categoria, mostrado/escondido via JS -->
-                    <div class="bg-slate-50 rounded-2xl border border-slate-100 max-h-32 overflow-y-auto p-2">
+                    <div class="bg-slate-50 rounded-2xl border border-slate-100 max-h-56 overflow-y-auto p-2">
 
                         <!-- Matemática geral -->
                         <div id="sym-panel-mat" class="flex flex-wrap gap-1">
@@ -1277,7 +1278,7 @@
                         </div>
 
                         <!-- Cálculo -->
-                        <div id="sym-panel-calc" class="flex flex-wrap gap-1 hidden">
+                        <div id="sym-panel-calc" class="flex flex-wrap gap-1">
                             <button type="button" onclick="app.insertSpecialChar('∫')" class="sym-btn" title="Integral">∫</button>
                             <button type="button" onclick="app.insertSpecialChar('∬')" class="sym-btn" title="Integral dupla">∬</button>
                             <button type="button" onclick="app.insertSpecialChar('∮')" class="sym-btn" title="Integral de linha">∮</button>
@@ -1304,7 +1305,7 @@
                         </div>
 
                         <!-- Química -->
-                        <div id="sym-panel-quim" class="flex flex-wrap gap-1 hidden">
+                        <div id="sym-panel-quim" class="flex flex-wrap gap-1">
                             <button type="button" onclick="app.insertSpecialChar('→')" class="sym-btn" title="Reação direta">→</button>
                             <button type="button" onclick="app.insertSpecialChar('⇌')" class="sym-btn" title="Equilíbrio">⇌</button>
                             <button type="button" onclick="app.insertSpecialChar('⇒')" class="sym-btn" title="Implica">⇒</button>
@@ -1332,7 +1333,7 @@
                         </div>
 
                         <!-- Frações -->
-                        <div id="sym-panel-frac" class="flex flex-wrap gap-1 hidden">
+                        <div id="sym-panel-frac" class="flex flex-wrap gap-1">
                             <button type="button" onclick="app.insertSpecialChar('½')" class="sym-btn" title="1/2">½</button>
                             <button type="button" onclick="app.insertSpecialChar('⅓')" class="sym-btn" title="1/3">⅓</button>
                             <button type="button" onclick="app.insertSpecialChar('⅔')" class="sym-btn" title="2/3">⅔</button>
@@ -1354,7 +1355,7 @@
                         </div>
 
                         <!-- Letras gregas -->
-                        <div id="sym-panel-grego" class="flex flex-wrap gap-1 hidden">
+                        <div id="sym-panel-grego" class="flex flex-wrap gap-1">
                             <button type="button" onclick="app.insertSpecialChar('α')" class="sym-btn" title="alfa">α</button>
                             <button type="button" onclick="app.insertSpecialChar('β')" class="sym-btn" title="beta">β</button>
                             <button type="button" onclick="app.insertSpecialChar('γ')" class="sym-btn" title="gama">γ</button>
@@ -1394,7 +1395,7 @@
                         </div>
 
                         <!-- Conjuntos e Lógica -->
-                        <div id="sym-panel-conj" class="flex flex-wrap gap-1 hidden">
+                        <div id="sym-panel-conj" class="flex flex-wrap gap-1">
                             <button type="button" onclick="app.insertSpecialChar('∈')" class="sym-btn" title="Pertence">∈</button>
                             <button type="button" onclick="app.insertSpecialChar('∉')" class="sym-btn" title="Não pertence">∉</button>
                             <button type="button" onclick="app.insertSpecialChar('⊂')" class="sym-btn" title="Subconjunto">⊂</button>
@@ -1417,7 +1418,7 @@
                         </div>
 
                         <!-- Geometria -->
-                        <div id="sym-panel-geo" class="flex flex-wrap gap-1 hidden">
+                        <div id="sym-panel-geo" class="flex flex-wrap gap-1">
                             <button type="button" onclick="app.insertSpecialChar('∠')" class="sym-btn" title="Ângulo">∠</button>
                             <button type="button" onclick="app.insertSpecialChar('∡')" class="sym-btn" title="Ângulo medido">∡</button>
                             <button type="button" onclick="app.insertSpecialChar('⊥')" class="sym-btn" title="Perpendicular">⊥</button>
@@ -1438,7 +1439,7 @@
                         </div>
 
                         <!-- Subscript / Superscript -->
-                        <div id="sym-panel-sub" class="flex flex-wrap gap-1 hidden">
+                        <div id="sym-panel-sub" class="flex flex-wrap gap-1">
                             <span class="text-[9px] text-slate-400 font-bold uppercase w-full mb-1">Subscrito (índice)</span>
                             <button type="button" onclick="app.insertSpecialChar('₀')" class="sym-btn">₀</button>
                             <button type="button" onclick="app.insertSpecialChar('₁')" class="sym-btn">₁</button>

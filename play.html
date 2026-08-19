@@ -7,8 +7,24 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* Controle de tamanho de fonte (acessibilidade) — botões A-/A+ no topbar
+           do jogo (ver playApp.increaseFontSize/decreaseFontSize em js/play.js).
+           html.font-size escala todas as classes Tailwind baseadas em rem
+           (text-xs/sm/base/lg/2xl, paddings, gaps, rounded-*, w-60/w-72, etc.)
+           automaticamente. As regras .text-\[Npx\] abaixo cobrem os pontos que usam
+           valor arbitrário em px do Tailwind (não escalam com rem por padrão) —
+           usadas tanto em play.html quanto nos templates gerados por js/play.js. As
+           DIMENSÕES fixas de cartas/slots (.bank-card, .drop-slot, .secret-card-slot,
+           .history-mini-card, .feedback-dot) permanecem intocadas de propósito, para
+           não quebrar o grid/layout — só o texto escala. */
+        :root { --play-font-scale: 1; }
         html, body { height: 100%; margin: 0; padding: 0; }
+        html { font-size: calc(16px * var(--play-font-scale)); }
         body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: #f0fdf4; }
+        .text-\[8px\]  { font-size: calc(8px  * var(--play-font-scale)) !important; }
+        .text-\[9px\]  { font-size: calc(9px  * var(--play-font-scale)) !important; }
+        .text-\[10px\] { font-size: calc(10px * var(--play-font-scale)) !important; }
+        .text-\[11px\] { font-size: calc(11px * var(--play-font-scale)) !important; }
 
         .play-screen { display: none; }
         .play-screen.active { display: flex; }
@@ -129,7 +145,7 @@
             right: 10px;
             background: #0ea5e9;
             color: white;
-            font-size: 8px;
+            font-size: calc(8px * var(--play-font-scale));
             font-weight: 900;
             padding: 2px 6px;
             border-radius: 999px;
@@ -144,7 +160,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8px;
+            font-size: calc(8px * var(--play-font-scale));
             font-weight: 900;
             text-align: center;
             padding: 3px;
@@ -192,7 +208,7 @@
             background: rgba(255,255,255,0.9); color: #047857;
             width: 22px; height: 22px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 11px; cursor: pointer; border: none;
+            font-size: calc(11px * var(--play-font-scale)); cursor: pointer; border: none;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             transition: all 0.2s;
         }
@@ -205,7 +221,7 @@
         /* Level button */
         .play-level-btn { width: 100%; padding: 14px; border-radius: 16px; text-align: left; border: 2px solid #e2e8f0; background: white; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
         .play-level-btn.active { background: #ecfdf5; border-color: #10b981; }
-        .play-size-btn { padding: 8px 16px; border-radius: 12px; font-weight: 900; font-size: 14px; border: 2px solid #e2e8f0; background: white; cursor: pointer; transition: all 0.2s; }
+        .play-size-btn { padding: 8px 16px; border-radius: 12px; font-weight: 900; font-size: calc(14px * var(--play-font-scale)); border: 2px solid #e2e8f0; background: white; cursor: pointer; transition: all 0.2s; }
         .play-size-btn.active { background: #047857; color: white; border-color: #047857; }
     </style>
 </head>
@@ -345,6 +361,15 @@
             <div class="flex items-center gap-2 shrink-0">
                 <span class="text-xs text-slate-400 font-bold hidden sm:inline">Jogador: <span id="play-header-player" class="text-emerald-600"></span></span>
                 <span id="play-header-autores" class="hidden text-xs text-slate-400 font-bold md:inline truncate max-w-[220px]"></span>
+                <div class="flex items-center gap-0.5 bg-slate-100 rounded-lg px-1 py-1" title="Tamanho da fonte">
+                    <button onclick="playApp.decreaseFontSize()" id="btn-font-decrease"
+                        class="w-6 h-6 flex items-center justify-center text-slate-600 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed rounded-md font-black text-xs transition"
+                        title="Diminuir fonte">A-</button>
+                    <span id="font-scale-indicator" class="text-[9px] font-bold text-slate-400 w-8 text-center select-none">100%</span>
+                    <button onclick="playApp.increaseFontSize()" id="btn-font-increase"
+                        class="w-6 h-6 flex items-center justify-center text-slate-600 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed rounded-md font-black text-xs transition"
+                        title="Aumentar fonte">A+</button>
+                </div>
                 <button onclick="playApp.showObjetivo()" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-[10px] font-black uppercase tracking-wider transition">
                     <i class="fa-solid fa-bullseye mr-1"></i>Objetivo
                 </button>
