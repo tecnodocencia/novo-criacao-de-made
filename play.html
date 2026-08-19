@@ -65,9 +65,11 @@
         }
         .bank-card-inner:hover { border-color: #10b981; }
         .bank-card-inner.card-selected {
-            background-color: #047857;
             border-color: #065f46;
             box-shadow: 0 0 0 3px rgba(16,185,129,0.4);
+        }
+        .bank-card-inner.card-selected .front-content-wrap {
+            background-color: rgba(4,120,87,0.82) !important;
         }
         .bank-card-inner.card-selected p, .bank-card-inner.card-selected span { color: white !important; }
 
@@ -342,7 +344,7 @@
             </div>
             <div class="flex items-center gap-2 shrink-0">
                 <span class="text-xs text-slate-400 font-bold hidden sm:inline">Jogador: <span id="play-header-player" class="text-emerald-600"></span></span>
-                <div class="hidden" id="play-header-autores"></div>
+                <span id="play-header-autores" class="hidden text-xs text-slate-400 font-bold md:inline truncate max-w-[220px]"></span>
                 <button onclick="playApp.showObjetivo()" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-[10px] font-black uppercase tracking-wider transition">
                     <i class="fa-solid fa-bullseye mr-1"></i>Objetivo
                 </button>
@@ -502,9 +504,9 @@
     <div id="modal-solution-play" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center z-50 p-4 overflow-y-auto" style="display:none;">
         <div class="bg-white w-full max-w-2xl rounded-[32px] shadow-2xl overflow-hidden my-8">
             <div id="solution-play-header" class="p-7 border-b border-slate-100 bg-slate-50">
-                <h3 id="solution-play-title" class="text-2xl font-black text-slate-900 flex items-center gap-3">
+                <h3 class="text-2xl font-black text-slate-900 flex items-center gap-3">
                     <i id="solution-play-icon" class="fa-solid fa-star text-amber-400"></i>
-                    Resultado
+                    <span id="solution-play-title">Resultado</span>
                 </h3>
                 <p id="solution-play-subtitle" class="text-xs text-slate-500 font-bold uppercase tracking-wider mt-1"></p>
             </div>

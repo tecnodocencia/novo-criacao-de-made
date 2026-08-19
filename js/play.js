@@ -62,11 +62,16 @@ function showConfirm(message, onConfirm) {
 
 function previewCard(card) {
     const container = document.getElementById('preview-play-card-container');
+    const frontDesign = gs.game.frontDesign || 'imagens/frente/frente01.png';
+    const useBg = card.frontImage || frontDesign;
+    container.style.backgroundImage = `url('${useBg}')`;
+    container.style.backgroundSize = 'cover';
+    container.style.backgroundPosition = 'center';
     if (card.contentImage) {
         container.innerHTML = `<img src="${card.contentImage}" alt="${escapeHtml(card.content)}"
             style="max-height:280px; max-width:100%; object-fit:contain; border-radius:12px;">`;
     } else {
-        container.innerHTML = `<p class="text-2xl font-black text-slate-800 text-center">${escapeHtml(card.content)}</p>`;
+        container.innerHTML = `<p class="text-2xl font-black text-slate-800 text-center bg-white/80 p-4 rounded-2xl">${escapeHtml(card.content)}</p>`;
     }
     document.getElementById('preview-play-card-text').innerText = card.content || '';
     document.getElementById('modal-preview-play').style.display = 'flex';
@@ -138,6 +143,17 @@ function renderGameHeader() {
     document.getElementById('play-header-conteudo').innerText = info.conteudo || '-';
     document.getElementById('play-header-serie').innerText = info.serie || '-';
     document.getElementById('play-header-player').innerText = gs.playerName;
+
+    const autoresEl = document.getElementById('play-header-autores');
+    if (autoresEl) {
+        const autores = Array.isArray(info.autores) ? info.autores.filter(Boolean) : [];
+        if (autores.length > 0) {
+            autoresEl.innerText = 'Autor(es): ' + autores.join(', ');
+            autoresEl.classList.remove('hidden');
+        } else {
+            autoresEl.classList.add('hidden');
+        }
+    }
 }
 
 function renderEnunciado() {
@@ -170,17 +186,11 @@ function renderDropSlots() {
         const slot = document.createElement('div');
         slot.className = 'drop-slot';
         slot.dataset.slot = String(i);
-        slot.innerHTML = `<span class="text-slate-400 text-xs font-black">${i + 1}</span>`;
-        slot.addEventListener('click', () => handleDropSlotClick(i));
-        slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('drag-over'); });
-        slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
-        slot.addEventListener('drop', e => {
-            e.preventDefault();
-            slot.classList.remove('drag-over');
-            const cardId = e.dataTransfer.getData('card-id');
-            if (cardId) placeCardInSlot(cardId, i);
-        });
         container.appendChild(slot);
+        // renderDropSlotContent é a única fonte dos handlers (onclick/ondrop/etc via
+        // propriedades on*, nunca addEventListener aqui) — evita registrar o clique
+        // duas vezes no mesmo slot, o que causava "coloca e imediatamente remove".
+        renderDropSlotContent(i);
     }
 }
 
@@ -189,6 +199,7 @@ function renderBankCards() {
     const bank = document.getElementById('play-item-bank');
     bank.innerHTML = '';
 
+    const frontDesign = gs.game.frontDesign || 'imagens/frente/frente01.png';
     const cards = shuffleArray(gs.game.cards);
     cards.forEach(card => {
         const bankCard = document.createElement('div');
@@ -205,9 +216,12 @@ function renderBankCards() {
         }
 
         const cardIdStr = escapeHtml(String(card.id));
+        const useBg = card.frontImage || frontDesign;
         bankCard.innerHTML = `
-            <div class="bank-card-inner" data-card-inner-id="${cardIdStr}">
-                ${innerContent}
+            <div class="bank-card-inner" data-card-inner-id="${cardIdStr}" style="background-image:url('${useBg}');background-size:cover;background-position:center;">
+                <div class="front-content-wrap ${card.frontImage ? 'bg-transparent' : 'bg-white/80'}" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:16px;overflow:hidden;">
+                    ${innerContent}
+                </div>
                 <button class="zoom-icon" title="Ampliar">
                     <i class="fa-solid fa-magnifying-glass-plus" style="font-size:9px;"></i>
                 </button>
@@ -271,18 +285,10 @@ function selectBankCard(cardIdStr) {
 function placeCardInSlot(cardIdStr, slotIndex) {
     const card = gs.game.cards.find(c => String(c.id) === String(cardIdStr));
     if (!card) return;
-    const bankEl = getBankEl(cardIdStr);
-    if (!bankEl) return;
 
-    // Se slot já ocupado, devolve carta anterior ao banco
-    if (gs.currentGuess[slotIndex]) {
-        const prevId = String(gs.currentGuess[slotIndex].id);
-        const prevBankEl = getBankEl(prevId);
-        if (prevBankEl) prevBankEl.style.visibility = 'visible';
-    }
-
+    // A carta permanece visível no Banco de Cartas — ela representa um "tipo",
+    // não uma peça física que se esgota, então nunca é removida/escondida dali.
     gs.currentGuess[slotIndex] = card;
-    bankEl.style.visibility = 'hidden';
 
     // Deseleciona
     document.querySelectorAll('.bank-card-inner').forEach(e => e.classList.remove('card-selected'));
@@ -295,21 +301,15 @@ function handleDropSlotClick(slotIndex) {
     if (gs.selectedCard) {
         placeCardInSlot(String(gs.selectedCard.card.id), slotIndex);
     } else if (gs.currentGuess[slotIndex]) {
-        // Devolve carta ao banco
-        const card = gs.currentGuess[slotIndex];
+        // Devolve o slot ao estado vazio (a carta já estava visível no banco)
         gs.currentGuess[slotIndex] = null;
-        const bankEl = getBankEl(String(card.id));
-        if (bankEl) bankEl.style.visibility = 'visible';
         renderDropSlotContent(slotIndex);
     }
 }
 
 function removeFromSlot(slotIndex) {
     if (!gs.currentGuess[slotIndex]) return;
-    const card = gs.currentGuess[slotIndex];
     gs.currentGuess[slotIndex] = null;
-    const bankEl = getBankEl(String(card.id));
-    if (bankEl) bankEl.style.visibility = 'visible';
     renderDropSlotContent(slotIndex);
 }
 
@@ -326,10 +326,14 @@ function renderDropSlotContent(slotIndex) {
         } else {
             content = `<p class="text-[10px] font-black text-slate-800 text-center leading-tight px-1">${escapeHtml(card.content)}</p>`;
         }
+        const frontDesign = gs.game.frontDesign || 'imagens/frente/frente01.png';
+        const useBg = card.frontImage || frontDesign;
         slot.classList.add('filled');
         slot.innerHTML = `
-            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;padding:8px;position:relative;">
-                ${content}
+            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative;background-image:url('${useBg}');background-size:cover;background-position:center;border-radius:17px;">
+                <div class="${card.frontImage ? 'bg-transparent' : 'bg-white/80'}" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;padding:8px;border-radius:17px;">
+                    ${content}
+                </div>
                 <button onclick="playApp.removeFromSlot(${slotIndex})"
                     style="position:absolute;top:4px;right:4px;width:18px;height:18px;border-radius:50%;background:rgba(239,68,68,0.85);color:white;border:none;cursor:pointer;font-size:9px;display:flex;align-items:center;justify-content:center;font-weight:900;line-height:1;">
                     ✕
@@ -341,19 +345,19 @@ function renderDropSlotContent(slotIndex) {
         slot.innerHTML = `<span class="text-slate-400 text-xs font-black">${slotIndex + 1}</span>`;
     }
 
-    // Reanexa handlers de drop após alterar innerHTML
+    // Reanexa handlers via propriedades on* (sobrescrevem, não acumulam a cada re-render)
     slot.onclick = (e) => {
         if (e.target.tagName === 'BUTTON') return;
         handleDropSlotClick(slotIndex);
     };
-    slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('drag-over'); });
-    slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
-    slot.addEventListener('drop', e => {
+    slot.ondragover = e => { e.preventDefault(); slot.classList.add('drag-over'); };
+    slot.ondragleave = () => slot.classList.remove('drag-over');
+    slot.ondrop = e => {
         e.preventDefault();
         slot.classList.remove('drag-over');
         const cardId = e.dataTransfer.getData('card-id');
         if (cardId) placeCardInSlot(cardId, slotIndex);
-    });
+    };
 }
 
 // ─── Counters e Info ──────────────────────────────────────────────────────────
@@ -409,13 +413,7 @@ function validateGuess() {
     gs.attempts.push({ guess: [...guess], black, white });
     addHistoryRow([...guess], black, white);
 
-    // Devolve cartas ao banco e limpa slots
-    for (let i = 0; i < codeSize; i++) {
-        if (gs.currentGuess[i]) {
-            const bankEl = getBankEl(String(gs.currentGuess[i].id));
-            if (bankEl) bankEl.style.visibility = 'visible';
-        }
-    }
+    // Limpa os slots de tentativa (as cartas do banco continuam visíveis)
     gs.currentGuess = Array(codeSize).fill(null);
     renderDropSlots();
 
@@ -473,7 +471,7 @@ function addHistoryRow(guess, black, white) {
 }
 
 // ─── Modal de solução ─────────────────────────────────────────────────────────
-function openSolutionModal(result) {
+async function openSolutionModal(result) {
     const won = result === 'win';
     const attemptsUsed = gs.attempts.length;
     const rules = difficultyRules[gs.currentDifficulty];
@@ -481,8 +479,8 @@ function openSolutionModal(result) {
         ? Math.max(0, (rules.attempts - attemptsUsed) * 100 + gs.currentCodeSize * 10)
         : 0;
 
-    gs.currentResult = { score, attemptsUsed, won };
-    savePublicScore(score, attemptsUsed, won);
+    // rank/totalPlayers só ficam disponíveis depois que savePublicScore() resolver
+    gs.currentResult = { score, attemptsUsed, won, rank: null, totalPlayers: null };
 
     const icon = document.getElementById('solution-play-icon');
     icon.className = won
@@ -497,6 +495,7 @@ function openSolutionModal(result) {
         : 'Nao foi dessa vez. O codigo era:';
 
     // Gera cards com animacao de flip
+    const frontDesign = gs.game.frontDesign || 'imagens/frente/frente01.png';
     const container = document.getElementById('play-solution-cards');
     container.innerHTML = '';
     gs.secretCode.forEach((card, i) => {
@@ -513,12 +512,15 @@ function openSolutionModal(result) {
         const backBg = gs.game.backDesign
             ? `url('${gs.game.backDesign}')`
             : 'linear-gradient(135deg, #047857, #10b981)';
+        const frontBg = card.frontImage || frontDesign;
 
         const cardEl = document.createElement('div');
         cardEl.className = 'solution-card-container';
         cardEl.innerHTML = `
             <div class="solution-card-inner">
-                <div class="solution-card-front bg-white border border-slate-200" style="overflow:hidden;">${frontContent}</div>
+                <div class="solution-card-front" style="overflow:hidden;background-image:url('${frontBg}');background-size:cover;background-position:center;">
+                    <div style="width:100%;height:100%;background:${card.frontImage ? 'transparent' : 'rgba(255,255,255,0.85)'};">${frontContent}</div>
+                </div>
                 <div class="solution-card-back" style="background-image:${backBg};background-size:cover;background-position:center;"></div>
             </div>
         `;
@@ -527,12 +529,20 @@ function openSolutionModal(result) {
     });
 
     document.getElementById('modal-solution-play').style.display = 'flex';
+
+    await savePublicScore(score, attemptsUsed, won);
+
+    // Atualiza o subtítulo com a colocação, se o cálculo terminou a tempo
+    if (won && gs.currentResult && gs.currentResult.rank) {
+        document.getElementById('solution-play-subtitle').innerText =
+            `${attemptsUsed} tentativa${attemptsUsed !== 1 ? 's' : ''} — Pontuacao: ${score} pts — Voce ficou em ${gs.currentResult.rank}º lugar de ${gs.currentResult.totalPlayers}`;
+    }
 }
 
 // ─── Salvar resultado público ─────────────────────────────────────────────────
 async function savePublicScore(score, attemptsUsed, won) {
     try {
-        await supabase.from('public_plays').insert([{
+        const { data, error } = await supabase.from('public_plays').insert([{
             share_code: gs.shareCode,
             player_name: gs.playerName,
             score,
@@ -540,9 +550,45 @@ async function savePublicScore(score, attemptsUsed, won) {
             won,
             difficulty_level: gs.currentDifficulty,
             code_size: gs.currentCodeSize
-        }]);
+        }]).select().single();
+
+        if (error) throw error;
+
+        if (won && data && gs.currentResult) {
+            const rankInfo = await computePlayerRank(data);
+            if (rankInfo) {
+                gs.currentResult.rank = rankInfo.rank;
+                gs.currentResult.totalPlayers = rankInfo.total;
+            }
+        }
     } catch (err) {
         console.warn('Nao foi possivel salvar resultado:', err.message);
+    }
+}
+
+// ─── Colocação do jogador no ranking ──────────────────────────────────────────
+async function computePlayerRank(playRow) {
+    if (!playRow || playRow.score == null || !playRow.played_at) return null;
+    try {
+        const { count: better, error: errBetter } = await supabase
+            .from('public_plays')
+            .select('id', { count: 'exact', head: true })
+            .eq('share_code', gs.shareCode)
+            .eq('won', true)
+            .or(`score.gt.${playRow.score},and(score.eq.${playRow.score},played_at.lt.${playRow.played_at})`);
+        if (errBetter) throw errBetter;
+
+        const { count: total, error: errTotal } = await supabase
+            .from('public_plays')
+            .select('id', { count: 'exact', head: true })
+            .eq('share_code', gs.shareCode)
+            .eq('won', true);
+        if (errTotal) throw errTotal;
+
+        return { rank: (better || 0) + 1, total: total || 0 };
+    } catch (err) {
+        console.warn('Nao foi possivel calcular a colocacao no ranking:', err.message);
+        return null;
     }
 }
 
@@ -558,12 +604,16 @@ async function showRanking() {
         const icon = r.won ? 'fa-trophy text-amber-400' : 'fa-face-sad-tear text-slate-400';
         const bg = r.won ? 'bg-emerald-50 border-emerald-200' : 'bg-slate-50 border-slate-200';
         const txtColor = r.won ? 'text-emerald-600' : 'text-slate-500';
+        const rankLine = (r.won && r.rank)
+            ? `<p class="text-xs font-black text-emerald-700 mt-1"><i class="fa-solid fa-ranking-star mr-1"></i>Voce ficou em ${r.rank}º lugar${r.totalPlayers ? ' de ' + r.totalPlayers : ''}</p>`
+            : '';
         document.getElementById('player-result').innerHTML = `
             <div class="${bg} border rounded-2xl p-4 text-center mb-4">
                 <i class="fa-solid ${icon} text-2xl mb-2"></i>
-                <p class="text-sm font-black text-slate-700">${r.won ? 'Parabens, ' + escapeHtml(gs.playerName) + '!' : 'Boa tentativa, ' + escapeHtml(gs.playerName) + '!'}</p>
+                <p class="text-sm font-black text-slate-700">${r.won ? 'Parabéns, ' + escapeHtml(gs.playerName) + '!' : 'Boa tentativa, ' + escapeHtml(gs.playerName) + '!'}</p>
                 <p class="text-3xl font-black ${txtColor} my-1">${r.score} <span class="text-lg">pts</span></p>
                 <p class="text-xs text-slate-500">${r.attemptsUsed} tentativa${r.attemptsUsed !== 1 ? 's' : ''} usada${r.attemptsUsed !== 1 ? 's' : ''} &bull; Nivel ${gs.currentDifficulty} &bull; Codigo: ${gs.currentCodeSize} cartas</p>
+                ${rankLine}
             </div>
         `;
     }
@@ -600,9 +650,16 @@ async function showRanking() {
                 : idx === 2
                 ? '<i class="fa-solid fa-medal text-amber-700"></i>'
                 : `<span class="text-xs font-black text-slate-500">${idx + 1}</span>`;
+            const placeColor = idx === 0 ? 'text-amber-500' : idx === 1 ? 'text-slate-400' : 'text-amber-700';
+            const placeLabel = idx < 3
+                ? `<span class="text-[8px] font-black uppercase tracking-wide ${placeColor}">${idx + 1}º lugar</span>`
+                : '';
             return `
                 <div class="flex items-center gap-3 p-3 rounded-2xl ${rankColors} border ${isCurrentPlayer ? 'ring-2 ring-emerald-400' : ''}">
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${idx < 3 ? '' : 'bg-slate-100'}">${medalIcon}</div>
+                    <div class="flex flex-col items-center gap-0.5 shrink-0">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center ${idx < 3 ? '' : 'bg-slate-100'}">${medalIcon}</div>
+                        ${placeLabel}
+                    </div>
                     <div class="flex-1 min-w-0">
                         <p class="font-bold text-slate-800 truncate text-sm">${escapeHtml(play.player_name)}${isCurrentPlayer ? ' <span style="color:#047857;font-size:10px;">(voce)</span>' : ''}</p>
                         <p class="text-[10px] text-slate-400">${play.attempts_used} tentativa${play.attempts_used !== 1 ? 's' : ''} &bull; Nivel ${play.difficulty_level} &bull; ${play.code_size} cartas</p>
@@ -654,7 +711,8 @@ async function init() {
         document.getElementById('welcome-disciplina').innerText = info.disciplina || '-';
         document.getElementById('welcome-conteudo').innerText = info.conteudo || '-';
         document.getElementById('welcome-serie').innerText = info.serie || '-';
-        document.getElementById('welcome-autores').innerText = (info.autores || []).join(', ') || '-';
+        const welcomeAutores = Array.isArray(info.autores) ? info.autores.filter(Boolean) : [];
+        document.getElementById('welcome-autores').innerText = welcomeAutores.length > 0 ? welcomeAutores.join(', ') : '-';
 
         showScreen('welcome');
         document.getElementById('player-name-input').focus();

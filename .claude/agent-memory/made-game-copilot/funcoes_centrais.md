@@ -1,9 +1,18 @@
 ---
 name: funcoes_centrais
-description: Funções centrais de js/app.js por fase (editor, revisão, testar, player, histórico) e o que cada uma faz
+description: Funções centrais do player AUTENTICADO por fase (editor, revisão, testar, player, histórico) e o que cada uma faz
 metadata:
   type: project
 ---
+
+AVISO (2026-08-19): desde a refatoração "nova versão da arquitetura", estas funções NÃO
+vivem mais em `js/app.js` — foram movidas para `js/core/editorShell.js` (editor genérico)
+e `js/games/codigo-secreto/{editorCartas,review,player}.js` (específico do modelo), com
+os MESMOS nomes de método (delegados por `js/app.js` via `GAME_METHODS`, ver
+[[arquivos_modulos]]). O conteúdo abaixo ainda descreve corretamente O QUE cada função
+faz, só o "onde" mudou. Além disso, isto documenta o player AUTENTICADO (dentro do
+`index.html`) — existe um SEGUNDO player, público/standalone, em `js/play.js` +
+`play.html`, com sua própria reimplementação paralela (ver [[sessao_2026-08-19]]).
 
 Confirmado em 2026-06-24 lendo `js/app.js` por completo (~1850 linhas após edições da sessão).
 
