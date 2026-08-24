@@ -1,5 +1,5 @@
 // js/games/codigo-secreto/player.js
-import { difficultyRules } from './model.js';
+import { difficultyRules, applyReplaySwap } from './model.js';
 
 export { difficultyRules };
 
@@ -391,29 +391,7 @@ export const playerMethods = {
 
         if (rules.swap > 0 && this.state.secretCode && this.state.secretCode.length === codeSize) {
             const correctCards = this.state.activeGame.cards.filter(c => c.isCorrect);
-            const currentSecret = [...this.state.secretCode];
-            const canRepeat = rules.repeat;
-
-            const indicesToSwap = [];
-            const possibleIndices = Array.from({length: codeSize}, (_, i) => i);
-            for(let i = 0; i < Math.min(rules.swap, codeSize); i++) {
-                const rIdx = Math.floor(Math.random() * possibleIndices.length);
-                indicesToSwap.push(possibleIndices.splice(rIdx, 1)[0]);
-            }
-
-            indicesToSwap.forEach(idx => {
-                let available = [...correctCards];
-                if (!canRepeat) {
-                    const currentContents = currentSecret.map(c => c.content);
-                    available = available.filter(c => !currentContents.includes(c.content));
-                }
-
-                if (available.length > 0) {
-                    const newCard = available[Math.floor(Math.random() * available.length)];
-                    currentSecret[idx] = { ...newCard, instanceId: crypto.randomUUID() };
-                }
-            });
-            this.state.secretCode = currentSecret;
+            this.state.secretCode = applyReplaySwap(this.state.secretCode, correctCards, rules);
         } else if (this.state.gameOver === 'win' || this.state.gameOver === 'loss' || !this.state.secretCode) {
             if (!this.state.secretCode) {
                  this.state.secretCode = this.createSecretCode(this.state.activeGame);
@@ -504,7 +482,6 @@ export const playerMethods = {
 
         setEl('level-info-nivel', `Nível ${level} (${rules.attempts} tentativas)`);
         setEl('level-info-cartas', String(this.state.currentCodeSize || 4));
-        setEl('level-info-repeticao', rules.repeat ? 'Permitida' : 'Não permitida');
         setEl('level-info-troca', rules.swap > 0 ? `${rules.swap} carta${rules.swap > 1 ? 's' : ''} a cada reinício` : 'Nenhuma');
     },
 

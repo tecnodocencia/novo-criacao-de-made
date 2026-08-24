@@ -1,6 +1,6 @@
 // js/play.js — Página pública de jogo (sem autenticação obrigatória)
 import { supabase } from './supabase.js';
-import { difficultyRules } from './games/codigo-secreto/model.js';
+import { difficultyRules, applyReplaySwap } from './games/codigo-secreto/model.js';
 
 // ─── Estado global do jogo ───────────────────────────────────────────────────
 const gs = {
@@ -150,12 +150,14 @@ function createSecretCode() {
 }
 
 // ─── Início do jogo ───────────────────────────────────────────────────────────
-function startGame() {
-    gs.secretCode = createSecretCode();
+// Monta a tela de jogo a partir do gs.secretCode já definido (por startGame ou
+// replayGame) — mesma sequência de renderização nos dois casos.
+function resetGameScreen() {
     gs.currentGuess = Array(gs.currentCodeSize).fill(null);
     gs.attempts = [];
     gs.gameOver = null;
     gs.selectedCard = null;
+    gs.currentResult = null;
 
     showScreen('game');
 
@@ -167,6 +169,32 @@ function startGame() {
     updateAttemptCounter();
     updateLevelInfo();
     document.getElementById('play-history-list').innerHTML = '';
+}
+
+function startGame() {
+    gs.secretCode = createSecretCode();
+    resetGameScreen();
+}
+
+// ─── Reinício ("Jogar Novamente") ────────────────────────────────────────────
+// Mesma regra de negócio do player autenticado (js/games/codigo-secreto/player.js
+// replayGame() + applyReplaySwap() em model.js): reembaralha o banco de cartas
+// (dentro de resetGameScreen -> renderBankCards) e substitui rules.swap cartas
+// do código secreto por cartas corretas diferentes, preservando as demais
+// posições. NUNCA regenera o código inteiro do zero quando já existe um código
+// válido do mesmo tamanho — isso daria a falsa impressão de "troca de posição"
+// em vez de "troca de carta", que era a inconsistência relatada entre os níveis.
+function replayGame() {
+    const rules = difficultyRules[gs.currentDifficulty];
+    const correctCards = gs.game.cards.filter(c => c.isCorrect);
+
+    if (gs.secretCode && gs.secretCode.length === gs.currentCodeSize) {
+        gs.secretCode = applyReplaySwap(gs.secretCode, correctCards, rules);
+    } else {
+        gs.secretCode = createSecretCode();
+    }
+
+    resetGameScreen();
 }
 
 // ─── Renderização do header ───────────────────────────────────────────────────
@@ -405,11 +433,10 @@ function updateAttemptCounter() {
 function updateLevelInfo() {
     const level = gs.currentDifficulty;
     const rules = difficultyRules[level];
-    const names = { 1: 'Iniciante', 2: 'Intermediario', 3: 'Avancado', 4: 'Especialista' };
+    const names = { 1: 'Iniciante', 2: 'Intermediário', 3: 'Avançado', 4: 'Especialista' };
     document.getElementById('level-info-nivel-play').innerText = `${level} - ${names[level] || ''}`;
     document.getElementById('level-info-cartas-play').innerText = String(gs.currentCodeSize);
-    document.getElementById('level-info-repeticao-play').innerText = rules.repeat ? 'Sim' : 'Nao';
-    document.getElementById('level-info-troca-play').innerText = rules.swap > 0 ? `${rules.swap} pos.` : 'Nao';
+    document.getElementById('level-info-troca-play').innerText = rules.swap > 0 ? `${rules.swap} carta${rules.swap > 1 ? 's' : ''}` : 'Não';
 }
 
 // ─── Validação ────────────────────────────────────────────────────────────────
@@ -418,7 +445,7 @@ function validateGuess() {
 
     const codeSize = gs.currentCodeSize;
     if (gs.currentGuess.some(c => c === null)) {
-        showNotification(`Preencha todos os ${codeSize} espacos antes de validar!`, 'Aviso');
+        showNotification(`Preencha todos os ${codeSize} espaços antes de validar!`, 'Aviso');
         return;
     }
 
@@ -522,11 +549,11 @@ async function openSolutionModal(result) {
         : 'fa-solid fa-face-sad-tear text-slate-400';
 
     document.getElementById('solution-play-title').innerText = won
-        ? 'Voce Acertou o Codigo!'
-        : 'Codigo Revelado';
+        ? 'Você Acertou o Código!'
+        : 'Código Revelado';
     document.getElementById('solution-play-subtitle').innerText = won
-        ? `${attemptsUsed} tentativa${attemptsUsed !== 1 ? 's' : ''} — Pontuacao: ${score} pts`
-        : 'Nao foi dessa vez. O codigo era:';
+        ? `${attemptsUsed} tentativa${attemptsUsed !== 1 ? 's' : ''} — Pontuação: ${score} pts`
+        : 'Não foi dessa vez. O código era:';
 
     // Gera cards com animacao de flip
     const frontDesign = gs.game.frontDesign || 'imagens/frente/frente01.png';
@@ -569,7 +596,7 @@ async function openSolutionModal(result) {
     // Atualiza o subtítulo com a colocação, se o cálculo terminou a tempo
     if (won && gs.currentResult && gs.currentResult.rank) {
         document.getElementById('solution-play-subtitle').innerText =
-            `${attemptsUsed} tentativa${attemptsUsed !== 1 ? 's' : ''} — Pontuacao: ${score} pts — Voce ficou em ${gs.currentResult.rank}º lugar de ${gs.currentResult.totalPlayers}`;
+            `${attemptsUsed} tentativa${attemptsUsed !== 1 ? 's' : ''} — Pontuação: ${score} pts — Você ficou em ${gs.currentResult.rank}º lugar de ${gs.currentResult.totalPlayers}`;
     }
 }
 
@@ -596,7 +623,7 @@ async function savePublicScore(score, attemptsUsed, won) {
             }
         }
     } catch (err) {
-        console.warn('Nao foi possivel salvar resultado:', err.message);
+        console.warn('Não foi possível salvar resultado:', err.message);
     }
 }
 
@@ -621,7 +648,7 @@ async function computePlayerRank(playRow) {
 
         return { rank: (better || 0) + 1, total: total || 0 };
     } catch (err) {
-        console.warn('Nao foi possivel calcular a colocacao no ranking:', err.message);
+        console.warn('Não foi possível calcular a colocação no ranking:', err.message);
         return null;
     }
 }
@@ -639,14 +666,14 @@ async function showRanking() {
         const bg = r.won ? 'bg-emerald-50 border-emerald-200' : 'bg-slate-50 border-slate-200';
         const txtColor = r.won ? 'text-emerald-600' : 'text-slate-500';
         const rankLine = (r.won && r.rank)
-            ? `<p class="text-xs font-black text-emerald-700 mt-1"><i class="fa-solid fa-ranking-star mr-1"></i>Voce ficou em ${r.rank}º lugar${r.totalPlayers ? ' de ' + r.totalPlayers : ''}</p>`
+            ? `<p class="text-xs font-black text-emerald-700 mt-1"><i class="fa-solid fa-ranking-star mr-1"></i>Você ficou em ${r.rank}º lugar${r.totalPlayers ? ' de ' + r.totalPlayers : ''}</p>`
             : '';
         document.getElementById('player-result').innerHTML = `
             <div class="${bg} border rounded-2xl p-4 text-center mb-4">
                 <i class="fa-solid ${icon} text-2xl mb-2"></i>
                 <p class="text-sm font-black text-slate-700">${r.won ? 'Parabéns, ' + escapeHtml(gs.playerName) + '!' : 'Boa tentativa, ' + escapeHtml(gs.playerName) + '!'}</p>
                 <p class="text-3xl font-black ${txtColor} my-1">${r.score} <span class="text-lg">pts</span></p>
-                <p class="text-xs text-slate-500">${r.attemptsUsed} tentativa${r.attemptsUsed !== 1 ? 's' : ''} usada${r.attemptsUsed !== 1 ? 's' : ''} &bull; Nivel ${gs.currentDifficulty} &bull; Codigo: ${gs.currentCodeSize} cartas</p>
+                <p class="text-xs text-slate-500">${r.attemptsUsed} tentativa${r.attemptsUsed !== 1 ? 's' : ''} usada${r.attemptsUsed !== 1 ? 's' : ''} &bull; Nível ${gs.currentDifficulty} &bull; Código: ${gs.currentCodeSize} cartas</p>
                 ${rankLine}
             </div>
         `;
@@ -668,11 +695,11 @@ async function showRanking() {
         if (error) throw error;
 
         if (!data || data.length === 0) {
-            list.innerHTML = '<p class="text-slate-400 text-sm text-center py-8">Nenhuma vitoria registrada ainda. Seja o primeiro!</p>';
+            list.innerHTML = '<p class="text-slate-400 text-sm text-center py-8">Nenhuma vitória registrada ainda. Seja o primeiro!</p>';
             return;
         }
 
-        // Destaca o jogador atual na posicao em que aparece
+        // Destaca o jogador atual na posição em que aparece
         const currentPlayerName = gs.playerName.toLowerCase();
         list.innerHTML = data.map((play, idx) => {
             const isCurrentPlayer = play.player_name.toLowerCase() === currentPlayerName;
@@ -695,8 +722,8 @@ async function showRanking() {
                         ${placeLabel}
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="font-bold text-slate-800 truncate text-sm">${escapeHtml(play.player_name)}${isCurrentPlayer ? ' <span style="color:#047857;font-size:calc(10px * var(--play-font-scale));">(voce)</span>' : ''}</p>
-                        <p class="text-[10px] text-slate-400">${play.attempts_used} tentativa${play.attempts_used !== 1 ? 's' : ''} &bull; Nivel ${play.difficulty_level} &bull; ${play.code_size} cartas</p>
+                        <p class="font-bold text-slate-800 truncate text-sm">${escapeHtml(play.player_name)}${isCurrentPlayer ? ' <span style="color:#047857;font-size:calc(10px * var(--play-font-scale));">(você)</span>' : ''}</p>
+                        <p class="text-[10px] text-slate-400">${play.attempts_used} tentativa${play.attempts_used !== 1 ? 's' : ''} &bull; Nível ${play.difficulty_level} &bull; ${play.code_size} cartas</p>
                     </div>
                     <span class="font-black text-emerald-600 text-lg shrink-0">${play.score}</span>
                 </div>
@@ -711,7 +738,7 @@ async function showRanking() {
 // ─── Reiniciar jogo ───────────────────────────────────────────────────────────
 function restartGame() {
     document.getElementById('modal-solution-play').style.display = 'none';
-    startGame();
+    replayGame();
 }
 
 // ─── Inicialização ─────────────────────────────────────────────────────────────
@@ -719,7 +746,7 @@ async function init() {
     gs.shareCode = new URLSearchParams(window.location.search).get('code') || '';
 
     if (!gs.shareCode) {
-        document.getElementById('error-message').innerText = 'Nenhum codigo de jogo foi fornecido na URL. Verifique o link.';
+        document.getElementById('error-message').innerText = 'Nenhum código de jogo foi fornecido na URL. Verifique o link.';
         showScreen('error');
         return;
     }
@@ -731,7 +758,7 @@ async function init() {
             .eq('share_code', gs.shareCode)
             .single();
 
-        if (error || !data) throw new Error('Jogo nao encontrado ou link invalido.');
+        if (error || !data) throw new Error('Jogo não encontrado ou link inválido.');
 
         gs.game = {
             ...data,
@@ -792,12 +819,12 @@ window.playApp = {
 
     askRestart() {
         if (gs.gameOver) { restartGame(); return; }
-        showConfirm('Deseja reiniciar? Seu progresso atual sera perdido.', restartGame);
+        showConfirm('Deseja reiniciar? Seu progresso atual será perdido.', restartGame);
     },
 
     showGameRules() { showNotification(gs.game.regra || 'Nenhuma regra definida.', 'Regras do Jogo'); },
     showObjetivo() { showNotification(gs.game.objetivo || 'Nenhum objetivo definido.', 'Objetivo'); },
-    showExplicacao() { showNotification(gs.game.explicacao || 'Nenhuma explicacao.', 'Como Jogar'); },
+    showExplicacao() { showNotification(gs.game.explicacao || 'Nenhuma explicação.', 'Como Jogar'); },
 
     closeNotificationPlay() { document.getElementById('modal-notification-play').style.display = 'none'; },
     closePreviewPlay() { document.getElementById('modal-preview-play').style.display = 'none'; },

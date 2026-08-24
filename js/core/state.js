@@ -16,5 +16,6 @@ export const state = {
     gameOver: null,
     selectedGameIdForPlay: null,
     currentDifficulty: 1,
-    isTestingFromCreator: false
+    isTestingFromCreator: false,
+    rankingManageGameId: null
 };

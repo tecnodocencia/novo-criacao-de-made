@@ -235,7 +235,7 @@
     <div id="screen-error" class="play-screen min-h-screen items-center justify-center flex-col gap-4 p-6">
         <div class="text-center max-w-md">
             <i class="fa-solid fa-circle-exclamation text-5xl text-red-400 mb-4"></i>
-            <h2 class="text-2xl font-black text-slate-800 mb-2">Jogo nao encontrado</h2>
+            <h2 class="text-2xl font-black text-slate-800 mb-2">Jogo não encontrado</h2>
             <p id="error-message" class="text-slate-500 text-sm">Verifique o link e tente novamente.</p>
         </div>
     </div>
@@ -252,7 +252,7 @@
             <!-- Game card -->
             <div class="bg-white rounded-[32px] shadow-xl border border-slate-100 overflow-hidden">
                 <div class="bg-gradient-to-br from-emerald-600 to-emerald-500 p-6 text-white">
-                    <p class="text-xs font-black uppercase tracking-[0.2em] opacity-70 mb-2">Codigo Secreto</p>
+                    <p class="text-xs font-black uppercase tracking-[0.2em] opacity-70 mb-2">Código Secreto</p>
                     <h1 id="welcome-game-name" class="text-2xl font-black leading-tight">Carregando...</h1>
                 </div>
                 <div class="p-6 space-y-3">
@@ -266,7 +266,7 @@
                             <p id="welcome-conteudo" class="font-bold text-slate-700">-</p>
                         </div>
                         <div>
-                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest block">Serie / Turma</span>
+                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest block">Série / Turma</span>
                             <p id="welcome-serie" class="font-bold text-slate-700">-</p>
                         </div>
                         <div>
@@ -279,7 +279,7 @@
                         <label class="text-[11px] font-black text-slate-500 uppercase tracking-widest block mb-2">Seu nome para o ranking</label>
                         <input id="player-name-input" type="text" maxlength="40"
                             class="w-full px-4 py-3 border-2 border-slate-200 rounded-2xl font-bold text-slate-800 outline-none focus:border-emerald-500 transition text-sm"
-                            placeholder="Ex: Joao Silva"
+                            placeholder="Ex: João Silva"
                             onkeydown="if(event.key==='Enter') playApp.startFromWelcome()">
                     </div>
 
@@ -304,7 +304,7 @@
 
             <!-- Code size -->
             <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Tamanho do Codigo (cartas)</p>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Tamanho do Código (cartas)</p>
                 <div class="flex gap-2 flex-wrap">
                     <button class="play-size-btn" data-size="3" onclick="playApp.selectCodeSize(3)">3</button>
                     <button class="play-size-btn active" data-size="4" onclick="playApp.selectCodeSize(4)">4</button>
@@ -315,22 +315,22 @@
 
             <!-- Difficulty -->
             <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Nivel de Dificuldade</p>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Nível de Dificuldade</p>
                 <div class="space-y-2">
                     <button class="play-level-btn active" data-level="1" onclick="playApp.selectDifficultyLevel(1)">
-                        <p class="font-black text-slate-800 text-sm">Nivel 1 — Iniciante</p>
+                        <p class="font-black text-slate-800 text-sm">Nível 1 — Iniciante</p>
                         <p class="text-xs text-slate-400 mt-0.5">10 tentativas • Sem troca de cartas</p>
                     </button>
                     <button class="play-level-btn" data-level="2" onclick="playApp.selectDifficultyLevel(2)">
-                        <p class="font-black text-slate-800 text-sm">Nivel 2 — Intermediario</p>
+                        <p class="font-black text-slate-800 text-sm">Nível 2 — Intermediário</p>
                         <p class="text-xs text-slate-400 mt-0.5">8 tentativas • 1 carta trocada ao reiniciar</p>
                     </button>
                     <button class="play-level-btn" data-level="3" onclick="playApp.selectDifficultyLevel(3)">
-                        <p class="font-black text-slate-800 text-sm">Nivel 3 — Avancado</p>
+                        <p class="font-black text-slate-800 text-sm">Nível 3 — Avançado</p>
                         <p class="text-xs text-slate-400 mt-0.5">6 tentativas • 2 cartas trocadas</p>
                     </button>
                     <button class="play-level-btn" data-level="4" onclick="playApp.selectDifficultyLevel(4)">
-                        <p class="font-black text-slate-800 text-sm">Nivel 4 — Especialista</p>
+                        <p class="font-black text-slate-800 text-sm">Nível 4 — Especialista</p>
                         <p class="text-xs text-slate-400 mt-0.5">5 tentativas • 3 cartas trocadas</p>
                     </button>
                 </div>
@@ -417,24 +417,20 @@
             <div class="w-60 sm:w-72 border-l border-slate-200 bg-white p-3 flex flex-col overflow-hidden">
 
                 <div class="shrink-0 mb-3">
-                    <h2 class="font-black text-sm text-slate-700">Historico</h2>
+                    <h2 class="font-black text-sm text-slate-700">Histórico</h2>
                     <div class="text-xs font-bold text-slate-500 mt-2">
                         Tentativa <span id="current-attempt-play">1</span> | Restantes: <span id="total-attempts-play">0</span>
                     </div>
                     <div class="mt-2 grid grid-cols-2 gap-1.5 text-[9px]">
                         <div class="bg-slate-50 rounded-xl px-2 py-1.5 border border-slate-100">
-                            <span class="block text-slate-400 uppercase tracking-wider">Nivel</span>
+                            <span class="block text-slate-400 uppercase tracking-wider">Nível</span>
                             <span id="level-info-nivel-play" class="font-bold text-slate-600">-</span>
                         </div>
                         <div class="bg-slate-50 rounded-xl px-2 py-1.5 border border-slate-100">
                             <span class="block text-slate-400 uppercase tracking-wider">Cartas</span>
                             <span id="level-info-cartas-play" class="font-bold text-slate-600">-</span>
                         </div>
-                        <div class="bg-slate-50 rounded-xl px-2 py-1.5 border border-slate-100">
-                            <span class="block text-slate-400 uppercase tracking-wider">Repeticao</span>
-                            <span id="level-info-repeticao-play" class="font-bold text-slate-600">-</span>
-                        </div>
-                        <div class="bg-slate-50 rounded-xl px-2 py-1.5 border border-slate-100">
+                        <div class="bg-slate-50 rounded-xl px-2 py-1.5 border border-slate-100 col-span-2">
                             <span class="block text-slate-400 uppercase tracking-wider">Troca</span>
                             <span id="level-info-troca-play" class="font-bold text-slate-600">-</span>
                         </div>
@@ -461,7 +457,7 @@
             <div class="text-center mb-6">
                 <img src="Criação vermelho sem.png" alt="MADE" class="h-10 w-auto mx-auto mb-3">
                 <h2 id="ranking-game-name" class="text-2xl font-black text-slate-800"></h2>
-                <p class="text-sm text-slate-500 mt-1">Ranking de Vitorias</p>
+                <p class="text-sm text-slate-500 mt-1">Ranking de Vitórias</p>
             </div>
 
             <!-- Player result -->
@@ -482,7 +478,7 @@
 
             <div class="flex gap-3 mt-6">
                 <button onclick="playApp.goToWelcome()" class="flex-1 py-3 bg-white border-2 border-slate-200 hover:bg-slate-50 text-slate-600 font-bold rounded-2xl text-sm transition">
-                    <i class="fa-solid fa-house mr-2"></i>Inicio
+                    <i class="fa-solid fa-house mr-2"></i>Início
                 </button>
                 <button onclick="playApp.restartGame()" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl text-sm transition">
                     <i class="fa-solid fa-play mr-2"></i>Jogar Novamente
@@ -507,7 +503,7 @@
     <!-- ========== MODAL: CONFIRM ========== -->
     <div id="modal-confirm-play" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm items-center justify-center z-50 p-4" style="display:none;">
         <div class="bg-white w-full max-w-sm rounded-[28px] shadow-2xl p-7 space-y-4">
-            <h3 class="text-xl font-black text-slate-900">Confirmacao</h3>
+            <h3 class="text-xl font-black text-slate-900">Confirmação</h3>
             <p id="confirm-play-message" class="text-sm text-slate-600"></p>
             <div class="flex gap-3">
                 <button onclick="playApp.cancelPlay()" class="flex-1 py-3 border border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-sm transition">Cancelar</button>
@@ -537,7 +533,7 @@
             </div>
             <div class="p-7 space-y-6">
                 <div>
-                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-3">O Codigo Secreto Era:</h4>
+                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-3">O Código Secreto Era:</h4>
                     <div id="play-solution-cards" class="grid gap-3" style="grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));"></div>
                 </div>
                 <div class="flex gap-3">

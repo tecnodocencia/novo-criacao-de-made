@@ -6,6 +6,53 @@ export const difficultyRules = {
     4: { attempts: 5, repeat: false, swap: 3 }
 };
 
+// Mecânica de "Jogar Novamente" (engine original, mesma para os dois players —
+// autenticado em js/games/codigo-secreto/player.js e público em js/play.js):
+// o banco de cartas é sempre reembaralhado (posição visual) e N cartas do
+// CÓDIGO SECRETO são substituídas por outras cartas corretas diferentes,
+// onde N = rules.swap (0/1/2/3 para os níveis 1-4). As demais posições do
+// código secreto permanecem com a MESMA carta que já estava lá — nunca é uma
+// troca de posição/localização entre as cartas existentes, e nunca é uma
+// regeneração completa do código do zero (a menos que não haja código anterior
+// compatível, ex.: tamanho do código mudou).
+export function applyReplaySwap(secretCode, correctCards, rules) {
+    const codeSize = secretCode.length;
+    if (!rules || !rules.swap || rules.swap <= 0 || codeSize === 0) {
+        return [...secretCode];
+    }
+
+    const currentSecret = [...secretCode];
+    const canRepeat = rules.repeat;
+    const swapCount = Math.min(rules.swap, codeSize);
+
+    const indicesToSwap = [];
+    const possibleIndices = Array.from({ length: codeSize }, (_, i) => i);
+    for (let i = 0; i < swapCount; i++) {
+        const rIdx = Math.floor(Math.random() * possibleIndices.length);
+        indicesToSwap.push(possibleIndices.splice(rIdx, 1)[0]);
+    }
+
+    indicesToSwap.forEach(idx => {
+        let available = [...correctCards];
+        if (!canRepeat) {
+            const currentContents = currentSecret.map(c => c.content);
+            available = available.filter(c => !currentContents.includes(c.content));
+        }
+        if (available.length > 0) {
+            const newCard = available[Math.floor(Math.random() * available.length)];
+            const instanceId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+                ? crypto.randomUUID()
+                : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+            currentSecret[idx] = { ...newCard, instanceId };
+        }
+        // Se não sobrou nenhuma carta correta diferente das já presentes (pool
+        // esgotado), essa posição simplesmente não é trocada nesta rodada — não
+        // há carta "diferente" disponível para colocar ali.
+    });
+
+    return currentSecret;
+}
+
 export function getDefaultData() {
     return {
         frontDesign: "imagens/frente/frente01.png",

@@ -163,6 +163,53 @@ export const dbService = {
         return data || []
     },
 
+    /**
+     * Retorna TODO o ranking de um jogo compartilhado (só vitórias, sem limite
+     * de 20) — usado pelo painel "Gerenciar Ranking" do dashboard, onde o
+     * professor precisa ver e remover qualquer jogador, não só o Top 20.
+     */
+    async listarRankingCompletoJogo(shareCode) {
+        const { data, error } = await supabase
+            .from('public_plays')
+            .select('*')
+            .eq('share_code', shareCode)
+            .eq('won', true)
+            .order('score', { ascending: false })
+            .order('played_at', { ascending: true })
+
+        if (error) throw error
+        return data || []
+    },
+
+    /**
+     * Remove uma partida específica do ranking (um jogador individual).
+     * Requer a policy de DELETE em public_plays (ver
+     * supabase-migrations-ranking-admin.sql) — sem ela, o Supabase retorna
+     * sucesso mas 0 linhas afetadas (RLS silenciosamente não apaga nada).
+     */
+    async removerPartidaRanking(playId) {
+        const { error } = await supabase
+            .from('public_plays')
+            .delete()
+            .eq('id', playId)
+
+        if (error) throw error
+    },
+
+    /**
+     * Apaga TODAS as partidas (vitórias e derrotas) registradas para um jogo
+     * compartilhado — reset completo do ranking. Mesma dependência de RLS do
+     * método acima.
+     */
+    async limparRankingJogo(shareCode) {
+        const { error } = await supabase
+            .from('public_plays')
+            .delete()
+            .eq('share_code', shareCode)
+
+        if (error) throw error
+    },
+
     // --- USUÁRIOS / AUTH ---
 
     async login(email, password) {

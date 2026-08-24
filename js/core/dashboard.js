@@ -82,6 +82,9 @@ export const dashboardMethods = {
                     <button onclick="app.shareGame('${game.id}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-2xl text-xs transition flex items-center gap-1" title="Compartilhar jogo">
                         <i class="fa-solid fa-share-nodes"></i>
                     </button>
+                    <button onclick="app.manageRanking('${game.id}')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-2xl text-xs transition flex items-center gap-1" title="Gerenciar ranking">
+                        <i class="fa-solid fa-trophy"></i>
+                    </button>
                 </div>
             `;
             grid.appendChild(card);
@@ -130,6 +133,90 @@ export const dashboardMethods = {
 
     closeShareModal: function() {
         document.getElementById('modal-share').style.display = 'none';
+    },
+
+    // --- Gerenciar Ranking (limpar / remover jogadores) ---
+
+    manageRanking: async function(gameId) {
+        const game = this.state.games.find(g => String(g.id) === String(gameId));
+        if (!game) return;
+
+        if (!game.share_code) {
+            this.showNotification('Este jogo ainda não foi compartilhado — gere o link (botão azul) antes de gerenciar o ranking. Sem compartilhamento, nenhum aluno pode ter pontuado nele ainda.');
+            return;
+        }
+
+        this.state.rankingManageGameId = gameId;
+        document.getElementById('modal-ranking-game-name').innerText = game.name || 'Jogo';
+        document.getElementById('modal-ranking').style.display = 'flex';
+        await this.refreshRankingManageList();
+    },
+
+    refreshRankingManageList: async function() {
+        const game = this.state.games.find(g => String(g.id) === String(this.state.rankingManageGameId));
+        const list = document.getElementById('ranking-manage-list');
+        if (!game || !list) return;
+
+        list.innerHTML = '<p class="text-slate-400 text-sm text-center py-6"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i>Carregando...</p>';
+
+        try {
+            const rows = await dbService.listarRankingCompletoJogo(game.share_code);
+
+            if (rows.length === 0) {
+                list.innerHTML = '<p class="text-slate-400 text-sm text-center py-8">Nenhum jogador no ranking deste jogo ainda.</p>';
+                return;
+            }
+
+            list.innerHTML = rows.map((r, idx) => `
+                <div class="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 border border-slate-100">
+                    <span class="text-xs font-black text-slate-400 w-5 text-center shrink-0">${idx + 1}</span>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-bold text-slate-800 truncate text-sm">${this.escapeCardText(r.player_name)}</p>
+                        <p class="text-[10px] text-slate-400">${r.score} pts &bull; ${r.attempts_used} tentativa${r.attempts_used !== 1 ? 's' : ''} &bull; Nível ${r.difficulty_level} &bull; ${new Date(r.played_at).toLocaleDateString('pt-BR')}</p>
+                    </div>
+                    <button onclick="app.removeRankingEntry('${r.id}')" class="text-red-500 hover:bg-red-100 rounded-xl p-2 shrink-0 transition" title="Remover este jogador do ranking">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        } catch (err) {
+            console.error(err);
+            list.innerHTML = '<p class="text-red-400 text-sm text-center py-6">Erro ao carregar ranking: ' + err.message + '</p>';
+        }
+    },
+
+    removeRankingEntry: async function(playId) {
+        try {
+            await dbService.removerPartidaRanking(playId);
+            await this.refreshRankingManageList();
+        } catch (err) {
+            console.error(err);
+            this.showNotification('Erro ao remover jogador do ranking: ' + err.message);
+        }
+    },
+
+    clearRanking: function() {
+        const game = this.state.games.find(g => String(g.id) === String(this.state.rankingManageGameId));
+        if (!game) return;
+
+        this.showConfirm(
+            'Limpar Ranking Completo',
+            `Tem certeza que deseja apagar TODO o ranking de "${game.name}"? Todos os jogadores registrados serão removidos permanentemente. Essa ação não pode ser desfeita.`,
+            async () => {
+                try {
+                    await dbService.limparRankingJogo(game.share_code);
+                    await this.refreshRankingManageList();
+                } catch (err) {
+                    console.error(err);
+                    this.showNotification('Erro ao limpar ranking: ' + err.message);
+                }
+            }
+        );
+    },
+
+    closeRankingModal: function() {
+        document.getElementById('modal-ranking').style.display = 'none';
+        this.state.rankingManageGameId = null;
     },
 
     backFromPlayer: function() {
