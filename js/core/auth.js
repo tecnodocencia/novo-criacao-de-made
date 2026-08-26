@@ -104,12 +104,25 @@ export const authMethods = {
         }
 
         try {
-            const user = await dbService.registrar(email, password, role);
+            const { user, hasSession } = await dbService.registrar(email, password, role);
             if (user && user.identities && user.identities.length === 0) {
                 if (feedback) { feedback.classList.remove('hidden'); feedback.innerText = 'Este email já está cadastrado. Tente fazer login.'; }
                 return;
             }
-            if (feedback) { feedback.classList.remove('hidden'); feedback.innerText = 'Conta criada com sucesso! Mude para aba Login.'; }
+
+            if (hasSession) {
+                // Cadastro sem exigência de confirmação por email: já entra direto.
+                this.state.activeUser = user;
+                document.getElementById('view-login').classList.remove('active');
+                document.getElementById('main-layout').classList.remove('hidden');
+                this.init();
+                return;
+            }
+
+            if (feedback) {
+                feedback.classList.remove('hidden');
+                feedback.innerText = 'Conta criada! Confirme seu email pelo link enviado e depois mude para a aba Login.';
+            }
         } catch (error) {
             console.error(error);
             const knownMessages = {

@@ -238,7 +238,12 @@ export const dbService = {
         })
         
         if (error) throw error
-        return data.user
+        // hasSession: true quando o Supabase confirma o cadastro na hora (sem exigir
+        // clique em link de email) — nesse caso o usuário já está autenticado.
+        return {
+            user: data.user ? { ...data.user, role: data.user.user_metadata?.role || role || 'professor' } : null,
+            hasSession: !!data.session
+        }
     },
 
     async resetPasswordForEmail(email) {
