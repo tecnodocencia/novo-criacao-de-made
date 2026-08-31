@@ -223,10 +223,20 @@ function renderEnunciado() {
     if (el) el.innerHTML = gs.game.enunciado || '';
 }
 
+// ─── Espaçamento entre cartas do código/tentativa ────────────────────────────
+// Quanto menos cartas (codeSize), mais espaço sobra — usa um gap maior para não
+// deixar a fileira "perdida" no centro da tela. Quanto mais cartas, reduz o gap
+// para continuar cabendo numa linha só. Aplicado nas duas fileiras (secreta e
+// de tentativa) para manterem as colunas alinhadas verticalmente.
+function slotsGapPx(codeSize) {
+    return Math.max(10, 24 - Math.max(0, codeSize - 3) * 3);
+}
+
 // ─── Slots secretos ───────────────────────────────────────────────────────────
 function renderSecretSlots() {
     const container = document.getElementById('play-secret-slots');
     container.innerHTML = '';
+    container.style.gap = `${slotsGapPx(gs.currentCodeSize)}px`;
     for (let i = 0; i < gs.currentCodeSize; i++) {
         const slot = document.createElement('div');
         slot.className = 'secret-card-slot';
@@ -244,6 +254,7 @@ function renderSecretSlots() {
 function renderDropSlots() {
     const container = document.getElementById('play-drop-slots');
     container.innerHTML = '';
+    container.style.gap = `${slotsGapPx(gs.currentCodeSize)}px`;
     for (let i = 0; i < gs.currentCodeSize; i++) {
         const slot = document.createElement('div');
         slot.className = 'drop-slot';

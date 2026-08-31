@@ -69,7 +69,7 @@
                         </div>
 
                         <!-- CARTAS SECRETAS -->
-                        <div id="play-secret-slots" class="flex flex-wrap justify-center gap-4 mb-8">
+                        <div id="play-secret-slots" class="flex flex-nowrap justify-center gap-4 mb-8 w-full">
                             <div class="secret-card-slot" id="secret-slot-0"></div>
                             <div class="secret-card-slot" id="secret-slot-1"></div>
                             <div class="secret-card-slot" id="secret-slot-2"></div>
@@ -78,7 +78,7 @@
 
 
                         <!-- ÁREA DE ESCOLHA -->
-                        <div id="play-drop-slots" class="flex flex-wrap justify-center gap-4 mb-8">
+                        <div id="play-drop-slots" class="flex flex-nowrap justify-center gap-4 mb-8 w-full">
                             <div class="drop-slot" data-slot="0"></div>
                             <div class="drop-slot" data-slot="1"></div>
                             <div class="drop-slot" data-slot="2"></div>
@@ -107,30 +107,30 @@
                             <div id="attempt-counter" class="text-sm font-bold text-slate-600 mt-4">
                                 Tentativa <span id="current-attempt">1</span> | Restantes: <span id="total-attempts">0</span>
                             </div>
-                            <div id="play-level-info" class="mt-3 grid grid-cols-2 gap-2 text-[10px] font-bold text-slate-500">
+                            <div id="play-level-info" class="mt-3 grid grid-cols-2 gap-2 text-sm font-bold text-slate-500">
                                 <div class="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2">
-                                    <span class="block text-slate-400 uppercase tracking-wider text-[9px]">Nível</span>
+                                    <span class="block text-slate-400 uppercase tracking-wider text-xs">Nível</span>
                                     <span id="level-info-nivel">-</span>
                                 </div>
                                 <div class="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2">
-                                    <span class="block text-slate-400 uppercase tracking-wider text-[9px]">Cartas do Código</span>
+                                    <span class="block text-slate-400 uppercase tracking-wider text-xs">Cartas do Código</span>
                                     <span id="level-info-cartas">-</span>
                                 </div>
                                 <div class="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 col-span-2">
-                                    <span class="block text-slate-400 uppercase tracking-wider text-[9px]">Troca ao Reiniciar</span>
+                                    <span class="block text-slate-400 uppercase tracking-wider text-xs">Troca ao Reiniciar</span>
                                     <span id="level-info-troca">-</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="shrink-0 grid grid-cols-2 gap-2 mb-6">
-                            <button onclick="app.openDifficultyModal()" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[10px] font-black uppercase tracking-wider transition border border-slate-200">
+                            <button onclick="app.openDifficultyModal()" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-slate-200">
                                 <i class="fa-solid fa-gears mr-1"></i> Dificuldade
                             </button>
-                            <button onclick="app.askRestart()" class="py-2 px-3 bg-red-50 hover:bg-red-100 text-red-700 rounded-xl text-[10px] font-black uppercase tracking-wider transition border border-red-100">
+                            <button onclick="app.askRestart()" class="py-2 px-3 bg-red-50 hover:bg-red-100 text-red-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-red-100">
                                 <i class="fa-solid fa-rotate-left mr-1"></i> Reiniciar
                             </button>
-                            <button onclick="app.showGameRules()" class="col-span-2 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[10px] font-black uppercase tracking-wider transition border border-slate-200">
+                            <button onclick="app.showGameRules()" class="col-span-2 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-slate-200">
                                 <i class="fa-solid fa-circle-info mr-1"></i> Regras
                             </button>
                         </div>
