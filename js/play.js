@@ -59,6 +59,15 @@ function escapeHtml(text) {
     return d.innerHTML;
 }
 
+function formatDateTimeBR(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return '';
+    const data = d.toLocaleDateString('pt-BR');
+    const hora = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    return `${data} ${hora}`;
+}
+
 function shuffleArray(arr) {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
@@ -83,7 +92,7 @@ function showScreen(id) {
 // ─── Notificação / Confirm / Preview ────────────────────────────────────────
 function showNotification(message, title = '') {
     document.getElementById('notif-play-title').innerText = title;
-    document.getElementById('notif-play-message').innerText = message;
+    document.getElementById('notif-play-message').innerHTML = message;
     document.getElementById('modal-notification-play').style.display = 'flex';
 }
 
@@ -735,6 +744,7 @@ async function showRanking() {
                     <div class="flex-1 min-w-0">
                         <p class="font-bold text-slate-800 truncate text-sm">${escapeHtml(play.player_name)}${isCurrentPlayer ? ' <span style="color:#047857;font-size:calc(10px * var(--play-font-scale));">(você)</span>' : ''}</p>
                         <p class="text-[10px] text-slate-400">${play.attempts_used} tentativa${play.attempts_used !== 1 ? 's' : ''} &bull; Nível ${play.difficulty_level} &bull; ${play.code_size} cartas</p>
+                        <p class="text-[10px] text-slate-400">${formatDateTimeBR(play.played_at)}</p>
                     </div>
                     <span class="font-black text-emerald-600 text-lg shrink-0">${play.score}</span>
                 </div>

@@ -1,6 +1,15 @@
 // js/core/dashboard.js
 import { dbService } from '../database.js';
 
+function formatDateTimeBR(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return '';
+    const data = d.toLocaleDateString('pt-BR');
+    const hora = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    return `${data} ${hora}`;
+}
+
 export const dashboardMethods = {
     switchView: function(viewId) {
         document.querySelectorAll('.view-section').forEach(s => {
@@ -172,7 +181,8 @@ export const dashboardMethods = {
                     <span class="text-xs font-black text-slate-400 w-5 text-center shrink-0">${idx + 1}</span>
                     <div class="flex-1 min-w-0">
                         <p class="font-bold text-slate-800 truncate text-sm">${this.escapeCardText(r.player_name)}</p>
-                        <p class="text-[10px] text-slate-400">${r.score} pts &bull; ${r.attempts_used} tentativa${r.attempts_used !== 1 ? 's' : ''} &bull; Nível ${r.difficulty_level} &bull; ${new Date(r.played_at).toLocaleDateString('pt-BR')}</p>
+                        <p class="text-[10px] text-slate-400">${r.score} pts &bull; ${r.attempts_used} tentativa${r.attempts_used !== 1 ? 's' : ''} &bull; Nível ${r.difficulty_level}</p>
+                        <p class="text-[10px] text-slate-400">${formatDateTimeBR(r.played_at)}</p>
                     </div>
                     <button onclick="app.removeRankingEntry('${r.id}')" class="text-red-500 hover:bg-red-100 rounded-xl p-2 shrink-0 transition" title="Remover este jogador do ranking">
                         <i class="fa-solid fa-trash"></i>

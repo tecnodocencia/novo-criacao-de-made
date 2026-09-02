@@ -9,3 +9,4 @@
 - [Sessão 2026-08-19: 7 fixes no player público](sessao_2026-08-19.md) — frontDesign ausente, carta sumindo do banco, listener duplicado, ranking (colocação+ordinal), Parabéns, autores, freeze pós-vitória (root cause confirmada via Playwright)
 - [Feature: controle de fonte A-/A+ no player público](feature_controle_fonte_player_publico.md) — escala via CSS var --play-font-scale, cobre rem do Tailwind + overrides para text-[Npx] e inline styles, 5 níveis persistidos em localStorage
 - [Sessão 2026-08-24: troca unificada + gerenciar ranking](sessao_2026-08-24.md) — applyReplaySwap() compartilhado em model.js (decisão arquitetural), remoção UI Repetição, acentos em play.js/play.html, novo modal Gerenciar Ranking no dashboard + migration SQL pendente
+- [Sessão 2026-09-02: data/hora no ranking](sessao_2026-09-02_data_hora_ranking.md) — played_at já existia (default do Postgres), só faltava exibir com hora; formatDateTimeBR() em play.js e dashboard.js
