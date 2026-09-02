@@ -132,10 +132,13 @@
                         </div>
                         <div class="space-y-2">
                             <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">Eu sou</label>
-                            <select id="register-role" class="w-full px-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium appearance-none">
-                                <option value="professor">Professor</option>
-                                <option value="aluno">Aluno</option>
-                            </select>
+                            <div class="relative">
+                                <select id="register-role" class="w-full px-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium appearance-none">
+                                    <option value="professor">Professor</option>
+                                    <option value="aluno">Aluno</option>
+                                </select>
+                                <i class="fa-solid fa-chevron-down absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+                            </div>
                         </div>
                         <button onclick="app.register()" class="w-full py-5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-emerald-200 transition-all active:scale-[0.98] mt-6 flex items-center justify-center gap-3">
                             Criar minha conta
