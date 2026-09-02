@@ -262,6 +262,15 @@ export const dbService = {
         return supabase.auth.onAuthStateChange(callback)
     },
 
+    async getCurrentUser() {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) return null
+        return {
+            ...user,
+            role: user.user_metadata?.role || 'professor'
+        }
+    },
+
     isPasswordRecoveryPending() {
         return passwordRecoveryPending
     },

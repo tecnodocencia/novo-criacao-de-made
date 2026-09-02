@@ -14,6 +14,18 @@ export const authMethods = {
             this.enterRecoveryMode();
             return;
         }
+
+        if (!this.state.activeUser) {
+            this.state.activeUser = await dbService.getCurrentUser();
+        }
+        if (!this.state.activeUser) {
+            // Nenhuma sessão salva: permanece na tela de login (estado padrão do HTML).
+            return;
+        }
+
+        document.getElementById('view-login').classList.remove('active');
+        document.getElementById('main-layout').classList.remove('hidden');
+
         try {
             // Tenta carregar os jogos do banco de dados
             const jogosDoBanco = await dbService.listarJogos();
