@@ -17,5 +17,7 @@ export const state = {
     selectedGameIdForPlay: null,
     currentDifficulty: 1,
     isTestingFromCreator: false,
-    rankingManageGameId: null
+    rankingManageGameId: null,
+    libraryManagerFolder: null,
+    libraryModalFolder: null
 };
