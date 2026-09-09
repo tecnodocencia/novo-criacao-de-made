@@ -583,7 +583,7 @@ export const playerMethods = {
         const level = this.state.currentDifficulty;
         const attemptInfo = `Tentativa ${attemptsUsed} de ${maxAttempts} (Nível ${level})`;
 
-        const score = calculateScore(level, maxAttempts, attemptsUsed, win);
+        const score = calculateScore(level, maxAttempts, attemptsUsed, win, this.state.currentCodeSize);
 
         document.getElementById('solution-title').innerText = win ? 'Parabéns, Você Venceu!' : 'Fim de Jogo!';
         document.getElementById('solution-subtitle').innerText = win

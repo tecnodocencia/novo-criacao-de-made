@@ -423,8 +423,8 @@ function renderDropSlotContent(slotIndex) {
         const useBg = card.frontImage || frontDesign;
         slot.classList.add('filled');
         slot.innerHTML = `
-            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative;background-image:url('${useBg}');background-size:cover;background-position:center;border-radius:17px;">
-                <div class="${card.frontImage ? 'bg-transparent' : 'bg-white/80'}" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;padding:8px;border-radius:17px;">
+            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative;background-image:url('${useBg}');background-size:cover;background-position:center;border-radius:17px;padding:8px;">
+                <div class="${card.frontImage ? 'bg-transparent' : 'bg-white/80'}" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;border-radius:17px;overflow:hidden;">
                     ${content}
                 </div>
                 <button onclick="playApp.removeFromSlot(${slotIndex})"
@@ -567,7 +567,7 @@ async function openSolutionModal(result) {
     const won = result === 'win';
     const attemptsUsed = gs.attempts.length;
     const rules = difficultyRules[gs.currentDifficulty];
-    const score = calculateScore(gs.currentDifficulty, rules.attempts, attemptsUsed, won);
+    const score = calculateScore(gs.currentDifficulty, rules.attempts, attemptsUsed, won, gs.currentCodeSize);
 
     // rank/totalPlayers só ficam disponíveis depois que savePublicScore() resolver
     gs.currentResult = { score, attemptsUsed, won, rank: null, totalPlayers: null };
