@@ -800,7 +800,7 @@ async function init() {
         };
 
         const info = gs.game.disciplineInfo || {};
-        document.getElementById('welcome-game-name').innerText = gs.game.name || 'Jogo sem titulo';
+        document.getElementById('welcome-game-name').innerText = gs.game.name || 'Jogo sem título';
         document.getElementById('welcome-disciplina').innerText = info.disciplina || '-';
         document.getElementById('welcome-conteudo').innerText = info.conteudo || '-';
         document.getElementById('welcome-serie').innerText = info.serie || '-';
