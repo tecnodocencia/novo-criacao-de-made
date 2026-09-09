@@ -2,13 +2,13 @@
 // repeatMin/repeatMax definem quantas posições do código secreto podem repetir
 // o conteúdo de outra posição já presente no código (repeatMax: null = sem
 // teto, até o tamanho do código). Níveis 1 e 2 nunca repetem; o Nível 3 sempre
-// repete exatamente 2 cartas; o Nível 4 repete uma quantidade sorteada entre 3
-// e o número total de cartas da senha.
+// repete exatamente 2 cartas; o Nível 4 repete uma quantidade sorteada entre 0
+// (podendo não haver repetição) e o número total de cartas da senha.
 export const difficultyRules = {
     1: { attempts: 10, repeatMin: 0, repeatMax: 0, swap: 0 },
     2: { attempts: 8, repeatMin: 0, repeatMax: 0, swap: 1 },
     3: { attempts: 6, repeatMin: 2, repeatMax: 2, swap: 2 },
-    4: { attempts: 5, repeatMin: 3, repeatMax: null, swap: 3 }
+    4: { attempts: 5, repeatMin: 0, repeatMax: null, swap: 3 }
 };
 
 // Resolve, para um dado tamanho de código, quantas posições da senha devem
@@ -29,10 +29,12 @@ export function getLevelDescription(level) {
     if (!rules) return { repeatText: '', swapText: '', fullText: '' };
 
     let repeatText;
-    if (!rules.repeatMax) {
+    if (rules.repeatMax === 0) {
         repeatText = 'sem repetição de cartas';
-    } else if (rules.repeatMin === rules.repeatMax) {
+    } else if (rules.repeatMax !== null && rules.repeatMin === rules.repeatMax) {
         repeatText = `repetição de ${rules.repeatMin} cartas`;
+    } else if (rules.repeatMin === 0) {
+        repeatText = 'repetição de cartas variável, podendo não haver repetição, até o total de cartas da senha';
     } else {
         repeatText = `repetição de ${rules.repeatMin} até o total de cartas da senha`;
     }
@@ -42,6 +44,18 @@ export function getLevelDescription(level) {
         : 'sem troca de cartas ao reiniciar';
 
     return { repeatText, swapText, fullText: `${repeatText} e ${swapText}` };
+}
+
+// Pontuação padronizada, usada nos dois players (autenticado e público) para
+// não haver divergência entre telas. Se o jogador não acertar, a pontuação é
+// zero. Se acertar: a primeira etapa premia a economia de tentativas (10
+// pontos por tentativa que não precisou usar); a segunda etapa multiplica essa
+// primeira etapa pelo nível de dificuldade (1 a 4), recompensando mais quem
+// joga nos níveis mais difíceis.
+export function calculateScore(level, maxAttempts, attemptsUsed, won) {
+    if (!won) return 0;
+    const economyScore = Math.max(0, maxAttempts - attemptsUsed) * 10;
+    return economyScore * level;
 }
 
 // Mecânica de "Jogar Novamente" (engine original, mesma para os dois players —

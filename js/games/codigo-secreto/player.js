@@ -1,5 +1,5 @@
 // js/games/codigo-secreto/player.js
-import { difficultyRules, applyReplaySwap, resolveRepeatCount, getLevelDescription } from './model.js';
+import { difficultyRules, applyReplaySwap, resolveRepeatCount, getLevelDescription, calculateScore } from './model.js';
 
 export { difficultyRules };
 
@@ -485,7 +485,7 @@ export const playerMethods = {
 
         setEl('level-info-nivel', `Nível ${level} (${rules.attempts} tentativas)`);
         setEl('level-info-cartas', String(this.state.currentCodeSize || 4));
-        setEl('level-info-repeticao', rules.repeatMax ? getLevelDescription(level).repeatText.replace('repetição de ', '') : 'Nenhuma');
+        setEl('level-info-repeticao', rules.repeatMax === 0 ? 'Nenhuma' : getLevelDescription(level).repeatText.replace('repetição de ', ''));
         setEl('level-info-troca', rules.swap > 0 ? `${rules.swap} carta${rules.swap > 1 ? 's' : ''} a cada reinício` : 'Nenhuma');
     },
 
@@ -583,10 +583,7 @@ export const playerMethods = {
         const level = this.state.currentDifficulty;
         const attemptInfo = `Tentativa ${attemptsUsed} de ${maxAttempts} (Nível ${level})`;
 
-        let score = 0;
-        if(win) {
-            score = Math.max(10, Math.round(((maxAttempts - attemptsUsed + 1) / maxAttempts) * 100));
-        }
+        const score = calculateScore(level, maxAttempts, attemptsUsed, win);
 
         document.getElementById('solution-title').innerText = win ? 'Parabéns, Você Venceu!' : 'Fim de Jogo!';
         document.getElementById('solution-subtitle').innerText = win

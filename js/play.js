@@ -1,6 +1,6 @@
 // js/play.js — Página pública de jogo (sem autenticação obrigatória)
 import { supabase } from './supabase.js';
-import { difficultyRules, applyReplaySwap, resolveRepeatCount, getLevelDescription } from './games/codigo-secreto/model.js';
+import { difficultyRules, applyReplaySwap, resolveRepeatCount, getLevelDescription, calculateScore } from './games/codigo-secreto/model.js';
 
 // ─── Estado global do jogo ───────────────────────────────────────────────────
 const gs = {
@@ -567,9 +567,7 @@ async function openSolutionModal(result) {
     const won = result === 'win';
     const attemptsUsed = gs.attempts.length;
     const rules = difficultyRules[gs.currentDifficulty];
-    const score = won
-        ? Math.max(0, (rules.attempts - attemptsUsed) * 100 + gs.currentCodeSize * 10)
-        : 0;
+    const score = calculateScore(gs.currentDifficulty, rules.attempts, attemptsUsed, won);
 
     // rank/totalPlayers só ficam disponíveis depois que savePublicScore() resolver
     gs.currentResult = { score, attemptsUsed, won, rank: null, totalPlayers: null };
