@@ -1,32 +1,40 @@
 // js/games/codigo-secreto/player.js
-import { difficultyRules, applyReplaySwap } from './model.js';
+import { difficultyRules, applyReplaySwap, resolveRepeatCount, getLevelDescription } from './model.js';
 
 export { difficultyRules };
 
 export const playerMethods = {
     createSecretCode: function(game) {
         const correctCards = game.cards.filter(card => card.isCorrect);
-        const secret = [];
         const level = this.state.currentDifficulty;
         const rules = difficultyRules[level];
-        const canRepeat = rules.repeat;
         const size = this.state.currentCodeSize || 4;
 
+        const repeatCount = resolveRepeatCount(rules, size);
+        const uniqueCount = Math.max(0, size - repeatCount);
+
+        const secret = [];
         const available = [...correctCards];
-        for(let i = 0; i < size; i++) {
+        for(let i = 0; i < uniqueCount; i++) {
             if (available.length === 0) break;
             const idx = Math.floor(Math.random() * available.length);
-            const card = available[idx];
-            secret.push({
-                ...card,
-                instanceId: crypto.randomUUID()
-            });
-            if (!canRepeat) {
-                available.splice(idx, 1);
-            }
+            secret.push({ ...available[idx], instanceId: crypto.randomUUID() });
+            available.splice(idx, 1);
         }
 
-        return secret;
+        // Preenche exatamente `repeatCount` posições repetindo o conteúdo de
+        // cartas já presentes na senha — nunca mais do que isso, mesmo que o
+        // banco de cartas corretas seja pequeno demais para preencher todo o
+        // tamanho do código (nesse caso o código fica menor, como antes).
+        const slotsToFill = Math.min(repeatCount, size - secret.length);
+        for (let i = 0; i < slotsToFill; i++) {
+            const sourcePool = secret.length > 0 ? secret : correctCards;
+            if (sourcePool.length === 0) break;
+            const card = sourcePool[Math.floor(Math.random() * sourcePool.length)];
+            secret.push({ ...card, instanceId: crypto.randomUUID() });
+        }
+
+        return this.shuffleArray(secret);
     },
 
     renderPlayBank: function() {
@@ -265,6 +273,13 @@ export const playerMethods = {
     openDifficultyModal: function() {
         // Set the default active button state
         this.setCodeSize(this.state.codeSizeOption || 4);
+        for (let level = 1; level <= 4; level++) {
+            const el = document.getElementById(`difficulty-desc-${level}`);
+            if (el) {
+                const text = getLevelDescription(level).fullText;
+                el.innerText = text.charAt(0).toUpperCase() + text.slice(1);
+            }
+        }
         document.getElementById('modal-difficulty').style.display = 'flex';
     },
 
@@ -323,13 +338,7 @@ export const playerMethods = {
             this.updateGameHeaderInfo();
             this.updateLevelInfoPanel();
 
-            const levelDescriptions = {
-                1: 'sem repetição de cartas e sem troca de cartas',
-                2: 'sem repetição de cartas e troca de 1 carta',
-                3: 'sem repetição de cartas e troca de 2 cartas',
-                4: 'sem repetição de cartas e troca de 3 cartas'
-            };
-            const dupMsg = `Nível ${level}: ${levelDescriptions[level]}. O código secreto terá ${this.state.currentCodeSize} cartas.`;
+            const dupMsg = `Nível ${level}: ${getLevelDescription(level).fullText}. O código secreto terá ${this.state.currentCodeSize} cartas.`;
             this.showNotification(dupMsg, "Jogo Iniciado!");
 
         } else if(this.state.selectedGameIdForPlay) {
@@ -371,14 +380,8 @@ export const playerMethods = {
         this.updateGameHeaderInfo();
         this.updateLevelInfoPanel();
 
-        const levelDescriptions = {
-            1: 'sem repetição de cartas e sem troca de cartas',
-            2: 'sem repetição de cartas e troca de 1 carta',
-            3: 'sem repetição de cartas e troca de 2 cartas',
-            4: 'sem repetição de cartas e troca de 3 cartas'
-        };
         const level = this.state.currentDifficulty;
-        const dupMsg = `Nível ${level}: ${levelDescriptions[level]}. O código secreto terá ${this.state.currentCodeSize} cartas.`;
+        const dupMsg = `Nível ${level}: ${getLevelDescription(level).fullText}. O código secreto terá ${this.state.currentCodeSize} cartas.`;
         this.showNotification(dupMsg, "Jogo Iniciado!");
     },
 
@@ -482,6 +485,7 @@ export const playerMethods = {
 
         setEl('level-info-nivel', `Nível ${level} (${rules.attempts} tentativas)`);
         setEl('level-info-cartas', String(this.state.currentCodeSize || 4));
+        setEl('level-info-repeticao', rules.repeatMax ? getLevelDescription(level).repeatText.replace('repetição de ', '') : 'Nenhuma');
         setEl('level-info-troca', rules.swap > 0 ? `${rules.swap} carta${rules.swap > 1 ? 's' : ''} a cada reinício` : 'Nenhuma');
     },
 
@@ -574,15 +578,20 @@ export const playerMethods = {
 
         const win = this.state.gameOver === 'win';
 
-        let score = 0;
         const attemptsUsed = this.state.attempts.length;
+        const maxAttempts = this.state.activeGame.maxAttempts;
+        const level = this.state.currentDifficulty;
+        const attemptInfo = `Tentativa ${attemptsUsed} de ${maxAttempts} (Nível ${level})`;
+
+        let score = 0;
         if(win) {
-            const maxAttempts = this.state.activeGame.maxAttempts;
             score = Math.max(10, Math.round(((maxAttempts - attemptsUsed + 1) / maxAttempts) * 100));
         }
 
         document.getElementById('solution-title').innerText = win ? 'Parabéns, Você Venceu!' : 'Fim de Jogo!';
-        document.getElementById('solution-subtitle').innerText = win ? `Código Secreto desvendado! Pontuação: ${score} pts` : 'Suas tentativas acabaram.';
+        document.getElementById('solution-subtitle').innerText = win
+            ? `Código Secreto desvendado! Pontuação: ${score} pts · ${attemptInfo}`
+            : `Suas tentativas acabaram · ${attemptInfo}`;
 
         const icon = document.getElementById('solution-icon');
         if(win) {

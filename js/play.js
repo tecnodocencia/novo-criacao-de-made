@@ -1,6 +1,6 @@
 // js/play.js — Página pública de jogo (sem autenticação obrigatória)
 import { supabase } from './supabase.js';
-import { difficultyRules, applyReplaySwap } from './games/codigo-secreto/model.js';
+import { difficultyRules, applyReplaySwap, resolveRepeatCount, getLevelDescription } from './games/codigo-secreto/model.js';
 
 // ─── Estado global do jogo ───────────────────────────────────────────────────
 const gs = {
@@ -151,11 +151,22 @@ function createSecretCode() {
         );
     }
 
-    const shuffled = shuffleArray(pool);
-    if (rules.repeat) {
-        return Array.from({ length: gs.currentCodeSize }, (_, i) => shuffled[i % shuffled.length]);
+    const size = gs.currentCodeSize;
+    const repeatCount = resolveRepeatCount(rules, size);
+    const uniqueCount = Math.max(0, size - repeatCount);
+
+    const shuffledPool = shuffleArray(pool);
+    const secret = shuffledPool.slice(0, uniqueCount);
+
+    // Preenche as posições restantes repetindo o conteúdo de cartas já
+    // escolhidas para a senha (ou do banco de cartas corretas, se nenhuma
+    // foi escolhida ainda), conforme repeatCount definido pelo nível.
+    const repeatPool = secret.length > 0 ? secret : pool;
+    while (secret.length < size && repeatPool.length > 0) {
+        secret.push(repeatPool[Math.floor(Math.random() * repeatPool.length)]);
     }
-    return shuffled.slice(0, gs.currentCodeSize);
+
+    return shuffleArray(secret);
 }
 
 // ─── Início do jogo ───────────────────────────────────────────────────────────
@@ -795,6 +806,14 @@ async function init() {
         document.getElementById('welcome-serie').innerText = info.serie || '-';
         const welcomeAutores = Array.isArray(info.autores) ? info.autores.filter(Boolean) : [];
         document.getElementById('welcome-autores').innerText = welcomeAutores.length > 0 ? welcomeAutores.join(', ') : '-';
+
+        for (let level = 1; level <= 4; level++) {
+            const el = document.getElementById(`play-level-desc-${level}`);
+            if (el) {
+                const text = getLevelDescription(level).fullText;
+                el.innerText = `${difficultyRules[level].attempts} tentativas • ${text}`;
+            }
+        }
 
         showScreen('welcome');
         document.getElementById('player-name-input').focus();

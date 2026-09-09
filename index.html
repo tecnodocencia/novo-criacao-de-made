@@ -1562,22 +1562,22 @@
                     <button onclick="app.startGameWithDifficulty(1)" class="difficulty-btn group text-left p-4 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition">
                         <h4 class="font-black text-slate-800 group-hover:text-emerald-700">Nível 1</h4>
                         <p class="text-xs text-slate-600 mt-0.5">10 tentativas</p>
-                        <p class="text-[10px] text-slate-500 mt-1">Sem repetição de cartas e sem troca de cartas</p>
+                        <p id="difficulty-desc-1" class="text-[10px] text-slate-500 mt-1">Sem repetição de cartas e sem troca de cartas</p>
                     </button>
                     <button onclick="app.startGameWithDifficulty(2)" class="difficulty-btn group text-left p-4 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition">
                         <h4 class="font-black text-slate-800 group-hover:text-emerald-700">Nível 2</h4>
                         <p class="text-xs text-slate-600 mt-0.5">8 tentativas</p>
-                        <p class="text-[10px] text-slate-500 mt-1">Sem repetição de cartas e troca de 1 carta</p>
+                        <p id="difficulty-desc-2" class="text-[10px] text-slate-500 mt-1">Sem repetição de cartas e troca de 1 carta</p>
                     </button>
                     <button onclick="app.startGameWithDifficulty(3)" class="difficulty-btn group text-left p-4 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition">
                         <h4 class="font-black text-slate-800 group-hover:text-emerald-700">Nível 3</h4>
                         <p class="text-xs text-slate-600 mt-0.5">6 tentativas</p>
-                        <p class="text-[10px] text-slate-500 mt-1">Sem repetição de cartas e troca de 2 cartas</p>
+                        <p id="difficulty-desc-3" class="text-[10px] text-slate-500 mt-1">Repetição de 2 cartas e troca de 2 cartas</p>
                     </button>
                     <button onclick="app.startGameWithDifficulty(4)" class="difficulty-btn group text-left p-4 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition">
                         <h4 class="font-black text-slate-800 group-hover:text-emerald-700">Nível 4</h4>
                         <p class="text-xs text-slate-600 mt-0.5">5 tentativas</p>
-                        <p class="text-[10px] text-slate-500 mt-1">Sem repetição de cartas e troca de 3 cartas</p>
+                        <p id="difficulty-desc-4" class="text-[10px] text-slate-500 mt-1">Repetição de 3 até o total de cartas da senha e troca de 3 cartas</p>
                     </button>
                 </div>
             </div>
@@ -1605,6 +1605,11 @@
                 </button>
             </div>
             <div class="p-8 space-y-8 overflow-y-auto custom-scrollbar flex-1">
+                <div class="rounded-3xl border border-slate-200/60 bg-slate-50/60 p-6 space-y-3">
+                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest">Enunciado</h4>
+                    <p id="solution-explanation" class="text-slate-700 leading-relaxed text-sm whitespace-pre-line"></p>
+                </div>
+
                 <div class="space-y-4">
                     <h4 class="text-xs font-black uppercase tracking-[0.2em] text-slate-400">O Código Secreto Era:</h4>
                     <div id="solution-cards-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
@@ -1645,11 +1650,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="rounded-3xl border border-slate-200/60 bg-slate-50/60 p-6 space-y-3">
-                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest">Enunciado</h4>
-                    <p id="solution-explanation" class="text-slate-700 leading-relaxed text-sm whitespace-pre-line"></p>
                 </div>
             </div>
             <div class="p-6 border-t bg-slate-50 shrink-0 flex flex-col sm:flex-row gap-3 justify-end">

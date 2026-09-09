@@ -1,10 +1,48 @@
 // js/games/codigo-secreto/model.js
+// repeatMin/repeatMax definem quantas posições do código secreto podem repetir
+// o conteúdo de outra posição já presente no código (repeatMax: null = sem
+// teto, até o tamanho do código). Níveis 1 e 2 nunca repetem; o Nível 3 sempre
+// repete exatamente 2 cartas; o Nível 4 repete uma quantidade sorteada entre 3
+// e o número total de cartas da senha.
 export const difficultyRules = {
-    1: { attempts: 10, repeat: false, swap: 0 },
-    2: { attempts: 8, repeat: false, swap: 1 },
-    3: { attempts: 6, repeat: false, swap: 2 },
-    4: { attempts: 5, repeat: false, swap: 3 }
+    1: { attempts: 10, repeatMin: 0, repeatMax: 0, swap: 0 },
+    2: { attempts: 8, repeatMin: 0, repeatMax: 0, swap: 1 },
+    3: { attempts: 6, repeatMin: 2, repeatMax: 2, swap: 2 },
+    4: { attempts: 5, repeatMin: 3, repeatMax: null, swap: 3 }
 };
+
+// Resolve, para um dado tamanho de código, quantas posições da senha devem
+// repetir o conteúdo de outra posição (ver comentário de difficultyRules acima).
+export function resolveRepeatCount(rules, codeSize) {
+    if (!rules) return 0;
+    const min = Math.min(rules.repeatMin || 0, codeSize);
+    const maxRaw = (rules.repeatMax === null || rules.repeatMax === undefined) ? codeSize : rules.repeatMax;
+    const max = Math.min(maxRaw, codeSize);
+    if (max <= min) return min;
+    return min + Math.floor(Math.random() * (max - min + 1));
+}
+
+// Textos padronizados de cada nível, usados nos dois players (autenticado e
+// público) para não haver mais divergência entre telas.
+export function getLevelDescription(level) {
+    const rules = difficultyRules[level];
+    if (!rules) return { repeatText: '', swapText: '', fullText: '' };
+
+    let repeatText;
+    if (!rules.repeatMax) {
+        repeatText = 'sem repetição de cartas';
+    } else if (rules.repeatMin === rules.repeatMax) {
+        repeatText = `repetição de ${rules.repeatMin} cartas`;
+    } else {
+        repeatText = `repetição de ${rules.repeatMin} até o total de cartas da senha`;
+    }
+
+    const swapText = rules.swap > 0
+        ? `troca de ${rules.swap} carta${rules.swap > 1 ? 's' : ''} ao reiniciar`
+        : 'sem troca de cartas ao reiniciar';
+
+    return { repeatText, swapText, fullText: `${repeatText} e ${swapText}` };
+}
 
 // Mecânica de "Jogar Novamente" (engine original, mesma para os dois players —
 // autenticado em js/games/codigo-secreto/player.js e público em js/play.js):
@@ -15,6 +53,12 @@ export const difficultyRules = {
 // troca de posição/localização entre as cartas existentes, e nunca é uma
 // regeneração completa do código do zero (a menos que não haja código anterior
 // compatível, ex.: tamanho do código mudou).
+//
+// Cada posição da senha carrega um "papel" fixo definido na criação do código
+// (ver createSecretCode): posições que já repetem o conteúdo de outra posição
+// continuam podendo repetir após a troca; posições únicas continuam exigindo
+// conteúdo diferente de todas as outras. Isso preserva, ao longo dos
+// reinícios, a quantidade de repetição definida pelo nível.
 export function applyReplaySwap(secretCode, correctCards, rules) {
     const codeSize = secretCode.length;
     if (!rules || !rules.swap || rules.swap <= 0 || codeSize === 0) {
@@ -22,7 +66,6 @@ export function applyReplaySwap(secretCode, correctCards, rules) {
     }
 
     const currentSecret = [...secretCode];
-    const canRepeat = rules.repeat;
     const swapCount = Math.min(rules.swap, codeSize);
 
     const indicesToSwap = [];
@@ -33,9 +76,11 @@ export function applyReplaySwap(secretCode, correctCards, rules) {
     }
 
     indicesToSwap.forEach(idx => {
+        const currentContents = currentSecret.map(c => c.content);
+        const isDuplicateSlot = currentContents.filter(c => c === currentContents[idx]).length > 1;
+
         let available = [...correctCards];
-        if (!canRepeat) {
-            const currentContents = currentSecret.map(c => c.content);
+        if (!isDuplicateSlot) {
             available = available.filter(c => !currentContents.includes(c.content));
         }
         if (available.length > 0) {
