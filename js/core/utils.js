@@ -61,11 +61,11 @@ export const utilsMethods = {
 
         const tabs = document.querySelectorAll('[id^="sym-tab-"]');
         tabs.forEach(t => {
-            t.className = 'px-2 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition';
+            t.className = 'px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition';
         });
         const activeTab = document.getElementById('sym-tab-' + tabId);
         if (activeTab) {
-            activeTab.className = 'px-2 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-emerald-600 text-white transition';
+            activeTab.className = 'px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-emerald-600 text-white transition';
         }
     },
 
