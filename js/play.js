@@ -161,9 +161,16 @@ function createSecretCode() {
     // Preenche as posições restantes repetindo o conteúdo de cartas já
     // escolhidas para a senha (ou do banco de cartas corretas, se nenhuma
     // foi escolhida ainda), conforme repeatCount definido pelo nível.
-    const repeatPool = secret.length > 0 ? secret : pool;
+    // Pool embaralhado e percorrido ciclicamente (não sorteado com reposição
+    // a cada posição): garante que as repetições caiam em cartas distintas
+    // sempre que houver cartas suficientes para isso — sorteio com reposição
+    // enviesaria a repetir a mesma carta 2x (virando 3 cópias) em vez de
+    // repetir `repeatCount` cartas diferentes uma vez cada.
+    const repeatPool = secret.length > 0 ? shuffleArray([...secret]) : pool;
+    let repeatIdx = 0;
     while (secret.length < size && repeatPool.length > 0) {
-        secret.push(repeatPool[Math.floor(Math.random() * repeatPool.length)]);
+        secret.push(repeatPool[repeatIdx % repeatPool.length]);
+        repeatIdx++;
     }
 
     return shuffleArray(secret);

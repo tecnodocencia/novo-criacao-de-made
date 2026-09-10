@@ -27,10 +27,15 @@ export const playerMethods = {
         // banco de cartas corretas seja pequeno demais para preencher todo o
         // tamanho do código (nesse caso o código fica menor, como antes).
         const slotsToFill = Math.min(repeatCount, size - secret.length);
+        // Pool embaralhado e percorrido ciclicamente (não sorteado com reposição
+        // a cada posição): garante que `slotsToFill` repetições caiam em cartas
+        // distintas sempre que houver cartas suficientes para isso — sorteio com
+        // reposição enviesaria a repetir a mesma carta 2x (virando 3 cópias) em
+        // vez de repetir `repeatCount` cartas diferentes uma vez cada.
+        const repeatSourcePool = secret.length > 0 ? this.shuffleArray([...secret]) : correctCards;
         for (let i = 0; i < slotsToFill; i++) {
-            const sourcePool = secret.length > 0 ? secret : correctCards;
-            if (sourcePool.length === 0) break;
-            const card = sourcePool[Math.floor(Math.random() * sourcePool.length)];
+            if (repeatSourcePool.length === 0) break;
+            const card = repeatSourcePool[i % repeatSourcePool.length];
             secret.push({ ...card, instanceId: crypto.randomUUID() });
         }
 

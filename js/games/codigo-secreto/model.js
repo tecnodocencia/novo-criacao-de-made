@@ -48,15 +48,15 @@ export function getLevelDescription(level) {
 
 // Pontuação padronizada, usada nos dois players (autenticado e público) para
 // não haver divergência entre telas. Se o jogador não acertar, a pontuação é
-// zero. Se acertar: a primeira etapa premia a economia de tentativas (10
-// pontos por tentativa que não precisou usar, contando a própria tentativa
-// vencedora); o resultado é multiplicado pelo nível de dificuldade (1 a 4) e
-// pela quantidade de cartas do código secreto, recompensando mais quem joga
-// nos níveis mais difíceis e com códigos maiores.
+// zero. Se acertar: cada tentativa vale 10 pontos a menos que a anterior,
+// começando em 100 na 1ª tentativa (100, 90, 80, ... independente do nível);
+// esse valor é multiplicado pelo nível de dificuldade (1 a 4) e pela
+// quantidade de cartas do código secreto, recompensando mais quem joga nos
+// níveis mais difíceis e com códigos maiores.
 export function calculateScore(level, maxAttempts, attemptsUsed, won, codeSize) {
     if (!won) return 0;
-    const economyScore = Math.max(0, maxAttempts - attemptsUsed + 1) * 10;
-    return economyScore * level * codeSize;
+    const attemptScore = Math.max(0, 100 - (attemptsUsed - 1) * 10);
+    return attemptScore * level * codeSize;
 }
 
 // Mecânica de "Jogar Novamente" (engine original, mesma para os dois players —
