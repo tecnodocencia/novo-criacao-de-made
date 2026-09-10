@@ -9,10 +9,6 @@ export const imageBankFolders = [
         "icon": "fa-paw",
         "images": [
             {
-                "name": "#keşfet.jpeg",
-                "url": "imagens/banco%20de%20imagens/animais/%23ke%C5%9Ffet.jpeg"
-            },
-            {
                 "name": "1970393583996811.jpeg",
                 "url": "imagens/banco%20de%20imagens/animais/1970393583996811.jpeg"
             },
@@ -95,10 +91,6 @@ export const imageBankFolders = [
         "label": "Biomas",
         "icon": "fa-mountain-sun",
         "images": [
-            {
-                "name": "#aiart #нейросеть #digitalart #gvvenNeuroArt….jpeg",
-                "url": "imagens/banco%20de%20imagens/biomas/%23aiart%20%23%D0%BD%D0%B5%D0%B9%D1%80%D0%BE%D1%81%D0%B5%D1%82%D1%8C%20%23digitalart%20%23gvvenNeuroArt%E2%80%A6.jpeg"
-            },
             {
                 "name": "444660163219751811.jpeg",
                 "url": "imagens/banco%20de%20imagens/biomas/444660163219751811.jpeg"
