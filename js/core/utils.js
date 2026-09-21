@@ -57,6 +57,38 @@ export const utilsMethods = {
         selection.removeAllRanges();
     },
 
+    // Alterna uma tag de formatação simples (negrito/itálico/sublinhado) na seleção:
+    // se a seleção já está dentro dessa tag, remove-a; caso contrário, envolve o
+    // texto selecionado com ela. Usa tags diferentes de <strong style="color:...">
+    // (usada pelo destaque em vermelho acima) para as duas marcações não colidirem.
+    toggleInlineFormat: function(elementId, tagName) {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        const selection = window.getSelection();
+        if (selection.toString().length === 0) return;
+
+        let node = selection.anchorNode;
+        while (node && node !== el) {
+            if (node.nodeName === tagName) {
+                const parent = node.parentNode;
+                while (node.firstChild) parent.insertBefore(node.firstChild, node);
+                parent.removeChild(node);
+                return;
+            }
+            node = node.parentNode;
+        }
+
+        const range = selection.getRangeAt(0);
+        const wrapper = document.createElement(tagName);
+        wrapper.appendChild(range.extractContents());
+        range.insertNode(wrapper);
+        selection.removeAllRanges();
+    },
+
+    toggleBold: function(elementId) { this.toggleInlineFormat(elementId, 'B'); },
+    toggleItalic: function(elementId) { this.toggleInlineFormat(elementId, 'EM'); },
+    toggleUnderline: function(elementId) { this.toggleInlineFormat(elementId, 'U'); },
+
     switchSymTab: function(tabId) {
         const panels = document.querySelectorAll('[id^="sym-panel-"]');
         if (tabId === 'todos') {
