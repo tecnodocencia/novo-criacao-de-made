@@ -6,6 +6,14 @@ export const utilsMethods = {
         elem.style.height = `${elem.scrollHeight}px`;
     },
 
+    toggleSymbolPicker: function() {
+        const panel = document.getElementById('symbol-picker-panel');
+        const caret = document.getElementById('symbol-picker-caret');
+        if (!panel) return;
+        panel.classList.toggle('hidden');
+        if (caret) caret.classList.toggle('open', !panel.classList.contains('hidden'));
+    },
+
     insertSpecialChar: function(char) {
         const textarea = document.getElementById('modal-card-content');
         if (!textarea) return;

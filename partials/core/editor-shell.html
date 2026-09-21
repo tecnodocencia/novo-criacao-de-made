@@ -5,7 +5,8 @@
                     </div>
                 </header>
                 <div class="flex-1 min-h-0 overflow-y-auto">
-                    <aside class="flex-1 h-full min-h-0 p-10 bg-emerald-50/80 space-y-8 overflow-y-auto">
+                    <aside class="flex-1 h-full min-h-0 p-10 bg-emerald-50/80 overflow-y-auto">
+                      <div class="max-w-3xl mx-auto space-y-8">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between gap-3">
                                 <div>
@@ -116,21 +117,31 @@
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Regra</label>
-                                    <div class="mb-2 flex gap-2">
-                                        <button type="button" onclick="app.wrapSelectionInRed('edit-game-regra')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button>
-                                        <button type="button" onclick="app.removeRedFromSelection('edit-game-regra')" class="px-3 py-1 text-xs bg-slate-100 text-slate-700 rounded-xl font-bold">Retirar a Cor Vermelha</button>
+                                    <div class="richtext-field">
+                                        <div class="richtext-toolbar">
+                                            <button type="button" onclick="app.wrapSelectionInRed('edit-game-regra')" class="richtext-btn" title="Marcar em vermelho o texto selecionado">
+                                                <span class="richtext-color-a" style="--rt-color:#dc2626;">A</span>
+                                            </button>
+                                            <button type="button" onclick="app.removeRedFromSelection('edit-game-regra')" class="richtext-btn" title="Remover a cor vermelha do texto selecionado">
+                                                <i class="fa-solid fa-eraser"></i>
+                                            </button>
+                                        </div>
+                                        <div id="edit-game-regra" contenteditable="true" class="richtext-editable min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.</div>
                                     </div>
-                                    <p class="text-xs text-red-600 font-bold mb-2">Aviso importante: Selecione (grife com o cursor) a parte do texto para marcar ou retirar a cor vermelha antes de clicar no respectivo botão.</p>
-                                    <div id="edit-game-regra" contenteditable="true" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.</div>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Objetivo</label>
-                                    <div class="mb-2 flex gap-2">
-                                        <button type="button" onclick="app.wrapSelectionInRed('edit-game-objetivo')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button>
-                                        <button type="button" onclick="app.removeRedFromSelection('edit-game-objetivo')" class="px-3 py-1 text-xs bg-slate-100 text-slate-700 rounded-xl font-bold">Retirar a Cor Vermelha</button>
+                                    <div class="richtext-field">
+                                        <div class="richtext-toolbar">
+                                            <button type="button" onclick="app.wrapSelectionInRed('edit-game-objetivo')" class="richtext-btn" title="Marcar em vermelho o texto selecionado">
+                                                <span class="richtext-color-a" style="--rt-color:#dc2626;">A</span>
+                                            </button>
+                                            <button type="button" onclick="app.removeRedFromSelection('edit-game-objetivo')" class="richtext-btn" title="Remover a cor vermelha do texto selecionado">
+                                                <i class="fa-solid fa-eraser"></i>
+                                            </button>
+                                        </div>
+                                        <div id="edit-game-objetivo" contenteditable="true" class="richtext-editable min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.</div>
                                     </div>
-                                    <p class="text-xs text-red-600 font-bold mb-2">Aviso importante: Selecione (grife com o cursor) a parte do texto para marcar ou retirar a cor vermelha antes de clicar no respectivo botão.</p>
-                                    <div id="edit-game-objetivo" contenteditable="true" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.</div>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-4 tracking-widest">Design das Cartas</label>
@@ -206,12 +217,17 @@
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Enunciado</label>
-                                    <div class="mb-2 flex gap-2">
-                                        <button type="button" onclick="app.wrapSelectionInRed('edit-game-enunciado')" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-xl font-bold">Marcar Vermelho</button>
-                                        <button type="button" onclick="app.removeRedFromSelection('edit-game-enunciado')" class="px-3 py-1 text-xs bg-slate-100 text-slate-700 rounded-xl font-bold">Retirar a Cor Vermelha</button>
+                                    <div class="richtext-field">
+                                        <div class="richtext-toolbar">
+                                            <button type="button" onclick="app.wrapSelectionInRed('edit-game-enunciado')" class="richtext-btn" title="Marcar em vermelho o texto selecionado">
+                                                <span class="richtext-color-a" style="--rt-color:#dc2626;">A</span>
+                                            </button>
+                                            <button type="button" onclick="app.removeRedFromSelection('edit-game-enunciado')" class="richtext-btn" title="Remover a cor vermelha do texto selecionado">
+                                                <i class="fa-solid fa-eraser"></i>
+                                            </button>
+                                        </div>
+                                        <div id="edit-game-enunciado" contenteditable="true" class="richtext-editable min-h-20 max-h-48 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolha as cartas que representam animais <strong style="color:#b91c1c">Mamíferos</strong> e coloque-as na ordem correta para desvendar o código secreto.</div>
                                     </div>
-                                    <p class="text-xs text-red-600 font-bold mb-2">Aviso importante: Selecione (grife com o cursor) a parte do texto para marcar ou retirar a cor vermelha antes de clicar no respectivo botão.</p>
-                                    <div id="edit-game-enunciado" contenteditable="true" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-20 max-h-48 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolha as cartas que representam animais <strong style="color:#b91c1c">Mamíferos</strong> e coloque-as na ordem correta para desvendar o código secreto.</div>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
@@ -280,6 +296,7 @@
                         </div>
 
                         <div id="creator-validation-message" class="text-sm font-semibold text-red-500 hidden mt-4"></div>
+                      </div>
                     </aside>
                 </div>
                 <footer class="h-20 border-t px-8 flex items-center justify-between shrink-0 bg-white">
