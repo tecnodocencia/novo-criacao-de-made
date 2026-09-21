@@ -1326,19 +1326,19 @@
                                 <i class="fa-solid fa-chevron-down richtext-caret" id="symbol-picker-caret"></i>
                             </button>
                         </div>
-                        <textarea id="modal-card-content" rows="2" class="richtext-editable" placeholder="Digite o termo ou frase da carta..."></textarea>
+                        <textarea id="modal-card-content" rows="2" title="Texto que aparecerá nesta carta do jogo." class="richtext-editable" placeholder="Digite o termo ou frase da carta..."></textarea>
                         <div id="symbol-picker-panel" class="richtext-symbol-panel hidden">
                             <!-- Abas de categoria -->
                             <div class="flex gap-1 mb-2 flex-wrap" id="sym-tabs">
-                                <button type="button" onclick="app.switchSymTab('todos')" id="sym-tab-todos" class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-emerald-600 text-white transition">Todos</button>
-                                <button type="button" onclick="app.switchSymTab('mat')" id="sym-tab-mat" class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Matemática</button>
-                                <button type="button" onclick="app.switchSymTab('calc')" id="sym-tab-calc" class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Cálculo</button>
-                                <button type="button" onclick="app.switchSymTab('quim')" id="sym-tab-quim" class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Química</button>
-                                <button type="button" onclick="app.switchSymTab('frac')" id="sym-tab-frac" class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Frações</button>
-                                <button type="button" onclick="app.switchSymTab('grego')" id="sym-tab-grego" class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Grego</button>
-                                <button type="button" onclick="app.switchSymTab('conj')" id="sym-tab-conj" class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Conjuntos</button>
-                                <button type="button" onclick="app.switchSymTab('geo')" id="sym-tab-geo" class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Geometria</button>
-                                <button type="button" onclick="app.switchSymTab('sub')" id="sym-tab-sub" class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Sub/Super</button>
+                                <button type="button" onclick="app.switchSymTab('todos')" id="sym-tab-todos" title="Mostrar todos os símbolos disponíveis." class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-emerald-600 text-white transition">Todos</button>
+                                <button type="button" onclick="app.switchSymTab('mat')" id="sym-tab-mat" title="Mostrar apenas símbolos de Matemática." class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Matemática</button>
+                                <button type="button" onclick="app.switchSymTab('calc')" id="sym-tab-calc" title="Mostrar apenas símbolos de Cálculo." class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Cálculo</button>
+                                <button type="button" onclick="app.switchSymTab('quim')" id="sym-tab-quim" title="Mostrar apenas símbolos de Química." class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Química</button>
+                                <button type="button" onclick="app.switchSymTab('frac')" id="sym-tab-frac" title="Mostrar apenas símbolos de Frações." class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Frações</button>
+                                <button type="button" onclick="app.switchSymTab('grego')" id="sym-tab-grego" title="Mostrar apenas letras do alfabeto grego." class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Grego</button>
+                                <button type="button" onclick="app.switchSymTab('conj')" id="sym-tab-conj" title="Mostrar apenas símbolos de Conjuntos." class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Conjuntos</button>
+                                <button type="button" onclick="app.switchSymTab('geo')" id="sym-tab-geo" title="Mostrar apenas símbolos de Geometria." class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Geometria</button>
+                                <button type="button" onclick="app.switchSymTab('sub')" id="sym-tab-sub" title="Mostrar apenas números para subscrito e sobrescrito." class="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Sub/Super</button>
                             </div>
                             <!-- Painel unificado: um div por categoria, mostrado/escondido via JS -->
                             <div class="max-h-56 overflow-y-auto custom-scrollbar pr-1">
@@ -1542,36 +1542,36 @@
                         <!-- Subscript / Superscript -->
                         <div id="sym-panel-sub" class="flex flex-wrap gap-1.5">
                             <span class="sym-group-label">Subscrito (índice)</span>
-                            <button type="button" onclick="app.insertSpecialChar('₀')" class="sym-btn">₀</button>
-                            <button type="button" onclick="app.insertSpecialChar('₁')" class="sym-btn">₁</button>
-                            <button type="button" onclick="app.insertSpecialChar('₂')" class="sym-btn">₂</button>
-                            <button type="button" onclick="app.insertSpecialChar('₃')" class="sym-btn">₃</button>
-                            <button type="button" onclick="app.insertSpecialChar('₄')" class="sym-btn">₄</button>
-                            <button type="button" onclick="app.insertSpecialChar('₅')" class="sym-btn">₅</button>
-                            <button type="button" onclick="app.insertSpecialChar('₆')" class="sym-btn">₆</button>
-                            <button type="button" onclick="app.insertSpecialChar('₇')" class="sym-btn">₇</button>
-                            <button type="button" onclick="app.insertSpecialChar('₈')" class="sym-btn">₈</button>
-                            <button type="button" onclick="app.insertSpecialChar('₉')" class="sym-btn">₉</button>
-                            <button type="button" onclick="app.insertSpecialChar('ₓ')" class="sym-btn">ₓ</button>
-                            <button type="button" onclick="app.insertSpecialChar('ₐ')" class="sym-btn">ₐ</button>
-                            <button type="button" onclick="app.insertSpecialChar('ₑ')" class="sym-btn">ₑ</button>
-                            <button type="button" onclick="app.insertSpecialChar('ₒ')" class="sym-btn">ₒ</button>
-                            <button type="button" onclick="app.insertSpecialChar('ₙ')" class="sym-btn">ₙ</button>
+                            <button type="button" onclick="app.insertSpecialChar('₀')" class="sym-btn" title="Subscrito 0">₀</button>
+                            <button type="button" onclick="app.insertSpecialChar('₁')" class="sym-btn" title="Subscrito 1">₁</button>
+                            <button type="button" onclick="app.insertSpecialChar('₂')" class="sym-btn" title="Subscrito 2">₂</button>
+                            <button type="button" onclick="app.insertSpecialChar('₃')" class="sym-btn" title="Subscrito 3">₃</button>
+                            <button type="button" onclick="app.insertSpecialChar('₄')" class="sym-btn" title="Subscrito 4">₄</button>
+                            <button type="button" onclick="app.insertSpecialChar('₅')" class="sym-btn" title="Subscrito 5">₅</button>
+                            <button type="button" onclick="app.insertSpecialChar('₆')" class="sym-btn" title="Subscrito 6">₆</button>
+                            <button type="button" onclick="app.insertSpecialChar('₇')" class="sym-btn" title="Subscrito 7">₇</button>
+                            <button type="button" onclick="app.insertSpecialChar('₈')" class="sym-btn" title="Subscrito 8">₈</button>
+                            <button type="button" onclick="app.insertSpecialChar('₉')" class="sym-btn" title="Subscrito 9">₉</button>
+                            <button type="button" onclick="app.insertSpecialChar('ₓ')" class="sym-btn" title="Subscrito x">ₓ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ₐ')" class="sym-btn" title="Subscrito a">ₐ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ₑ')" class="sym-btn" title="Subscrito e">ₑ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ₒ')" class="sym-btn" title="Subscrito o">ₒ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ₙ')" class="sym-btn" title="Subscrito n">ₙ</button>
                             <span class="sym-group-label mt-2">Sobrescrito (expoente)</span>
-                            <button type="button" onclick="app.insertSpecialChar('⁰')" class="sym-btn">⁰</button>
-                            <button type="button" onclick="app.insertSpecialChar('¹')" class="sym-btn">¹</button>
-                            <button type="button" onclick="app.insertSpecialChar('²')" class="sym-btn">²</button>
-                            <button type="button" onclick="app.insertSpecialChar('³')" class="sym-btn">³</button>
-                            <button type="button" onclick="app.insertSpecialChar('⁴')" class="sym-btn">⁴</button>
-                            <button type="button" onclick="app.insertSpecialChar('⁵')" class="sym-btn">⁵</button>
-                            <button type="button" onclick="app.insertSpecialChar('⁶')" class="sym-btn">⁶</button>
-                            <button type="button" onclick="app.insertSpecialChar('⁷')" class="sym-btn">⁷</button>
-                            <button type="button" onclick="app.insertSpecialChar('⁸')" class="sym-btn">⁸</button>
-                            <button type="button" onclick="app.insertSpecialChar('⁹')" class="sym-btn">⁹</button>
-                            <button type="button" onclick="app.insertSpecialChar('ⁿ')" class="sym-btn">ⁿ</button>
-                            <button type="button" onclick="app.insertSpecialChar('ⁱ')" class="sym-btn">ⁱ</button>
-                            <button type="button" onclick="app.insertSpecialChar('⁺')" class="sym-btn">⁺</button>
-                            <button type="button" onclick="app.insertSpecialChar('⁻')" class="sym-btn">⁻</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁰')" class="sym-btn" title="Sobrescrito 0">⁰</button>
+                            <button type="button" onclick="app.insertSpecialChar('¹')" class="sym-btn" title="Sobrescrito 1">¹</button>
+                            <button type="button" onclick="app.insertSpecialChar('²')" class="sym-btn" title="Sobrescrito 2">²</button>
+                            <button type="button" onclick="app.insertSpecialChar('³')" class="sym-btn" title="Sobrescrito 3">³</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁴')" class="sym-btn" title="Sobrescrito 4">⁴</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁵')" class="sym-btn" title="Sobrescrito 5">⁵</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁶')" class="sym-btn" title="Sobrescrito 6">⁶</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁷')" class="sym-btn" title="Sobrescrito 7">⁷</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁸')" class="sym-btn" title="Sobrescrito 8">⁸</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁹')" class="sym-btn" title="Sobrescrito 9">⁹</button>
+                            <button type="button" onclick="app.insertSpecialChar('ⁿ')" class="sym-btn" title="Sobrescrito n">ⁿ</button>
+                            <button type="button" onclick="app.insertSpecialChar('ⁱ')" class="sym-btn" title="Sobrescrito i">ⁱ</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁺')" class="sym-btn" title="Sobrescrito + (carga positiva)">⁺</button>
+                            <button type="button" onclick="app.insertSpecialChar('⁻')" class="sym-btn" title="Sobrescrito − (carga negativa)">⁻</button>
                         </div>
                             </div>
                         </div>
@@ -1581,14 +1581,14 @@
                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo por Imagem (Opcional)</label>
                     <div class="flex flex-col gap-3">
                         <div class="flex items-center gap-2">
-                            <button onclick="app.openImageLibrary('card-content')" class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[10px] font-bold uppercase flex items-center gap-2">
+                            <button onclick="app.openImageLibrary('card-content')" title="Escolher, na biblioteca de imagens, uma imagem para ilustrar o conteúdo desta carta." class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[10px] font-bold uppercase flex items-center gap-2">
                                 <i class="fa-solid fa-images"></i> Biblioteca
                             </button>
-                            <button onclick="app.removeCardContentImage()" class="px-3 py-2 bg-red-500 text-white rounded-lg text-[10px] font-bold uppercase">Limpar</button>
+                            <button onclick="app.removeCardContentImage()" title="Remover a imagem associada ao conteúdo desta carta." class="px-3 py-2 bg-red-500 text-white rounded-lg text-[10px] font-bold uppercase">Limpar</button>
                         </div>
                         <div class="space-y-1">
                             <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider ml-1">Ou Link da Imagem</label>
-                            <input id="modal-card-image-url" type="text" oninput="app.handleCardImageUrlInput(event)" class="w-full p-3 border-2 border-slate-100 rounded-2xl outline-none focus:border-emerald-500 transition text-xs" placeholder="https://exemplo.com/imagem.png">
+                            <input id="modal-card-image-url" type="text" oninput="app.handleCardImageUrlInput(event)" title="Cole aqui o link (URL) de uma imagem para usar como conteúdo da carta." class="w-full p-3 border-2 border-slate-100 rounded-2xl outline-none focus:border-emerald-500 transition text-xs" placeholder="https://exemplo.com/imagem.png">
                         </div>
                         <div id="modal-card-image-preview-wrapper" class="hidden border-2 border-slate-100 rounded-2xl overflow-hidden bg-slate-50 aspect-video flex items-center justify-center">
                             <img id="modal-card-image-preview" src="" alt="Prévia" class="max-h-full max-w-full object-contain">
@@ -1598,11 +1598,11 @@
                 <div>
                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Pertence ao Código Secreto?</label>
                     <div class="flex gap-4">
-                        <label class="flex-1 flex items-center gap-3 p-4 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 transition">
+                        <label class="flex-1 flex items-center gap-3 p-4 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 transition" title="Esta carta poderá fazer parte do Código Secreto sorteado (máximo de 6 cartas).">
                             <input type="radio" name="modal-card-correct" value="true" class="text-emerald-600 focus:ring-emerald-500">
                             <span class="text-sm font-semibold text-slate-700">Sim</span>
                         </label>
-                        <label class="flex-1 flex items-center gap-3 p-4 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 transition">
+                        <label class="flex-1 flex items-center gap-3 p-4 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 transition" title="Esta carta é apenas distratora e nunca fará parte do Código Secreto.">
                             <input type="radio" name="modal-card-correct" value="false" class="text-emerald-600 focus:ring-emerald-500">
                             <span class="text-sm font-semibold text-slate-700">Não</span>
                         </label>
@@ -1610,8 +1610,8 @@
                 </div>
             </div>
             <div class="flex gap-3 shrink-0">
-                <button onclick="app.closeCardModal()" class="flex-1 py-4 border border-slate-200 hover:bg-slate-50 font-bold rounded-2xl text-sm transition">Cancelar</button>
-                <button onclick="app.saveCardModal()" class="flex-1 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl text-sm transition shadow-lg shadow-emerald-100">Salvar</button>
+                <button onclick="app.closeCardModal()" title="Fechar sem salvar as alterações feitas nesta carta." class="flex-1 py-4 border border-slate-200 hover:bg-slate-50 font-bold rounded-2xl text-sm transition">Cancelar</button>
+                <button onclick="app.saveCardModal()" title="Salvar o conteúdo e as configurações desta carta." class="flex-1 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl text-sm transition shadow-lg shadow-emerald-100">Salvar</button>
             </div>
         </div>
     </div>
@@ -1622,10 +1622,10 @@
                 <h3 class="text-xl font-black text-slate-900">Novo Autor</h3>
                 <p class="text-xs text-slate-400 font-bold uppercase mt-1 tracking-widest">Nome completo</p>
             </div>
-            <input id="modal-input-author" type="text" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Prof. Carlos Silva" onkeypress="app.handleModalAuthorKeypress(event)">
+            <input id="modal-input-author" type="text" title="Nome completo do autor a ser adicionado ao jogo." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Prof. Carlos Silva" onkeypress="app.handleModalAuthorKeypress(event)">
             <div class="flex gap-3">
-                <button onclick="app.closeAuthorModal()" class="flex-1 py-3 border border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-sm transition">Cancelar</button>
-                <button onclick="app.confirmAuthor()" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition">Adicionar</button>
+                <button onclick="app.closeAuthorModal()" title="Fechar sem adicionar o autor." class="flex-1 py-3 border border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-sm transition">Cancelar</button>
+                <button onclick="app.confirmAuthor()" title="Adicionar este nome à lista de autores do jogo." class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition">Adicionar</button>
             </div>
         </div>
     </div>
@@ -1796,12 +1796,12 @@
                     <p class="text-xs text-slate-400 font-bold uppercase mt-1 tracking-widest">Imagens já enviadas por você</p>
                 </div>
                 <div class="flex items-center gap-3 w-full sm:w-auto">
-                    <label class="cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-emerald-100 flex items-center gap-2">
+                    <label class="cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-emerald-100 flex items-center gap-2" title="Enviar uma nova imagem (PNG, JPEG ou similar) para sua biblioteca pessoal.">
                         <i class="fa-solid fa-cloud-arrow-up"></i>
                         Enviar Imagem
                         <input type="file" class="hidden" accept="image/*" onchange="app.handleModalLibraryFileUpload(event)">
                     </label>
-                    <button onclick="app.closeImageLibrary()" class="w-10 h-10 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200 transition shrink-0">
+                    <button onclick="app.closeImageLibrary()" title="Fechar a biblioteca de imagens sem selecionar nenhuma." class="w-10 h-10 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200 transition shrink-0">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
@@ -1814,9 +1814,9 @@
                     <p class="font-bold">Carregando suas imagens...</p>
                 </div>
             </div>
-            
+
             <div class="pt-4 border-t border-slate-100 flex justify-end">
-                <button onclick="app.closeImageLibrary()" class="px-8 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm hover:bg-slate-200 transition">
+                <button onclick="app.closeImageLibrary()" title="Fechar a biblioteca de imagens sem selecionar nenhuma." class="px-8 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm hover:bg-slate-200 transition">
                     Fechar
                 </button>
             </div>

@@ -14,10 +14,10 @@
                 <h3 class="text-xl font-black text-slate-900">Novo Autor</h3>
                 <p class="text-xs text-slate-400 font-bold uppercase mt-1 tracking-widest">Nome completo</p>
             </div>
-            <input id="modal-input-author" type="text" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Prof. Carlos Silva" onkeypress="app.handleModalAuthorKeypress(event)">
+            <input id="modal-input-author" type="text" title="Nome completo do autor a ser adicionado ao jogo." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Prof. Carlos Silva" onkeypress="app.handleModalAuthorKeypress(event)">
             <div class="flex gap-3">
-                <button onclick="app.closeAuthorModal()" class="flex-1 py-3 border border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-sm transition">Cancelar</button>
-                <button onclick="app.confirmAuthor()" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition">Adicionar</button>
+                <button onclick="app.closeAuthorModal()" title="Fechar sem adicionar o autor." class="flex-1 py-3 border border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-sm transition">Cancelar</button>
+                <button onclick="app.confirmAuthor()" title="Adicionar este nome à lista de autores do jogo." class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition">Adicionar</button>
             </div>
         </div>
     </div>
@@ -59,12 +59,12 @@
                     <p class="text-xs text-slate-400 font-bold uppercase mt-1 tracking-widest">Imagens já enviadas por você</p>
                 </div>
                 <div class="flex items-center gap-3 w-full sm:w-auto">
-                    <label class="cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-emerald-100 flex items-center gap-2">
+                    <label class="cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-emerald-100 flex items-center gap-2" title="Enviar uma nova imagem (PNG, JPEG ou similar) para sua biblioteca pessoal.">
                         <i class="fa-solid fa-cloud-arrow-up"></i>
                         Enviar Imagem
                         <input type="file" class="hidden" accept="image/*" onchange="app.handleModalLibraryFileUpload(event)">
                     </label>
-                    <button onclick="app.closeImageLibrary()" class="w-10 h-10 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200 transition shrink-0">
+                    <button onclick="app.closeImageLibrary()" title="Fechar a biblioteca de imagens sem selecionar nenhuma." class="w-10 h-10 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200 transition shrink-0">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
@@ -79,7 +79,7 @@
             </div>
 
             <div class="pt-4 border-t border-slate-100 flex justify-end">
-                <button onclick="app.closeImageLibrary()" class="px-8 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm hover:bg-slate-200 transition">
+                <button onclick="app.closeImageLibrary()" title="Fechar a biblioteca de imagens sem selecionar nenhuma." class="px-8 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm hover:bg-slate-200 transition">
                     Fechar
                 </button>
             </div>

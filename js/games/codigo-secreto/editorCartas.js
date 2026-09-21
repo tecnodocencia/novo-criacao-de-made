@@ -7,6 +7,7 @@ export const editorCartasMethods = {
         this.state.editingGame.cards.forEach((card, idx) => {
             const cardEl = document.createElement('div');
             cardEl.className = `game-card flex flex-col p-3 cursor-pointer transition-all ${card.content || card.contentImage ? '' : 'empty'}`;
+            cardEl.title = 'Clique para editar o conteúdo desta carta (texto ou imagem).';
             cardEl.onclick = (e) => {
                 if (e.target.closest('.status-badge')) return;
                 this.openCardModal(idx);
@@ -24,7 +25,7 @@ export const editorCartasMethods = {
                     `}
                 </div>
                 <div class="mt-2">
-                    <button onclick="app.toggleCardCorrect(${idx})" class="status-badge w-full inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-full text-white text-[9px] font-black uppercase tracking-wider transition-colors ${card.isCorrect ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-red-500 hover:bg-red-600'}">
+                    <button onclick="app.toggleCardCorrect(${idx})" title="Alternar se esta carta pode fazer parte do Código Secreto (máximo de 6 cartas)." class="status-badge w-full inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-full text-white text-[9px] font-black uppercase tracking-wider transition-colors ${card.isCorrect ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-red-500 hover:bg-red-600'}">
                         <i class="fa-solid ${card.isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i>
                         <span>${card.isCorrect ? 'Possível' : 'Não é'}</span>
                     </button>

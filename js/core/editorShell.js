@@ -259,7 +259,7 @@ export const editorShellMethods = {
         (this.state.editingGame.disciplineInfo.autores || []).forEach((author, idx) => {
             const chip = document.createElement('div');
             chip.className = 'author-chip';
-            chip.innerHTML = `<span>${author}</span><button type="button" onclick="app.removeAuthor(${idx})">×</button>`;
+            chip.innerHTML = `<span>${author}</span><button type="button" onclick="app.removeAuthor(${idx})" title="Remover ${author} da lista de autores.">×</button>`;
             list.appendChild(chip);
         });
     },

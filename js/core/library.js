@@ -9,6 +9,7 @@ function findBankFolder(key) {
 function bankFolderTileEl(folder, onClick) {
     const el = document.createElement('div');
     el.className = "group relative aspect-square bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl border-2 border-emerald-100 overflow-hidden cursor-pointer hover:border-emerald-400 hover:shadow-md transition-all flex flex-col items-center justify-center gap-2 text-center p-2";
+    el.title = `Abrir a pasta "${folder.label}" do banco de imagens.`;
     el.innerHTML = `
         <i class="fa-solid ${folder.icon} text-3xl text-emerald-500"></i>
         <span class="font-black text-sm text-emerald-700 leading-tight">${folder.label}</span>
@@ -36,7 +37,7 @@ function folderBackHeaderEl(folder, onBack) {
     const el = document.createElement('div');
     el.className = "col-span-full flex items-center gap-3 mb-1";
     el.innerHTML = `
-        <button class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center hover:bg-slate-200 transition shrink-0">
+        <button class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center hover:bg-slate-200 transition shrink-0" title="Voltar para a lista de pastas do banco de imagens.">
             <i class="fa-solid fa-arrow-left"></i>
         </button>
         <i class="fa-solid ${folder.icon} text-emerald-500"></i>
@@ -64,6 +65,7 @@ function renderBankFolderInto(grid, folder, onBack, onImageClick, imageItemClass
     folder.images.forEach(img => {
         const item = document.createElement('div');
         item.className = imageItemClass;
+        item.title = "Clique para usar esta imagem.";
         item.innerHTML = `
             <img src="${img.url}" class="w-full h-full object-contain p-4" loading="lazy" />
             <div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all">
@@ -327,6 +329,7 @@ export const libraryMethods = {
         imagens.forEach(img => {
             const item = document.createElement('div');
             item.className = "group relative aspect-square bg-slate-50 rounded-2xl border-2 border-slate-100 overflow-hidden cursor-pointer hover:border-emerald-500 transition-all";
+            item.title = "Clique para usar esta imagem.";
             item.onclick = () => this.selectImageFromLibrary(img.url);
 
             item.innerHTML = `
