@@ -78,10 +78,10 @@ export const dashboardMethods = {
         }
 
         const CARD_ACCENTS = [
-            { bar: 'bg-green-500', chipBg: 'bg-green-100', chipText: 'text-green-700', cardBg: 'from-green-50/70', cardBorder: 'border-green-100' },
-            { bar: 'bg-amber-500', chipBg: 'bg-amber-100', chipText: 'text-amber-700', cardBg: 'from-amber-50/70', cardBorder: 'border-amber-100' },
-            { bar: 'bg-sky-500', chipBg: 'bg-sky-100', chipText: 'text-sky-700', cardBg: 'from-sky-50/70', cardBorder: 'border-sky-100' },
-            { bar: 'bg-pink-500', chipBg: 'bg-pink-100', chipText: 'text-pink-700', cardBg: 'from-pink-50/70', cardBorder: 'border-pink-100' }
+            { bar: 'bg-green-500', chipBg: 'bg-green-200', chipText: 'text-green-800', cardBg: 'from-green-100', cardBorder: 'border-green-200', trayBg: 'bg-green-50' },
+            { bar: 'bg-amber-500', chipBg: 'bg-amber-200', chipText: 'text-amber-800', cardBg: 'from-amber-100', cardBorder: 'border-amber-200', trayBg: 'bg-amber-50' },
+            { bar: 'bg-sky-500', chipBg: 'bg-sky-200', chipText: 'text-sky-800', cardBg: 'from-sky-100', cardBorder: 'border-sky-200', trayBg: 'bg-sky-50' },
+            { bar: 'bg-pink-500', chipBg: 'bg-pink-200', chipText: 'text-pink-800', cardBg: 'from-pink-100', cardBorder: 'border-pink-200', trayBg: 'bg-pink-50' }
         ];
 
         this.state.games.forEach((game, index) => {
@@ -111,7 +111,7 @@ export const dashboardMethods = {
                         <p class="text-xs">${game.regra || '-'}</p>
                     </div>
                 </div>
-                <div class="rounded-3xl border border-slate-100 bg-slate-50 p-2 flex gap-2">
+                <div class="rounded-3xl border ${accent.cardBorder} ${accent.trayBg} p-2 flex gap-2">
                     <button onclick="app.openDifficultySelect('${game.id}')" class="flex-1 bg-green-600 text-white font-bold py-3 px-4 rounded-2xl text-xs shadow-lg shadow-green-100 transition hover:bg-green-700 flex items-center justify-center gap-2">
                         <i class="fa-solid fa-play"></i> Jogar
                     </button>
