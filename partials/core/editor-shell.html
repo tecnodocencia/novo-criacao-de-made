@@ -88,6 +88,13 @@
                                     </div>
                                 </div>
                                 <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <label class="text-[11px] font-black text-slate-500 uppercase tracking-widest">Autores</label>
+                                        <button type="button" onclick="app.openAuthorModal()" title="Adicionar um autor responsável por este jogo." class="text-emerald-700 text-[11px] uppercase font-black">Adicionar</button>
+                                    </div>
+                                    <div id="edit-game-authors-list" title="Lista de autores do jogo. Clique no × de um nome para removê-lo." class="mt-2 flex flex-wrap gap-2"></div>
+                                </div>
+                                <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Modelo</label>
                                         <select id="edit-game-model" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" style="display:none;">
                                             <option value="Código Secreto">Código Secreto</option>
@@ -121,13 +128,6 @@
                                                 <div class="text-xs font-bold mt-2 text-slate-500">Lince</div>
                                             </div>
                                         </div>
-                                </div>
-                                <div>
-                                    <div class="flex items-center justify-between mb-2">
-                                        <label class="text-[11px] font-black text-slate-500 uppercase tracking-widest">Autores</label>
-                                        <button type="button" onclick="app.openAuthorModal()" title="Adicionar um autor responsável por este jogo." class="text-emerald-700 text-[11px] uppercase font-black">Adicionar</button>
-                                    </div>
-                                    <div id="edit-game-authors-list" title="Lista de autores do jogo. Clique no × de um nome para removê-lo." class="mt-2 flex flex-wrap gap-2"></div>
                                 </div>
                             </div>
                         </div>
