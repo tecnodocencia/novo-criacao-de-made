@@ -46,9 +46,9 @@ export const dashboardMethods = {
 
         document.querySelectorAll('.nav-btn').forEach(b => {
             if(b.getAttribute('data-view') === viewId) {
-                b.className = "nav-btn w-full flex items-center p-3 rounded-xl transition bg-emerald-600 text-white";
+                b.className = "nav-btn w-full flex items-center gap-3 p-3 rounded-xl transition bg-green-50 text-green-800 ring-1 ring-green-200 font-semibold";
             } else {
-                b.className = "nav-btn w-full flex items-center p-3 rounded-xl transition text-slate-500 hover:bg-emerald-50";
+                b.className = "nav-btn w-full flex items-center gap-3 p-3 rounded-xl transition text-slate-500 hover:bg-slate-50";
             }
         });
     },
@@ -58,12 +58,42 @@ export const dashboardMethods = {
         if(!grid) return;
         grid.innerHTML = '';
 
-        this.state.games.forEach(game => {
+        if (!this.state.games || this.state.games.length === 0) {
+            grid.innerHTML = `
+                <div class="col-span-full flex flex-col items-center py-20 px-6 text-center">
+                    <div class="relative w-28 h-28 mb-6">
+                        <div class="absolute inset-0 rounded-full bg-gradient-to-br from-green-200 via-sky-200 to-pink-200 opacity-70 blur-xl"></div>
+                        <div class="relative w-28 h-28 rounded-[28px] bg-white border border-slate-100 shadow-sm flex items-center justify-center">
+                            <i class="fa-solid fa-shapes text-4xl bg-gradient-to-br from-green-500 via-sky-500 to-pink-500 bg-clip-text text-transparent"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-black text-slate-800 mb-2">Nenhum material criado ainda</h3>
+                    <p class="text-sm text-slate-500 max-w-sm mb-6">Comece criando seu primeiro jogo educacional. Leva poucos minutos para montar um "Código Secreto" completo.</p>
+                    <button onclick="app.newGame()" class="bg-gradient-to-r from-green-600 to-sky-500 hover:brightness-105 text-white font-bold py-3 px-6 rounded-2xl text-sm shadow-lg shadow-green-100 transition flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Criar meu primeiro jogo
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        const CARD_ACCENTS = [
+            { bar: 'bg-green-500', chipBg: 'bg-green-100', chipText: 'text-green-700' },
+            { bar: 'bg-amber-500', chipBg: 'bg-amber-100', chipText: 'text-amber-700' },
+            { bar: 'bg-sky-500', chipBg: 'bg-sky-100', chipText: 'text-sky-700' },
+            { bar: 'bg-pink-500', chipBg: 'bg-pink-100', chipText: 'text-pink-700' }
+        ];
+
+        this.state.games.forEach((game, index) => {
+            const accent = CARD_ACCENTS[index % CARD_ACCENTS.length];
             const card = document.createElement('div');
-            card.className = "bg-white p-6 rounded-[32px] border border-slate-200 shadow-sm hover:shadow-md transition group";
+            card.className = "relative overflow-hidden bg-white p-6 rounded-[32px] border border-slate-200 shadow-sm hover:shadow-md transition group";
             card.innerHTML = `
-                <div class="flex justify-between items-start mb-4">
-                    <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-black">M</div>
+                <div class="absolute top-0 left-0 right-0 h-1.5 ${accent.bar}"></div>
+                <div class="flex justify-between items-start mb-4 mt-1.5">
+                    <div class="w-10 h-10 rounded-2xl ${accent.chipBg} ${accent.chipText} flex items-center justify-center font-black">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                    </div>
                 </div>
                 <h3 class="text-lg font-bold text-slate-800 mb-4">${game.name || 'Sem título'}</h3>
                 <div class="space-y-2 text-sm text-slate-500 mb-4">
@@ -82,13 +112,13 @@ export const dashboardMethods = {
                     </div>
                 </div>
                 <div class="rounded-3xl border border-slate-100 bg-slate-50 p-2 flex gap-2">
-                    <button onclick="app.openDifficultySelect('${game.id}')" class="flex-1 bg-emerald-600 text-white font-bold py-3 px-4 rounded-2xl text-xs shadow-lg shadow-emerald-100 transition hover:bg-emerald-700 flex items-center justify-center gap-2">
+                    <button onclick="app.openDifficultySelect('${game.id}')" class="flex-1 bg-green-600 text-white font-bold py-3 px-4 rounded-2xl text-xs shadow-lg shadow-green-100 transition hover:bg-green-700 flex items-center justify-center gap-2">
                         <i class="fa-solid fa-play"></i> Jogar
                     </button>
                     <button onclick="app.editGame('${game.id}')" class="bg-white border border-slate-200 text-slate-600 font-bold py-3 px-4 rounded-2xl text-xs transition hover:bg-slate-50">
                         Editar
                     </button>
-                    <button onclick="app.shareGame('${game.id}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-2xl text-xs transition flex items-center gap-1" title="Compartilhar jogo">
+                    <button onclick="app.shareGame('${game.id}')" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded-2xl text-xs transition flex items-center gap-1" title="Compartilhar jogo">
                         <i class="fa-solid fa-share-nodes"></i>
                     </button>
                     <button onclick="app.manageRanking('${game.id}')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-2xl text-xs transition flex items-center gap-1" title="Gerenciar ranking">

@@ -59,10 +59,20 @@ export const authMethods = {
         document.getElementById('forgot-form')?.classList.toggle('hidden', mode !== 'forgot');
         document.getElementById('recovery-form')?.classList.toggle('hidden', mode !== 'recovery');
         document.getElementById('auth-mode-toggle')?.classList.toggle('hidden', mode === 'forgot' || mode === 'recovery');
-        document.getElementById('auth-login-btn').classList.toggle('bg-[#f5e7d6]', mode === 'login');
-        document.getElementById('auth-login-btn').classList.toggle('text-[#bb3e44]', mode === 'login');
-        document.getElementById('auth-register-btn').classList.toggle('bg-[#f5e7d6]', mode === 'register');
-        document.getElementById('auth-register-btn').classList.toggle('text-[#bb3e44]', mode === 'register');
+
+        const loginBtn = document.getElementById('auth-login-btn');
+        const registerBtn = document.getElementById('auth-register-btn');
+        const inactiveClass = "flex-1 py-3.5 rounded-[18px] text-slate-500 hover:bg-white/50 transition-all duration-300";
+        if (loginBtn) {
+            loginBtn.className = (mode === 'login')
+                ? "flex-1 py-3.5 rounded-[18px] text-white shadow-md shadow-green-200/60 transition-all duration-300 bg-gradient-to-r from-green-600 to-sky-500"
+                : inactiveClass;
+        }
+        if (registerBtn) {
+            registerBtn.className = (mode === 'register')
+                ? "flex-1 py-3.5 rounded-[18px] text-white shadow-md shadow-amber-200/60 transition-all duration-300 bg-gradient-to-r from-amber-500 to-pink-500"
+                : inactiveClass;
+        }
         const feedback = document.getElementById('auth-feedback');
         if (feedback) feedback.classList.add('hidden');
         if (mode === 'forgot') {

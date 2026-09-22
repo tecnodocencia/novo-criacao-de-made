@@ -1,29 +1,40 @@
     <div id="modal-notification" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
         <div class="bg-white w-full max-w-sm rounded-[36px] shadow-2xl p-8 space-y-6 text-center">
+            <div class="w-14 h-14 mx-auto rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center text-2xl">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
             <div>
                 <h3 id="notification-title" class="text-xl font-black text-slate-900">Aviso</h3>
             </div>
             <p id="notification-message" class="text-slate-600"></p>
-            <button onclick="app.closeNotification()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition">OK</button>
+            <button onclick="app.closeNotification()" class="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl text-sm transition">OK</button>
         </div>
     </div>
 
     <div id="modal-author" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
         <div class="bg-white w-full max-w-sm rounded-[36px] shadow-2xl p-8 space-y-6">
-            <div>
-                <h3 class="text-xl font-black text-slate-900">Novo Autor</h3>
-                <p class="text-xs text-slate-400 font-bold uppercase mt-1 tracking-widest">Nome completo</p>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 shrink-0 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-black text-slate-900">Novo Autor</h3>
+                    <p class="text-xs text-slate-400 font-bold uppercase mt-1 tracking-widest">Nome completo</p>
+                </div>
             </div>
             <input id="modal-input-author" type="text" title="Nome completo do autor a ser adicionado ao jogo." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Prof. Carlos Silva" onkeypress="app.handleModalAuthorKeypress(event)">
             <div class="flex gap-3">
                 <button onclick="app.closeAuthorModal()" title="Fechar sem adicionar o autor." class="flex-1 py-3 border border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-sm transition">Cancelar</button>
-                <button onclick="app.confirmAuthor()" title="Adicionar este nome à lista de autores do jogo." class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition">Adicionar</button>
+                <button onclick="app.confirmAuthor()" title="Adicionar este nome à lista de autores do jogo." class="flex-1 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl text-sm transition">Adicionar</button>
             </div>
         </div>
     </div>
 
     <div id="modal-confirm" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
         <div class="bg-white w-full max-w-sm rounded-[36px] shadow-2xl p-8 space-y-6 text-center">
+            <div class="w-14 h-14 mx-auto rounded-2xl bg-red-100 text-red-600 flex items-center justify-center text-2xl">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
             <div>
                 <h3 id="confirm-title" class="text-xl font-black text-slate-900">Confirmar</h3>
             </div>
@@ -54,12 +65,17 @@
     <div id="modal-library" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4" style="z-index: 10001;">
         <div class="bg-white w-full max-w-4xl rounded-[36px] shadow-2xl p-8 space-y-6">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                    <h3 class="text-2xl font-black text-slate-900">Minha Biblioteca</h3>
-                    <p class="text-xs text-slate-400 font-bold uppercase mt-1 tracking-widest">Imagens já enviadas por você</p>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 shrink-0 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-images"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-black text-slate-900">Minha Biblioteca</h3>
+                        <p class="text-xs text-slate-400 font-bold uppercase mt-1 tracking-widest">Imagens já enviadas por você</p>
+                    </div>
                 </div>
                 <div class="flex items-center gap-3 w-full sm:w-auto">
-                    <label class="cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-emerald-100 flex items-center gap-2" title="Enviar uma nova imagem (PNG, JPEG ou similar) para sua biblioteca pessoal.">
+                    <label class="cursor-pointer bg-amber-500 hover:bg-amber-600 text-white px-5 py-2.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-amber-100 flex items-center gap-2" title="Enviar uma nova imagem (PNG, JPEG ou similar) para sua biblioteca pessoal.">
                         <i class="fa-solid fa-cloud-arrow-up"></i>
                         Enviar Imagem
                         <input type="file" class="hidden" accept="image/*" onchange="app.handleModalLibraryFileUpload(event)">

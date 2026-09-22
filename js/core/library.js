@@ -6,14 +6,30 @@ function findBankFolder(key) {
     return imageBankFolders.find(f => f.key === key) || null;
 }
 
+// Rotaciona as 4 cores de marca (verde/âmbar/azul/rosa) pelas pastas do banco
+// de imagens, na ordem em que aparecem em imageBankFolders, para o grid da
+// biblioteca não ficar todo na mesma cor fixa.
+const FOLDER_ACCENTS = [
+    { grad: 'from-green-50 to-emerald-50', border: 'border-green-100', borderHover: 'hover:border-green-400', icon: 'text-green-500', text: 'text-green-700', textLight: 'text-green-400' },
+    { grad: 'from-amber-50 to-orange-50', border: 'border-amber-100', borderHover: 'hover:border-amber-400', icon: 'text-amber-500', text: 'text-amber-700', textLight: 'text-amber-400' },
+    { grad: 'from-sky-50 to-blue-50', border: 'border-sky-100', borderHover: 'hover:border-sky-400', icon: 'text-sky-500', text: 'text-sky-700', textLight: 'text-sky-400' },
+    { grad: 'from-pink-50 to-rose-50', border: 'border-pink-100', borderHover: 'hover:border-pink-400', icon: 'text-pink-500', text: 'text-pink-700', textLight: 'text-pink-400' }
+];
+
+function folderAccent(folder) {
+    const idx = imageBankFolders.findIndex(f => f.key === folder.key);
+    return FOLDER_ACCENTS[(idx >= 0 ? idx : 0) % FOLDER_ACCENTS.length];
+}
+
 function bankFolderTileEl(folder, onClick) {
+    const accent = folderAccent(folder);
     const el = document.createElement('div');
-    el.className = "group relative aspect-square bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl border-2 border-emerald-100 overflow-hidden cursor-pointer hover:border-emerald-400 hover:shadow-md transition-all flex flex-col items-center justify-center gap-2 text-center p-2";
+    el.className = `group relative aspect-square bg-gradient-to-br ${accent.grad} rounded-3xl border-2 ${accent.border} overflow-hidden cursor-pointer ${accent.borderHover} hover:shadow-md transition-all flex flex-col items-center justify-center gap-2 text-center p-2`;
     el.title = `Abrir a pasta "${folder.label}" do banco de imagens.`;
     el.innerHTML = `
-        <i class="fa-solid ${folder.icon} text-3xl text-emerald-500"></i>
-        <span class="font-black text-sm text-emerald-700 leading-tight">${folder.label}</span>
-        <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wide">${folder.images.length} imagens</span>
+        <i class="fa-solid ${folder.icon} text-3xl ${accent.icon}"></i>
+        <span class="font-black text-sm ${accent.text} leading-tight">${folder.label}</span>
+        <span class="text-[10px] font-bold ${accent.textLight} uppercase tracking-wide">${folder.images.length} imagens</span>
     `;
     el.onclick = onClick;
     return el;
@@ -34,13 +50,14 @@ function ownSectionHeaderEl(label) {
 }
 
 function folderBackHeaderEl(folder, onBack) {
+    const accent = folderAccent(folder);
     const el = document.createElement('div');
     el.className = "col-span-full flex items-center gap-3 mb-1";
     el.innerHTML = `
         <button class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center hover:bg-slate-200 transition shrink-0" title="Voltar para a lista de pastas do banco de imagens.">
             <i class="fa-solid fa-arrow-left"></i>
         </button>
-        <i class="fa-solid ${folder.icon} text-emerald-500"></i>
+        <i class="fa-solid ${folder.icon} ${accent.icon}"></i>
         <h3 class="font-black text-slate-700">${folder.label}</h3>
         <span class="text-xs text-slate-400 font-bold">${folder.images.length} imagens</span>
     `;

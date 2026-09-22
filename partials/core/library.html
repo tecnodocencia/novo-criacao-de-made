@@ -1,9 +1,14 @@
                 <div class="flex justify-between items-center mb-8">
-                    <div>
-                        <h2 class="text-2xl font-bold text-slate-800">Minha Biblioteca</h2>
-                        <p class="text-sm text-slate-500">Gerencie suas imagens para usar nos jogos.</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 shrink-0 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-images"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-800">Minha Biblioteca</h2>
+                            <p class="text-sm text-slate-500">Gerencie suas imagens para usar nos jogos.</p>
+                        </div>
                     </div>
-                    <label class="cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-2xl font-bold text-sm transition shadow-lg shadow-emerald-100 flex items-center gap-2">
+                    <label class="cursor-pointer bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-2xl font-bold text-sm transition shadow-lg shadow-amber-100 flex items-center gap-2">
                         <i class="fa-solid fa-cloud-arrow-up"></i>
                         Enviar Imagem
                         <input type="file" class="hidden" accept="image/*" onchange="app.handleLibraryFileUpload(event)">

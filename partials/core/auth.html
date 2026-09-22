@@ -1,8 +1,10 @@
         <!-- LADO ESQUERDO: Visual e Branding -->
         <div class="hidden md:flex md:w-3/5 h-full bg-[#f8fafc] items-center justify-center p-8 lg:p-12 relative overflow-hidden">
             <!-- Elementos decorativos de fundo -->
-            <div class="absolute -top-24 -left-24 w-96 h-96 bg-emerald-200/20 rounded-full blur-3xl"></div>
-            <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl"></div>
+            <div class="decor-blob absolute -top-24 -left-24 w-96 h-96 bg-green-300/25" style="animation-delay:0s"></div>
+            <div class="decor-blob absolute -bottom-24 -right-24 w-96 h-96 bg-amber-300/20" style="animation-delay:5s"></div>
+            <div class="decor-blob absolute top-1/3 -right-16 w-72 h-72 bg-sky-300/20" style="animation-delay:10s"></div>
+            <div class="decor-blob absolute bottom-10 left-1/4 w-64 h-64 bg-pink-300/20" style="animation-delay:15s"></div>
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] opacity-[0.03] pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/cubes.png');"></div>
 
             <div class="relative z-10 text-center space-y-6 lg:space-y-8 max-w-xl px-4">
@@ -12,7 +14,7 @@
                 <div class="space-y-4">
                     <h1 class="text-4xl lg:text-5xl font-black text-slate-800 leading-tight tracking-tight">
                         Crie materiais que <br/>
-                        <span class="text-emerald-600">transformam o ensino</span>.
+                        <span class="bg-gradient-to-r from-green-600 via-sky-500 to-pink-500 bg-clip-text text-transparent">transformam o ensino</span>.
                     </h1>
                     <p class="text-slate-500 text-base lg:text-lg font-medium leading-relaxed max-w-md mx-auto">
                         A plataforma MADE oferece ferramentas intuitivas para professores e alunos desenvolverem conteúdos educacionais autorais.
@@ -46,8 +48,8 @@
                 </div>
 
                 <div id="auth-mode-toggle" class="flex items-center gap-1 p-1.5 bg-slate-100 rounded-[22px] text-[11px] font-black uppercase tracking-widest text-slate-500">
-                    <button onclick="app.setAuthMode('login')" id="auth-login-btn" class="flex-1 py-3.5 rounded-[18px] bg-white text-emerald-700 shadow-sm transition-all duration-300">Login</button>
-                    <button onclick="app.setAuthMode('register')" id="auth-register-btn" class="flex-1 py-3.5 rounded-[18px] hover:bg-white/50 transition-all duration-300">Cadastro</button>
+                    <button onclick="app.setAuthMode('login')" id="auth-login-btn" class="flex-1 py-3.5 rounded-[18px] bg-gradient-to-r from-green-600 to-sky-500 text-white shadow-md shadow-green-200/60 transition-all duration-300">Login</button>
+                    <button onclick="app.setAuthMode('register')" id="auth-register-btn" class="flex-1 py-3.5 rounded-[18px] text-slate-500 hover:bg-white/50 transition-all duration-300">Cadastro</button>
                 </div>
 
                 <div id="auth-form" class="space-y-6 px-2">
@@ -67,7 +69,7 @@
                                 <input id="auth-password" type="password" placeholder="••••••" class="w-full pl-12 pr-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
                             </div>
                         </div>
-                        <button onclick="app.login()" class="w-full py-5 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-slate-300 transition-all active:scale-[0.98] mt-6 flex items-center justify-center gap-3">
+                        <button onclick="app.login()" class="w-full py-5 bg-gradient-to-r from-green-600 to-sky-500 hover:brightness-105 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-green-200 transition-all active:scale-[0.98] mt-6 flex items-center justify-center gap-3">
                             Entrar na Plataforma
                             <i class="fa-solid fa-arrow-right-long"></i>
                         </button>
@@ -140,7 +142,7 @@
                                 <i class="fa-solid fa-chevron-down absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
                             </div>
                         </div>
-                        <button onclick="app.register()" class="w-full py-5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-emerald-200 transition-all active:scale-[0.98] mt-6 flex items-center justify-center gap-3">
+                        <button onclick="app.register()" class="w-full py-5 bg-gradient-to-r from-amber-500 to-pink-500 hover:brightness-105 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-amber-200 transition-all active:scale-[0.98] mt-6 flex items-center justify-center gap-3">
                             Criar minha conta
                             <i class="fa-solid fa-user-plus"></i>
                         </button>
