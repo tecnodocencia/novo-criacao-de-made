@@ -6,7 +6,7 @@
                 </header>
                 <div class="flex-1 min-h-0 overflow-y-auto">
                     <aside class="flex-1 h-full min-h-0 p-10 bg-amber-100 overflow-y-auto">
-                      <div class="max-w-3xl mx-auto space-y-8">
+                      <div class="max-w-5xl mx-auto space-y-8">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between gap-3">
                                 <div>
@@ -20,105 +20,107 @@
                         </div>
 
                         <div id="creator-phase-1" class="creator-phase">
-                            <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+                            <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-6">
                                 <div class="space-y-4">
                                     <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Informações iniciais</p>
                                     <p class="text-sm text-slate-600">Preencha os dados básicos do jogo e os autores.</p>
                                 </div>
-                                <div>
-                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Título do Jogo</label>
-                                    <input id="edit-game-name" type="text" title="Nome que identifica o jogo. Aparecerá para o aluno e nas listagens do professor." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Jogo dos Mamíferos">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+                                    <div>
+                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Título do Jogo</label>
+                                        <input id="edit-game-name" type="text" title="Nome que identifica o jogo. Aparecerá para o aluno e nas listagens do professor." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Jogo dos Mamíferos">
+                                    </div>
+                                    <div>
+                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo</label>
+                                        <input id="edit-game-conteudo" type="text" title="Assunto específico abordado pelo jogo dentro da disciplina escolhida." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Mamíferos, Frações, Leitura...">
+                                    </div>
+                                    <div>
+                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Disciplina</label>
+                                        <select id="edit-game-disciplina" title="Disciplina escolar à qual o jogo pertence. Usada para organizar e filtrar os jogos." onchange="app.handleDisciplinaSelectChange(event)" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
+                                            <option value="Biologia">Biologia</option>
+                                            <option value="Dança">Dança</option>
+                                            <option value="Educação Física">Educação Física</option>
+                                            <option value="Espanhol">Espanhol</option>
+                                            <option value="Filosofia">Filosofia</option>
+                                            <option value="Física">Física</option>
+                                            <option value="História">História</option>
+                                            <option value="Geografia">Geografia</option>
+                                            <option value="Inglês">Inglês</option>
+                                            <option value="Matemática">Matemática</option>
+                                            <option value="Música">Música</option>
+                                            <option value="Português">Português</option>
+                                            <option value="Química">Química</option>
+                                            <option value="Sociologia">Sociologia</option>
+                                            <option value="Teatro">Teatro</option>
+                                            <option value="Outro">Outro</option>
+                                        </select>
+                                        <div id="edit-game-disciplina-outro-wrap" class="mt-2 hidden">
+                                            <div class="flex gap-2">
+                                                <input id="edit-game-disciplina-outro" type="text" title="Digite o nome da disciplina quando ela não estiver na lista." placeholder="Especifique a Disciplina" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" />
+                                                <button onclick="app.clearDisciplinaOutro()" title="Limpar o texto digitado na disciplina personalizada." class="px-3 bg-red-500 text-white rounded-2xl">Remover</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Série</label>
+                                        <select id="edit-game-serie" title="Ano/série escolar para a qual o jogo foi pensado." onchange="app.handleSerieSelectChange(event)" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
+                                            <option value="1º ano">1º ano</option>
+                                            <option value="2º ano">2º ano</option>
+                                            <option value="3º ano">3º ano</option>
+                                            <option value="4º ano">4º ano</option>
+                                            <option value="5º ano">5º ano</option>
+                                            <option value="6º ano">6º ano</option>
+                                            <option value="7º ano">7º ano</option>
+                                            <option value="8º ano">8º ano</option>
+                                            <option value="9º ano">9º ano</option>
+                                            <option value="1º ano – EM">1º ano – EM</option>
+                                            <option value="2º ano – EM">2º ano – EM</option>
+                                            <option value="3º ano – EM">3º ano – EM</option>
+                                            <option value="Ensino Superior">Ensino Superior</option>
+                                            <option value="Outro">Outro</option>
+                                        </select>
+                                        <div id="edit-game-serie-outro-wrap" class="mt-2 hidden">
+                                            <div class="flex gap-2">
+                                                <input id="edit-game-serie-outro" type="text" title="Digite a série quando ela não estiver na lista." placeholder="Especifique a Série" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" />
+                                                <button onclick="app.clearSerieOutro()" title="Limpar o texto digitado na série personalizada." class="px-3 bg-red-500 text-white rounded-2xl">Remover</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Modelo</label>
                                         <select id="edit-game-model" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" style="display:none;">
                                             <option value="Código Secreto">Código Secreto</option>
                                         </select>
-                                        <div id="model-choices" class="grid grid-cols-2 gap-3 mt-3">
+                                        <div id="model-choices" class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
                                             <div class="cursor-pointer rounded-xl border p-3 text-center" title="Modelo de jogo a ser criado. Define as regras, telas e formato das cartas." onclick="app.selectModel('Código Secreto', this)">
-                                                <div class="w-full h-40 flex items-center justify-center overflow-visible">
+                                                <div class="w-full h-28 flex items-center justify-center overflow-visible">
                                                     <img src="imagens/modelos/codigo_secreto.png" alt="Código Secreto" class="max-w-full max-h-full w-auto h-auto object-contain" />
                                                 </div>
                                                 <div class="text-xs font-bold mt-2">Código Secreto</div>
                                             </div>
                                             <div class="rounded-xl border p-3 text-center bg-slate-100 opacity-70 cursor-not-allowed" title="Modelo Can Can ainda está em construção." onclick="app.showNotification('O modelo Can Can ainda está em construção. Em breve estará disponível.', 'Em construção')">
-                                                <div class="w-full h-40 flex flex-col items-center justify-center gap-2 bg-slate-200 rounded-lg">
+                                                <div class="w-full h-28 flex flex-col items-center justify-center gap-2 bg-slate-200 rounded-lg">
                                                     <i class="fa-solid fa-hammer text-3xl text-slate-400"></i>
                                                     <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Em construção</span>
                                                 </div>
                                                 <div class="text-xs font-bold mt-2 text-slate-500">Can Can</div>
                                             </div>
                                             <div class="rounded-xl border p-3 text-center bg-slate-100 opacity-70 cursor-not-allowed" title="Modelo Timeline ainda está em construção." onclick="app.showNotification('O modelo Timeline ainda está em construção. Em breve estará disponível.', 'Em construção')">
-                                                <div class="w-full h-40 flex flex-col items-center justify-center gap-2 bg-slate-200 rounded-lg">
+                                                <div class="w-full h-28 flex flex-col items-center justify-center gap-2 bg-slate-200 rounded-lg">
                                                     <i class="fa-solid fa-hammer text-3xl text-slate-400"></i>
                                                     <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Em construção</span>
                                                 </div>
                                                 <div class="text-xs font-bold mt-2 text-slate-500">Timeline</div>
                                             </div>
                                             <div class="rounded-xl border p-3 text-center bg-slate-100 opacity-70 cursor-not-allowed" title="Modelo Lince ainda está em construção." onclick="app.showNotification('O modelo Lince ainda está em construção. Em breve estará disponível.', 'Em construção')">
-                                                <div class="w-full h-40 flex flex-col items-center justify-center gap-2 bg-slate-200 rounded-lg">
+                                                <div class="w-full h-28 flex flex-col items-center justify-center gap-2 bg-slate-200 rounded-lg">
                                                     <i class="fa-solid fa-hammer text-3xl text-slate-400"></i>
                                                     <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Em construção</span>
                                                 </div>
                                                 <div class="text-xs font-bold mt-2 text-slate-500">Lince</div>
                                             </div>
                                         </div>
-                                </div>
-                                <div>
-                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Disciplina</label>
-                                    <select id="edit-game-disciplina" title="Disciplina escolar à qual o jogo pertence. Usada para organizar e filtrar os jogos." onchange="app.handleDisciplinaSelectChange(event)" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
-                                        <option value="Biologia">Biologia</option>
-                                        <option value="Dança">Dança</option>
-                                        <option value="Educação Física">Educação Física</option>
-                                        <option value="Espanhol">Espanhol</option>
-                                        <option value="Filosofia">Filosofia</option>
-                                        <option value="Física">Física</option>
-                                        <option value="História">História</option>
-                                        <option value="Geografia">Geografia</option>
-                                        <option value="Inglês">Inglês</option>
-                                        <option value="Matemática">Matemática</option>
-                                        <option value="Música">Música</option>
-                                        <option value="Português">Português</option>
-                                        <option value="Química">Química</option>
-                                        <option value="Sociologia">Sociologia</option>
-                                        <option value="Teatro">Teatro</option>
-                                        <option value="Outro">Outro</option>
-                                    </select>
-                                    <div id="edit-game-disciplina-outro-wrap" class="mt-2 hidden">
-                                        <div class="flex gap-2">
-                                            <input id="edit-game-disciplina-outro" type="text" title="Digite o nome da disciplina quando ela não estiver na lista." placeholder="Especifique a Disciplina" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" />
-                                            <button onclick="app.clearDisciplinaOutro()" title="Limpar o texto digitado na disciplina personalizada." class="px-3 bg-red-500 text-white rounded-2xl">Remover</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo</label>
-                                    <input id="edit-game-conteudo" type="text" title="Assunto específico abordado pelo jogo dentro da disciplina escolhida." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Mamíferos, Frações, Leitura...">
-                                </div>
-                                <div>
-                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Série</label>
-                                    <select id="edit-game-serie" title="Ano/série escolar para a qual o jogo foi pensado." onchange="app.handleSerieSelectChange(event)" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
-                                        <option value="1º ano">1º ano</option>
-                                        <option value="2º ano">2º ano</option>
-                                        <option value="3º ano">3º ano</option>
-                                        <option value="4º ano">4º ano</option>
-                                        <option value="5º ano">5º ano</option>
-                                        <option value="6º ano">6º ano</option>
-                                        <option value="7º ano">7º ano</option>
-                                        <option value="8º ano">8º ano</option>
-                                        <option value="9º ano">9º ano</option>
-                                        <option value="1º ano – EM">1º ano – EM</option>
-                                        <option value="2º ano – EM">2º ano – EM</option>
-                                        <option value="3º ano – EM">3º ano – EM</option>
-                                        <option value="Ensino Superior">Ensino Superior</option>
-                                        <option value="Outro">Outro</option>
-                                    </select>
-                                    <div id="edit-game-serie-outro-wrap" class="mt-2 hidden">
-                                        <div class="flex gap-2">
-                                            <input id="edit-game-serie-outro" type="text" title="Digite a série quando ela não estiver na lista." placeholder="Especifique a Série" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" />
-                                            <button onclick="app.clearSerieOutro()" title="Limpar o texto digitado na série personalizada." class="px-3 bg-red-500 text-white rounded-2xl">Remover</button>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
@@ -179,6 +181,7 @@
                                         <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Regras</p>
                                         <p class="text-sm text-slate-600">Defina o funcionamento do jogo.</p>
                                     </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Regra</label>
                                         <div class="richtext-field">
@@ -226,6 +229,7 @@
                                             </div>
                                             <div id="edit-game-objetivo" contenteditable="true" title="Texto que explica o que o aluno precisa alcançar para vencer o jogo." class="richtext-editable min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.</div>
                                         </div>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -314,6 +318,7 @@
                                         <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Enunciado e feedbacks</p>
                                         <p class="text-sm text-slate-600">Escreva o comando inicial para o aluno e o texto que explica a resposta.</p>
                                     </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Enunciado</label>
                                         <div class="richtext-field">
@@ -347,6 +352,7 @@
 • Observe o feedback do jogo: um pino verde significa que você acertou a carta e a posição.
 • Um pino amarelo significa que a carta pertence ao código, mas está na posição errada.
 • Um pino branco significa que essa carta não faz parte do código secreto.</textarea>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
