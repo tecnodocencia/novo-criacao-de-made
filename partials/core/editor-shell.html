@@ -10,16 +10,16 @@
                         <div class="space-y-4">
                             <div class="flex items-center justify-between gap-3">
                                 <div>
-                                    <p class="text-[10px] uppercase tracking-[0.28em] text-slate-500 font-bold">Passo <span id="creator-step-current">1</span> de 5</p>
+                                    <p class="text-[10px] uppercase tracking-[0.28em] text-slate-500 font-bold">Passo <span id="creator-step-current">1</span> de 3</p>
                                     <h3 class="text-lg font-black text-slate-900" id="creator-step-title">Dados do Jogo</h3>
                                 </div>
                             </div>
                             <div class="relative h-2 rounded-full bg-slate-200 overflow-hidden mt-4">
-                                <div id="creator-progress-fill" class="absolute inset-y-0 left-0 bg-emerald-600 rounded-full transition-all duration-300" style="width:25%"></div>
+                                <div id="creator-progress-fill" class="absolute inset-y-0 left-0 bg-emerald-600 rounded-full transition-all duration-300" style="width:33.33%"></div>
                             </div>
                         </div>
 
-                        <div id="creator-step-1" class="creator-step">
+                        <div id="creator-phase-1" class="creator-phase">
                             <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
                                 <div class="space-y-4">
                                     <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Informações iniciais</p>
@@ -130,172 +130,236 @@
                             </div>
                         </div>
 
-                        <div id="creator-step-2" class="creator-step hidden">
-                            <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
-                                <div class="space-y-3">
-                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Regras e aparência</p>
-                                    <p class="text-sm text-slate-600">Defina o funcionamento do jogo e escolha a aparência das cartas.</p>
+                        <div id="creator-phase-2" class="creator-phase hidden">
+                            <div id="creator-blocks-hub">
+                                <div class="space-y-3 mb-6">
+                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Blocos de edição</p>
+                                    <p class="text-sm text-slate-600">Escolha o bloco que deseja editar. Você pode voltar aqui a qualquer momento.</p>
                                 </div>
-                                <div>
-                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Regra</label>
-                                    <div class="richtext-field">
-                                        <div class="richtext-toolbar">
-                                            <button type="button" onclick="app.toggleBold('edit-game-regra')" class="richtext-btn" title="Negrito">
-                                                <i class="fa-solid fa-bold"></i>
-                                            </button>
-                                            <button type="button" onclick="app.toggleItalic('edit-game-regra')" class="richtext-btn" title="Itálico">
-                                                <i class="fa-solid fa-italic"></i>
-                                            </button>
-                                            <button type="button" onclick="app.toggleUnderline('edit-game-regra')" class="richtext-btn" title="Sublinhado">
-                                                <i class="fa-solid fa-underline"></i>
-                                            </button>
-                                            <span class="richtext-divider"></span>
-                                            <button type="button" onclick="app.wrapSelectionInRed('edit-game-regra')" class="richtext-btn" title="Marcar em vermelho o texto selecionado">
-                                                <span class="richtext-color-a" style="--rt-color:#dc2626;">A</span>
-                                            </button>
-                                            <button type="button" onclick="app.removeRedFromSelection('edit-game-regra')" class="richtext-btn" title="Remover a cor vermelha do texto selecionado">
-                                                <i class="fa-solid fa-eraser"></i>
-                                            </button>
-                                        </div>
-                                        <div id="edit-game-regra" contenteditable="true" title="Texto que descreve como o jogo funciona e como o aluno deve jogar." class="richtext-editable min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.</div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Objetivo</label>
-                                    <div class="richtext-field">
-                                        <div class="richtext-toolbar">
-                                            <button type="button" onclick="app.toggleBold('edit-game-objetivo')" class="richtext-btn" title="Negrito">
-                                                <i class="fa-solid fa-bold"></i>
-                                            </button>
-                                            <button type="button" onclick="app.toggleItalic('edit-game-objetivo')" class="richtext-btn" title="Itálico">
-                                                <i class="fa-solid fa-italic"></i>
-                                            </button>
-                                            <button type="button" onclick="app.toggleUnderline('edit-game-objetivo')" class="richtext-btn" title="Sublinhado">
-                                                <i class="fa-solid fa-underline"></i>
-                                            </button>
-                                            <span class="richtext-divider"></span>
-                                            <button type="button" onclick="app.wrapSelectionInRed('edit-game-objetivo')" class="richtext-btn" title="Marcar em vermelho o texto selecionado">
-                                                <span class="richtext-color-a" style="--rt-color:#dc2626;">A</span>
-                                            </button>
-                                            <button type="button" onclick="app.removeRedFromSelection('edit-game-objetivo')" class="richtext-btn" title="Remover a cor vermelha do texto selecionado">
-                                                <i class="fa-solid fa-eraser"></i>
-                                            </button>
-                                        </div>
-                                        <div id="edit-game-objetivo" contenteditable="true" title="Texto que explica o que o aluno precisa alcançar para vencer o jogo." class="richtext-editable min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.</div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-4 tracking-widest">Design das Cartas</label>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <div class="flex items-center justify-center gap-1">
-                                            <button onclick="app.toggleFrontDesign('prev')" title="Ver o modelo anterior de frente de carta." class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
-                                                <i class="fa-solid fa-chevron-left"></i>
-                                            </button>
-                                            <div class="card-preview" title="Modelo visual usado na frente das cartas do jogo.">
-                                                <img id="preview-front" src="imagens/frente/frente01.png" alt="Pré-visualização frente">
-                                                <div class="card-preview-label">Frente da Carta</div>
+                                <div class="bg-white p-3 rounded-[32px] border border-slate-200 shadow-sm">
+                                    <div class="grid grid-cols-2 gap-3 max-w-xl mx-auto">
+                                        <button type="button" onclick="app.showBlock(1)" title="Editar a Regra e o Objetivo do jogo." class="relative aspect-square rounded-2xl border-2 border-slate-800 bg-amber-500 hover:brightness-105 transition flex flex-col items-center justify-center gap-3 p-4">
+                                            <div id="block-badge-1" class="hidden absolute top-3 right-3 w-6 h-6 rounded-full bg-white text-emerald-600 flex items-center justify-center text-xs shadow">
+                                                <i class="fa-solid fa-check"></i>
                                             </div>
-                                            <button onclick="app.toggleFrontDesign('next')" title="Ver o próximo modelo de frente de carta." class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
-                                                <i class="fa-solid fa-chevron-right"></i>
-                                            </button>
-                                        </div>
-                                        <div class="flex items-center justify-center gap-1">
-                                            <button onclick="app.toggleBackDesign('prev')" title="Ver o modelo anterior de verso de carta." class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
-                                                <i class="fa-solid fa-chevron-left"></i>
-                                            </button>
-                                            <div class="card-preview" title="Modelo visual usado no verso das cartas do jogo.">
-                                                <img id="preview-back" src="imagens/verso/Cópia de Trás da Carta - Natureza.png" alt="Pré-visualização verso">
-                                                <div class="card-preview-label">Verso da Carta</div>
+                                            <i class="fa-solid fa-scroll text-4xl text-white"></i>
+                                            <span class="text-sm font-black uppercase tracking-widest text-white text-center">Regras</span>
+                                        </button>
+                                        <button type="button" onclick="app.showBlock(2)" title="Editar a aparência das cartas (design e envio externo)." class="relative aspect-square rounded-2xl border-2 border-slate-800 bg-green-600 hover:brightness-105 transition flex flex-col items-center justify-center gap-3 p-4">
+                                            <div id="block-badge-2" class="hidden absolute top-3 right-3 w-6 h-6 rounded-full bg-white text-emerald-600 flex items-center justify-center text-xs shadow">
+                                                <i class="fa-solid fa-check"></i>
                                             </div>
-                                            <button onclick="app.toggleBackDesign('next')" title="Ver o próximo modelo de verso de carta." class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
-                                                <i class="fa-solid fa-chevron-right"></i>
-                                            </button>
-                                        </div>
+                                            <i class="fa-solid fa-palette text-4xl text-white"></i>
+                                            <span class="text-sm font-black uppercase tracking-widest text-white text-center">Aparência</span>
+                                        </button>
+                                        <button type="button" onclick="app.showBlock(3)" title="Editar o enunciado e a explicação final do jogo." class="relative aspect-square rounded-2xl border-2 border-slate-800 bg-sky-500 hover:brightness-105 transition flex flex-col items-center justify-center gap-3 p-4">
+                                            <div id="block-badge-3" class="hidden absolute top-3 right-3 w-6 h-6 rounded-full bg-white text-emerald-600 flex items-center justify-center text-xs shadow">
+                                                <i class="fa-solid fa-check"></i>
+                                            </div>
+                                            <i class="fa-solid fa-comment-dots text-4xl text-white"></i>
+                                            <span class="text-sm font-black uppercase tracking-widest text-white text-center">Enunciado e Feedbacks</span>
+                                        </button>
+                                        <button type="button" onclick="app.showBlock(4)" title="Criar e revisar as 12 cartas do jogo." class="relative aspect-square rounded-2xl border-2 border-slate-800 bg-pink-500 hover:brightness-105 transition flex flex-col items-center justify-center gap-3 p-4">
+                                            <div id="block-badge-4" class="hidden absolute top-3 right-3 w-6 h-6 rounded-full bg-white text-emerald-600 flex items-center justify-center text-xs shadow">
+                                                <i class="fa-solid fa-check"></i>
+                                            </div>
+                                            <i class="fa-solid fa-layer-group text-4xl text-white"></i>
+                                            <span class="text-sm font-black uppercase tracking-widest text-white text-center">Criação de Cartas</span>
+                                        </button>
                                     </div>
                                 </div>
-                                <div>
-                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Envio Externo (Opcional)</label>
-                                    <p class="text-xs text-slate-600 mb-4">Você pode enviar um modelo customizado de frente e verso das cartas (em formato PNG, JPEG ou SVG).</p>
+                            </div>
+
+                            <div id="creator-block-1" class="creator-block hidden">
+                                <button type="button" onclick="app.showBlock(null)" title="Voltar para a tela de blocos." class="mb-4 inline-flex items-center gap-2 text-sm font-black text-slate-600 hover:text-slate-900">
+                                    <i class="fa-solid fa-arrow-left"></i> Voltar aos blocos
+                                </button>
+                                <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
                                     <div class="space-y-3">
-                                        <div>
-                                            <label class="text-[10px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">Imagem Frente</label>
-                                            <div class="flex gap-2 items-center">
-                                                <button onclick="app.openImageLibrary('front-design')" title="Escolher, na biblioteca de imagens, uma imagem personalizada para a frente da carta." class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[10px] font-bold uppercase flex items-center gap-2">
-                                                    <i class="fa-solid fa-images"></i> Biblioteca
+                                        <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Regras</p>
+                                        <p class="text-sm text-slate-600">Defina o funcionamento do jogo.</p>
+                                    </div>
+                                    <div>
+                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Regra</label>
+                                        <div class="richtext-field">
+                                            <div class="richtext-toolbar">
+                                                <button type="button" onclick="app.toggleBold('edit-game-regra')" class="richtext-btn" title="Negrito">
+                                                    <i class="fa-solid fa-bold"></i>
                                                 </button>
-                                                <button type="button" onclick="app.removeExternalFrontImage()" title="Remover a imagem personalizada da frente e voltar ao modelo padrão." class="px-3 py-2 bg-red-500 text-white rounded-lg text-xs font-semibold">Remover</button>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label class="text-[10px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">Imagem Verso</label>
-                                            <div class="flex gap-2 items-center">
-                                                <button onclick="app.openImageLibrary('back-design')" title="Escolher, na biblioteca de imagens, uma imagem personalizada para o verso da carta." class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[10px] font-bold uppercase flex items-center gap-2">
-                                                    <i class="fa-solid fa-images"></i> Biblioteca
+                                                <button type="button" onclick="app.toggleItalic('edit-game-regra')" class="richtext-btn" title="Itálico">
+                                                    <i class="fa-solid fa-italic"></i>
                                                 </button>
-                                                <button type="button" onclick="app.removeExternalBackImage()" title="Remover a imagem personalizada do verso e voltar ao modelo padrão." class="px-3 py-2 bg-red-500 text-white rounded-lg text-xs font-semibold">Remover</button>
+                                                <button type="button" onclick="app.toggleUnderline('edit-game-regra')" class="richtext-btn" title="Sublinhado">
+                                                    <i class="fa-solid fa-underline"></i>
+                                                </button>
+                                                <span class="richtext-divider"></span>
+                                                <button type="button" onclick="app.wrapSelectionInRed('edit-game-regra')" class="richtext-btn" title="Marcar em vermelho o texto selecionado">
+                                                    <span class="richtext-color-a" style="--rt-color:#dc2626;">A</span>
+                                                </button>
+                                                <button type="button" onclick="app.removeRedFromSelection('edit-game-regra')" class="richtext-btn" title="Remover a cor vermelha do texto selecionado">
+                                                    <i class="fa-solid fa-eraser"></i>
+                                                </button>
                                             </div>
+                                            <div id="edit-game-regra" contenteditable="true" title="Texto que descreve como o jogo funciona e como o aluno deve jogar." class="richtext-editable min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.</div>
                                         </div>
                                     </div>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                                        <div class="card-preview hidden" id="external-front-preview-wrapper">
-                                            <img id="external-front-preview" src="" alt="Prévia frente">
-                                            <div class="card-preview-label">Frente Personalizada</div>
-                                        </div>
-                                        <div class="card-preview hidden" id="external-back-preview-wrapper">
-                                            <img id="external-back-preview" src="" alt="Prévia verso">
-                                            <div class="card-preview-label">Verso Personalizado</div>
+                                    <div>
+                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Objetivo</label>
+                                        <div class="richtext-field">
+                                            <div class="richtext-toolbar">
+                                                <button type="button" onclick="app.toggleBold('edit-game-objetivo')" class="richtext-btn" title="Negrito">
+                                                    <i class="fa-solid fa-bold"></i>
+                                                </button>
+                                                <button type="button" onclick="app.toggleItalic('edit-game-objetivo')" class="richtext-btn" title="Itálico">
+                                                    <i class="fa-solid fa-italic"></i>
+                                                </button>
+                                                <button type="button" onclick="app.toggleUnderline('edit-game-objetivo')" class="richtext-btn" title="Sublinhado">
+                                                    <i class="fa-solid fa-underline"></i>
+                                                </button>
+                                                <span class="richtext-divider"></span>
+                                                <button type="button" onclick="app.wrapSelectionInRed('edit-game-objetivo')" class="richtext-btn" title="Marcar em vermelho o texto selecionado">
+                                                    <span class="richtext-color-a" style="--rt-color:#dc2626;">A</span>
+                                                </button>
+                                                <button type="button" onclick="app.removeRedFromSelection('edit-game-objetivo')" class="richtext-btn" title="Remover a cor vermelha do texto selecionado">
+                                                    <i class="fa-solid fa-eraser"></i>
+                                                </button>
+                                            </div>
+                                            <div id="edit-game-objetivo" contenteditable="true" title="Texto que explica o que o aluno precisa alcançar para vencer o jogo." class="richtext-editable min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div id="creator-step-3" class="creator-step hidden">
-                            <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
-                                <div class="space-y-3">
-                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Enunciado e feedbacks</p>
-                                    <p class="text-sm text-slate-600">Escreva o comando inicial para o aluno e o texto que explica a resposta.</p>
-                                </div>
-                                <div>
-                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Enunciado</label>
-                                    <div class="richtext-field">
-                                        <div class="richtext-toolbar">
-                                            <button type="button" onclick="app.toggleBold('edit-game-enunciado')" class="richtext-btn" title="Negrito">
-                                                <i class="fa-solid fa-bold"></i>
-                                            </button>
-                                            <button type="button" onclick="app.toggleItalic('edit-game-enunciado')" class="richtext-btn" title="Itálico">
-                                                <i class="fa-solid fa-italic"></i>
-                                            </button>
-                                            <button type="button" onclick="app.toggleUnderline('edit-game-enunciado')" class="richtext-btn" title="Sublinhado">
-                                                <i class="fa-solid fa-underline"></i>
-                                            </button>
-                                            <span class="richtext-divider"></span>
-                                            <button type="button" onclick="app.wrapSelectionInRed('edit-game-enunciado')" class="richtext-btn" title="Marcar em vermelho o texto selecionado">
-                                                <span class="richtext-color-a" style="--rt-color:#dc2626;">A</span>
-                                            </button>
-                                            <button type="button" onclick="app.removeRedFromSelection('edit-game-enunciado')" class="richtext-btn" title="Remover a cor vermelha do texto selecionado">
-                                                <i class="fa-solid fa-eraser"></i>
-                                            </button>
+                            <div id="creator-block-2" class="creator-block hidden">
+                                <button type="button" onclick="app.showBlock(null)" title="Voltar para a tela de blocos." class="mb-4 inline-flex items-center gap-2 text-sm font-black text-slate-600 hover:text-slate-900">
+                                    <i class="fa-solid fa-arrow-left"></i> Voltar aos blocos
+                                </button>
+                                <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+                                    <div class="space-y-3">
+                                        <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Aparência</p>
+                                        <p class="text-sm text-slate-600">Escolha a aparência das cartas.</p>
+                                    </div>
+                                    <div>
+                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-4 tracking-widest">Design das Cartas</label>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div class="flex items-center justify-center gap-1">
+                                                <button onclick="app.toggleFrontDesign('prev')" title="Ver o modelo anterior de frente de carta." class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
+                                                    <i class="fa-solid fa-chevron-left"></i>
+                                                </button>
+                                                <div class="card-preview" title="Modelo visual usado na frente das cartas do jogo.">
+                                                    <img id="preview-front" src="imagens/frente/frente01.png" alt="Pré-visualização frente">
+                                                    <div class="card-preview-label">Frente da Carta</div>
+                                                </div>
+                                                <button onclick="app.toggleFrontDesign('next')" title="Ver o próximo modelo de frente de carta." class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
+                                                    <i class="fa-solid fa-chevron-right"></i>
+                                                </button>
+                                            </div>
+                                            <div class="flex items-center justify-center gap-1">
+                                                <button onclick="app.toggleBackDesign('prev')" title="Ver o modelo anterior de verso de carta." class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
+                                                    <i class="fa-solid fa-chevron-left"></i>
+                                                </button>
+                                                <div class="card-preview" title="Modelo visual usado no verso das cartas do jogo.">
+                                                    <img id="preview-back" src="imagens/verso/Cópia de Trás da Carta - Natureza.png" alt="Pré-visualização verso">
+                                                    <div class="card-preview-label">Verso da Carta</div>
+                                                </div>
+                                                <button onclick="app.toggleBackDesign('next')" title="Ver o próximo modelo de verso de carta." class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
+                                                    <i class="fa-solid fa-chevron-right"></i>
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div id="edit-game-enunciado" contenteditable="true" title="Comando inicial exibido ao aluno explicando o que ele deve fazer no jogo." class="richtext-editable min-h-20 max-h-48 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolha as cartas que representam animais <strong style="color:#b91c1c">Mamíferos</strong> e coloque-as na ordem correta para desvendar o código secreto.</div>
+                                    </div>
+                                    <div>
+                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Envio Externo (Opcional)</label>
+                                        <p class="text-xs text-slate-600 mb-4">Você pode enviar um modelo customizado de frente e verso das cartas (em formato PNG, JPEG ou SVG).</p>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="text-[10px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">Imagem Frente</label>
+                                                <div class="flex gap-2 items-center">
+                                                    <button onclick="app.openImageLibrary('front-design')" title="Escolher, na biblioteca de imagens, uma imagem personalizada para a frente da carta." class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[10px] font-bold uppercase flex items-center gap-2">
+                                                        <i class="fa-solid fa-images"></i> Biblioteca
+                                                    </button>
+                                                    <button type="button" onclick="app.removeExternalFrontImage()" title="Remover a imagem personalizada da frente e voltar ao modelo padrão." class="px-3 py-2 bg-red-500 text-white rounded-lg text-xs font-semibold">Remover</button>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label class="text-[10px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">Imagem Verso</label>
+                                                <div class="flex gap-2 items-center">
+                                                    <button onclick="app.openImageLibrary('back-design')" title="Escolher, na biblioteca de imagens, uma imagem personalizada para o verso da carta." class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[10px] font-bold uppercase flex items-center gap-2">
+                                                        <i class="fa-solid fa-images"></i> Biblioteca
+                                                    </button>
+                                                    <button type="button" onclick="app.removeExternalBackImage()" title="Remover a imagem personalizada do verso e voltar ao modelo padrão." class="px-3 py-2 bg-red-500 text-white rounded-lg text-xs font-semibold">Remover</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                                            <div class="card-preview hidden" id="external-front-preview-wrapper">
+                                                <img id="external-front-preview" src="" alt="Prévia frente">
+                                                <div class="card-preview-label">Frente Personalizada</div>
+                                            </div>
+                                            <div class="card-preview hidden" id="external-back-preview-wrapper">
+                                                <img id="external-back-preview" src="" alt="Prévia verso">
+                                                <div class="card-preview-label">Verso Personalizado</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
-                                    <textarea id="edit-game-explicacao" oninput="app.autoResizeTextarea(this)" title="Texto exibido ao aluno ao final do jogo, explicando a resposta e como jogar." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-[200px]" placeholder="Texto exibido ao final revelando o porquê da resposta..." style="resize: none;">• Observe as 12 possibilidades de cartas que estão no banco.
+                            </div>
+
+                            <div id="creator-block-3" class="creator-block hidden">
+                                <button type="button" onclick="app.showBlock(null)" title="Voltar para a tela de blocos." class="mb-4 inline-flex items-center gap-2 text-sm font-black text-slate-600 hover:text-slate-900">
+                                    <i class="fa-solid fa-arrow-left"></i> Voltar aos blocos
+                                </button>
+                                <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+                                    <div class="space-y-3">
+                                        <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Enunciado e feedbacks</p>
+                                        <p class="text-sm text-slate-600">Escreva o comando inicial para o aluno e o texto que explica a resposta.</p>
+                                    </div>
+                                    <div>
+                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Enunciado</label>
+                                        <div class="richtext-field">
+                                            <div class="richtext-toolbar">
+                                                <button type="button" onclick="app.toggleBold('edit-game-enunciado')" class="richtext-btn" title="Negrito">
+                                                    <i class="fa-solid fa-bold"></i>
+                                                </button>
+                                                <button type="button" onclick="app.toggleItalic('edit-game-enunciado')" class="richtext-btn" title="Itálico">
+                                                    <i class="fa-solid fa-italic"></i>
+                                                </button>
+                                                <button type="button" onclick="app.toggleUnderline('edit-game-enunciado')" class="richtext-btn" title="Sublinhado">
+                                                    <i class="fa-solid fa-underline"></i>
+                                                </button>
+                                                <span class="richtext-divider"></span>
+                                                <button type="button" onclick="app.wrapSelectionInRed('edit-game-enunciado')" class="richtext-btn" title="Marcar em vermelho o texto selecionado">
+                                                    <span class="richtext-color-a" style="--rt-color:#dc2626;">A</span>
+                                                </button>
+                                                <button type="button" onclick="app.removeRedFromSelection('edit-game-enunciado')" class="richtext-btn" title="Remover a cor vermelha do texto selecionado">
+                                                    <i class="fa-solid fa-eraser"></i>
+                                                </button>
+                                            </div>
+                                            <div id="edit-game-enunciado" contenteditable="true" title="Comando inicial exibido ao aluno explicando o que ele deve fazer no jogo." class="richtext-editable min-h-20 max-h-48 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolha as cartas que representam animais <strong style="color:#b91c1c">Mamíferos</strong> e coloque-as na ordem correta para desvendar o código secreto.</div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
+                                        <textarea id="edit-game-explicacao" oninput="app.autoResizeTextarea(this)" title="Texto exibido ao aluno ao final do jogo, explicando a resposta e como jogar." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-[200px]" placeholder="Texto exibido ao final revelando o porquê da resposta..." style="resize: none;">• Observe as 12 possibilidades de cartas que estão no banco.
 • Clique na carta escolhida para adicioná-la à sua tentativa na mesa.
 • Repita o processo até que todos os espaços estejam preenchidos.
 • Clique no botão para validar a resposta.
 • Observe o feedback do jogo: um pino verde significa que você acertou a carta e a posição.
 • Um pino amarelo significa que a carta pertence ao código, mas está na posição errada.
 • Um pino branco significa que essa carta não faz parte do código secreto.</textarea>
+                                    </div>
                                 </div>
+                            </div>
+
+                            <div id="creator-block-4" class="creator-block hidden">
+                                <button type="button" onclick="app.showBlock(null)" title="Voltar para a tela de blocos." class="mb-4 inline-flex items-center gap-2 text-sm font-black text-slate-600 hover:text-slate-900">
+                                    <i class="fa-solid fa-arrow-left"></i> Voltar aos blocos
+                                </button>
+                                <div id="creator-step-4"></div>
                             </div>
                         </div>
 
-                        <div id="creator-step-4" class="creator-step hidden"></div>
-
-                        <div id="creator-step-5" class="creator-step hidden">
+                        <div id="creator-phase-3" class="creator-phase hidden">
                             <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
                                 <div class="space-y-3">
                                     <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Revisão e Teste</p>
@@ -354,7 +418,7 @@
                     <button id="creator-prev-btn" onclick="app.creatorPrevStep()" title="Voltar para o passo anterior do editor." class="px-6 py-3 border border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-sm transition hidden">
                         Voltar
                     </button>
-                    <div id="creator-step-5-actions" class="ml-auto flex gap-3 hidden">
+                    <div id="creator-review-actions" class="ml-auto flex gap-3 hidden">
                         <button onclick="app.testGameFromCreator()" title="Jogar o jogo como o aluno veria, sem salvar as alterações." class="bg-amber-500 text-white px-6 py-3 font-bold rounded-xl text-sm transition">
                             Testar Jogo
                         </button>

@@ -17,17 +17,13 @@ faz, só o "onde" mudou. Além disso, isto documenta o player AUTENTICADO (dentr
 Confirmado em 2026-06-24 lendo `js/app.js` por completo (~1850 linhas após edições da sessão).
 
 ## Editor
-- `newGame()` — cria `state.editingGame` com defaults (12 cards vazios, textos-modelo sobre "Mamíferos"), vai pro passo 1.
+- `newGame()` — cria `state.editingGame` com defaults (12 cards vazios, textos-modelo sobre "Mamíferos"), vai pra Tela Geral (`editingStep=1`, `editingBlock=null`).
 - `editGame(id)` — clona (`JSON.parse(JSON.stringify)`) um jogo de `state.games` para `state.editingGame`.
 - `syncEditorUI()` — popula todos os inputs do editor a partir de `editingGame`. Chama `if (!Array.isArray(eg.disciplineInfo.autores)) eg.disciplineInfo.autores = []` (defesa contra jogos antigos sem esse campo — adicionado 2026-06-24).
-- `persistEditorFields()` — lê os inputs do DOM de volta para `state.editingGame` (chamado antes de avançar/voltar passo).
-- `showStep(step)` / `creatorNextStep()` / `creatorPrevStep()` — navegação entre os 5 passos, com validação em `current===1` (nome+conteúdo) e `current===4` (12 cartas preenchidas, 6 marcadas corretas).
-- `openCardModal(idx)` / `saveCardModal()` / `closeCardModal()` — CRUD de uma carta individual. `saveCardModal` já aceita carta só-com-imagem (sem texto) — não exigir texto obrigatório, isso é regra de produto confirmada no código.
-- `toggleCardCorrect(idx)` — alterna `isCorrect`, bloqueia se já houver 6 marcadas.
-- `wrapSelectionInRed(elementId)` / `removeRedFromSelection(elementId)` — aplicam/removem `<strong style="color:#b91c1c">` na seleção de texto dentro de um `contenteditable`. Usado em regra/objetivo/enunciado.
-- `insertSpecialChar(char)` — insere caractere especial (²³√π±× etc.) no textarea `#modal-card-content` na posição do cursor. Painel de símbolos vive só no modal de carta (não no enunciado/regra/objetivo).
+- `persistEditorFields()` — lê os inputs do DOM de volta para `state.editingGame` (chamado antes de avançar/voltar tela/bloco).
+- **REESTRUTURADO 2026-09-22**: editor passou de 5 passos lineares para 3 telas — ver [[sessao_2026-09-22_editor_3_telas]] para o desenho completo (state, ids, validações).
 
-## Revisão (passo 5)
+## Revisão (Tela da Revisão, `editingStep===3`)
 - `populateReviewStep()` — preenche `#review-*` a partir de `editingGame`. Trata `card.contentImage` corretamente (mostra `<img>` + legenda opcional). Usa `this.escapeCardText()` para texto de carta desde 2026-06-24 (evita HTML/código indevido aparecer cru).
 
 ## Testar / Iniciar partida

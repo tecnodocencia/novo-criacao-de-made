@@ -240,7 +240,7 @@ export const dashboardMethods = {
 
         if (isTesting) {
             this.switchView('creator');
-            this.showStep(5);
+            this.showPhase(3);
         } else {
             this.switchView('dashboard');
         }

@@ -20,6 +20,19 @@ export const backDesigns = [
     'imagens/verso/Cópia de Trás da Carta Qui Fis.png'
 ];
 
+// Editor reduzido a 3 telas (state.editingStep 1-3): Dados do Jogo, Blocos de
+// Edição (hub 2x2, sub-navegação em state.editingBlock 1-4 / null = hub) e
+// Revisão e Teste. Ver PHASE_TITLES/BLOCK_TITLES abaixo para o texto do
+// cabeçalho em cada combinação de editingStep/editingBlock.
+const PHASE_TITLES = { 1: 'Dados do Jogo', 2: 'Blocos de Edição', 3: 'Revisão e Teste' };
+const BLOCK_TITLES = { 1: 'Regras', 2: 'Aparência', 3: 'Enunciado e Feedbacks', 4: 'Criação de Cartas' };
+
+function stripHtml(html) {
+    const div = document.createElement('div');
+    div.innerHTML = html || '';
+    return (div.textContent || div.innerText || '').trim();
+}
+
 export const editorShellMethods = {
     newGame: function() {
         const modelName = 'Código Secreto';
@@ -31,6 +44,7 @@ export const editorShellMethods = {
             ...defaults
         };
         this.state.editingStep = 1;
+        this.state.editingBlock = null;
         this.syncEditorUI();
         this.updateSecretCardCounter();
         this.switchView('creator');
@@ -40,6 +54,7 @@ export const editorShellMethods = {
         const g = this.state.games.find(x => x.id === id);
         this.state.editingGame = JSON.parse(JSON.stringify(g));
         this.state.editingStep = 1;
+        this.state.editingBlock = null;
         this.syncEditorUI();
         this.updateSecretCardCounter();
         this.switchView('creator');
@@ -97,7 +112,7 @@ export const editorShellMethods = {
 
         this.renderAuthorsList();
         this.renderEditorGrid();
-        this.showStep(this.state.editingStep);
+        this.showPhase(this.state.editingStep);
     },
 
     persistEditorFields: function() {
@@ -131,64 +146,131 @@ export const editorShellMethods = {
         this.state.editingGame.explicacao = document.getElementById('edit-game-explicacao')?.value || "";
     },
 
-    showStep: function(step) {
-        this.state.editingStep = step;
-        document.querySelectorAll('.creator-step').forEach(el => el.classList.add('hidden'));
+    showPhase: function(phase) {
+        this.state.editingStep = phase;
+        document.querySelectorAll('.creator-phase').forEach(el => el.classList.add('hidden'));
 
-        const activeEl = document.getElementById(`creator-step-${step}`);
+        const activeEl = document.getElementById(`creator-phase-${phase}`);
         if (activeEl) activeEl.classList.remove('hidden');
 
         const progressFill = document.getElementById('creator-progress-fill');
-        if (progressFill) progressFill.style.width = `${(step / 5) * 100}%`;
+        if (progressFill) progressFill.style.width = `${(phase / 3) * 100}%`;
 
-        const titleMap = { 1: 'Dados do Jogo', 2: 'Regras e Aparência', 3: 'Enunciado e Feedbacks', 4: 'Criação de Cartas', 5: 'Revisão e Teste' };
         const stepLabel = document.getElementById('creator-step-current');
-        const stepTitle = document.getElementById('creator-step-title');
+        if (stepLabel) stepLabel.innerText = phase;
 
-        if (stepLabel) stepLabel.innerText = step;
-        if (stepTitle) stepTitle.innerText = titleMap[step] || 'Editor';
-
-        const prevBtn = document.getElementById('creator-prev-btn');
         const nextBtn = document.getElementById('creator-next-btn');
-        const step5Actions = document.getElementById('creator-step-5-actions');
+        const reviewActions = document.getElementById('creator-review-actions');
 
-        if (prevBtn) prevBtn.classList.toggle('hidden', step === 1);
-        if (nextBtn) nextBtn.classList.toggle('hidden', step === 5);
-        if (step5Actions) step5Actions.classList.toggle('hidden', step !== 5);
+        if (nextBtn) nextBtn.innerText = phase === 2 ? 'Próxima: Revisão' : 'Próximo';
+        if (reviewActions) reviewActions.classList.toggle('hidden', phase !== 3);
 
-        if (nextBtn) nextBtn.innerText = step === 4 ? 'Revisar' : 'Próximo';
+        if (phase === 2) {
+            // A tela de blocos sempre reabre no hub 2x2; showBlock(null) cuida
+            // de mostrar/ocultar prev/next e atualizar o título do cabeçalho.
+            this.showBlock(null);
+        } else {
+            this.state.editingBlock = null;
+            const prevBtn = document.getElementById('creator-prev-btn');
+            if (prevBtn) prevBtn.classList.toggle('hidden', phase === 1);
+            if (nextBtn) nextBtn.classList.toggle('hidden', phase === 3);
+            this.updateEditorHeader();
+        }
 
-        if (step === 5) {
+        if (phase === 3) {
             this.populateReviewStep();
         }
 
         document.getElementById('creator-validation-message').classList.add('hidden');
     },
 
+    showBlock: function(blockNum) {
+        this.persistEditorFields();
+        this.state.editingBlock = blockNum;
+
+        document.querySelectorAll('.creator-block').forEach(el => el.classList.add('hidden'));
+        const hub = document.getElementById('creator-blocks-hub');
+
+        if (blockNum === null) {
+            if (hub) hub.classList.remove('hidden');
+            this.renderBlocksHub();
+        } else {
+            if (hub) hub.classList.add('hidden');
+            const activeBlock = document.getElementById(`creator-block-${blockNum}`);
+            if (activeBlock) activeBlock.classList.remove('hidden');
+            if (blockNum === 4) this.renderEditorGrid();
+        }
+
+        const prevBtn = document.getElementById('creator-prev-btn');
+        const nextBtn = document.getElementById('creator-next-btn');
+        // Dentro de um bloco a navegação é só o link "Voltar aos blocos" do
+        // próprio bloco; o rodapé Voltar/Próximo só existe no hub.
+        if (prevBtn) prevBtn.classList.toggle('hidden', blockNum !== null);
+        if (nextBtn) nextBtn.classList.toggle('hidden', blockNum !== null);
+
+        this.updateEditorHeader();
+        document.getElementById('creator-validation-message').classList.add('hidden');
+    },
+
+    updateEditorHeader: function() {
+        const stepTitle = document.getElementById('creator-step-title');
+        if (!stepTitle) return;
+        const phase = this.state.editingStep;
+        const block = this.state.editingBlock;
+        stepTitle.innerText = (phase === 2 && block) ? BLOCK_TITLES[block] : (PHASE_TITLES[phase] || 'Editor');
+    },
+
+    renderBlocksHub: function() {
+        if (!this.state.editingGame) return;
+        const eg = this.state.editingGame;
+
+        const setBadge = (num, complete) => {
+            const el = document.getElementById(`block-badge-${num}`);
+            if (el) el.classList.toggle('hidden', !complete);
+        };
+
+        setBadge(1, !!stripHtml(eg.regra) && !!stripHtml(eg.objetivo));
+        setBadge(2, !!eg.frontDesign && !!eg.backDesign);
+        setBadge(3, !!stripHtml(eg.enunciado) && !!(eg.explicacao || '').trim());
+
+        const filledCount = (eg.cards || []).filter(c => c.content.trim() !== "" || !!c.contentImage).length;
+        const correctCount = (eg.cards || []).filter(c => c.isCorrect).length;
+        setBadge(4, filledCount === 12 && correctCount === 6);
+    },
+
     creatorNextStep: function() {
         this.persistEditorFields();
-        const current = this.state.editingStep;
+        const phase = this.state.editingStep;
 
-        if (current === 1) {
+        if (phase === 1) {
             if (!this.state.editingGame.name.trim()) { this.showValidationError("Insira o título do jogo."); return; }
             if (!this.state.editingGame.disciplineInfo.conteudo.trim()) { this.showValidationError("Insira o conteúdo do jogo."); return; }
+            this.showPhase(2);
+            return;
         }
-        if (current === 4) {
+
+        if (phase === 2) {
             const filledCount = this.state.editingGame.cards.filter(c => c.content.trim() !== "" || !!c.contentImage).length;
-            if (filledCount < 12) { this.showValidationError("Preencha todas as 12 cartas com texto ou imagem antes de finalizar."); return; }
+            if (filledCount < 12) {
+                this.showBlock(4);
+                this.showValidationError("Preencha todas as 12 cartas com texto ou imagem antes de avançar para a revisão.");
+                return;
+            }
             const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
-            if (correctCount !== 6) { this.showValidationError("Exatamente 6 cartas precisam ser marcadas como possíveis para o código."); return; }
-        }
-        if (current < 5) {
-            this.showStep(current + 1);
+            if (correctCount !== 6) {
+                this.showBlock(4);
+                this.showValidationError("Exatamente 6 cartas precisam ser marcadas como possíveis para o código.");
+                return;
+            }
+            this.showPhase(3);
         }
     },
 
     creatorPrevStep: function() {
         this.persistEditorFields();
-        if (this.state.editingStep > 1) {
-            this.showStep(this.state.editingStep - 1);
-        }
+        const phase = this.state.editingStep;
+        if (phase === 3) { this.showPhase(2); return; }
+        if (phase === 2) { this.showPhase(1); return; }
     },
 
     showValidationError: function(msg) {

@@ -40,9 +40,11 @@ HTML é montado em runtime: `index.html` (~1750 linhas) tem containers vazios
 - `dashboard.js` (151 linhas) — grid de jogos, inclui `shareGame`/`copyShareUrl`/`closeShareModal`
   (feature de compartilhamento da sessão 2026-07-01).
 - `library.js` (207 linhas) — biblioteca de imagens (gerenciador + modal de seleção no editor).
-- `editorShell.js` (410 linhas) — os 5 passos do editor, navegação, campos genéricos
-  (nome, disciplina, autores, regra/objetivo/enunciado, design de frente/verso). Passo 4
-  (cartas) é meramente um container (`#creator-step-4`) preenchido pelo módulo do jogo.
+- `editorShell.js` — o editor (3 telas desde 2026-09-22, ver [[sessao_2026-09-22_editor_3_telas]]:
+  Tela Geral → Tela dos Blocos [hub 2x2] → Tela da Revisão), navegação, campos genéricos
+  (nome, disciplina, autores, regra/objetivo/enunciado, design de frente/verso). O bloco
+  "Criação de Cartas" é meramente um container (`#creator-step-4`, id preservado) preenchido
+  pelo módulo do jogo.
 - `modals.js` (31 linhas) — modais genéricos (notificação, confirmação, etc.).
 
 ## js/games/registry.js (14 linhas)
@@ -78,10 +80,11 @@ Padrão pensado para múltiplos modelos; hoje só "Código Secreto" se registra.
 - Acessado via `play.html?code=<share_code>`, sem autenticação. `share_code` é gerado
   pelo dashboard (`dashboardMethods.shareGame`) e salvo na tabela `jogos`.
 
-## Fluxo de telas (inalterado conceitualmente desde 2026-06-24)
-`newGame()`/`editGame(id)` → editor (5 passos, `editorShellMethods` + `editorCartasMethods`)
-→ `testGameFromCreator()` → `#modal-difficulty` → player em modo teste
-(`playerMethods`, dentro do `index.html`) → `backFromPlayer()` volta ao passo 5. Ou:
+## Fluxo de telas (reestruturado 2026-09-22, ver [[sessao_2026-09-22_editor_3_telas]])
+`newGame()`/`editGame(id)` → editor (3 telas: Geral → Blocos [hub 2x2] → Revisão,
+`editorShellMethods` + `editorCartasMethods`) → `testGameFromCreator()` →
+`#modal-difficulty` → player em modo teste (`playerMethods`, dentro do
+`index.html`) → `backFromPlayer()` volta à Tela da Revisão (`showPhase(3)`). Ou:
 dashboard → `openDifficultySelect(gameId)` → player real → `backFromPlayer()` volta ao
 dashboard. Separadamente: link público `play.html?code=...` roda o fluxo standalone
 em `js/play.js`, sem nunca tocar `index.html`.

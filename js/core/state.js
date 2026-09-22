@@ -8,6 +8,7 @@ export const state = {
     games: [],
     editingGame: null,
     editingStep: 1,
+    editingBlock: null,
     activeGame: null,
     codeSizeOption: 4,
     currentCodeSize: 4,
