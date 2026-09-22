@@ -78,16 +78,16 @@ export const dashboardMethods = {
         }
 
         const CARD_ACCENTS = [
-            { bar: 'bg-green-500', chipBg: 'bg-green-100', chipText: 'text-green-700' },
-            { bar: 'bg-amber-500', chipBg: 'bg-amber-100', chipText: 'text-amber-700' },
-            { bar: 'bg-sky-500', chipBg: 'bg-sky-100', chipText: 'text-sky-700' },
-            { bar: 'bg-pink-500', chipBg: 'bg-pink-100', chipText: 'text-pink-700' }
+            { bar: 'bg-green-500', chipBg: 'bg-green-100', chipText: 'text-green-700', cardBg: 'from-green-50/70', cardBorder: 'border-green-100' },
+            { bar: 'bg-amber-500', chipBg: 'bg-amber-100', chipText: 'text-amber-700', cardBg: 'from-amber-50/70', cardBorder: 'border-amber-100' },
+            { bar: 'bg-sky-500', chipBg: 'bg-sky-100', chipText: 'text-sky-700', cardBg: 'from-sky-50/70', cardBorder: 'border-sky-100' },
+            { bar: 'bg-pink-500', chipBg: 'bg-pink-100', chipText: 'text-pink-700', cardBg: 'from-pink-50/70', cardBorder: 'border-pink-100' }
         ];
 
         this.state.games.forEach((game, index) => {
             const accent = CARD_ACCENTS[index % CARD_ACCENTS.length];
             const card = document.createElement('div');
-            card.className = "relative overflow-hidden bg-white p-6 rounded-[32px] border border-slate-200 shadow-sm hover:shadow-md transition group";
+            card.className = `relative overflow-hidden bg-gradient-to-b ${accent.cardBg} to-white p-6 rounded-[32px] border ${accent.cardBorder} shadow-sm hover:shadow-md transition group`;
             card.innerHTML = `
                 <div class="absolute top-0 left-0 right-0 h-1.5 ${accent.bar}"></div>
                 <div class="flex justify-between items-start mb-4 mt-1.5">
