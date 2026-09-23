@@ -46,9 +46,9 @@ export const dashboardMethods = {
 
         document.querySelectorAll('.nav-btn').forEach(b => {
             if(b.getAttribute('data-view') === viewId) {
-                b.className = "nav-btn w-full flex items-center gap-3 p-3 rounded-xl transition bg-white/15 text-white ring-1 ring-white/30 font-semibold";
+                b.className = "nav-btn w-full flex items-center gap-3 p-3 rounded-xl transition bg-green-50 text-green-800 ring-1 ring-green-200 font-semibold";
             } else {
-                b.className = "nav-btn w-full flex items-center gap-3 p-3 rounded-xl transition text-sky-100 hover:bg-white/15 hover:text-white";
+                b.className = "nav-btn w-full flex items-center gap-3 p-3 rounded-xl transition text-slate-500 hover:bg-slate-50";
             }
         });
     },
