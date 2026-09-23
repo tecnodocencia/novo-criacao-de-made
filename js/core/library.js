@@ -37,31 +37,39 @@ function bankFolderTileEl(folder, onClick) {
     return el;
 }
 
-function bankSectionHeaderEl() {
+// bankSectionHeaderEl/ownSectionHeaderEl/folderBackHeaderEl são usados tanto
+// na página "Minha Biblioteca" (fundo azul escuro, hero-surface) quanto no
+// modal de seleção de imagem do editor (fundo branco) — `onDark` escolhe a
+// cor de texto com contraste adequado para cada caso.
+function bankSectionHeaderEl(onDark) {
     const el = document.createElement('div');
     el.className = "col-span-full mb-1";
-    el.innerHTML = `<h3 class="text-sm font-black text-slate-400 uppercase tracking-widest">Banco de Imagens</h3>`;
+    const textClass = onDark ? 'text-sky-100' : 'text-slate-400';
+    el.innerHTML = `<h3 class="text-sm font-black ${textClass} uppercase tracking-widest">Banco de Imagens</h3>`;
     return el;
 }
 
-function ownSectionHeaderEl(label) {
+function ownSectionHeaderEl(label, onDark) {
     const el = document.createElement('div');
     el.className = "col-span-full mt-2 mb-1";
-    el.innerHTML = `<h3 class="text-sm font-black text-slate-400 uppercase tracking-widest">${label}</h3>`;
+    const textClass = onDark ? 'text-sky-100' : 'text-slate-400';
+    el.innerHTML = `<h3 class="text-sm font-black ${textClass} uppercase tracking-widest">${label}</h3>`;
     return el;
 }
 
-function folderBackHeaderEl(folder, onBack) {
+function folderBackHeaderEl(folder, onBack, onDark) {
     const accent = folderAccent(folder);
     const el = document.createElement('div');
     el.className = "col-span-full flex items-center gap-3 mb-1";
+    const labelClass = onDark ? 'text-white' : 'text-slate-700';
+    const countClass = onDark ? 'text-sky-100' : 'text-slate-400';
     el.innerHTML = `
         <button class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center hover:bg-slate-200 transition shrink-0" title="Voltar para a lista de pastas do banco de imagens.">
             <i class="fa-solid fa-arrow-left"></i>
         </button>
         <i class="fa-solid ${folder.icon} ${accent.icon}"></i>
-        <h3 class="font-black text-slate-700">${folder.label}</h3>
-        <span class="text-sm text-slate-400 font-bold">${folder.images.length} imagens</span>
+        <h3 class="font-black ${labelClass}">${folder.label}</h3>
+        <span class="text-sm ${countClass} font-bold">${folder.images.length} imagens</span>
     `;
     el.querySelector('button').onclick = onBack;
     return el;
@@ -69,8 +77,8 @@ function folderBackHeaderEl(folder, onBack) {
 
 // Monta as ladrilhos das pastas do Banco de Imagens (sempre disponíveis,
 // pois são arquivos estáticos do site — não dependem do Supabase).
-function appendBankFolderTiles(grid, onFolderClick) {
-    grid.appendChild(bankSectionHeaderEl());
+function appendBankFolderTiles(grid, onFolderClick, onDark) {
+    grid.appendChild(bankSectionHeaderEl(onDark));
     imageBankFolders.forEach(folder => {
         grid.appendChild(bankFolderTileEl(folder, () => onFolderClick(folder.key)));
     });
@@ -78,9 +86,9 @@ function appendBankFolderTiles(grid, onFolderClick) {
 
 // Renderiza dentro do container o conteúdo de uma pasta do banco (imagens
 // clicáveis conforme onImageClick) com um cabeçalho "voltar".
-function renderBankFolderInto(grid, folder, onBack, onImageClick, imageItemClass) {
+function renderBankFolderInto(grid, folder, onBack, onImageClick, imageItemClass, onDark) {
     grid.innerHTML = '';
-    grid.appendChild(folderBackHeaderEl(folder, onBack));
+    grid.appendChild(folderBackHeaderEl(folder, onBack, onDark));
     folder.images.forEach(img => {
         const item = document.createElement('div');
         item.className = imageItemClass;
@@ -151,14 +159,15 @@ export const libraryMethods = {
                 folder,
                 () => this.closeLibraryManagerFolder(),
                 (url) => this.previewImageDirect(url),
-                "group relative aspect-square bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer"
+                "group relative aspect-square bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer",
+                true
             );
             return;
         }
 
         grid.innerHTML = '';
-        appendBankFolderTiles(grid, (key) => this.openLibraryManagerFolder(key));
-        grid.appendChild(ownSectionHeaderEl('Minhas Imagens'));
+        appendBankFolderTiles(grid, (key) => this.openLibraryManagerFolder(key), true);
+        grid.appendChild(ownSectionHeaderEl('Minhas Imagens', true));
 
         const ownContainer = document.createElement('div');
         ownContainer.className = "col-span-full grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6";
