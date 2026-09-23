@@ -146,5 +146,6 @@ export const editorCartasMethods = {
         this.closeCardModal();
         this.renderEditorGrid();
         this.updateSecretCardCounter();
+        this.scheduleAutoSave();
     }
 };

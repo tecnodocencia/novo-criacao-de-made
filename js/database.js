@@ -49,6 +49,13 @@ export const dbService = {
             enunciado: jogo.enunciado || "",
             explicacao: jogo.explicacao || "",
             cards: jogo.cards || [],
+            // Coluna já é snake_case sem case-folding (ao contrário de
+            // frontdesign/backdesign/disciplineinfo), então não precisa de
+            // remap em remapJogo() — o app lê/escreve is_draft diretamente.
+            // Default true só protege objetos antigos em memória que
+            // antecedem este campo; o valor em si nunca é decidido aqui —
+            // quem decide é editorShell.js (getDefaultData/saveGame).
+            is_draft: jogo.is_draft !== false,
             user_id: user.id
         }
 

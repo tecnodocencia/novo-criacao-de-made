@@ -1,5 +1,5 @@
 // js/core/editorShell.js
-import { dbService } from '../database.js?v=1';
+import { dbService } from '../database.js?v=2';
 import { getGame } from '../games/registry.js?v=1';
 
 export const frontDesigns = [
@@ -73,6 +73,12 @@ export const editorShellMethods = {
         if (Array.isArray(this.state.editingGame.cards)) {
             this.state.editingGame.cards.forEach((card, idx) => { card.isCorrect = idx < 6; });
         }
+        // Defesa contra jogos salvos antes da coluna is_draft existir (o
+        // backfill da migration já cobre o banco, isso só protege contra um
+        // objeto em memória de uma sessão que ainda não recarregou).
+        if (typeof this.state.editingGame.is_draft === 'undefined') {
+            this.state.editingGame.is_draft = false;
+        }
         this.state.editingStep = 1;
         this.state.editingBlock = null;
         this.syncEditorUI();
@@ -136,6 +142,18 @@ export const editorShellMethods = {
     },
 
     persistEditorFields: function() {
+        this._syncEditorFieldsFromDom();
+        this.scheduleAutoSave();
+    },
+
+    // Lê os inputs do DOM de volta para state.editingGame, sem nenhum efeito
+    // colateral de agendamento. Existe separada de persistEditorFields()
+    // (que É a versão pública, chamada pela navegação entre telas/blocos e
+    // agenda um auto-save) porque autoSaveNow() também precisa sincronizar o
+    // DOM antes de salvar — se autoSaveNow() chamasse persistEditorFields()
+    // diretamente, cada auto-save reagendaria a si mesmo para sempre
+    // (loop infinito a cada ~1.8s mesmo com o editor parado).
+    _syncEditorFieldsFromDom: function() {
         if (!this.state.editingGame) return;
 
         this.state.editingGame.name = document.getElementById('edit-game-name')?.value || "Jogo sem Nome";
@@ -164,6 +182,71 @@ export const editorShellMethods = {
         this.state.editingGame.objetivo = document.getElementById('edit-game-objetivo')?.innerHTML || "";
         this.state.editingGame.enunciado = document.getElementById('edit-game-enunciado')?.innerHTML || "";
         this.state.editingGame.explicacao = document.getElementById('edit-game-explicacao')?.value || "";
+    },
+
+    // Debounce do auto-save: qualquer chamada reagenda o timer (~1.8s de
+    // silêncio antes de salvar). Se um auto-save já está em andamento
+    // (aguardando o Supabase responder), não reagenda na hora — só marca
+    // _autoSavePending, e é autoSaveNow() que decide reagendar depois que a
+    // chamada atual terminar (ver finally abaixo). Isso evita perder uma
+    // edição feita bem no meio de um auto-save em andamento (janela
+    // normalmente curta, mas existe em conexões lentas).
+    scheduleAutoSave: function() {
+        if (this.state.autoSaving) {
+            this._autoSavePending = true;
+            return;
+        }
+        if (this._autoSaveTimer) clearTimeout(this._autoSaveTimer);
+        this._autoSaveTimer = setTimeout(() => { this.autoSaveNow(); }, 1800);
+    },
+
+    autoSaveNow: async function() {
+        if (!this.state.editingGame || this.state.autoSaving) return;
+
+        this.state.autoSaving = true;
+        this.updateAutoSaveIndicator('saving');
+        try {
+            this._syncEditorFieldsFromDom();
+            const jogoSalvo = await dbService.salvarJogo(this.state.editingGame);
+
+            // Essencial no primeiro auto-save de um jogo novo: troca o id
+            // temporário ("game-"+Date.now(), ver newGame()) pelo id real do
+            // banco. Sem isso, cada auto-save subsequente veria um id ainda
+            // começando com "game-" e dbService.salvarJogo trataria como
+            // INSERT de novo, criando uma linha nova a cada auto-save em vez
+            // de atualizar sempre a mesma.
+            this.state.editingGame.id = jogoSalvo.id;
+            if (jogoSalvo.share_code) this.state.editingGame.share_code = jogoSalvo.share_code;
+
+            this.updateAutoSaveIndicator('saved');
+        } catch (error) {
+            console.error('Erro no auto-save:', error);
+            this.updateAutoSaveIndicator('error');
+        } finally {
+            this.state.autoSaving = false;
+            if (this._autoSavePending) {
+                this._autoSavePending = false;
+                this.scheduleAutoSave();
+            }
+        }
+    },
+
+    updateAutoSaveIndicator: function(status) {
+        const el = document.getElementById('autosave-indicator');
+        if (!el) return;
+        clearTimeout(this._autoSaveIndicatorHideTimer);
+
+        if (status === 'saving') {
+            el.innerText = 'Salvando...';
+            el.className = 'text-[11px] font-bold text-slate-400 transition-opacity duration-300 opacity-100';
+        } else if (status === 'saved') {
+            el.innerText = 'Salvo';
+            el.className = 'text-[11px] font-bold text-green-600 transition-opacity duration-300 opacity-100';
+            this._autoSaveIndicatorHideTimer = setTimeout(() => { el.classList.add('opacity-0'); }, 2000);
+        } else if (status === 'error') {
+            el.innerText = 'Erro ao salvar automaticamente';
+            el.className = 'text-[11px] font-bold text-red-500 transition-opacity duration-300 opacity-100';
+        }
     },
 
     showPhase: function(phase) {
@@ -311,6 +394,16 @@ export const editorShellMethods = {
     saveGame: async function() {
         // Sincroniza o DOM com o state antes de salvar (garante campos do passo atual)
         this.persistEditorFields();
+        // Cancela um auto-save pendente: persistEditorFields() acima acabou
+        // de reagendar o timer, e ele salvaria de novo ~1.8s depois com um
+        // this.state.editingGame que já foi zerado (ver abaixo), lançando
+        // uma exceção não tratada dentro de autoSaveNow (que já se protege
+        // com `if (!this.state.editingGame) return`, mas não há necessidade
+        // de deixar o timer solto).
+        if (this._autoSaveTimer) clearTimeout(this._autoSaveTimer);
+        // Único lugar do app que marca um jogo como definitivamente
+        // publicado/finalizado — auto-save nunca faz essa transição sozinho.
+        this.state.editingGame.is_draft = false;
         try {
             const jogoSalvo = await dbService.salvarJogo(this.state.editingGame);
 
@@ -352,6 +445,7 @@ export const editorShellMethods = {
             if (!this.state.editingGame.disciplineInfo.autores.includes(value)) {
                 this.state.editingGame.disciplineInfo.autores.push(value);
                 this.renderAuthorsList();
+                this.scheduleAutoSave();
             }
         }
         this.closeAuthorModal();
@@ -361,6 +455,7 @@ export const editorShellMethods = {
         if(this.state.editingGame && Array.isArray(this.state.editingGame.disciplineInfo?.autores)) {
             this.state.editingGame.disciplineInfo.autores.splice(idx, 1);
             this.renderAuthorsList();
+            this.scheduleAutoSave();
         }
     },
 
@@ -427,6 +522,7 @@ export const editorShellMethods = {
             if (typeof idx === 'number' && this.state.editingGame && this.state.editingGame.cards[idx]) {
                 if (side === 'front') this.state.editingGame.cards[idx].frontImage = dataUrl;
                 else this.state.editingGame.cards[idx].backImage = dataUrl;
+                this.scheduleAutoSave();
             }
         };
         reader.readAsDataURL(file);
@@ -437,6 +533,7 @@ export const editorShellMethods = {
         if (typeof idx === 'number' && this.state.editingGame && this.state.editingGame.cards[idx]) {
             if (side === 'front') { this.state.editingGame.cards[idx].frontImage = null; }
             if (side === 'back') { this.state.editingGame.cards[idx].backImage = null; }
+            this.scheduleAutoSave();
         }
     },
 
@@ -447,6 +544,7 @@ export const editorShellMethods = {
         else idx = (idx - 1 + frontDesigns.length) % frontDesigns.length;
         this.state.editingGame.frontDesign = frontDesigns[idx];
         document.getElementById('preview-front').src = this.state.editingGame.frontDesign;
+        this.scheduleAutoSave();
     },
 
     toggleBackDesign: function(dir) {
@@ -456,6 +554,7 @@ export const editorShellMethods = {
         else idx = (idx - 1 + backDesigns.length) % backDesigns.length;
         this.state.editingGame.backDesign = backDesigns[idx];
         document.getElementById('preview-back').src = this.state.editingGame.backDesign;
+        this.scheduleAutoSave();
     },
 
     handleExternalFrontImageUpload: async function(event) {
@@ -472,6 +571,7 @@ export const editorShellMethods = {
             if (this.state.editingGame) this.state.editingGame.frontDesign = publicUrl;
             document.getElementById('preview-front').src = publicUrl;
             document.getElementById('review-preview-front').src = publicUrl;
+            this.scheduleAutoSave();
         } catch (error) {
             console.error(error);
             this.showNotification("Erro ao enviar frente da carta.");
@@ -487,6 +587,7 @@ export const editorShellMethods = {
         }
         document.getElementById('preview-front').src = frontDesigns[0];
         document.getElementById('review-preview-front').src = frontDesigns[0];
+        this.scheduleAutoSave();
     },
 
     handleExternalBackImageUpload: async function(event) {
@@ -503,6 +604,7 @@ export const editorShellMethods = {
             if (this.state.editingGame) this.state.editingGame.backDesign = publicUrl;
             document.getElementById('preview-back').src = publicUrl;
             document.getElementById('review-preview-back').src = publicUrl;
+            this.scheduleAutoSave();
         } catch (error) {
             console.error(error);
             this.showNotification("Erro ao enviar verso da carta.");
@@ -518,5 +620,6 @@ export const editorShellMethods = {
         }
         document.getElementById('preview-back').src = backDesigns[0];
         document.getElementById('review-preview-back').src = backDesigns[0];
+        this.scheduleAutoSave();
     }
 };

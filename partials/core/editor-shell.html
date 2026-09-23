@@ -12,6 +12,7 @@
                                     <p class="text-[11px] uppercase tracking-[0.28em] text-slate-500 font-bold">Passo <span id="creator-step-current">1</span> de 3</p>
                                     <h3 class="text-lg font-black text-slate-900" id="creator-step-title">Dados do Jogo</h3>
                                 </div>
+                                <span id="autosave-indicator" class="text-[11px] font-bold text-slate-400 transition-opacity duration-300 opacity-0" aria-live="polite"></span>
                             </div>
                             <div class="relative h-2 rounded-full bg-slate-200 overflow-hidden mt-4">
                                 <div id="creator-progress-fill" class="absolute inset-y-0 left-0 bg-gradient-to-r from-green-600 to-sky-500 rounded-full transition-all duration-300" style="width:33.33%"></div>
@@ -27,16 +28,16 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
                                     <div>
                                         <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Título do Jogo</label>
-                                        <input id="edit-game-name" type="text" title="Nome que identifica o jogo. Aparecerá para o aluno e nas listagens do professor." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Jogo dos Mamíferos">
+                                        <input id="edit-game-name" type="text" oninput="app.scheduleAutoSave()" title="Nome que identifica o jogo. Aparecerá para o aluno e nas listagens do professor." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Jogo dos Mamíferos">
                                     </div>
                                     <div>
                                         <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo</label>
-                                        <input id="edit-game-conteudo" type="text" title="Assunto específico abordado pelo jogo dentro da disciplina escolhida." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Mamíferos, Frações, Leitura...">
+                                        <input id="edit-game-conteudo" type="text" oninput="app.scheduleAutoSave()" title="Assunto específico abordado pelo jogo dentro da disciplina escolhida." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Mamíferos, Frações, Leitura...">
                                     </div>
                                     <div>
                                         <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Disciplina</label>
                                         <div class="relative">
-                                            <select id="edit-game-disciplina" title="Disciplina escolar à qual o jogo pertence. Usada para organizar e filtrar os jogos." onchange="app.handleDisciplinaSelectChange(event)" class="w-full p-4 pr-11 border-2 border-slate-300 rounded-3xl outline-none focus:border-emerald-500 transition text-sm bg-white appearance-none cursor-pointer">
+                                            <select id="edit-game-disciplina" title="Disciplina escolar à qual o jogo pertence. Usada para organizar e filtrar os jogos." onchange="app.handleDisciplinaSelectChange(event); app.scheduleAutoSave();" class="w-full p-4 pr-11 border-2 border-slate-300 rounded-3xl outline-none focus:border-emerald-500 transition text-sm bg-white appearance-none cursor-pointer">
                                                 <option value="Biologia">Biologia</option>
                                                 <option value="Dança">Dança</option>
                                                 <option value="Educação Física">Educação Física</option>
@@ -58,7 +59,7 @@
                                         </div>
                                         <div id="edit-game-disciplina-outro-wrap" class="mt-2 hidden">
                                             <div class="flex gap-2">
-                                                <input id="edit-game-disciplina-outro" type="text" title="Digite o nome da disciplina quando ela não estiver na lista." placeholder="Especifique a Disciplina" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" />
+                                                <input id="edit-game-disciplina-outro" type="text" oninput="app.scheduleAutoSave()" title="Digite o nome da disciplina quando ela não estiver na lista." placeholder="Especifique a Disciplina" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" />
                                                 <button onclick="app.clearDisciplinaOutro()" title="Limpar o texto digitado na disciplina personalizada." class="px-3 bg-red-500 text-white rounded-2xl">Remover</button>
                                             </div>
                                         </div>
@@ -66,7 +67,7 @@
                                     <div>
                                         <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Série</label>
                                         <div class="relative">
-                                            <select id="edit-game-serie" title="Ano/série escolar para a qual o jogo foi pensado." onchange="app.handleSerieSelectChange(event)" class="w-full p-4 pr-11 border-2 border-slate-300 rounded-3xl outline-none focus:border-emerald-500 transition text-sm bg-white appearance-none cursor-pointer">
+                                            <select id="edit-game-serie" title="Ano/série escolar para a qual o jogo foi pensado." onchange="app.handleSerieSelectChange(event); app.scheduleAutoSave();" class="w-full p-4 pr-11 border-2 border-slate-300 rounded-3xl outline-none focus:border-emerald-500 transition text-sm bg-white appearance-none cursor-pointer">
                                                 <option value="1º ano">1º ano</option>
                                                 <option value="2º ano">2º ano</option>
                                                 <option value="3º ano">3º ano</option>
@@ -86,7 +87,7 @@
                                         </div>
                                         <div id="edit-game-serie-outro-wrap" class="mt-2 hidden">
                                             <div class="flex gap-2">
-                                                <input id="edit-game-serie-outro" type="text" title="Digite a série quando ela não estiver na lista." placeholder="Especifique a Série" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" />
+                                                <input id="edit-game-serie-outro" type="text" oninput="app.scheduleAutoSave()" title="Digite a série quando ela não estiver na lista." placeholder="Especifique a Série" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" />
                                                 <button onclick="app.clearSerieOutro()" title="Limpar o texto digitado na série personalizada." class="px-3 bg-red-500 text-white rounded-2xl">Remover</button>
                                             </div>
                                         </div>
@@ -208,7 +209,7 @@
                                                     <i class="fa-solid fa-eraser"></i>
                                                 </button>
                                             </div>
-                                            <div id="edit-game-regra" contenteditable="true" title="Texto que descreve como o jogo funciona e como o aluno deve jogar." class="richtext-editable min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.</div>
+                                            <div id="edit-game-regra" contenteditable="true" oninput="app.scheduleAutoSave()" title="Texto que descreve como o jogo funciona e como o aluno deve jogar." class="richtext-editable min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolher as cartas corretas sobre Mamíferos. Posicionar as cartas escolhidas corretamente. Verificar o feedback. Se acertar, o jogo finaliza; se errar, o jogo abre a possibilidade para uma nova tentativa. O número de tentativas depende do nível do jogo: 10 (nível 1), 8 (nível 2), 6 (nível 3), 5 (nível 4). A pontuação depende do número de tentativas dentro do Nível escolhido.</div>
                                         </div>
                                     </div>
                                     <div>
@@ -232,7 +233,7 @@
                                                     <i class="fa-solid fa-eraser"></i>
                                                 </button>
                                             </div>
-                                            <div id="edit-game-objetivo" contenteditable="true" title="Texto que explica o que o aluno precisa alcançar para vencer o jogo." class="richtext-editable min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.</div>
+                                            <div id="edit-game-objetivo" contenteditable="true" oninput="app.scheduleAutoSave()" title="Texto que explica o que o aluno precisa alcançar para vencer o jogo." class="richtext-editable min-h-24 max-h-56 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre Mamíferos da área de Biologia, acertando o conteúdo e a ordem que as cartas foram selecionadas.</div>
                                         </div>
                                     </div>
                                     </div>
@@ -338,12 +339,12 @@
                                                     <i class="fa-solid fa-eraser"></i>
                                                 </button>
                                             </div>
-                                            <div id="edit-game-enunciado" contenteditable="true" title="Comando inicial exibido ao aluno explicando o que ele deve fazer no jogo." class="richtext-editable min-h-20 max-h-48 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolha as cartas que representam animais <strong style="color:#b91c1c">Mamíferos</strong> e coloque-as na ordem correta para desvendar o código secreto.</div>
+                                            <div id="edit-game-enunciado" contenteditable="true" oninput="app.scheduleAutoSave()" title="Comando inicial exibido ao aluno explicando o que ele deve fazer no jogo." class="richtext-editable min-h-20 max-h-48 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;">Escolha as cartas que representam animais <strong style="color:#b91c1c">Mamíferos</strong> e coloque-as na ordem correta para desvendar o código secreto.</div>
                                         </div>
                                     </div>
                                     <div>
                                         <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
-                                        <textarea id="edit-game-explicacao" oninput="app.autoResizeTextarea(this)" title="Texto exibido ao aluno ao final do jogo, explicando a resposta e como jogar." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-[200px]" placeholder="Texto exibido ao final revelando o porquê da resposta..." style="resize: none;">• Observe as 12 possibilidades de cartas que estão no banco.
+                                        <textarea id="edit-game-explicacao" oninput="app.autoResizeTextarea(this); app.scheduleAutoSave();" title="Texto exibido ao aluno ao final do jogo, explicando a resposta e como jogar." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-[200px]" placeholder="Texto exibido ao final revelando o porquê da resposta..." style="resize: none;">• Observe as 12 possibilidades de cartas que estão no banco.
 • Clique na carta escolhida para adicioná-la à sua tentativa na mesa.
 • Repita o processo até que todos os espaços estejam preenchidos.
 • Clique no botão para validar a resposta.

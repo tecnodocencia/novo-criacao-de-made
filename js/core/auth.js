@@ -1,5 +1,5 @@
 // js/core/auth.js
-import { dbService } from '../database.js?v=1';
+import { dbService } from '../database.js?v=2';
 import { getGame } from '../games/registry.js?v=1';
 
 export const authMethods = {

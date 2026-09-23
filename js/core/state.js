@@ -9,6 +9,7 @@ export const state = {
     editingGame: null,
     editingStep: 1,
     editingBlock: null,
+    autoSaving: false,
     activeGame: null,
     codeSizeOption: 4,
     currentCodeSize: 4,

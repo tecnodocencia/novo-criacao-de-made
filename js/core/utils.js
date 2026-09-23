@@ -82,6 +82,11 @@ export const utilsMethods = {
         span.appendChild(range.extractContents());
         range.insertNode(span);
         selection.removeAllRanges();
+        // Manipulação via Range API não dispara evento 'input' de forma
+        // confiável em todos os navegadores — diferente de digitação direta
+        // no contenteditable (coberta pelo oninput do próprio elemento no
+        // HTML) — por isso o auto-save é agendado explicitamente aqui.
+        if (typeof this.scheduleAutoSave === 'function') this.scheduleAutoSave();
     },
 
     // Alterna uma tag de formatação simples (negrito/itálico/sublinhado) na seleção:
@@ -100,6 +105,7 @@ export const utilsMethods = {
                 const parent = node.parentNode;
                 while (node.firstChild) parent.insertBefore(node.firstChild, node);
                 parent.removeChild(node);
+                if (typeof this.scheduleAutoSave === 'function') this.scheduleAutoSave();
                 return;
             }
             node = node.parentNode;
@@ -110,6 +116,8 @@ export const utilsMethods = {
         wrapper.appendChild(range.extractContents());
         range.insertNode(wrapper);
         selection.removeAllRanges();
+        // Ver comentário em wrapSelectionInRed sobre Range API + evento 'input'.
+        if (typeof this.scheduleAutoSave === 'function') this.scheduleAutoSave();
     },
 
     toggleBold: function(elementId) { this.toggleInlineFormat(elementId, 'B'); },
@@ -151,6 +159,7 @@ export const utilsMethods = {
                     parent.insertBefore(node.firstChild, node);
                 }
                 parent.removeChild(node);
+                if (typeof this.scheduleAutoSave === 'function') this.scheduleAutoSave();
                 return;
             }
             node = node.parentNode;

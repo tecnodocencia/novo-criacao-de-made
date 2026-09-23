@@ -1,5 +1,5 @@
 // js/games/codigo-secreto/player.js
-import { difficultyRules, applyReplaySwap, resolveRepeatCount, getLevelDescription, calculateScore } from './model.js?v=2';
+import { difficultyRules, applyReplaySwap, resolveRepeatCount, getLevelDescription, calculateScore } from './model.js?v=3';
 
 export { difficultyRules };
 

@@ -1,6 +1,6 @@
 // js/play.js — Página pública de jogo (sem autenticação obrigatória)
 import { supabase } from './supabase.js?v=1';
-import { difficultyRules, applyReplaySwap, resolveRepeatCount, getLevelDescription, calculateScore } from './games/codigo-secreto/model.js?v=2';
+import { difficultyRules, applyReplaySwap, resolveRepeatCount, getLevelDescription, calculateScore } from './games/codigo-secreto/model.js?v=3';
 
 // ─── Estado global do jogo ───────────────────────────────────────────────────
 const gs = {

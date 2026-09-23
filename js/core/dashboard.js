@@ -1,5 +1,5 @@
 // js/core/dashboard.js
-import { dbService } from '../database.js?v=1';
+import { dbService } from '../database.js?v=2';
 
 function formatDateTimeBR(dateStr) {
     if (!dateStr) return '';
@@ -93,6 +93,10 @@ export const dashboardMethods = {
                     <div class="w-10 h-10 rounded-2xl ${accent.chipBg} ${accent.chipText} flex items-center justify-center font-black">
                         <i class="fa-solid fa-puzzle-piece"></i>
                     </div>
+                    ${game.is_draft ? `
+                    <span class="inline-flex items-center gap-1.5 bg-amber-100 text-amber-700 text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full" title="Este jogo foi salvo automaticamente durante a criação, mas ainda não foi finalizado com o botão &quot;Salvar Jogo&quot;.">
+                        <i class="fa-solid fa-pen"></i> Rascunho
+                    </span>` : ''}
                 </div>
                 <h3 class="text-lg font-bold text-slate-800 mb-4">${game.name || 'Sem título'}</h3>
                 <div class="space-y-2 text-sm text-slate-500 mb-4">

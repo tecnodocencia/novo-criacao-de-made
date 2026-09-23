@@ -115,6 +115,10 @@ export function applyReplaySwap(secretCode, correctCards, rules) {
 
 export function getDefaultData() {
     return {
+        // Jogo recém-criado começa como rascunho — só vira is_draft:false
+        // quando o professor clica explicitamente em "Salvar Jogo"
+        // (ver saveGame() em editorShell.js). Auto-save nunca altera isso.
+        is_draft: true,
         frontDesign: "imagens/frente/frente01.png",
         backDesign: "imagens/verso/Cópia de Trás da Carta - Natureza.png",
         disciplineInfo: { disciplina: "Biologia", conteudo: "Mamífero", serie: "1º ano", autores: [] },
