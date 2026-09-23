@@ -38,7 +38,7 @@ const BLOCK_THEME_BG = {
     4: ['bg-gradient-to-br', 'from-pink-300', 'via-pink-600', 'to-pink-950']
 };
 const ALL_EDITOR_BG_CLASSES = Array.from(new Set([...DEFAULT_EDITOR_BG, ...Object.values(BLOCK_THEME_BG).flat()]));
-const EDITOR_BG_TARGET_IDS = ['view-creator', 'editor-header', 'editor-aside', 'editor-footer'];
+const EDITOR_BG_TARGET_IDS = ['view-creator', 'editor-aside', 'editor-footer'];
 
 function stripHtml(html) {
     const div = document.createElement('div');
