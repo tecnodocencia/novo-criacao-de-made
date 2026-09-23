@@ -27,11 +27,17 @@ export const backDesigns = [
 const PHASE_TITLES = { 1: 'Dados do Jogo', 2: 'Blocos de Edição', 3: 'Revisão e Teste' };
 const BLOCK_TITLES = { 1: 'Regras', 2: 'Aparência', 3: 'Enunciado e Feedbacks', 4: 'Criação de Cartas' };
 
-// Cor de fundo do editor: neutra por padrão, mas assume o tom do bloco
-// aberto (mesma cor do respectivo tile no hub) enquanto ele está ativo.
-const DEFAULT_EDITOR_BG = 'bg-cyan-100';
-const BLOCK_THEME_BG = { 1: 'bg-amber-100', 2: 'bg-green-100', 3: 'bg-sky-100', 4: 'bg-pink-100' };
-const EDITOR_BG_CLASSES = [DEFAULT_EDITOR_BG, ...Object.values(BLOCK_THEME_BG)];
+// Cor de fundo do editor: azul por padrão (igual ao resto do sistema), mas
+// assume o tom do bloco aberto (mesma cor do respectivo tile no hub)
+// enquanto ele está ativo.
+const DEFAULT_EDITOR_BG = ['bg-gradient-to-br', 'from-sky-600', 'via-blue-700', 'to-sky-800'];
+const BLOCK_THEME_BG = {
+    1: ['bg-gradient-to-br', 'from-amber-500', 'via-orange-600', 'to-amber-700'],
+    2: ['bg-gradient-to-br', 'from-emerald-500', 'via-green-600', 'to-emerald-700'],
+    3: ['bg-gradient-to-br', 'from-sky-500', 'via-blue-600', 'to-sky-700'],
+    4: ['bg-gradient-to-br', 'from-pink-500', 'via-rose-600', 'to-pink-700']
+};
+const ALL_EDITOR_BG_CLASSES = Array.from(new Set([...DEFAULT_EDITOR_BG, ...Object.values(BLOCK_THEME_BG).flat()]));
 const EDITOR_BG_TARGET_IDS = ['view-creator', 'editor-header', 'editor-aside', 'editor-footer'];
 
 function stripHtml(html) {
@@ -228,12 +234,12 @@ export const editorShellMethods = {
             stepTitle.innerText = (phase === 2 && block) ? BLOCK_TITLES[block] : (PHASE_TITLES[phase] || 'Editor');
         }
 
-        const bgClass = (phase === 2 && block && BLOCK_THEME_BG[block]) ? BLOCK_THEME_BG[block] : DEFAULT_EDITOR_BG;
+        const bgClasses = (phase === 2 && block && BLOCK_THEME_BG[block]) ? BLOCK_THEME_BG[block] : DEFAULT_EDITOR_BG;
         EDITOR_BG_TARGET_IDS.forEach(id => {
             const el = document.getElementById(id);
             if (!el) return;
-            el.classList.remove(...EDITOR_BG_CLASSES);
-            el.classList.add(bgClass);
+            el.classList.remove(...ALL_EDITOR_BG_CLASSES);
+            el.classList.add(...bgClasses);
         });
     },
 

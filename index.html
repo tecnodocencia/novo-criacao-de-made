@@ -607,6 +607,32 @@
             33% { transform: translate(24px, -20px) scale(1.08); }
             66% { transform: translate(-18px, 18px) scale(0.94); }
         }
+
+        /* Fundo "hero" reutilizável: textura de grade diagonal + marca
+           d'água MADE, usado no login e em todas as telas do sistema. */
+        .hero-surface { position: relative; overflow: hidden; }
+        .hero-surface::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0.07;
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.6) 0, rgba(255,255,255,0.6) 1px, transparent 1px, transparent 42px);
+            pointer-events: none;
+        }
+        .hero-watermark {
+            position: absolute;
+            top: -1.5rem;
+            right: -0.5rem;
+            font-size: 7rem;
+            font-weight: 900;
+            color: rgba(255,255,255,0.1);
+            line-height: 1;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+        }
+        .hero-content { position: relative; z-index: 10; }
     </style>
 </head>
 <body class="overflow-hidden">
@@ -730,34 +756,37 @@
         </div>
     </section>
 
-    <div id="main-layout" class="hidden h-screen w-full flex relative isolate overflow-hidden bg-emerald-50">
+    <div id="main-layout" class="hidden h-screen w-full flex relative isolate overflow-hidden bg-sky-700">
 
-        <aside class="w-64 bg-white border-r flex flex-col shrink-0 shadow-sm">
-            <div class="p-8 flex items-center justify-center">
-                <img src="Criação vermelho sem.png" alt="Logo MADE" class="h-10 w-auto object-contain" />
+        <aside class="hero-surface w-64 bg-gradient-to-b from-sky-600 to-blue-800 border-r border-white/10 flex flex-col shrink-0 shadow-sm">
+            <div class="decor-blob absolute -z-0 w-56 h-56 bg-cyan-300/30 -top-10 -left-16" style="animation-delay:2s"></div>
+            <div class="p-8 flex items-center justify-center hero-content">
+                <div class="bg-white rounded-2xl p-2">
+                    <img src="Criação vermelho sem.png" alt="Logo MADE" class="h-8 w-auto object-contain" />
+                </div>
             </div>
-            <nav class="flex-1 px-4 space-y-2">
-                <button onclick="app.switchView('dashboard')" class="nav-btn w-full flex items-center gap-3 p-3 rounded-xl transition bg-green-50 text-green-800 ring-1 ring-green-200 font-semibold" data-view="dashboard">
+            <nav class="flex-1 px-4 space-y-2 hero-content">
+                <button onclick="app.switchView('dashboard')" class="nav-btn w-full flex items-center gap-3 p-3 rounded-xl transition bg-white/15 text-white ring-1 ring-white/30 font-semibold" data-view="dashboard">
                     <span class="w-9 h-9 rounded-xl bg-green-100 text-green-600 flex items-center justify-center shrink-0">
                         <i class="fa-solid fa-house text-sm"></i>
                     </span>
                     <span class="font-semibold text-sm">Meus Materiais</span>
                 </button>
-                <button onclick="app.newGame()" class="nav-btn w-full flex items-center gap-3 p-3 rounded-xl transition text-slate-500 hover:bg-slate-50" data-view="creator">
+                <button onclick="app.newGame()" class="nav-btn w-full flex items-center gap-3 p-3 rounded-xl transition text-sky-100 hover:bg-white/15 hover:text-white" data-view="creator">
                     <span class="w-9 h-9 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
                         <i class="fa-solid fa-plus-circle text-sm"></i>
                     </span>
                     <span class="font-semibold text-sm">Novo Jogo</span>
                 </button>
-                <button onclick="app.switchView('library')" class="nav-btn w-full flex items-center gap-3 p-3 rounded-xl transition text-slate-500 hover:bg-slate-50" data-view="library">
+                <button onclick="app.switchView('library')" class="nav-btn w-full flex items-center gap-3 p-3 rounded-xl transition text-sky-100 hover:bg-white/15 hover:text-white" data-view="library">
                     <span class="w-9 h-9 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center shrink-0">
                         <i class="fa-solid fa-images text-sm"></i>
                     </span>
                     <span class="font-semibold text-sm">Biblioteca</span>
                 </button>
 
-                <div class="pt-4 mt-4 border-t border-slate-100">
-                    <button onclick="app.switchView('settings')" class="nav-btn w-full flex items-center gap-3 p-3 rounded-xl transition text-slate-500 hover:bg-slate-50" data-view="settings">
+                <div class="pt-4 mt-4 border-t border-white/15">
+                    <button onclick="app.switchView('settings')" class="nav-btn w-full flex items-center gap-3 p-3 rounded-xl transition text-sky-100 hover:bg-white/15 hover:text-white" data-view="settings">
                         <span class="w-9 h-9 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center shrink-0">
                             <i class="fa-solid fa-gear text-sm"></i>
                         </span>
@@ -765,14 +794,14 @@
                     </button>
                 </div>
             </nav>
-            <div class="p-6 border-t text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center">
+            <div class="hero-content p-6 border-t border-white/15 text-[10px] text-sky-200 font-bold uppercase tracking-widest text-center">
                 Versão Beta 0.1
             </div>
         </aside>
 
         <main class="flex-1 flex flex-col overflow-hidden min-h-screen relative z-0">
             
-            <section id="view-dashboard" class="view-section flex-col p-8 overflow-y-auto active bg-emerald-100">
+            <section id="view-dashboard" class="hero-surface view-section flex-col p-8 overflow-y-auto active bg-gradient-to-br from-sky-600 via-blue-700 to-sky-800">
                 <div class="flex justify-between items-center mb-8">
                     <h2 class="text-2xl font-bold text-slate-800">Materiais Criados</h2>
                 </div>
@@ -780,7 +809,7 @@
                     </div>
             </section>
 
-            <section id="view-settings" class="view-section flex-col p-8 overflow-y-auto hidden bg-teal-100">
+            <section id="view-settings" class="hero-surface view-section flex-col p-8 overflow-y-auto hidden bg-gradient-to-br from-sky-600 via-blue-700 to-sky-800">
                 <div class="flex justify-between items-center mb-8">
                     <h2 class="text-2xl font-bold text-slate-800">Configurações da Conta</h2>
                 </div>
@@ -824,7 +853,7 @@
                 </div>
             </section>
 
-            <section id="view-library" class="view-section flex-col p-8 overflow-y-auto hidden bg-sky-100">
+            <section id="view-library" class="hero-surface view-section flex-col p-8 overflow-y-auto hidden bg-gradient-to-br from-sky-600 via-blue-700 to-sky-800">
                 <div class="flex justify-between items-center mb-8">
                     <div>
                         <h2 class="text-2xl font-bold text-slate-800">Minha Biblioteca</h2>
@@ -842,7 +871,7 @@
                 </div>
             </section>
 
-            <section id="view-creator" class="view-section flex-col bg-cyan-100 hidden h-full">
+            <section id="view-creator" class="hero-surface view-section flex-col bg-gradient-to-br from-sky-600 via-blue-700 to-sky-800 hidden h-full">
                 <header class="h-20 border-b px-8 flex items-center justify-between shrink-0 bg-white z-10">
                     <div>
                         <h2 class="font-bold text-lg" id="editor-title-display">Novo Jogo</h2>
