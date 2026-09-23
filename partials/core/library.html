@@ -1,11 +1,15 @@
-                <div class="flex justify-between items-center mb-8">
+                <p class="hero-watermark">MADE</p>
+                <div class="decor-blob absolute -z-0 w-72 h-72 bg-sky-500/30 -top-16 -right-10" style="animation-delay:1s"></div>
+                <div class="decor-blob absolute -z-0 w-64 h-64 bg-blue-400/20 bottom-0 -left-16" style="animation-delay:7s"></div>
+
+                <div class="hero-content flex justify-between items-center mb-8">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 shrink-0 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg">
                             <i class="fa-solid fa-images"></i>
                         </div>
                         <div>
-                            <h2 class="text-2xl font-bold text-slate-800">Minha Biblioteca</h2>
-                            <p class="text-sm text-slate-500">Gerencie suas imagens para usar nos jogos.</p>
+                            <h2 class="text-2xl font-bold text-white">Minha Biblioteca</h2>
+                            <p class="text-sm text-slate-300">Gerencie suas imagens para usar nos jogos.</p>
                         </div>
                     </div>
                     <label class="cursor-pointer bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-2xl font-bold text-sm transition shadow-lg shadow-amber-100 flex items-center gap-2">
@@ -15,6 +19,6 @@
                     </label>
                 </div>
 
-                <div id="manager-library-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                <div id="manager-library-grid" class="hero-content grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
                     <!-- Imagens serão carregadas aqui -->
                 </div>

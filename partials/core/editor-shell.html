@@ -1,12 +1,15 @@
-                <header id="editor-header" class="h-20 border-b px-8 flex items-center justify-between shrink-0 bg-cyan-100 z-10">
+                <header id="editor-header" class="h-20 border-b border-white/10 px-8 flex items-center justify-between shrink-0 bg-gradient-to-br from-slate-900 via-cyan-950 to-slate-900 z-10">
                     <div>
-                        <h2 class="font-bold text-lg" id="editor-title-display">Novo Jogo</h2>
+                        <h2 class="font-bold text-lg text-white" id="editor-title-display">Novo Jogo</h2>
                         <p class="text-[10px] text-slate-400 font-bold uppercase">Configuração</p>
                     </div>
                 </header>
                 <div class="flex-1 min-h-0 overflow-y-auto">
-                    <aside id="editor-aside" class="flex-1 h-full min-h-0 p-10 bg-cyan-100 overflow-y-auto">
-                      <div class="w-full space-y-8">
+                    <aside id="editor-aside" class="hero-surface flex-1 h-full min-h-0 p-10 bg-gradient-to-br from-slate-900 via-cyan-950 to-slate-900 overflow-y-auto">
+                      <p class="hero-watermark">MADE</p>
+                      <div class="decor-blob absolute -z-0 w-72 h-72 bg-cyan-500/30 -top-16 -right-10" style="animation-delay:2s"></div>
+                      <div class="decor-blob absolute -z-0 w-64 h-64 bg-sky-400/20 bottom-0 -left-16" style="animation-delay:8s"></div>
+                      <div class="hero-content w-full space-y-8">
                         <div class="rounded-[32px] border border-slate-200 bg-white shadow-sm p-6 space-y-8">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between gap-3">
@@ -418,12 +421,12 @@
                         </div>
                         </div>
 
-                        <div id="creator-validation-message" class="text-sm font-semibold text-red-500 hidden mt-4"></div>
+                        <div id="creator-validation-message" class="text-sm font-semibold text-red-400 hidden mt-4"></div>
                       </div>
                     </aside>
                 </div>
-                <footer id="editor-footer" class="h-20 border-t px-8 flex items-center justify-between shrink-0 bg-cyan-100">
-                    <button id="creator-prev-btn" onclick="app.creatorPrevStep()" title="Voltar para o passo anterior do editor." class="px-6 py-3 border border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-sm transition hidden">
+                <footer id="editor-footer" class="h-20 border-t border-white/10 px-8 flex items-center justify-between shrink-0 bg-gradient-to-br from-slate-900 via-cyan-950 to-slate-900">
+                    <button id="creator-prev-btn" onclick="app.creatorPrevStep()" title="Voltar para o passo anterior do editor." class="px-6 py-3 border border-white/20 text-white hover:bg-white/10 font-bold rounded-xl text-sm transition hidden">
                         Voltar
                     </button>
                     <div id="creator-review-actions" class="ml-auto flex gap-3 hidden">
