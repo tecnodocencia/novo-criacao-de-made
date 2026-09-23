@@ -41,24 +41,27 @@
                                     </div>
                                     <div>
                                         <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Disciplina</label>
-                                        <select id="edit-game-disciplina" title="Disciplina escolar à qual o jogo pertence. Usada para organizar e filtrar os jogos." onchange="app.handleDisciplinaSelectChange(event)" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
-                                            <option value="Biologia">Biologia</option>
-                                            <option value="Dança">Dança</option>
-                                            <option value="Educação Física">Educação Física</option>
-                                            <option value="Espanhol">Espanhol</option>
-                                            <option value="Filosofia">Filosofia</option>
-                                            <option value="Física">Física</option>
-                                            <option value="História">História</option>
-                                            <option value="Geografia">Geografia</option>
-                                            <option value="Inglês">Inglês</option>
-                                            <option value="Matemática">Matemática</option>
-                                            <option value="Música">Música</option>
-                                            <option value="Português">Português</option>
-                                            <option value="Química">Química</option>
-                                            <option value="Sociologia">Sociologia</option>
-                                            <option value="Teatro">Teatro</option>
-                                            <option value="Outro">Outro</option>
-                                        </select>
+                                        <div class="relative">
+                                            <select id="edit-game-disciplina" title="Disciplina escolar à qual o jogo pertence. Usada para organizar e filtrar os jogos." onchange="app.handleDisciplinaSelectChange(event)" class="w-full p-4 pr-11 border-2 border-slate-300 rounded-3xl outline-none focus:border-emerald-500 transition text-sm bg-white appearance-none cursor-pointer">
+                                                <option value="Biologia">Biologia</option>
+                                                <option value="Dança">Dança</option>
+                                                <option value="Educação Física">Educação Física</option>
+                                                <option value="Espanhol">Espanhol</option>
+                                                <option value="Filosofia">Filosofia</option>
+                                                <option value="Física">Física</option>
+                                                <option value="História">História</option>
+                                                <option value="Geografia">Geografia</option>
+                                                <option value="Inglês">Inglês</option>
+                                                <option value="Matemática">Matemática</option>
+                                                <option value="Música">Música</option>
+                                                <option value="Português">Português</option>
+                                                <option value="Química">Química</option>
+                                                <option value="Sociologia">Sociologia</option>
+                                                <option value="Teatro">Teatro</option>
+                                                <option value="Outro">Outro</option>
+                                            </select>
+                                            <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none"></i>
+                                        </div>
                                         <div id="edit-game-disciplina-outro-wrap" class="mt-2 hidden">
                                             <div class="flex gap-2">
                                                 <input id="edit-game-disciplina-outro" type="text" title="Digite o nome da disciplina quando ela não estiver na lista." placeholder="Especifique a Disciplina" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" />
@@ -68,22 +71,25 @@
                                     </div>
                                     <div>
                                         <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Série</label>
-                                        <select id="edit-game-serie" title="Ano/série escolar para a qual o jogo foi pensado." onchange="app.handleSerieSelectChange(event)" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
-                                            <option value="1º ano">1º ano</option>
-                                            <option value="2º ano">2º ano</option>
-                                            <option value="3º ano">3º ano</option>
-                                            <option value="4º ano">4º ano</option>
-                                            <option value="5º ano">5º ano</option>
-                                            <option value="6º ano">6º ano</option>
-                                            <option value="7º ano">7º ano</option>
-                                            <option value="8º ano">8º ano</option>
-                                            <option value="9º ano">9º ano</option>
-                                            <option value="1º ano – EM">1º ano – EM</option>
-                                            <option value="2º ano – EM">2º ano – EM</option>
-                                            <option value="3º ano – EM">3º ano – EM</option>
-                                            <option value="Ensino Superior">Ensino Superior</option>
-                                            <option value="Outro">Outro</option>
-                                        </select>
+                                        <div class="relative">
+                                            <select id="edit-game-serie" title="Ano/série escolar para a qual o jogo foi pensado." onchange="app.handleSerieSelectChange(event)" class="w-full p-4 pr-11 border-2 border-slate-300 rounded-3xl outline-none focus:border-emerald-500 transition text-sm bg-white appearance-none cursor-pointer">
+                                                <option value="1º ano">1º ano</option>
+                                                <option value="2º ano">2º ano</option>
+                                                <option value="3º ano">3º ano</option>
+                                                <option value="4º ano">4º ano</option>
+                                                <option value="5º ano">5º ano</option>
+                                                <option value="6º ano">6º ano</option>
+                                                <option value="7º ano">7º ano</option>
+                                                <option value="8º ano">8º ano</option>
+                                                <option value="9º ano">9º ano</option>
+                                                <option value="1º ano – EM">1º ano – EM</option>
+                                                <option value="2º ano – EM">2º ano – EM</option>
+                                                <option value="3º ano – EM">3º ano – EM</option>
+                                                <option value="Ensino Superior">Ensino Superior</option>
+                                                <option value="Outro">Outro</option>
+                                            </select>
+                                            <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none"></i>
+                                        </div>
                                         <div id="edit-game-serie-outro-wrap" class="mt-2 hidden">
                                             <div class="flex gap-2">
                                                 <input id="edit-game-serie-outro" type="text" title="Digite a série quando ela não estiver na lista." placeholder="Especifique a Série" class="w-full p-3 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" />
