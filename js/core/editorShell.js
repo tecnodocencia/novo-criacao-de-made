@@ -27,6 +27,13 @@ export const backDesigns = [
 const PHASE_TITLES = { 1: 'Dados do Jogo', 2: 'Blocos de Edição', 3: 'Revisão e Teste' };
 const BLOCK_TITLES = { 1: 'Regras', 2: 'Aparência', 3: 'Enunciado e Feedbacks', 4: 'Criação de Cartas' };
 
+// Cor de fundo do editor: neutra por padrão, mas assume o tom do bloco
+// aberto (mesma cor do respectivo tile no hub) enquanto ele está ativo.
+const DEFAULT_EDITOR_BG = 'bg-cyan-100';
+const BLOCK_THEME_BG = { 1: 'bg-amber-100', 2: 'bg-green-100', 3: 'bg-sky-100', 4: 'bg-pink-100' };
+const EDITOR_BG_CLASSES = [DEFAULT_EDITOR_BG, ...Object.values(BLOCK_THEME_BG)];
+const EDITOR_BG_TARGET_IDS = ['view-creator', 'editor-header', 'editor-aside', 'editor-footer'];
+
 function stripHtml(html) {
     const div = document.createElement('div');
     div.innerHTML = html || '';
@@ -213,11 +220,21 @@ export const editorShellMethods = {
     },
 
     updateEditorHeader: function() {
-        const stepTitle = document.getElementById('creator-step-title');
-        if (!stepTitle) return;
         const phase = this.state.editingStep;
         const block = this.state.editingBlock;
-        stepTitle.innerText = (phase === 2 && block) ? BLOCK_TITLES[block] : (PHASE_TITLES[phase] || 'Editor');
+
+        const stepTitle = document.getElementById('creator-step-title');
+        if (stepTitle) {
+            stepTitle.innerText = (phase === 2 && block) ? BLOCK_TITLES[block] : (PHASE_TITLES[phase] || 'Editor');
+        }
+
+        const bgClass = (phase === 2 && block && BLOCK_THEME_BG[block]) ? BLOCK_THEME_BG[block] : DEFAULT_EDITOR_BG;
+        EDITOR_BG_TARGET_IDS.forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.remove(...EDITOR_BG_CLASSES);
+            el.classList.add(bgClass);
+        });
     },
 
     renderBlocksHub: function() {
