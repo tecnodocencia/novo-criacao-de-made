@@ -101,7 +101,7 @@ const TOUR_SCENES = [
     {
         caption: 'Todo mundo gosta de um bom mistério. Hoje você vai aprender a decifrar o Código Secreto.',
         render: () => `
-            <div class="rounded-[32px] bg-gradient-to-br from-sky-400 via-blue-700 to-blue-950 p-10 text-center text-white flex flex-col items-center justify-center gap-4 w-full" style="min-height:280px;">
+            <div class="rounded-[32px] bg-gradient-to-br from-rose-400 via-[#F40D30] to-rose-950 p-10 text-center text-white flex flex-col items-center justify-center gap-4 w-full" style="min-height:280px;">
                 <div class="w-20 h-20 rounded-3xl bg-white/15 flex items-center justify-center text-4xl">
                     <i class="fa-solid fa-key"></i>
                 </div>
