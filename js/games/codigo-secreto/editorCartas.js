@@ -4,14 +4,26 @@ export const editorCartasMethods = {
         const grid = document.getElementById('editor-grid');
         if(!grid || !this.state.editingGame) return;
         grid.innerHTML = '';
+
+        const sectionHeader = (label, colorClasses) => {
+            const el = document.createElement('div');
+            el.className = `col-span-full flex items-center gap-2 ${colorClasses} rounded-full px-4 py-2 text-[11px] font-black uppercase tracking-widest`;
+            el.innerHTML = label;
+            return el;
+        };
+
         this.state.editingGame.cards.forEach((card, idx) => {
+            if (idx === 0) {
+                grid.appendChild(sectionHeader('<i class="fa-solid fa-check-circle"></i> Cartas corretas (posições 1–6) — fazem parte do Código Secreto', 'bg-emerald-100 text-emerald-700'));
+            }
+            if (idx === 6) {
+                grid.appendChild(sectionHeader('<i class="fa-solid fa-times-circle"></i> Cartas distratoras (posições 7–12) — nunca fazem parte do Código Secreto', 'bg-red-100 text-red-700'));
+            }
+
             const cardEl = document.createElement('div');
             cardEl.className = `game-card flex flex-col p-3 cursor-pointer transition-all ${card.content || card.contentImage ? '' : 'empty'}`;
             cardEl.title = 'Clique para editar o conteúdo desta carta (texto ou imagem).';
-            cardEl.onclick = (e) => {
-                if (e.target.closest('.status-badge')) return;
-                this.openCardModal(idx);
-            };
+            cardEl.onclick = () => this.openCardModal(idx);
 
             const contentHtml = card.contentImage
                 ? `<img src="${card.contentImage}" class="max-w-full max-h-24 object-contain rounded-lg mb-1" />`
@@ -25,33 +37,21 @@ export const editorCartasMethods = {
                     `}
                 </div>
                 <div class="mt-2">
-                    <button onclick="app.toggleCardCorrect(${idx})" title="Alternar se esta carta pode fazer parte do Código Secreto (máximo de 6 cartas)." class="status-badge w-full inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-full text-white text-[10px] font-black uppercase tracking-wider transition-colors ${card.isCorrect ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-red-500 hover:bg-red-600'}">
+                    <div title="${card.isCorrect ? 'Esta carta pode fazer parte do Código Secreto (posição fixa).' : 'Esta carta é apenas distratora e nunca faz parte do Código Secreto (posição fixa).'}" class="w-full inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-full text-white text-[10px] font-black uppercase tracking-wider ${card.isCorrect ? 'bg-emerald-500' : 'bg-red-500'}">
                         <i class="fa-solid ${card.isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i>
-                        <span>${card.isCorrect ? 'Possível' : 'Não é'}</span>
-                    </button>
+                        <span>${card.isCorrect ? 'Correta' : 'Distratora'}</span>
+                    </div>
                 </div>
             `;
             grid.appendChild(cardEl);
         });
     },
 
-    toggleCardCorrect: function(idx) {
-        if(!this.state.editingGame) return;
-        const card = this.state.editingGame.cards[idx];
-        if (!card.isCorrect) {
-            const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
-            if(correctCount >= 6) { this.showNotification("Você já atingiu o limite de 6 cartas possíveis."); return; }
-        }
-        card.isCorrect = !card.isCorrect;
-        this.renderEditorGrid();
-        this.updateSecretCardCounter();
-    },
-
     updateSecretCardCounter: function() {
         const counterEl = document.getElementById('secret-card-counter');
         if (!counterEl || !this.state.editingGame) return;
         const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
-        counterEl.innerText = `${correctCount} / 6 selecionadas`;
+        counterEl.innerText = `${correctCount} / 6 corretas`;
     },
 
     openCardModal: function(idx) {
@@ -73,9 +73,13 @@ export const editorCartasMethods = {
             wrapper.classList.add('hidden');
         }
 
-        const radios = document.getElementsByName('modal-card-correct');
-        radios[0].checked = card.isCorrect === true;
-        radios[1].checked = card.isCorrect === false;
+        const statusEl = document.getElementById('modal-card-status');
+        if (statusEl) {
+            statusEl.className = `rounded-2xl p-4 flex items-center gap-3 text-sm font-bold ${card.isCorrect ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'}`;
+            statusEl.innerHTML = card.isCorrect
+                ? '<i class="fa-solid fa-check-circle"></i> Esta é uma carta correta (posição ' + (idx + 1) + ' de 12) — pode fazer parte do Código Secreto.'
+                : '<i class="fa-solid fa-times-circle"></i> Esta é uma carta distratora (posição ' + (idx + 1) + ' de 12) — nunca faz parte do Código Secreto.';
+        }
 
         this.switchSymTab('todos');
         document.getElementById('modal-card').style.display = 'flex';
@@ -117,7 +121,6 @@ export const editorCartasMethods = {
     saveCardModal: function() {
         const idx = parseInt(document.getElementById('modal-card-index').value);
         const content = document.getElementById('modal-card-content').value.trim();
-        const isCorrectChecked = document.querySelector('input[name="modal-card-correct"]:checked').value === "true";
 
         const urlVal = document.getElementById('modal-card-image-url').value.trim();
         if (urlVal) {
@@ -128,13 +131,9 @@ export const editorCartasMethods = {
 
         if (!content && !hasImage) { this.showNotification("A carta precisa ter texto ou uma imagem."); return; }
 
-        if (isCorrectChecked && !this.state.editingGame.cards[idx].isCorrect) {
-            const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
-            if(correctCount >= 6) { this.showNotification("Você já atingiu o limite de 6 cartas possíveis."); return; }
-        }
-
         this.state.editingGame.cards[idx].content = content;
-        this.state.editingGame.cards[idx].isCorrect = isCorrectChecked;
+        // isCorrect não é mais editável aqui — é fixo pela posição da carta
+        // (as 6 primeiras são sempre corretas, as 6 últimas sempre distratoras).
         if (this.state.tempContentImage) {
             this.state.editingGame.cards[idx].contentImage = this.state.tempContentImage;
         }

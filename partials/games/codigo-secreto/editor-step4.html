@@ -6,13 +6,13 @@
                                 <div>
                                     <div class="rounded-[28px] border border-slate-200 bg-emerald-50 p-4 text-slate-700 space-y-2">
                                         <p class="text-sm font-black">SOBRE AS CARTAS</p>
-                                        <p class="text-sm"> Crie 12 cartas no total. Destas, <strong>exatamente 6</strong> devem ser marcadas como "Possíveis para o Código". O computador escolherá um número específico dessas 6 cartas para formar o segredo, conforme o Nível escolhido. Nos níveis 3 e 4, é possível que o código apresente cartas repetidas. </p>
+                                        <p class="text-sm"> Crie 12 cartas no total. As <strong>6 primeiras</strong> (posições 1 a 6) são sempre as cartas corretas, que podem fazer parte do Código Secreto; as <strong>6 últimas</strong> (posições 7 a 12) são sempre distratoras e nunca entram no código. O computador escolherá um número específico das 6 cartas corretas para formar o segredo, conforme o Nível escolhido. Nos níveis 3 e 4, é possível que o código apresente cartas repetidas. </p>
                                     </div>
                                 </div>
                                 <div class="rounded-[28px] border border-slate-200 bg-slate-50 p-4">
                                     <div class="flex justify-between items-center mb-4">
                                         <p class="text-sm font-black text-slate-700">Cartas do Jogo</p>
-                                        <p id="secret-card-counter" class="text-sm font-bold text-slate-500">0 / 6 selecionadas</p>
+                                        <p id="secret-card-counter" class="text-sm font-bold text-slate-500">0 / 6 corretas</p>
                                     </div>
                                     <div id="editor-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3"></div>
                                 </div>

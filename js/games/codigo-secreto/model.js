@@ -122,7 +122,10 @@ export function getDefaultData() {
         objetivo: 'Descobrir, com o menor número de tentativas, o Código Secreto composto pelo conteúdo sobre <strong style="color:#b91c1c">Mamíferos</strong> da área de <strong style="color:#b91c1c">Biologia</strong>, acertando o conteúdo e a ordem que as cartas foram selecionadas.',
         enunciado: 'Escolha as cartas que representam <strong style="color:#b91c1c">animais mamíferos</strong> e coloque-as na ordem correta para desvendar o código secreto.',
         explicacao: '• Observe as 12 possibilidades de cartas que estão no banco. \n• Clique na carta escolhida para adicioná-la à sua tentativa na mesa. \n• Repita o processo até que todos os espaços estejam preenchidos. \n• Clique no botão para validar a resposta. \n• Observe o feedback do jogo: um pino verde significa que você acertou a carta e a posição. \n• Um pino amarelo significa que a carta pertence ao código, mas está na posição errada. \n• Um pino branco significa que essa carta não faz parte do código secreto.',
-        cards: Array.from({length: 12}, (_, i) => ({ id: "new-" + i, content: "", isCorrect: false, pileId: i + 1 }))
+        // As 6 primeiras cartas (índices 0-5) sempre fazem parte do Código
+        // Secreto; as 6 últimas (6-11) são sempre distratoras — posição fixa,
+        // não é mais uma escolha do professor (ver editorCartas.js).
+        cards: Array.from({length: 12}, (_, i) => ({ id: "new-" + i, content: "", isCorrect: i < 6, pileId: i + 1 }))
     };
 }
 

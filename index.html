@@ -1647,16 +1647,7 @@
                 </div>
                 <div>
                     <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Pertence ao Código Secreto?</label>
-                    <div class="flex gap-4">
-                        <label class="flex-1 flex items-center gap-3 p-4 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 transition" title="Esta carta poderá fazer parte do Código Secreto sorteado (máximo de 6 cartas).">
-                            <input type="radio" name="modal-card-correct" value="true" class="text-emerald-600 focus:ring-emerald-500">
-                            <span class="text-sm font-semibold text-slate-700">Sim</span>
-                        </label>
-                        <label class="flex-1 flex items-center gap-3 p-4 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 transition" title="Esta carta é apenas distratora e nunca fará parte do Código Secreto.">
-                            <input type="radio" name="modal-card-correct" value="false" class="text-emerald-600 focus:ring-emerald-500">
-                            <span class="text-sm font-semibold text-slate-700">Não</span>
-                        </label>
-                    </div>
+                    <div id="modal-card-status" title="Definido automaticamente pela posição da carta: as 6 primeiras são corretas, as 6 últimas são distratoras." class="rounded-2xl p-4 flex items-center gap-3 text-sm font-bold bg-emerald-50 text-emerald-700"></div>
                 </div>
             </div>
             <div class="flex gap-3 shrink-0">
@@ -1969,6 +1960,6 @@
         </div>
     </div>
 
-    <script type="module" src="js/app.js?v=1"></script>
+    <script type="module" src="js/app.js?v=2"></script>
 </body>
 </html>

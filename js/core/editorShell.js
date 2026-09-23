@@ -66,6 +66,13 @@ export const editorShellMethods = {
     editGame: function(id) {
         const g = this.state.games.find(x => x.id === id);
         this.state.editingGame = JSON.parse(JSON.stringify(g));
+        // As 6 primeiras cartas sempre corretas e as 6 últimas sempre
+        // distratoras (posição fixa) — normaliza jogos salvos antes dessa
+        // regra existir, para o editor nunca mostrar um estado que não é
+        // mais possível de configurar.
+        if (Array.isArray(this.state.editingGame.cards)) {
+            this.state.editingGame.cards.forEach((card, idx) => { card.isCorrect = idx < 6; });
+        }
         this.state.editingStep = 1;
         this.state.editingBlock = null;
         this.syncEditorUI();
