@@ -7,6 +7,7 @@
                 <div class="flex-1 min-h-0 overflow-y-auto">
                     <aside class="flex-1 h-full min-h-0 p-10 bg-cyan-100 overflow-y-auto">
                       <div class="w-full space-y-8">
+                        <div class="rounded-[32px] border border-slate-200 bg-white shadow-sm p-6 space-y-8">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between gap-3">
                                 <div>
@@ -20,7 +21,7 @@
                         </div>
 
                         <div id="creator-phase-1" class="creator-phase">
-                            <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-6">
+                            <div class="space-y-6">
                                 <div class="space-y-4">
                                     <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Informações iniciais</p>
                                     <p class="text-sm text-slate-600">Preencha os dados básicos do jogo e os autores.</p>
@@ -138,7 +139,7 @@
                                     <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Blocos de edição</p>
                                     <p class="text-sm text-slate-600">Escolha o bloco que deseja editar. Você pode voltar aqui a qualquer momento.</p>
                                 </div>
-                                <div class="bg-white p-3 rounded-[32px] border border-slate-200 shadow-sm">
+                                <div>
                                     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                                         <button type="button" onclick="app.showBlock(1)" title="Editar a Regra e o Objetivo do jogo." class="relative h-48 rounded-2xl border-2 border-slate-800 bg-amber-500 hover:brightness-105 transition flex flex-col items-center justify-center gap-3 p-4">
                                             <div id="block-badge-1" class="hidden absolute top-3 right-3 w-6 h-6 rounded-full bg-white text-emerald-600 flex items-center justify-center text-xs shadow">
@@ -176,7 +177,7 @@
                                 <button type="button" onclick="app.showBlock(null)" title="Voltar para a tela de blocos." class="mb-4 inline-flex items-center gap-2 text-sm font-black text-slate-600 hover:text-slate-900">
                                     <i class="fa-solid fa-arrow-left"></i> Voltar aos blocos
                                 </button>
-                                <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+                                <div class="space-y-5">
                                     <div class="space-y-3">
                                         <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Regras</p>
                                         <p class="text-sm text-slate-600">Defina o funcionamento do jogo.</p>
@@ -238,7 +239,7 @@
                                 <button type="button" onclick="app.showBlock(null)" title="Voltar para a tela de blocos." class="mb-4 inline-flex items-center gap-2 text-sm font-black text-slate-600 hover:text-slate-900">
                                     <i class="fa-solid fa-arrow-left"></i> Voltar aos blocos
                                 </button>
-                                <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+                                <div class="space-y-5">
                                     <div class="space-y-3">
                                         <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Aparência</p>
                                         <p class="text-sm text-slate-600">Escolha a aparência das cartas.</p>
@@ -313,7 +314,7 @@
                                 <button type="button" onclick="app.showBlock(null)" title="Voltar para a tela de blocos." class="mb-4 inline-flex items-center gap-2 text-sm font-black text-slate-600 hover:text-slate-900">
                                     <i class="fa-solid fa-arrow-left"></i> Voltar aos blocos
                                 </button>
-                                <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+                                <div class="space-y-5">
                                     <div class="space-y-3">
                                         <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Enunciado e feedbacks</p>
                                         <p class="text-sm text-slate-600">Escreva o comando inicial para o aluno e o texto que explica a resposta.</p>
@@ -366,7 +367,7 @@
                         </div>
 
                         <div id="creator-phase-3" class="creator-phase hidden">
-                            <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+                            <div class="space-y-5">
                                 <div class="space-y-3">
                                     <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Revisão e Teste</p>
                                     <p class="text-sm text-slate-600">Revise todas as informações do jogo. Se estiver tudo certo, teste o jogo antes de o salvar.</p>
@@ -414,6 +415,7 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         </div>
 
                         <div id="creator-validation-message" class="text-sm font-semibold text-red-500 hidden mt-4"></div>
