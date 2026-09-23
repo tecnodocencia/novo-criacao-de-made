@@ -15,17 +15,17 @@ export const editorCartasMethods = {
 
             const contentHtml = card.contentImage
                 ? `<img src="${card.contentImage}" class="max-w-full max-h-24 object-contain rounded-lg mb-1" />`
-                : `<p class="text-[11px] font-bold text-slate-800 text-center leading-tight line-clamp-3 px-1">${this.escapeCardText(card.content)}</p>`;
+                : `<p class="text-xs font-bold text-slate-800 text-center leading-tight line-clamp-3 px-1">${this.escapeCardText(card.content)}</p>`;
 
             cardEl.innerHTML = `
                 <div class="flex-1 flex flex-col items-center justify-center overflow-hidden">
                     ${card.content || card.contentImage ? contentHtml : `
                         <i class="fa-solid fa-plus text-2xl text-slate-300"></i>
-                        <span class="text-[9px] font-bold text-slate-400 mt-2">EDITAR</span>
+                        <span class="text-[10px] font-bold text-slate-400 mt-2">EDITAR</span>
                     `}
                 </div>
                 <div class="mt-2">
-                    <button onclick="app.toggleCardCorrect(${idx})" title="Alternar se esta carta pode fazer parte do Código Secreto (máximo de 6 cartas)." class="status-badge w-full inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-full text-white text-[9px] font-black uppercase tracking-wider transition-colors ${card.isCorrect ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-red-500 hover:bg-red-600'}">
+                    <button onclick="app.toggleCardCorrect(${idx})" title="Alternar se esta carta pode fazer parte do Código Secreto (máximo de 6 cartas)." class="status-badge w-full inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-full text-white text-[10px] font-black uppercase tracking-wider transition-colors ${card.isCorrect ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-red-500 hover:bg-red-600'}">
                         <i class="fa-solid ${card.isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i>
                         <span>${card.isCorrect ? 'Possível' : 'Não é'}</span>
                     </button>

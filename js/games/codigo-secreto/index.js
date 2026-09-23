@@ -1,9 +1,9 @@
 // js/games/codigo-secreto/index.js
 import { registerGame } from '../registry.js?v=1';
 import { difficultyRules, getDefaultData, getDemoGames } from './model.js?v=1';
-import { editorCartasMethods } from './editorCartas.js?v=1';
-import { reviewMethods } from './review.js?v=1';
-import { playerMethods } from './player.js?v=1';
+import { editorCartasMethods } from './editorCartas.js?v=2';
+import { reviewMethods } from './review.js?v=2';
+import { playerMethods } from './player.js?v=2';
 
 const codigoSecretoModule = {
     difficultyRules,

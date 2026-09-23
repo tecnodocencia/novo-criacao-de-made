@@ -14,7 +14,7 @@
                     <img src="Criação vermelho sem.png" alt="Logo MADE" class="h-32 lg:h-40 w-auto object-contain" />
                 </div>
                 <div class="space-y-4">
-                    <p class="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.35em] text-amber-400">Plataforma Educacional · UFC</p>
+                    <p class="text-[11px] lg:text-xs font-black uppercase tracking-[0.35em] text-amber-400">Plataforma Educacional · UFC</p>
                     <h1 class="text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight">
                         Crie materiais que <br/>
                         <span class="bg-gradient-to-r from-amber-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">transformam o ensino</span>.
@@ -26,7 +26,7 @@
 
                 <!-- Parceria Institucional Integrada -->
                 <div class="pt-6 lg:pt-8 flex flex-col items-center gap-4 lg:gap-6 border-t border-white/10 w-full mx-auto">
-                    <p class="text-[9px] font-black uppercase tracking-[0.4em] text-white/60">Realização</p>
+                    <p class="text-[10px] font-black uppercase tracking-[0.4em] text-white/60">Realização</p>
                     <div class="flex items-center justify-center gap-6 lg:gap-8 bg-white rounded-2xl px-6 py-4 shadow-xl">
                         <img src="https://ufc2012.ufc.br/images/_images/a_universidade/identidade_visual/brasao/brasao2_vertical_cor_72dpi.png" alt="Brasão UFC" class="h-14 lg:h-16 w-auto opacity-80 hover:opacity-100 transition-opacity duration-500">
                         <img src="imagens/icons/principal_UFC_virtual.png" alt="Principal UFC Virtual" class="h-14 lg:h-16 w-auto opacity-80 hover:opacity-100 transition-opacity duration-500">
@@ -50,7 +50,7 @@
                     <p class="text-slate-400 font-semibold text-sm">Acesse sua conta para começar a criar materiais.</p>
                 </div>
 
-                <div id="auth-mode-toggle" class="flex items-center gap-1 p-1.5 bg-slate-100 rounded-[22px] text-[11px] font-black uppercase tracking-widest text-slate-500">
+                <div id="auth-mode-toggle" class="flex items-center gap-1 p-1.5 bg-slate-100 rounded-[22px] text-xs font-black uppercase tracking-widest text-slate-500">
                     <button onclick="app.setAuthMode('login')" id="auth-login-btn" class="flex-1 py-3.5 rounded-[18px] bg-gradient-to-r from-green-600 to-sky-500 text-white shadow-md shadow-green-200/60 transition-all duration-300">Login</button>
                     <button onclick="app.setAuthMode('register')" id="auth-register-btn" class="flex-1 py-3.5 rounded-[18px] text-slate-500 hover:bg-white/50 transition-all duration-300">Cadastro</button>
                 </div>
@@ -59,14 +59,14 @@
                     <!-- LOGIN -->
                     <div id="login-form" class="space-y-5">
                         <div class="space-y-2">
-                            <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">E-mail</label>
+                            <label class="block text-xs font-black uppercase tracking-widest text-slate-400 ml-1">E-mail</label>
                             <div class="relative">
                                 <i class="fa-solid fa-envelope absolute left-5 top-1/2 -translate-y-1/2 text-slate-300"></i>
                                 <input id="auth-email" type="email" placeholder="teste@gmail.com" class="w-full pl-12 pr-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
                             </div>
                         </div>
                         <div class="space-y-2">
-                            <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">Senha</label>
+                            <label class="block text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Senha</label>
                             <div class="relative">
                                 <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-slate-300"></i>
                                 <input id="auth-password" type="password" placeholder="••••••" class="w-full pl-12 pr-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
@@ -76,16 +76,16 @@
                             Entrar na Plataforma
                             <i class="fa-solid fa-arrow-right-long"></i>
                         </button>
-                        <button type="button" onclick="app.setAuthMode('forgot')" class="w-full text-center text-xs font-bold text-slate-400 hover:text-emerald-600 transition-colors">
+                        <button type="button" onclick="app.setAuthMode('forgot')" class="w-full text-center text-sm font-bold text-slate-400 hover:text-emerald-600 transition-colors">
                             Esqueci minha senha
                         </button>
                     </div>
 
                     <!-- ESQUECI SENHA -->
                     <div id="forgot-form" class="hidden space-y-5">
-                        <p class="text-xs text-slate-400 font-semibold px-1 leading-relaxed">Informe seu email cadastrado e enviaremos um link para redefinir sua senha.</p>
+                        <p class="text-sm text-slate-400 font-semibold px-1 leading-relaxed">Informe seu email cadastrado e enviaremos um link para redefinir sua senha.</p>
                         <div class="space-y-2">
-                            <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">E-mail</label>
+                            <label class="block text-xs font-black uppercase tracking-widest text-slate-400 ml-1">E-mail</label>
                             <div class="relative">
                                 <i class="fa-solid fa-envelope absolute left-5 top-1/2 -translate-y-1/2 text-slate-300"></i>
                                 <input id="forgot-email" type="email" placeholder="seu@email.com" class="w-full pl-12 pr-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
@@ -95,21 +95,21 @@
                             Enviar link de redefinição
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
-                        <button type="button" onclick="app.setAuthMode('login')" class="w-full text-center text-xs font-bold text-slate-400 hover:text-emerald-600 transition-colors">
+                        <button type="button" onclick="app.setAuthMode('login')" class="w-full text-center text-sm font-bold text-slate-400 hover:text-emerald-600 transition-colors">
                             Voltar para o login
                         </button>
                     </div>
 
                     <!-- NOVA SENHA (via link recebido por email) -->
                     <div id="recovery-form" class="hidden space-y-5">
-                        <p class="text-xs text-slate-400 font-semibold px-1 leading-relaxed">Defina sua nova senha de acesso.</p>
+                        <p class="text-sm text-slate-400 font-semibold px-1 leading-relaxed">Defina sua nova senha de acesso.</p>
                         <div class="grid grid-cols-2 gap-3">
                             <div class="space-y-2">
-                                <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">Nova senha</label>
+                                <label class="block text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Nova senha</label>
                                 <input id="recovery-password" type="password" placeholder="••••••" class="w-full px-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
                             </div>
                             <div class="space-y-2">
-                                <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">Confirmar</label>
+                                <label class="block text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Confirmar</label>
                                 <input id="recovery-password-confirm" type="password" placeholder="••••••" class="w-full px-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
                             </div>
                         </div>
@@ -122,27 +122,27 @@
                     <!-- CADASTRO -->
                     <div id="register-form" class="hidden space-y-5">
                         <div class="space-y-2">
-                            <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">E-mail</label>
+                            <label class="block text-xs font-black uppercase tracking-widest text-slate-400 ml-1">E-mail</label>
                             <input id="register-email" type="email" placeholder="seu@email.com" class="w-full px-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div class="space-y-2">
-                                <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">Senha</label>
+                                <label class="block text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Senha</label>
                                 <input id="register-password" type="password" placeholder="••••••" class="w-full px-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
                             </div>
                             <div class="space-y-2">
-                                <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">Confirmar</label>
+                                <label class="block text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Confirmar</label>
                                 <input id="register-password-confirm" type="password" placeholder="••••••" class="w-full px-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
                             </div>
                         </div>
                         <div class="space-y-2">
-                            <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">Eu sou</label>
+                            <label class="block text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Eu sou</label>
                             <div class="relative">
                                 <select id="register-role" class="w-full px-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium appearance-none">
                                     <option value="professor">Professor</option>
                                     <option value="aluno">Aluno</option>
                                 </select>
-                                <i class="fa-solid fa-chevron-down absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+                                <i class="fa-solid fa-chevron-down absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 text-sm pointer-events-none"></i>
                             </div>
                         </div>
                         <button onclick="app.register()" class="w-full py-5 bg-gradient-to-r from-amber-500 to-pink-500 hover:brightness-105 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-amber-200 transition-all active:scale-[0.98] mt-6 flex items-center justify-center gap-3">
@@ -151,11 +151,11 @@
                         </button>
                     </div>
 
-                    <p id="auth-feedback" class="text-xs text-center font-bold text-red-500 bg-red-50 p-3 rounded-xl hidden"></p>
+                    <p id="auth-feedback" class="text-sm text-center font-bold text-red-500 bg-red-50 p-3 rounded-xl hidden"></p>
                 </div>
 
                 <div class="pt-8 border-t border-slate-100 text-center space-y-4 px-2">
-                    <p class="text-[10px] font-bold text-slate-300 uppercase tracking-[0.3em]">Material Autoral Digital Educacional</p>
+                    <p class="text-[11px] font-bold text-slate-300 uppercase tracking-[0.3em]">Material Autoral Digital Educacional</p>
                     <img src="https://ufc2012.ufc.br/images/_images/a_universidade/identidade_visual/brasao/brasao2_vertical_cor_72dpi.png" alt="Brasão UFC" class="h-10 w-auto mx-auto grayscale opacity-30 md:hidden">
                 </div>
             </div>

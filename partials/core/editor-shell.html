@@ -1,7 +1,7 @@
                 <header id="editor-header" class="h-20 border-b border-white/10 px-8 flex items-center justify-between shrink-0 bg-gradient-to-br from-sky-400 via-blue-700 to-blue-950 z-10">
                     <div>
                         <h2 class="font-bold text-lg text-white" id="editor-title-display">Novo Jogo</h2>
-                        <p class="text-[10px] text-sky-100 font-bold uppercase">Configuração</p>
+                        <p class="text-[11px] text-sky-100 font-bold uppercase">Configuração</p>
                     </div>
                 </header>
                 <div class="flex-1 min-h-0">
@@ -15,7 +15,7 @@
                         <div class="space-y-4">
                             <div class="flex items-center justify-between gap-3">
                                 <div>
-                                    <p class="text-[10px] uppercase tracking-[0.28em] text-slate-500 font-bold">Passo <span id="creator-step-current">1</span> de 3</p>
+                                    <p class="text-[11px] uppercase tracking-[0.28em] text-slate-500 font-bold">Passo <span id="creator-step-current">1</span> de 3</p>
                                     <h3 class="text-lg font-black text-slate-900" id="creator-step-title">Dados do Jogo</h3>
                                 </div>
                             </div>
@@ -27,20 +27,20 @@
                         <div id="creator-phase-1" class="creator-phase">
                             <div class="space-y-6">
                                 <div class="space-y-4">
-                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Informações iniciais</p>
+                                    <p class="text-sm uppercase tracking-[0.28em] text-slate-500 font-black">Informações iniciais</p>
                                     <p class="text-sm text-slate-600">Preencha os dados básicos do jogo e os autores.</p>
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
                                     <div>
-                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Título do Jogo</label>
+                                        <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Título do Jogo</label>
                                         <input id="edit-game-name" type="text" title="Nome que identifica o jogo. Aparecerá para o aluno e nas listagens do professor." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Jogo dos Mamíferos">
                                     </div>
                                     <div>
-                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo</label>
+                                        <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo</label>
                                         <input id="edit-game-conteudo" type="text" title="Assunto específico abordado pelo jogo dentro da disciplina escolhida." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Mamíferos, Frações, Leitura...">
                                     </div>
                                     <div>
-                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Disciplina</label>
+                                        <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Disciplina</label>
                                         <select id="edit-game-disciplina" title="Disciplina escolar à qual o jogo pertence. Usada para organizar e filtrar os jogos." onchange="app.handleDisciplinaSelectChange(event)" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
                                             <option value="Biologia">Biologia</option>
                                             <option value="Dança">Dança</option>
@@ -67,7 +67,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Série</label>
+                                        <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Série</label>
                                         <select id="edit-game-serie" title="Ano/série escolar para a qual o jogo foi pensado." onchange="app.handleSerieSelectChange(event)" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm">
                                             <option value="1º ano">1º ano</option>
                                             <option value="2º ano">2º ano</option>
@@ -94,13 +94,13 @@
                                 </div>
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
-                                        <label class="text-[11px] font-black text-slate-500 uppercase tracking-widest">Autores</label>
-                                        <button type="button" onclick="app.openAuthorModal()" title="Adicionar um autor responsável por este jogo." class="text-emerald-700 text-[11px] uppercase font-black">Adicionar</button>
+                                        <label class="text-xs font-black text-slate-500 uppercase tracking-widest">Autores</label>
+                                        <button type="button" onclick="app.openAuthorModal()" title="Adicionar um autor responsável por este jogo." class="text-emerald-700 text-xs uppercase font-black">Adicionar</button>
                                     </div>
                                     <div id="edit-game-authors-list" title="Lista de autores do jogo. Clique no × de um nome para removê-lo." class="mt-2 flex flex-wrap gap-2"></div>
                                 </div>
                                 <div>
-                                    <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Modelo</label>
+                                    <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Modelo</label>
                                         <select id="edit-game-model" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" style="display:none;">
                                             <option value="Código Secreto">Código Secreto</option>
                                         </select>
@@ -109,28 +109,28 @@
                                                 <div class="w-full h-28 flex items-center justify-center overflow-visible">
                                                     <img src="imagens/modelos/codigo_secreto.png" alt="Código Secreto" class="max-w-full max-h-full w-auto h-auto object-contain" />
                                                 </div>
-                                                <div class="text-xs font-bold mt-2">Código Secreto</div>
+                                                <div class="text-sm font-bold mt-2">Código Secreto</div>
                                             </div>
                                             <div class="rounded-xl border p-3 text-center bg-slate-100 opacity-70 cursor-not-allowed" title="Modelo Can Can ainda está em construção." onclick="app.showNotification('O modelo Can Can ainda está em construção. Em breve estará disponível.', 'Em construção')">
                                                 <div class="w-full h-28 flex flex-col items-center justify-center gap-2 bg-slate-200 rounded-lg">
                                                     <i class="fa-solid fa-hammer text-3xl text-slate-400"></i>
-                                                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Em construção</span>
+                                                    <span class="text-[11px] font-black uppercase tracking-widest text-slate-400">Em construção</span>
                                                 </div>
-                                                <div class="text-xs font-bold mt-2 text-slate-500">Can Can</div>
+                                                <div class="text-sm font-bold mt-2 text-slate-500">Can Can</div>
                                             </div>
                                             <div class="rounded-xl border p-3 text-center bg-slate-100 opacity-70 cursor-not-allowed" title="Modelo Timeline ainda está em construção." onclick="app.showNotification('O modelo Timeline ainda está em construção. Em breve estará disponível.', 'Em construção')">
                                                 <div class="w-full h-28 flex flex-col items-center justify-center gap-2 bg-slate-200 rounded-lg">
                                                     <i class="fa-solid fa-hammer text-3xl text-slate-400"></i>
-                                                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Em construção</span>
+                                                    <span class="text-[11px] font-black uppercase tracking-widest text-slate-400">Em construção</span>
                                                 </div>
-                                                <div class="text-xs font-bold mt-2 text-slate-500">Timeline</div>
+                                                <div class="text-sm font-bold mt-2 text-slate-500">Timeline</div>
                                             </div>
                                             <div class="rounded-xl border p-3 text-center bg-slate-100 opacity-70 cursor-not-allowed" title="Modelo Lince ainda está em construção." onclick="app.showNotification('O modelo Lince ainda está em construção. Em breve estará disponível.', 'Em construção')">
                                                 <div class="w-full h-28 flex flex-col items-center justify-center gap-2 bg-slate-200 rounded-lg">
                                                     <i class="fa-solid fa-hammer text-3xl text-slate-400"></i>
-                                                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Em construção</span>
+                                                    <span class="text-[11px] font-black uppercase tracking-widest text-slate-400">Em construção</span>
                                                 </div>
-                                                <div class="text-xs font-bold mt-2 text-slate-500">Lince</div>
+                                                <div class="text-sm font-bold mt-2 text-slate-500">Lince</div>
                                             </div>
                                         </div>
                                 </div>
@@ -140,34 +140,34 @@
                         <div id="creator-phase-2" class="creator-phase hidden">
                             <div id="creator-blocks-hub">
                                 <div class="space-y-3 mb-6">
-                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Blocos de edição</p>
+                                    <p class="text-sm uppercase tracking-[0.28em] text-slate-500 font-black">Blocos de edição</p>
                                     <p class="text-sm text-slate-600">Escolha o bloco que deseja editar. Você pode voltar aqui a qualquer momento.</p>
                                 </div>
                                 <div>
                                     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                                         <button type="button" onclick="app.showBlock(1)" title="Editar a Regra e o Objetivo do jogo." class="relative h-48 rounded-2xl border-2 border-slate-800 bg-amber-500 hover:brightness-105 transition flex flex-col items-center justify-center gap-3 p-4">
-                                            <div id="block-badge-1" class="hidden absolute top-3 right-3 w-6 h-6 rounded-full bg-white text-emerald-600 flex items-center justify-center text-xs shadow">
+                                            <div id="block-badge-1" class="hidden absolute top-3 right-3 w-6 h-6 rounded-full bg-white text-emerald-600 flex items-center justify-center text-sm shadow">
                                                 <i class="fa-solid fa-check"></i>
                                             </div>
                                             <i class="fa-solid fa-scroll text-4xl text-white"></i>
                                             <span class="text-sm font-black uppercase tracking-widest text-white text-center">Regras</span>
                                         </button>
                                         <button type="button" onclick="app.showBlock(2)" title="Editar a aparência das cartas (design e envio externo)." class="relative h-48 rounded-2xl border-2 border-slate-800 bg-green-600 hover:brightness-105 transition flex flex-col items-center justify-center gap-3 p-4">
-                                            <div id="block-badge-2" class="hidden absolute top-3 right-3 w-6 h-6 rounded-full bg-white text-emerald-600 flex items-center justify-center text-xs shadow">
+                                            <div id="block-badge-2" class="hidden absolute top-3 right-3 w-6 h-6 rounded-full bg-white text-emerald-600 flex items-center justify-center text-sm shadow">
                                                 <i class="fa-solid fa-check"></i>
                                             </div>
                                             <i class="fa-solid fa-palette text-4xl text-white"></i>
                                             <span class="text-sm font-black uppercase tracking-widest text-white text-center">Aparência</span>
                                         </button>
                                         <button type="button" onclick="app.showBlock(3)" title="Editar o enunciado e a explicação final do jogo." class="relative h-48 rounded-2xl border-2 border-slate-800 bg-sky-500 hover:brightness-105 transition flex flex-col items-center justify-center gap-3 p-4">
-                                            <div id="block-badge-3" class="hidden absolute top-3 right-3 w-6 h-6 rounded-full bg-white text-emerald-600 flex items-center justify-center text-xs shadow">
+                                            <div id="block-badge-3" class="hidden absolute top-3 right-3 w-6 h-6 rounded-full bg-white text-emerald-600 flex items-center justify-center text-sm shadow">
                                                 <i class="fa-solid fa-check"></i>
                                             </div>
                                             <i class="fa-solid fa-comment-dots text-4xl text-white"></i>
                                             <span class="text-sm font-black uppercase tracking-widest text-white text-center">Enunciado e Feedbacks</span>
                                         </button>
                                         <button type="button" onclick="app.showBlock(4)" title="Criar e revisar as 12 cartas do jogo." class="relative h-48 rounded-2xl border-2 border-slate-800 bg-pink-500 hover:brightness-105 transition flex flex-col items-center justify-center gap-3 p-4">
-                                            <div id="block-badge-4" class="hidden absolute top-3 right-3 w-6 h-6 rounded-full bg-white text-emerald-600 flex items-center justify-center text-xs shadow">
+                                            <div id="block-badge-4" class="hidden absolute top-3 right-3 w-6 h-6 rounded-full bg-white text-emerald-600 flex items-center justify-center text-sm shadow">
                                                 <i class="fa-solid fa-check"></i>
                                             </div>
                                             <i class="fa-solid fa-layer-group text-4xl text-white"></i>
@@ -183,12 +183,12 @@
                                 </button>
                                 <div class="space-y-5">
                                     <div class="space-y-3">
-                                        <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Regras</p>
+                                        <p class="text-sm uppercase tracking-[0.28em] text-slate-500 font-black">Regras</p>
                                         <p class="text-sm text-slate-600">Defina o funcionamento do jogo.</p>
                                     </div>
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Regra</label>
+                                        <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Regra</label>
                                         <div class="richtext-field">
                                             <div class="richtext-toolbar">
                                                 <button type="button" onclick="app.toggleBold('edit-game-regra')" class="richtext-btn" title="Negrito">
@@ -212,7 +212,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Objetivo</label>
+                                        <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Objetivo</label>
                                         <div class="richtext-field">
                                             <div class="richtext-toolbar">
                                                 <button type="button" onclick="app.toggleBold('edit-game-objetivo')" class="richtext-btn" title="Negrito">
@@ -245,11 +245,11 @@
                                 </button>
                                 <div class="space-y-5">
                                     <div class="space-y-3">
-                                        <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Aparência</p>
+                                        <p class="text-sm uppercase tracking-[0.28em] text-slate-500 font-black">Aparência</p>
                                         <p class="text-sm text-slate-600">Escolha a aparência das cartas.</p>
                                     </div>
                                     <div>
-                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-4 tracking-widest">Design das Cartas</label>
+                                        <label class="text-xs font-black text-slate-500 uppercase block mb-4 tracking-widest">Design das Cartas</label>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div class="flex items-center justify-center gap-1">
                                                 <button onclick="app.toggleFrontDesign('prev')" title="Ver o modelo anterior de frente de carta." class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
@@ -278,25 +278,25 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Envio Externo (Opcional)</label>
-                                        <p class="text-xs text-slate-600 mb-4">Você pode enviar um modelo customizado de frente e verso das cartas (em formato PNG, JPEG ou SVG).</p>
+                                        <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Envio Externo (Opcional)</label>
+                                        <p class="text-sm text-slate-600 mb-4">Você pode enviar um modelo customizado de frente e verso das cartas (em formato PNG, JPEG ou SVG).</p>
                                         <div class="space-y-3">
                                             <div>
-                                                <label class="text-[10px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">Imagem Frente</label>
+                                                <label class="text-[11px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">Imagem Frente</label>
                                                 <div class="flex gap-2 items-center">
-                                                    <button onclick="app.openImageLibrary('front-design')" title="Escolher, na biblioteca de imagens, uma imagem personalizada para a frente da carta." class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[10px] font-bold uppercase flex items-center gap-2">
+                                                    <button onclick="app.openImageLibrary('front-design')" title="Escolher, na biblioteca de imagens, uma imagem personalizada para a frente da carta." class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[11px] font-bold uppercase flex items-center gap-2">
                                                         <i class="fa-solid fa-images"></i> Biblioteca
                                                     </button>
-                                                    <button type="button" onclick="app.removeExternalFrontImage()" title="Remover a imagem personalizada da frente e voltar ao modelo padrão." class="px-3 py-2 bg-red-500 text-white rounded-lg text-xs font-semibold">Remover</button>
+                                                    <button type="button" onclick="app.removeExternalFrontImage()" title="Remover a imagem personalizada da frente e voltar ao modelo padrão." class="px-3 py-2 bg-red-500 text-white rounded-lg text-sm font-semibold">Remover</button>
                                                 </div>
                                             </div>
                                             <div>
-                                                <label class="text-[10px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">Imagem Verso</label>
+                                                <label class="text-[11px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">Imagem Verso</label>
                                                 <div class="flex gap-2 items-center">
-                                                    <button onclick="app.openImageLibrary('back-design')" title="Escolher, na biblioteca de imagens, uma imagem personalizada para o verso da carta." class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[10px] font-bold uppercase flex items-center gap-2">
+                                                    <button onclick="app.openImageLibrary('back-design')" title="Escolher, na biblioteca de imagens, uma imagem personalizada para o verso da carta." class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[11px] font-bold uppercase flex items-center gap-2">
                                                         <i class="fa-solid fa-images"></i> Biblioteca
                                                     </button>
-                                                    <button type="button" onclick="app.removeExternalBackImage()" title="Remover a imagem personalizada do verso e voltar ao modelo padrão." class="px-3 py-2 bg-red-500 text-white rounded-lg text-xs font-semibold">Remover</button>
+                                                    <button type="button" onclick="app.removeExternalBackImage()" title="Remover a imagem personalizada do verso e voltar ao modelo padrão." class="px-3 py-2 bg-red-500 text-white rounded-lg text-sm font-semibold">Remover</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -320,12 +320,12 @@
                                 </button>
                                 <div class="space-y-5">
                                     <div class="space-y-3">
-                                        <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Enunciado e feedbacks</p>
+                                        <p class="text-sm uppercase tracking-[0.28em] text-slate-500 font-black">Enunciado e feedbacks</p>
                                         <p class="text-sm text-slate-600">Escreva o comando inicial para o aluno e o texto que explica a resposta.</p>
                                     </div>
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Enunciado</label>
+                                        <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Enunciado</label>
                                         <div class="richtext-field">
                                             <div class="richtext-toolbar">
                                                 <button type="button" onclick="app.toggleBold('edit-game-enunciado')" class="richtext-btn" title="Negrito">
@@ -349,7 +349,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="text-[11px] font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
+                                        <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
                                         <textarea id="edit-game-explicacao" oninput="app.autoResizeTextarea(this)" title="Texto exibido ao aluno ao final do jogo, explicando a resposta e como jogar." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-[200px]" placeholder="Texto exibido ao final revelando o porquê da resposta..." style="resize: none;">• Observe as 12 possibilidades de cartas que estão no banco.
 • Clique na carta escolhida para adicioná-la à sua tentativa na mesa.
 • Repita o processo até que todos os espaços estejam preenchidos.
@@ -373,7 +373,7 @@
                         <div id="creator-phase-3" class="creator-phase hidden">
                             <div class="space-y-5">
                                 <div class="space-y-3">
-                                    <p class="text-xs uppercase tracking-[0.28em] text-slate-500 font-black">Revisão e Teste</p>
+                                    <p class="text-sm uppercase tracking-[0.28em] text-slate-500 font-black">Revisão e Teste</p>
                                     <p class="text-sm text-slate-600">Revise todas as informações do jogo. Se estiver tudo certo, teste o jogo antes de o salvar.</p>
                                 </div>
 

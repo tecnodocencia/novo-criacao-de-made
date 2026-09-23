@@ -312,7 +312,7 @@ function renderBankCards() {
             innerContent = `<img src="${card.contentImage}" alt="${escapeHtml(card.content)}"
                 style="max-height:82px; max-width:100%; object-fit:contain; border-radius:8px; pointer-events:none;">`;
         } else {
-            innerContent = `<p class="text-[10px] font-black text-slate-800 text-center leading-tight">${escapeHtml(card.content)}</p>`;
+            innerContent = `<p class="text-[11px] font-black text-slate-800 text-center leading-tight">${escapeHtml(card.content)}</p>`;
         }
 
         const cardIdStr = escapeHtml(String(card.id));
@@ -424,7 +424,7 @@ function renderDropSlotContent(slotIndex) {
             content = `<img src="${card.contentImage}" alt="${escapeHtml(card.content)}"
                 style="max-height:120px; max-width:90%; object-fit:contain; border-radius:12px; pointer-events:none;">`;
         } else {
-            content = `<p class="text-[10px] font-black text-slate-800 text-center leading-tight px-1">${escapeHtml(card.content)}</p>`;
+            content = `<p class="text-[11px] font-black text-slate-800 text-center leading-tight px-1">${escapeHtml(card.content)}</p>`;
         }
         const frontDesign = gs.game.frontDesign || 'imagens/frente/frente01.png';
         const useBg = card.frontImage || frontDesign;
@@ -442,7 +442,7 @@ function renderDropSlotContent(slotIndex) {
         `;
     } else {
         slot.classList.remove('filled');
-        slot.innerHTML = `<span class="text-slate-400 text-xs font-black">${slotIndex + 1}</span>`;
+        slot.innerHTML = `<span class="text-slate-400 text-sm font-black">${slotIndex + 1}</span>`;
     }
 
     // Reanexa handlers via propriedades on* (sobrescrevem, não acumulam a cada re-render)
@@ -702,14 +702,14 @@ async function showRanking() {
         const bg = r.won ? 'bg-emerald-50 border-emerald-200' : 'bg-slate-50 border-slate-200';
         const txtColor = r.won ? 'text-emerald-600' : 'text-slate-500';
         const rankLine = (r.won && r.rank)
-            ? `<p class="text-xs font-black text-emerald-700 mt-1"><i class="fa-solid fa-ranking-star mr-1"></i>Você ficou em ${r.rank}º lugar${r.totalPlayers ? ' de ' + r.totalPlayers : ''}</p>`
+            ? `<p class="text-sm font-black text-emerald-700 mt-1"><i class="fa-solid fa-ranking-star mr-1"></i>Você ficou em ${r.rank}º lugar${r.totalPlayers ? ' de ' + r.totalPlayers : ''}</p>`
             : '';
         document.getElementById('player-result').innerHTML = `
             <div class="${bg} border rounded-2xl p-4 text-center mb-4">
                 <i class="fa-solid ${icon} text-2xl mb-2"></i>
                 <p class="text-sm font-black text-slate-700">${r.won ? 'Parabéns, ' + escapeHtml(gs.playerName) + '!' : 'Boa tentativa, ' + escapeHtml(gs.playerName) + '!'}</p>
                 <p class="text-3xl font-black ${txtColor} my-1">${r.score} <span class="text-lg">pts</span></p>
-                <p class="text-xs text-slate-500">${r.attemptsUsed} tentativa${r.attemptsUsed !== 1 ? 's' : ''} usada${r.attemptsUsed !== 1 ? 's' : ''} &bull; Nível ${gs.currentDifficulty} &bull; Código: ${gs.currentCodeSize} cartas</p>
+                <p class="text-sm text-slate-500">${r.attemptsUsed} tentativa${r.attemptsUsed !== 1 ? 's' : ''} usada${r.attemptsUsed !== 1 ? 's' : ''} &bull; Nível ${gs.currentDifficulty} &bull; Código: ${gs.currentCodeSize} cartas</p>
                 ${rankLine}
             </div>
         `;
@@ -746,7 +746,7 @@ async function showRanking() {
                 ? '<i class="fa-solid fa-medal text-slate-400"></i>'
                 : idx === 2
                 ? '<i class="fa-solid fa-medal text-amber-700"></i>'
-                : `<span class="text-xs font-black text-slate-500">${idx + 1}</span>`;
+                : `<span class="text-sm font-black text-slate-500">${idx + 1}</span>`;
             const placeColor = idx === 0 ? 'text-amber-500' : idx === 1 ? 'text-slate-400' : 'text-amber-700';
             const placeLabel = idx < 3
                 ? `<span class="text-[8px] font-black uppercase tracking-wide ${placeColor}">${idx + 1}º lugar</span>`
@@ -759,8 +759,8 @@ async function showRanking() {
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="font-bold text-slate-800 truncate text-sm">${escapeHtml(play.player_name)}${isCurrentPlayer ? ' <span style="color:#047857;font-size:calc(10px * var(--play-font-scale));">(você)</span>' : ''}</p>
-                        <p class="text-[10px] text-slate-400">${play.attempts_used} tentativa${play.attempts_used !== 1 ? 's' : ''} &bull; Nível ${play.difficulty_level} &bull; ${play.code_size} cartas</p>
-                        <p class="text-[10px] text-slate-400">${formatDateTimeBR(play.played_at)}</p>
+                        <p class="text-[11px] text-slate-400">${play.attempts_used} tentativa${play.attempts_used !== 1 ? 's' : ''} &bull; Nível ${play.difficulty_level} &bull; ${play.code_size} cartas</p>
+                        <p class="text-[11px] text-slate-400">${formatDateTimeBR(play.played_at)}</p>
                     </div>
                     <span class="font-black text-emerald-600 text-lg shrink-0">${play.score}</span>
                 </div>

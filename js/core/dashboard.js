@@ -102,25 +102,25 @@ export const dashboardMethods = {
                     <p><strong class="text-slate-800">Série:</strong> ${game.disciplineInfo?.serie || '-'}</p>
                     <p><strong class="text-slate-800">Autores:</strong> ${game.disciplineInfo?.autores?.length ? game.disciplineInfo.autores.join(', ') : '-'}</p>
                     <div class="pt-2 border-t border-slate-100 mt-2 space-y-1">
-                        <p class="text-[10px] font-black uppercase text-slate-400">Enunciado</p>
-                        <p class="text-xs">${game.enunciado || '-'}</p>
+                        <p class="text-[11px] font-black uppercase text-slate-400">Enunciado</p>
+                        <p class="text-sm">${game.enunciado || '-'}</p>
                     </div>
                     <div class="space-y-1">
-                        <p class="text-[10px] font-black uppercase text-slate-400">Regra</p>
-                        <p class="text-xs">${game.regra || '-'}</p>
+                        <p class="text-[11px] font-black uppercase text-slate-400">Regra</p>
+                        <p class="text-sm">${game.regra || '-'}</p>
                     </div>
                 </div>
                 <div class="rounded-3xl border ${accent.cardBorder} ${accent.trayBg} p-2 flex gap-2">
-                    <button onclick="app.openDifficultySelect('${game.id}')" class="flex-1 bg-green-600 text-white font-bold py-3 px-4 rounded-2xl text-xs shadow-lg shadow-green-100 transition hover:bg-green-700 flex items-center justify-center gap-2">
+                    <button onclick="app.openDifficultySelect('${game.id}')" class="flex-1 bg-green-600 text-white font-bold py-3 px-4 rounded-2xl text-sm shadow-lg shadow-green-100 transition hover:bg-green-700 flex items-center justify-center gap-2">
                         <i class="fa-solid fa-play"></i> Jogar
                     </button>
-                    <button onclick="app.editGame('${game.id}')" class="bg-white border border-slate-200 text-slate-600 font-bold py-3 px-4 rounded-2xl text-xs transition hover:bg-slate-50">
+                    <button onclick="app.editGame('${game.id}')" class="bg-white border border-slate-200 text-slate-600 font-bold py-3 px-4 rounded-2xl text-sm transition hover:bg-slate-50">
                         Editar
                     </button>
-                    <button onclick="app.shareGame('${game.id}')" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded-2xl text-xs transition flex items-center gap-1" title="Compartilhar jogo">
+                    <button onclick="app.shareGame('${game.id}')" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded-2xl text-sm transition flex items-center gap-1" title="Compartilhar jogo">
                         <i class="fa-solid fa-share-nodes"></i>
                     </button>
-                    <button onclick="app.manageRanking('${game.id}')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-2xl text-xs transition flex items-center gap-1" title="Gerenciar ranking">
+                    <button onclick="app.manageRanking('${game.id}')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-2xl text-sm transition flex items-center gap-1" title="Gerenciar ranking">
                         <i class="fa-solid fa-trophy"></i>
                     </button>
                 </div>
@@ -207,11 +207,11 @@ export const dashboardMethods = {
 
             list.innerHTML = rows.map((r, idx) => `
                 <div class="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 border border-slate-100">
-                    <span class="text-xs font-black text-slate-400 w-5 text-center shrink-0">${idx + 1}</span>
+                    <span class="text-sm font-black text-slate-400 w-5 text-center shrink-0">${idx + 1}</span>
                     <div class="flex-1 min-w-0">
                         <p class="font-bold text-slate-800 truncate text-sm">${this.escapeCardText(r.player_name)}</p>
-                        <p class="text-[10px] text-slate-400">${r.score} pts &bull; ${r.attempts_used} tentativa${r.attempts_used !== 1 ? 's' : ''} &bull; Nível ${r.difficulty_level}</p>
-                        <p class="text-[10px] text-slate-400">${formatDateTimeBR(r.played_at)}</p>
+                        <p class="text-[11px] text-slate-400">${r.score} pts &bull; ${r.attempts_used} tentativa${r.attempts_used !== 1 ? 's' : ''} &bull; Nível ${r.difficulty_level}</p>
+                        <p class="text-[11px] text-slate-400">${formatDateTimeBR(r.played_at)}</p>
                     </div>
                     <button onclick="app.removeRankingEntry('${r.id}')" class="text-red-500 hover:bg-red-100 rounded-xl p-2 shrink-0 transition" title="Remover este jogador do ranking">
                         <i class="fa-solid fa-trash"></i>

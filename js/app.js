@@ -1,10 +1,10 @@
 // js/app.js
 import { dbService } from './database.js?v=1';
 import { state } from './core/state.js?v=1';
-import { utilsMethods } from './core/utils.js?v=1';
+import { utilsMethods } from './core/utils.js?v=2';
 import { authMethods } from './core/auth.js?v=1';
-import { dashboardMethods } from './core/dashboard.js?v=1';
-import { libraryMethods } from './core/library.js?v=1';
+import { dashboardMethods } from './core/dashboard.js?v=2';
+import { libraryMethods } from './core/library.js?v=2';
 import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=1';
 import { modalMethods } from './core/modals.js?v=1';
 import { getGame } from './games/registry.js?v=1';

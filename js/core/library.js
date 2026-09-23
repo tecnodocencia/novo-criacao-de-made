@@ -31,7 +31,7 @@ function bankFolderTileEl(folder, onClick) {
     el.innerHTML = `
         <i class="fa-solid ${folder.icon} text-3xl ${accent.icon}"></i>
         <span class="font-black text-sm ${accent.text} leading-tight">${folder.label}</span>
-        <span class="text-[10px] font-bold ${accent.textLight} uppercase tracking-wide">${folder.images.length} imagens</span>
+        <span class="text-[11px] font-bold ${accent.textLight} uppercase tracking-wide">${folder.images.length} imagens</span>
     `;
     el.onclick = onClick;
     return el;
@@ -40,14 +40,14 @@ function bankFolderTileEl(folder, onClick) {
 function bankSectionHeaderEl() {
     const el = document.createElement('div');
     el.className = "col-span-full mb-1";
-    el.innerHTML = `<h3 class="text-xs font-black text-slate-400 uppercase tracking-widest">Banco de Imagens</h3>`;
+    el.innerHTML = `<h3 class="text-sm font-black text-slate-400 uppercase tracking-widest">Banco de Imagens</h3>`;
     return el;
 }
 
 function ownSectionHeaderEl(label) {
     const el = document.createElement('div');
     el.className = "col-span-full mt-2 mb-1";
-    el.innerHTML = `<h3 class="text-xs font-black text-slate-400 uppercase tracking-widest">${label}</h3>`;
+    el.innerHTML = `<h3 class="text-sm font-black text-slate-400 uppercase tracking-widest">${label}</h3>`;
     return el;
 }
 
@@ -61,7 +61,7 @@ function folderBackHeaderEl(folder, onBack) {
         </button>
         <i class="fa-solid ${folder.icon} ${accent.icon}"></i>
         <h3 class="font-black text-slate-700">${folder.label}</h3>
-        <span class="text-xs text-slate-400 font-bold">${folder.images.length} imagens</span>
+        <span class="text-sm text-slate-400 font-bold">${folder.images.length} imagens</span>
     `;
     el.querySelector('button').onclick = onBack;
     return el;
@@ -339,7 +339,7 @@ export const libraryMethods = {
                 <div class="col-span-full text-center py-8 text-slate-400">
                     <i class="fa-solid fa-image-slash text-2xl mb-2"></i>
                     <p class="font-bold text-sm">Sua biblioteca está vazia.</p>
-                    <p class="text-xs">Envie imagens nas cartas para que elas apareçam aqui.</p>
+                    <p class="text-sm">Envie imagens nas cartas para que elas apareçam aqui.</p>
                 </div>
             `;
             return;

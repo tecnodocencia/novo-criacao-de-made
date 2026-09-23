@@ -10,7 +10,7 @@
         /* Controle de tamanho de fonte (acessibilidade) — botões A-/A+ no topbar
            do jogo (ver playApp.increaseFontSize/decreaseFontSize em js/play.js).
            html.font-size escala todas as classes Tailwind baseadas em rem
-           (text-xs/sm/base/lg/2xl, paddings, gaps, rounded-*, w-60/w-72, etc.)
+           (text-sm/base/lg/2xl, paddings, gaps, rounded-*, w-60/w-72, etc.)
            automaticamente. As regras .text-\[Npx\] abaixo cobrem os pontos que usam
            valor arbitrário em px do Tailwind (não escalam com rem por padrão) —
            usadas tanto em play.html quanto nos templates gerados por js/play.js. As
@@ -246,37 +246,37 @@
             <!-- Header MADE -->
             <div class="text-center mb-6">
                 <img src="Criação vermelho sem.png" alt="MADE" class="h-12 w-auto mx-auto mb-2">
-                <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Material Autoral Digital Educacional</p>
+                <p class="text-sm text-slate-400 font-bold uppercase tracking-widest">Material Autoral Digital Educacional</p>
             </div>
 
             <!-- Game card -->
             <div class="bg-white rounded-[32px] shadow-xl border border-slate-100 overflow-hidden">
                 <div class="bg-gradient-to-br from-emerald-600 to-emerald-500 p-6 text-white">
-                    <p class="text-xs font-black uppercase tracking-[0.2em] opacity-70 mb-2">Código Secreto</p>
+                    <p class="text-sm font-black uppercase tracking-[0.2em] opacity-70 mb-2">Código Secreto</p>
                     <h1 id="welcome-game-name" class="text-2xl font-black leading-tight">Carregando...</h1>
                 </div>
                 <div class="p-6 space-y-3">
                     <div class="grid grid-cols-2 gap-3 text-sm">
                         <div>
-                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest block">Disciplina</span>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Disciplina</span>
                             <p id="welcome-disciplina" class="font-bold text-slate-700">-</p>
                         </div>
                         <div>
-                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest block">Conteúdo</span>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Conteúdo</span>
                             <p id="welcome-conteudo" class="font-bold text-slate-700">-</p>
                         </div>
                         <div>
-                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest block">Série / Turma</span>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Série / Turma</span>
                             <p id="welcome-serie" class="font-bold text-slate-700">-</p>
                         </div>
                         <div>
-                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest block">Autores</span>
-                            <p id="welcome-autores" class="font-bold text-slate-700 text-xs">-</p>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Autores</span>
+                            <p id="welcome-autores" class="font-bold text-slate-700 text-sm">-</p>
                         </div>
                     </div>
 
                     <div class="pt-4 border-t border-slate-100">
-                        <label class="text-[11px] font-black text-slate-500 uppercase tracking-widest block mb-2">Seu nome para o ranking</label>
+                        <label class="text-xs font-black text-slate-500 uppercase tracking-widest block mb-2">Seu nome para o ranking</label>
                         <input id="player-name-input" type="text" maxlength="40"
                             class="w-full px-4 py-3 border-2 border-slate-200 rounded-2xl font-bold text-slate-800 outline-none focus:border-emerald-500 transition text-sm"
                             placeholder="Ex: João Silva"
@@ -290,7 +290,7 @@
                 </div>
             </div>
 
-            <p class="text-center text-xs text-slate-400 mt-4">Acesso livre — sem necessidade de cadastro</p>
+            <p class="text-center text-sm text-slate-400 mt-4">Acesso livre — sem necessidade de cadastro</p>
         </div>
     </div>
 
@@ -304,7 +304,7 @@
 
             <!-- Code size -->
             <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Tamanho do Código (cartas)</p>
+                <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-3">Tamanho do Código (cartas)</p>
                 <div class="flex gap-2 flex-wrap">
                     <button class="play-size-btn" data-size="3" onclick="playApp.selectCodeSize(3)">3</button>
                     <button class="play-size-btn active" data-size="4" onclick="playApp.selectCodeSize(4)">4</button>
@@ -315,23 +315,23 @@
 
             <!-- Difficulty -->
             <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Nível de Dificuldade</p>
+                <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-3">Nível de Dificuldade</p>
                 <div class="space-y-2">
                     <button class="play-level-btn active" data-level="1" onclick="playApp.selectDifficultyLevel(1)">
                         <p class="font-black text-slate-800 text-sm">Nível 1 — Iniciante</p>
-                        <p id="play-level-desc-1" class="text-xs text-slate-400 mt-0.5">10 tentativas • Sem repetição de cartas e sem troca de cartas</p>
+                        <p id="play-level-desc-1" class="text-sm text-slate-400 mt-0.5">10 tentativas • Sem repetição de cartas e sem troca de cartas</p>
                     </button>
                     <button class="play-level-btn" data-level="2" onclick="playApp.selectDifficultyLevel(2)">
                         <p class="font-black text-slate-800 text-sm">Nível 2 — Intermediário</p>
-                        <p id="play-level-desc-2" class="text-xs text-slate-400 mt-0.5">8 tentativas • Sem repetição de cartas e troca de 1 carta ao reiniciar</p>
+                        <p id="play-level-desc-2" class="text-sm text-slate-400 mt-0.5">8 tentativas • Sem repetição de cartas e troca de 1 carta ao reiniciar</p>
                     </button>
                     <button class="play-level-btn" data-level="3" onclick="playApp.selectDifficultyLevel(3)">
                         <p class="font-black text-slate-800 text-sm">Nível 3 — Avançado</p>
-                        <p id="play-level-desc-3" class="text-xs text-slate-400 mt-0.5">6 tentativas • Repetição de 2 cartas e troca de 2 cartas ao reiniciar</p>
+                        <p id="play-level-desc-3" class="text-sm text-slate-400 mt-0.5">6 tentativas • Repetição de 2 cartas e troca de 2 cartas ao reiniciar</p>
                     </button>
                     <button class="play-level-btn" data-level="4" onclick="playApp.selectDifficultyLevel(4)">
                         <p class="font-black text-slate-800 text-sm">Nível 4 — Especialista</p>
-                        <p id="play-level-desc-4" class="text-xs text-slate-400 mt-0.5">5 tentativas • Repetição de 3 até o total de cartas da senha e troca de 3 cartas ao reiniciar</p>
+                        <p id="play-level-desc-4" class="text-sm text-slate-400 mt-0.5">5 tentativas • Repetição de 3 até o total de cartas da senha e troca de 3 cartas ao reiniciar</p>
                     </button>
                 </div>
             </div>
@@ -356,24 +356,24 @@
                 <span class="text-slate-300">|</span>
                 <p id="play-header-title" class="text-sm font-black text-slate-800 truncate">-</p>
                 <span class="hidden sm:inline text-slate-300">|</span>
-                <p class="hidden sm:inline text-xs text-slate-500"><span id="play-header-disciplina">-</span> · <span id="play-header-conteudo">-</span> · <span id="play-header-serie">-</span></p>
+                <p class="hidden sm:inline text-sm text-slate-500"><span id="play-header-disciplina">-</span> · <span id="play-header-conteudo">-</span> · <span id="play-header-serie">-</span></p>
             </div>
             <div class="flex items-center gap-2 shrink-0">
-                <span class="text-xs text-slate-400 font-bold hidden sm:inline">Jogador: <span id="play-header-player" class="text-emerald-600"></span></span>
-                <span id="play-header-autores" class="hidden text-xs text-slate-400 font-bold md:inline truncate max-w-[220px]"></span>
+                <span class="text-sm text-slate-400 font-bold hidden sm:inline">Jogador: <span id="play-header-player" class="text-emerald-600"></span></span>
+                <span id="play-header-autores" class="hidden text-sm text-slate-400 font-bold md:inline truncate max-w-[220px]"></span>
                 <div class="flex items-center gap-0.5 bg-slate-100 rounded-lg px-1 py-1" title="Tamanho da fonte">
                     <button onclick="playApp.decreaseFontSize()" id="btn-font-decrease"
-                        class="w-6 h-6 flex items-center justify-center text-slate-600 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed rounded-md font-black text-xs transition"
+                        class="w-6 h-6 flex items-center justify-center text-slate-600 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed rounded-md font-black text-sm transition"
                         title="Diminuir fonte">A-</button>
-                    <span id="font-scale-indicator" class="text-[9px] font-bold text-slate-400 w-8 text-center select-none">100%</span>
+                    <span id="font-scale-indicator" class="text-[10px] font-bold text-slate-400 w-8 text-center select-none">100%</span>
                     <button onclick="playApp.increaseFontSize()" id="btn-font-increase"
-                        class="w-6 h-6 flex items-center justify-center text-slate-600 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed rounded-md font-black text-xs transition"
+                        class="w-6 h-6 flex items-center justify-center text-slate-600 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed rounded-md font-black text-sm transition"
                         title="Aumentar fonte">A+</button>
                 </div>
-                <button onclick="playApp.showObjetivo()" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-[10px] font-black uppercase tracking-wider transition">
+                <button onclick="playApp.showObjetivo()" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-[11px] font-black uppercase tracking-wider transition">
                     <i class="fa-solid fa-bullseye mr-1"></i>Objetivo
                 </button>
-                <button onclick="playApp.showExplicacao()" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-[10px] font-black uppercase tracking-wider transition">
+                <button onclick="playApp.showExplicacao()" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-[11px] font-black uppercase tracking-wider transition">
                     <i class="fa-solid fa-circle-question mr-1"></i>Como Jogar
                 </button>
             </div>
@@ -386,7 +386,7 @@
             <div class="w-60 sm:w-72 border-r border-slate-200 bg-white p-3 flex flex-col overflow-hidden">
                 <div class="shrink-0 mb-3">
                     <h2 class="font-black text-sm text-slate-700">Banco de Cartas</h2>
-                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Clique para selecionar</p>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Clique para selecionar</p>
                 </div>
                 <div id="play-item-bank" class="grid grid-cols-3 gap-3 overflow-y-auto flex-1 pb-2"></div>
             </div>
@@ -396,7 +396,7 @@
 
                 <!-- Enunciado -->
                 <div class="w-full max-w-2xl bg-white/80 border border-slate-200 px-5 py-3 rounded-3xl mb-5 text-center shadow-sm">
-                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Enunciado</p>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Enunciado</p>
                     <div id="play-enunciado-content" class="text-sm font-semibold text-slate-700"></div>
                 </div>
 
@@ -423,15 +423,15 @@
                     </div>
                     <div class="mt-2 grid grid-cols-2 gap-1.5 text-sm">
                         <div class="bg-slate-50 rounded-xl px-2 py-1.5 border border-slate-100">
-                            <span class="block text-slate-400 uppercase tracking-wider text-xs">Nível</span>
+                            <span class="block text-slate-400 uppercase tracking-wider text-sm">Nível</span>
                             <span id="level-info-nivel-play" class="font-bold text-slate-600">-</span>
                         </div>
                         <div class="bg-slate-50 rounded-xl px-2 py-1.5 border border-slate-100">
-                            <span class="block text-slate-400 uppercase tracking-wider text-xs">Cartas</span>
+                            <span class="block text-slate-400 uppercase tracking-wider text-sm">Cartas</span>
                             <span id="level-info-cartas-play" class="font-bold text-slate-600">-</span>
                         </div>
                         <div class="bg-slate-50 rounded-xl px-2 py-1.5 border border-slate-100 col-span-2">
-                            <span class="block text-slate-400 uppercase tracking-wider text-xs">Troca</span>
+                            <span class="block text-slate-400 uppercase tracking-wider text-sm">Troca</span>
                             <span id="level-info-troca-play" class="font-bold text-slate-600">-</span>
                         </div>
                     </div>
@@ -485,7 +485,7 @@
                 </button>
             </div>
 
-            <p class="text-center text-xs text-slate-300 mt-4">
+            <p class="text-center text-sm text-slate-300 mt-4">
                 <a href="index.html" class="hover:text-slate-500 transition">Sou professor — acessar MADE</a>
             </p>
         </div>
@@ -529,11 +529,11 @@
                     <i id="solution-play-icon" class="fa-solid fa-star text-amber-400"></i>
                     <span id="solution-play-title">Resultado</span>
                 </h3>
-                <p id="solution-play-subtitle" class="text-xs text-slate-500 font-bold uppercase tracking-wider mt-1"></p>
+                <p id="solution-play-subtitle" class="text-sm text-slate-500 font-bold uppercase tracking-wider mt-1"></p>
             </div>
             <div class="p-7 space-y-6">
                 <div>
-                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-3">O Código Secreto Era:</h4>
+                    <h4 class="text-sm font-black text-slate-400 uppercase tracking-[0.2em] mb-3">O Código Secreto Era:</h4>
                     <div id="play-solution-cards" class="grid gap-3" style="grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));"></div>
                 </div>
                 <div class="flex gap-3">
@@ -548,6 +548,6 @@
         </div>
     </div>
 
-    <script type="module" src="js/play.js?v=1"></script>
+    <script type="module" src="js/play.js?v=2"></script>
 </body>
 </html>

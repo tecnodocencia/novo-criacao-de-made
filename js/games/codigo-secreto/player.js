@@ -158,7 +158,7 @@ export const playerMethods = {
             <div class="text-left space-y-4">
                 <div>${rulesHtml}</div>
                 <div class="p-4 bg-slate-50 rounded-2xl space-y-3 border border-slate-200">
-                    <p class="font-black text-xs uppercase tracking-widest text-slate-500">Significado dos Pinos:</p>
+                    <p class="font-black text-sm uppercase tracking-widest text-slate-500">Significado dos Pinos:</p>
                     <div class="flex items-center gap-3">
                         <div class="w-5 h-5 rounded-full bg-[#22c55e] border-2 border-[#16a34a]"></div>
                         <p class="text-sm"><strong>Pino Verde:</strong> Você acertou uma carta e a posição dela.</p>
@@ -225,7 +225,7 @@ export const playerMethods = {
 
         row.innerHTML = `
             <div class="flex-1">
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Tentativa ${attemptNumber}</p>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Tentativa ${attemptNumber}</p>
                 <div class="history-cards">
                     ${guess.map(card => {
                         const contentHtml = card.contentImage
@@ -626,7 +626,7 @@ export const playerMethods = {
 
                 const contentHtml = card.contentImage
                     ? `<img src="${card.contentImage}" class="max-w-full max-h-full object-contain" />`
-                    : `<p class="text-[10px] leading-tight font-black text-slate-800 bg-white/80 p-1 rounded-lg">${this.escapeCardText(card.content)}</p>`;
+                    : `<p class="text-[11px] leading-tight font-black text-slate-800 bg-white/80 p-1 rounded-lg">${this.escapeCardText(card.content)}</p>`;
 
                 frontFace.innerHTML = contentHtml;
                 cardContainer.classList.add('flipped');
