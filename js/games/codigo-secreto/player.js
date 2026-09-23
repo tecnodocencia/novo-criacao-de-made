@@ -172,6 +172,9 @@ export const playerMethods = {
                         <p class="text-sm"><strong>Pino Branco:</strong> Essa carta não faz parte do código secreto.</p>
                     </div>
                 </div>
+                <div class="p-4 bg-sky-50 rounded-2xl border border-sky-200">
+                    <p class="text-sm text-sky-900"><i class="fa-solid fa-circle-info mr-1"></i> <strong>Atenção:</strong> Nem toda carta correta do banco faz parte do Código Secreto desta partida. Existem outras cartas certas sobre o tema que não foram sorteadas para esta senha — o desafio é descobrir exatamente quais cartas e em qual ordem compõem o código secreto sorteado.</p>
+                </div>
                 <div>${objectiveHtml}</div>
             </div>
         `;
@@ -654,6 +657,45 @@ export const playerMethods = {
                 cardContainer.classList.add('flipped');
             }
         });
+
+        this.renderOtherCorrectCards(secret);
+    },
+
+    // Mostra, junto do resultado, as demais cartas corretas (isCorrect: true)
+    // que não fizeram parte do código secreto desta partida — para o aluno
+    // não confundir "carta correta" com "carta que estava na senha". Dedupe
+    // por `content` (mesma convenção de identidade usada em applyReplaySwap,
+    // ver model.js) porque cartas do secretCode têm instanceId próprio.
+    renderOtherCorrectCards: function(secretCards) {
+        const section = document.getElementById('solution-other-correct-section');
+        const container = document.getElementById('solution-other-correct-cards');
+        if (!section || !container || !this.state.activeGame) return;
+
+        const secretContents = new Set(secretCards.map(c => c.content));
+        const otherCorrect = this.state.activeGame.cards.filter(c => c.isCorrect && !secretContents.has(c.content));
+
+        if (otherCorrect.length === 0) {
+            section.classList.add('hidden');
+            container.innerHTML = '';
+            return;
+        }
+
+        section.classList.remove('hidden');
+        const frontDesign = this.state.activeGame.frontDesign || "imagens/frente/frente01.png";
+        container.innerHTML = otherCorrect.map(card => {
+            const contentHtml = card.contentImage
+                ? `<img src="${card.contentImage}" class="max-w-full max-h-full object-contain" />`
+                : `<p class="text-[11px] leading-tight font-black text-slate-800 bg-white/80 p-1 rounded-lg">${card.content || ''}</p>`;
+            const useBg = card.frontImage || frontDesign;
+            return `
+                <div class="relative" style="aspect-ratio: 4/5;">
+                    <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-2xl border-2 border-sky-300 opacity-90" style="background-image: url('${useBg}'); background-size: cover; background-position: center;">
+                        ${contentHtml}
+                    </div>
+                    <div class="absolute -top-2 -right-2 bg-sky-500 text-white text-[9px] font-black uppercase px-2 py-1 rounded-full shadow">Fora da senha</div>
+                </div>
+            `;
+        }).join('');
     },
 
     closeSolutionModal: function() {

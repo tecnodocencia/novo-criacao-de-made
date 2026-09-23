@@ -536,6 +536,11 @@
                     <h4 class="text-sm font-black text-slate-400 uppercase tracking-[0.2em] mb-3">O Código Secreto Era:</h4>
                     <div id="play-solution-cards" class="grid gap-3" style="grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));"></div>
                 </div>
+                <div id="play-solution-other-section" style="display:none;">
+                    <h4 class="text-sm font-black uppercase tracking-[0.2em] mb-2" style="color:#0ea5e9;">Outras Cartas Corretas (Não Fazem Parte Desta Senha)</h4>
+                    <p class="text-xs text-slate-500 mb-3">Essas cartas também são sobre o tema certo, mas não foram sorteadas para compor o Código Secreto desta partida — não confunda com as cartas reveladas acima.</p>
+                    <div id="play-solution-other-cards" class="grid gap-3" style="grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));"></div>
+                </div>
                 <div class="flex gap-3">
                     <button onclick="playApp.showRanking()" class="flex-1 py-4 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-2xl text-sm transition flex items-center justify-center gap-2">
                         <i class="fa-solid fa-trophy"></i> Ver Ranking
@@ -548,6 +553,6 @@
         </div>
     </div>
 
-    <script type="module" src="js/play.js?v=5"></script>
+    <script type="module" src="js/play.js?v=6"></script>
 </body>
 </html>

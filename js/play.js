@@ -636,6 +636,8 @@ async function openSolutionModal(result) {
         setTimeout(() => cardEl.classList.add('flipped'), (i + 1) * 300);
     });
 
+    renderOtherCorrectCards(frontDesign);
+
     document.getElementById('modal-solution-play').style.display = 'flex';
 
     await savePublicScore(score, attemptsUsed, won);
@@ -645,6 +647,48 @@ async function openSolutionModal(result) {
         document.getElementById('solution-play-subtitle').innerText =
             `${attemptsUsed} tentativa${attemptsUsed !== 1 ? 's' : ''} — Pontuação: ${score} pts — Você ficou em ${gs.currentResult.rank}º lugar de ${gs.currentResult.totalPlayers}`;
     }
+}
+
+// Mostra, junto do resultado, as demais cartas corretas (isCorrect: true) que
+// não fizeram parte do código secreto desta partida — para o jogador não
+// confundir "carta correta" com "carta que estava na senha". Dedupe por
+// `content` (mesma convenção de identidade usada em applyReplaySwap, ver
+// model.js), consistente com o player autenticado.
+function renderOtherCorrectCards(frontDesign) {
+    const section = document.getElementById('play-solution-other-section');
+    const container = document.getElementById('play-solution-other-cards');
+    if (!section || !container) return;
+
+    const secretContents = new Set(gs.secretCode.map(c => c.content));
+    const otherCorrect = gs.game.cards.filter(c => c.isCorrect && !secretContents.has(c.content));
+
+    if (otherCorrect.length === 0) {
+        section.style.display = 'none';
+        container.innerHTML = '';
+        return;
+    }
+
+    section.style.display = '';
+    container.innerHTML = otherCorrect.map(card => {
+        let content;
+        if (card.contentImage) {
+            content = `<img src="${card.contentImage}" alt="${escapeHtml(stripHtml(card.content))}"
+                style="width:100%;height:100%;object-fit:cover;">`;
+        } else {
+            content = `<div style="display:flex;align-items:center;justify-content:center;height:100%;padding:8px;">
+                <p style="font-size:calc(11px * var(--play-font-scale));font-weight:900;text-align:center;line-height:1.3;color:#0f172a;">${card.content || ''}</p>
+            </div>`;
+        }
+        const frontBg = card.frontImage || frontDesign;
+        return `
+            <div style="position:relative;aspect-ratio:4/5;">
+                <div style="width:100%;height:100%;border-radius:16px;overflow:hidden;border:2px solid #7dd3fc;opacity:0.9;background-image:url('${frontBg}');background-size:cover;background-position:center;">
+                    <div style="width:100%;height:100%;background:rgba(255,255,255,0.85);">${content}</div>
+                </div>
+                <div style="position:absolute;top:-6px;right:-6px;background:#0ea5e9;color:white;font-size:9px;font-weight:900;text-transform:uppercase;padding:3px 6px;border-radius:9999px;box-shadow:0 2px 6px rgba(0,0,0,0.15);">Fora da senha</div>
+            </div>
+        `;
+    }).join('');
 }
 
 // ─── Salvar resultado público ─────────────────────────────────────────────────
@@ -878,7 +922,11 @@ window.playApp = {
         showConfirm('Deseja reiniciar? Seu progresso atual será perdido.', restartGame);
     },
 
-    showGameRules() { showNotification(gs.game.regra || 'Nenhuma regra definida.', 'Regras do Jogo'); },
+    showGameRules() {
+        const rulesHtml = gs.game.regra || 'Nenhuma regra definida.';
+        const note = `<div style="margin-top:14px;padding:12px 14px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:16px;color:#0c4a6e;"><i class="fa-solid fa-circle-info" style="margin-right:4px;"></i> <strong>Atenção:</strong> Nem toda carta correta do banco faz parte do Código Secreto desta partida. Existem outras cartas certas sobre o tema que não foram sorteadas para esta senha — o desafio é descobrir exatamente quais cartas e em qual ordem compõem o código secreto sorteado.</div>`;
+        showNotification(rulesHtml + note, 'Regras do Jogo');
+    },
     showObjetivo() { showNotification(gs.game.objetivo || 'Nenhum objetivo definido.', 'Objetivo'); },
     showExplicacao() { showNotification(gs.game.explicacao || 'Nenhuma explicação.', 'Como Jogar'); },
 
