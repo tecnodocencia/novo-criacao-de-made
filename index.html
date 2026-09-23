@@ -615,8 +615,8 @@
             content: '';
             position: absolute;
             inset: 0;
-            opacity: 0.07;
-            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.6) 0, rgba(255,255,255,0.6) 1px, transparent 1px, transparent 42px);
+            opacity: 0.15;
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.7) 0, rgba(255,255,255,0.7) 1px, transparent 1px, transparent 42px);
             pointer-events: none;
         }
         .hero-watermark {
@@ -625,7 +625,7 @@
             right: -0.5rem;
             font-size: 7rem;
             font-weight: 900;
-            color: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.25);
             line-height: 1;
             white-space: nowrap;
             pointer-events: none;
@@ -801,7 +801,7 @@
 
         <main class="flex-1 flex flex-col overflow-hidden min-h-screen relative z-0">
             
-            <section id="view-dashboard" class="hero-surface view-section flex-col p-8 overflow-y-auto active bg-gradient-to-br from-sky-400 via-blue-700 to-blue-950">
+            <section id="view-dashboard" class="hero-surface view-section flex-col active bg-gradient-to-br from-sky-400 via-blue-700 to-blue-950">
                 <div class="flex justify-between items-center mb-8">
                     <h2 class="text-2xl font-bold text-slate-800">Materiais Criados</h2>
                 </div>
@@ -809,7 +809,7 @@
                     </div>
             </section>
 
-            <section id="view-settings" class="hero-surface view-section flex-col p-8 overflow-y-auto hidden bg-gradient-to-br from-sky-400 via-blue-700 to-blue-950">
+            <section id="view-settings" class="hero-surface view-section flex-col hidden bg-gradient-to-br from-sky-400 via-blue-700 to-blue-950">
                 <div class="flex justify-between items-center mb-8">
                     <h2 class="text-2xl font-bold text-slate-800">Configurações da Conta</h2>
                 </div>
@@ -853,7 +853,7 @@
                 </div>
             </section>
 
-            <section id="view-library" class="hero-surface view-section flex-col p-8 overflow-y-auto hidden bg-gradient-to-br from-sky-400 via-blue-700 to-blue-950">
+            <section id="view-library" class="hero-surface view-section flex-col hidden bg-gradient-to-br from-sky-400 via-blue-700 to-blue-950">
                 <div class="flex justify-between items-center mb-8">
                     <div>
                         <h2 class="text-2xl font-bold text-slate-800">Minha Biblioteca</h2>
