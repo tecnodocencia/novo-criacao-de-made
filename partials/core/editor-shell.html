@@ -250,60 +250,51 @@
                                     </div>
                                     <div>
                                         <label class="text-xs font-black text-slate-500 uppercase block mb-4 tracking-widest">Design das Cartas</label>
-                                        <div class="rounded-[28px] border-2 border-slate-200 bg-slate-50 shadow-sm p-5 space-y-5">
-                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                                <div class="flex items-center justify-center gap-1">
-                                                    <button onclick="app.toggleFrontDesign('prev')" title="Ver o modelo anterior de frente de carta." class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
-                                                        <i class="fa-solid fa-chevron-left"></i>
-                                                    </button>
-                                                    <div class="card-preview" title="Modelo visual usado na frente das cartas do jogo.">
-                                                        <img id="preview-front" src="imagens/frente/frente01.png" alt="Pré-visualização frente">
-                                                        <div class="card-preview-label">Frente da Carta</div>
-                                                    </div>
-                                                    <button onclick="app.toggleFrontDesign('next')" title="Ver o próximo modelo de frente de carta." class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
-                                                        <i class="fa-solid fa-chevron-right"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="flex items-center justify-center gap-1">
-                                                    <button onclick="app.toggleBackDesign('prev')" title="Ver o modelo anterior de verso de carta." class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
-                                                        <i class="fa-solid fa-chevron-left"></i>
-                                                    </button>
-                                                    <div class="card-preview" title="Modelo visual usado no verso das cartas do jogo.">
-                                                        <img id="preview-back" src="imagens/verso/Cópia de Trás da Carta - Natureza.png" alt="Pré-visualização verso">
-                                                        <div class="card-preview-label">Verso da Carta</div>
-                                                    </div>
-                                                    <button onclick="app.toggleBackDesign('next')" title="Ver o próximo modelo de verso de carta." class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
-                                                        <i class="fa-solid fa-chevron-right"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="pt-5 border-t border-slate-300">
-                                                <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Envio externo (opcional)</p>
-                                                <p class="text-sm text-slate-600 mb-4">Você pode enviar um modelo customizado de frente e verso das cartas (em formato PNG, JPEG ou SVG).</p>
+                                        <div class="rounded-[28px] border-2 border-slate-200 bg-slate-50 shadow-sm p-5 space-y-4">
+                                            <p class="text-sm text-slate-600 text-center">Escolha um modelo pronto com as setas ou envie sua própria imagem pela Biblioteca (PNG, JPEG ou SVG).</p>
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                                 <div class="space-y-3">
-                                                    <div>
-                                                        <label class="text-[11px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">Imagem Frente</label>
-                                                        <div class="flex gap-2 items-center">
-                                                            <button onclick="app.openImageLibrary('front-design')" title="Escolher, na biblioteca de imagens, uma imagem personalizada para a frente da carta." class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[11px] font-bold uppercase flex items-center gap-2">
-                                                                <i class="fa-solid fa-images"></i> Biblioteca
-                                                            </button>
-                                                            <button type="button" onclick="app.removeExternalFrontImage()" title="Remover a imagem personalizada da frente e voltar ao modelo padrão." class="px-3 py-2 bg-red-500 text-white rounded-lg text-sm font-semibold">Remover</button>
+                                                    <div class="flex items-center justify-center gap-1">
+                                                        <button onclick="app.toggleFrontDesign('prev')" title="Ver o modelo anterior de frente de carta." class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
+                                                            <i class="fa-solid fa-chevron-left"></i>
+                                                        </button>
+                                                        <div class="card-preview" title="Modelo visual usado na frente das cartas do jogo.">
+                                                            <img id="preview-front" src="imagens/frente/frente01.png" alt="Pré-visualização frente">
+                                                            <div class="card-preview-label">Frente da Carta</div>
                                                         </div>
+                                                        <button onclick="app.toggleFrontDesign('next')" title="Ver o próximo modelo de frente de carta." class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
+                                                            <i class="fa-solid fa-chevron-right"></i>
+                                                        </button>
                                                     </div>
-                                                    <div>
-                                                        <label class="text-[11px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">Imagem Verso</label>
-                                                        <div class="flex gap-2 items-center">
-                                                            <button onclick="app.openImageLibrary('back-design')" title="Escolher, na biblioteca de imagens, uma imagem personalizada para o verso da carta." class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[11px] font-bold uppercase flex items-center gap-2">
-                                                                <i class="fa-solid fa-images"></i> Biblioteca
-                                                            </button>
-                                                            <button type="button" onclick="app.removeExternalBackImage()" title="Remover a imagem personalizada do verso e voltar ao modelo padrão." class="px-3 py-2 bg-red-500 text-white rounded-lg text-sm font-semibold">Remover</button>
-                                                        </div>
+                                                    <div class="flex gap-2 items-center justify-center">
+                                                        <button onclick="app.openImageLibrary('front-design')" title="Escolher, na biblioteca de imagens, uma imagem personalizada para a frente da carta." class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[11px] font-bold uppercase flex items-center gap-2">
+                                                            <i class="fa-solid fa-images"></i> Biblioteca
+                                                        </button>
+                                                        <button type="button" onclick="app.removeExternalFrontImage()" title="Remover a imagem personalizada da frente e voltar ao modelo padrão." class="px-3 py-2 bg-red-500 text-white rounded-lg text-sm font-semibold">Remover</button>
                                                     </div>
-                                                </div>
-                                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                                                     <div class="card-preview hidden" id="external-front-preview-wrapper">
                                                         <img id="external-front-preview" src="" alt="Prévia frente">
                                                         <div class="card-preview-label">Frente Personalizada</div>
+                                                    </div>
+                                                </div>
+                                                <div class="space-y-3">
+                                                    <div class="flex items-center justify-center gap-1">
+                                                        <button onclick="app.toggleBackDesign('prev')" title="Ver o modelo anterior de verso de carta." class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
+                                                            <i class="fa-solid fa-chevron-left"></i>
+                                                        </button>
+                                                        <div class="card-preview" title="Modelo visual usado no verso das cartas do jogo.">
+                                                            <img id="preview-back" src="imagens/verso/Cópia de Trás da Carta - Natureza.png" alt="Pré-visualização verso">
+                                                            <div class="card-preview-label">Verso da Carta</div>
+                                                        </div>
+                                                        <button onclick="app.toggleBackDesign('next')" title="Ver o próximo modelo de verso de carta." class="bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition shadow-lg shadow-red-200">
+                                                            <i class="fa-solid fa-chevron-right"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="flex gap-2 items-center justify-center">
+                                                        <button onclick="app.openImageLibrary('back-design')" title="Escolher, na biblioteca de imagens, uma imagem personalizada para o verso da carta." class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[11px] font-bold uppercase flex items-center gap-2">
+                                                            <i class="fa-solid fa-images"></i> Biblioteca
+                                                        </button>
+                                                        <button type="button" onclick="app.removeExternalBackImage()" title="Remover a imagem personalizada do verso e voltar ao modelo padrão." class="px-3 py-2 bg-red-500 text-white rounded-lg text-sm font-semibold">Remover</button>
                                                     </div>
                                                     <div class="card-preview hidden" id="external-back-preview-wrapper">
                                                         <img id="external-back-preview" src="" alt="Prévia verso">
