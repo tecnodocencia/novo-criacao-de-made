@@ -1,6 +1,6 @@
 // js/core/library.js
-import { dbService } from '../database.js';
-import { imageBankFolders } from './imageBank.js';
+import { dbService } from '../database.js?v=1';
+import { imageBankFolders } from './imageBank.js?v=1';
 
 function findBankFolder(key) {
     return imageBankFolders.find(f => f.key === key) || null;

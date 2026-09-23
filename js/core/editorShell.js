@@ -1,6 +1,6 @@
 // js/core/editorShell.js
-import { dbService } from '../database.js';
-import { getGame } from '../games/registry.js';
+import { dbService } from '../database.js?v=1';
+import { getGame } from '../games/registry.js?v=1';
 
 export const frontDesigns = [
     'imagens/frente/frente01.png',

@@ -1,6 +1,6 @@
 // js/core/auth.js
-import { dbService } from '../database.js';
-import { getGame } from '../games/registry.js';
+import { dbService } from '../database.js?v=1';
+import { getGame } from '../games/registry.js?v=1';
 
 export const authMethods = {
     init: async function() {

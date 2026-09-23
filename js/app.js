@@ -1,14 +1,14 @@
 // js/app.js
-import { dbService } from './database.js';
-import { state } from './core/state.js';
-import { utilsMethods } from './core/utils.js';
-import { authMethods } from './core/auth.js';
-import { dashboardMethods } from './core/dashboard.js';
-import { libraryMethods } from './core/library.js';
-import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js';
-import { modalMethods } from './core/modals.js';
-import { getGame } from './games/registry.js';
-import './games/codigo-secreto/index.js';
+import { dbService } from './database.js?v=1';
+import { state } from './core/state.js?v=1';
+import { utilsMethods } from './core/utils.js?v=1';
+import { authMethods } from './core/auth.js?v=1';
+import { dashboardMethods } from './core/dashboard.js?v=1';
+import { libraryMethods } from './core/library.js?v=1';
+import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=1';
+import { modalMethods } from './core/modals.js?v=1';
+import { getGame } from './games/registry.js?v=1';
+import './games/codigo-secreto/index.js?v=1';
 
 // Métodos que pertencem ao modelo de jogo ativo (hoje só "Código Secreto").
 // app.js não implementa o comportamento: delega para o módulo registrado em games/registry.js,
@@ -62,7 +62,7 @@ Object.defineProperty(app, 'difficultyRules', {
 async function injectPartial(mountId, url) {
     const el = document.getElementById(mountId);
     if (!el) return;
-    const res = await fetch(url);
+    const res = await fetch(`${url}?v=${Date.now()}`, { cache: 'no-store' });
     el.innerHTML = await res.text();
 }
 
