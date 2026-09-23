@@ -15,24 +15,51 @@ export const utilsMethods = {
     },
 
     insertSpecialChar: function(char) {
-        const textarea = document.getElementById('modal-card-content');
-        if (!textarea) return;
+        const el = document.getElementById('modal-card-content');
+        if (!el) return;
 
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-        const text = textarea.value;
+        const selection = window.getSelection();
+        let range = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+        // Se o cursor não está dentro do campo (campo perdeu foco, ou nunca foi
+        // clicado), cai para o fim do conteúdo — mesmo comportamento esperado de
+        // "inserir no cursor" quando não há cursor visível.
+        if (!range || !el.contains(range.commonAncestorContainer)) {
+            el.focus();
+            range = document.createRange();
+            range.selectNodeContents(el);
+            range.collapse(false);
+        }
 
-        textarea.value = text.substring(0, start) + char + text.substring(end);
+        range.deleteContents();
+        const textNode = document.createTextNode(char);
+        range.insertNode(textNode);
+        range.setStartAfter(textNode);
+        range.collapse(true);
 
-        textarea.focus();
-        textarea.selectionStart = textarea.selectionEnd = start + char.length;
+        selection.removeAllRanges();
+        selection.addRange(range);
+        el.focus();
     },
 
+    // Usada só para texto que é (e sempre foi) genuinamente plain-text, como
+    // nomes de jogadores no ranking (dashboard.js). NÃO usar para renderizar
+    // card.content — desde que #modal-card-content virou contenteditable,
+    // card.content pode conter HTML de formatação (negrito/itálico/vermelho)
+    // que deve ser renderizado como HTML confiável, não escapado. Ver stripHtml.
     escapeCardText: function(text) {
         if (text === null || text === undefined) return '';
         const div = document.createElement('div');
         div.textContent = String(text);
         return div.innerHTML;
+    },
+
+    // Extrai só o texto visível de uma string HTML (usada em atributos alt e em
+    // innerText, onde tags não fazem sentido).
+    stripHtml: function(html) {
+        if (html === null || html === undefined) return '';
+        const div = document.createElement('div');
+        div.innerHTML = String(html);
+        return (div.textContent || div.innerText || '').trim();
     },
 
     shuffleArray: function(arr) {

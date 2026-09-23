@@ -59,7 +59,7 @@ export const playerMethods = {
             const useBg = card.frontImage || frontDesign;
             const contentHtml = card.contentImage
                 ? `<img src="${card.contentImage}" class="max-w-full max-h-full object-contain" />`
-                : this.escapeCardText(card.content);
+                : (card.content || '');
 
             div.innerHTML = `
                 <div class="zoom-icon" title="Visualizar ampliado">
@@ -115,10 +115,10 @@ export const playerMethods = {
 
         const contentHtml = card.contentImage
             ? `<img src="${card.contentImage}" class="max-w-full max-h-full object-contain shadow-2xl rounded-2xl" />`
-            : `<span class="text-4xl font-black text-slate-800 bg-white/80 p-6 rounded-[32px] border-2 border-slate-100 text-center">${this.escapeCardText(card.content)}</span>`;
+            : `<span class="text-4xl font-black text-slate-800 bg-white/80 p-6 rounded-[32px] border-2 border-slate-100 text-center">${card.content || ''}</span>`;
 
         container.innerHTML = contentHtml;
-        text.innerText = card.content || "Carta Selecionada";
+        text.innerText = this.stripHtml(card.content) || "Carta Selecionada";
         modal.style.display = 'flex';
     },
 
@@ -192,7 +192,7 @@ export const playerMethods = {
             }
             const contentHtml = card.contentImage
                 ? `<img src="${card.contentImage}" class="max-w-full max-h-full object-contain" />`
-                : this.escapeCardText(card.content);
+                : (card.content || '');
 
             slot.innerHTML = `
                 <div class="bank-card-inner w-full h-full overflow-hidden">
@@ -230,7 +230,7 @@ export const playerMethods = {
                     ${guess.map(card => {
                         const contentHtml = card.contentImage
                             ? `<img src="${card.contentImage}" class="max-w-full max-h-full object-contain" />`
-                            : this.escapeCardText(card.content);
+                            : (card.content || '');
                         return `
                             <div class="history-mini-card overflow-hidden">
                                 ${contentHtml}
@@ -254,7 +254,7 @@ export const playerMethods = {
             slot.style.backgroundImage = '';
             const contentHtml = card.contentImage
                 ? `<img src="${card.contentImage}" class="max-w-full max-h-full object-contain" />`
-                : this.escapeCardText(card.content);
+                : (card.content || '');
 
             slot.innerHTML = `
                 <div class="bank-card-inner w-full h-full overflow-hidden" style="background: white;">
@@ -626,7 +626,7 @@ export const playerMethods = {
 
                 const contentHtml = card.contentImage
                     ? `<img src="${card.contentImage}" class="max-w-full max-h-full object-contain" />`
-                    : `<p class="text-[11px] leading-tight font-black text-slate-800 bg-white/80 p-1 rounded-lg">${this.escapeCardText(card.content)}</p>`;
+                    : `<p class="text-[11px] leading-tight font-black text-slate-800 bg-white/80 p-1 rounded-lg">${card.content || ''}</p>`;
 
                 frontFace.innerHTML = contentHtml;
                 cardContainer.classList.add('flipped');

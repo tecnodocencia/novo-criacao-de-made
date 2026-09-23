@@ -59,6 +59,17 @@ function escapeHtml(text) {
     return d.innerHTML;
 }
 
+// card.content pode conter HTML de formatação (negrito/itálico/vermelho) desde
+// que #modal-card-content virou contenteditable no editor — renderizado como
+// HTML confiável (não escapado), mas atributos alt/innerText usam esta função
+// para extrair só o texto visível.
+function stripHtml(html) {
+    if (html == null) return '';
+    const d = document.createElement('div');
+    d.innerHTML = String(html);
+    return (d.textContent || d.innerText || '').trim();
+}
+
 function formatDateTimeBR(dateStr) {
     if (!dateStr) return '';
     const d = new Date(dateStr);
@@ -111,12 +122,12 @@ function previewCard(card) {
     container.style.backgroundSize = 'cover';
     container.style.backgroundPosition = 'center';
     if (card.contentImage) {
-        container.innerHTML = `<img src="${card.contentImage}" alt="${escapeHtml(card.content)}"
+        container.innerHTML = `<img src="${card.contentImage}" alt="${escapeHtml(stripHtml(card.content))}"
             style="max-height:280px; max-width:100%; object-fit:contain; border-radius:12px;">`;
     } else {
-        container.innerHTML = `<p class="text-2xl font-black text-slate-800 text-center bg-white/80 p-4 rounded-2xl">${escapeHtml(card.content)}</p>`;
+        container.innerHTML = `<p class="text-2xl font-black text-slate-800 text-center bg-white/80 p-4 rounded-2xl">${card.content || ''}</p>`;
     }
-    document.getElementById('preview-play-card-text').innerText = card.content || '';
+    document.getElementById('preview-play-card-text').innerText = stripHtml(card.content) || '';
     document.getElementById('modal-preview-play').style.display = 'flex';
 }
 
@@ -309,10 +320,10 @@ function renderBankCards() {
 
         let innerContent;
         if (card.contentImage) {
-            innerContent = `<img src="${card.contentImage}" alt="${escapeHtml(card.content)}"
+            innerContent = `<img src="${card.contentImage}" alt="${escapeHtml(stripHtml(card.content))}"
                 style="max-height:82px; max-width:100%; object-fit:contain; border-radius:8px; pointer-events:none;">`;
         } else {
-            innerContent = `<p class="text-[11px] font-black text-slate-800 text-center leading-tight">${escapeHtml(card.content)}</p>`;
+            innerContent = `<p class="text-[11px] font-black text-slate-800 text-center leading-tight">${card.content || ''}</p>`;
         }
 
         const cardIdStr = escapeHtml(String(card.id));
@@ -421,10 +432,10 @@ function renderDropSlotContent(slotIndex) {
     if (card) {
         let content;
         if (card.contentImage) {
-            content = `<img src="${card.contentImage}" alt="${escapeHtml(card.content)}"
+            content = `<img src="${card.contentImage}" alt="${escapeHtml(stripHtml(card.content))}"
                 style="max-height:120px; max-width:90%; object-fit:contain; border-radius:12px; pointer-events:none;">`;
         } else {
-            content = `<p class="text-[11px] font-black text-slate-800 text-center leading-tight px-1">${escapeHtml(card.content)}</p>`;
+            content = `<p class="text-[11px] font-black text-slate-800 text-center leading-tight px-1">${card.content || ''}</p>`;
         }
         const frontDesign = gs.game.frontDesign || 'imagens/frente/frente01.png';
         const useBg = card.frontImage || frontDesign;
@@ -548,10 +559,10 @@ function addHistoryRow(guess, black, white) {
     const cardsHtml = guess.map(card => {
         let inner;
         if (card.contentImage) {
-            inner = `<img src="${card.contentImage}" alt="${escapeHtml(card.content)}"
+            inner = `<img src="${card.contentImage}" alt="${escapeHtml(stripHtml(card.content))}"
                 style="max-height:55px;max-width:100%;object-fit:contain;border-radius:6px;">`;
         } else {
-            inner = `<p style="font-size:calc(8px * var(--play-font-scale));font-weight:900;text-align:center;line-height:1.2;">${escapeHtml(card.content)}</p>`;
+            inner = `<p style="font-size:calc(8px * var(--play-font-scale));font-weight:900;text-align:center;line-height:1.2;">${card.content || ''}</p>`;
         }
         return `<div class="history-mini-card">${inner}</div>`;
     }).join('');
@@ -598,11 +609,11 @@ async function openSolutionModal(result) {
     gs.secretCode.forEach((card, i) => {
         let frontContent;
         if (card.contentImage) {
-            frontContent = `<img src="${card.contentImage}" alt="${escapeHtml(card.content)}"
+            frontContent = `<img src="${card.contentImage}" alt="${escapeHtml(stripHtml(card.content))}"
                 style="width:100%;height:100%;object-fit:cover;">`;
         } else {
             frontContent = `<div style="display:flex;align-items:center;justify-content:center;height:100%;padding:8px;">
-                <p style="font-size:calc(11px * var(--play-font-scale));font-weight:900;text-align:center;line-height:1.3;color:#0f172a;">${escapeHtml(card.content)}</p>
+                <p style="font-size:calc(11px * var(--play-font-scale));font-weight:900;text-align:center;line-height:1.3;color:#0f172a;">${card.content || ''}</p>
             </div>`;
         }
 

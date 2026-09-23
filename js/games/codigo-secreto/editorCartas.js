@@ -27,7 +27,7 @@ export const editorCartasMethods = {
 
             const contentHtml = card.contentImage
                 ? `<img src="${card.contentImage}" class="max-w-full max-h-24 object-contain rounded-lg mb-1" />`
-                : `<p class="text-xs font-bold text-slate-800 text-center leading-tight line-clamp-3 px-1">${this.escapeCardText(card.content)}</p>`;
+                : `<p class="text-xs font-bold text-slate-800 text-center leading-tight line-clamp-3 px-1">${card.content || ''}</p>`;
 
             cardEl.innerHTML = `
                 <div class="flex-1 flex flex-col items-center justify-center overflow-hidden">
@@ -58,7 +58,7 @@ export const editorCartasMethods = {
         this.state.selectedCardIndex = idx;
         const card = this.state.editingGame.cards[idx];
         document.getElementById('modal-card-index').value = idx;
-        document.getElementById('modal-card-content').value = card.content || "";
+        document.getElementById('modal-card-content').innerHTML = card.content || "";
 
         const preview = document.getElementById('modal-card-image-preview');
         const wrapper = document.getElementById('modal-card-image-preview-wrapper');
@@ -120,7 +120,11 @@ export const editorCartasMethods = {
 
     saveCardModal: function() {
         const idx = parseInt(document.getElementById('modal-card-index').value);
-        const content = document.getElementById('modal-card-content').value.trim();
+        const content = document.getElementById('modal-card-content').innerHTML;
+        // .innerHTML pode vir com markup "vazio" (ex: "<br>" deixado pelo
+        // navegador ao apagar tudo) — a checagem de "tem texto" usa a versão
+        // sem tags, não o innerHTML bruto.
+        const hasText = this.stripHtml(content).length > 0;
 
         const urlVal = document.getElementById('modal-card-image-url').value.trim();
         if (urlVal) {
@@ -129,9 +133,9 @@ export const editorCartasMethods = {
 
         const hasImage = !!this.state.tempContentImage || !!this.state.editingGame.cards[idx].contentImage;
 
-        if (!content && !hasImage) { this.showNotification("A carta precisa ter texto ou uma imagem."); return; }
+        if (!hasText && !hasImage) { this.showNotification("A carta precisa ter texto ou uma imagem."); return; }
 
-        this.state.editingGame.cards[idx].content = content;
+        this.state.editingGame.cards[idx].content = hasText ? content : '';
         // isCorrect não é mais editável aqui — é fixo pela posição da carta
         // (as 6 primeiras são sempre corretas, as 6 últimas sempre distratoras).
         if (this.state.tempContentImage) {

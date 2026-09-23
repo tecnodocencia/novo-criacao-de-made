@@ -33,8 +33,8 @@ export const reviewMethods = {
             const cardEl = document.createElement('div');
             cardEl.className = `p-3 rounded-xl border flex flex-col items-center justify-center text-center text-sm font-semibold ${card.isCorrect ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-slate-50 border-slate-200 text-slate-700'}`;
             const contentHtml = card.contentImage
-                ? `<img src="${card.contentImage}" class="max-w-full max-h-20 object-contain rounded-lg mb-1" />${card.content ? `<p class="mt-1">${this.escapeCardText(card.content)}</p>` : ''}`
-                : `<p>${this.escapeCardText(card.content)}</p>`;
+                ? `<img src="${card.contentImage}" class="max-w-full max-h-20 object-contain rounded-lg mb-1" />${card.content ? `<p class="mt-1">${card.content}</p>` : ''}`
+                : `<p>${card.content || ''}</p>`;
             cardEl.innerHTML = contentHtml;
             grid.appendChild(cardEl);
         });
