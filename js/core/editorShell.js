@@ -218,6 +218,14 @@ export const editorShellMethods = {
             this.state.editingGame.id = jogoSalvo.id;
             if (jogoSalvo.share_code) this.state.editingGame.share_code = jogoSalvo.share_code;
 
+            // Mantém state.games em sincronia com o que acabou de ser
+            // auto-salvo, para o dashboard refletir o rascunho sem precisar
+            // recarregar a página.
+            const idx = this.state.games.findIndex(g => g.id === jogoSalvo.id);
+            if (idx !== -1) this.state.games[idx] = jogoSalvo;
+            else this.state.games.push(jogoSalvo);
+            this.renderDashboard();
+
             this.updateAutoSaveIndicator('saved');
         } catch (error) {
             console.error('Erro no auto-save:', error);
