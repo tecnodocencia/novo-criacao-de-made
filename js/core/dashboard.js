@@ -86,7 +86,7 @@ export const dashboardMethods = {
         this.state.games.forEach((game, index) => {
             const accent = CARD_ACCENTS[index % CARD_ACCENTS.length];
             const card = document.createElement('div');
-            const cardBg = game.is_draft ? 'bg-slate-100' : 'bg-white';
+            const cardBg = game.is_draft ? 'bg-slate-200' : 'bg-white';
             card.className = `relative overflow-hidden ${cardBg} p-6 rounded-[32px] border ${accent.cardBorder} shadow-sm hover:shadow-md transition group`;
             card.innerHTML = `
                 <div class="absolute top-0 left-0 right-0 h-1.5 ${accent.bar}"></div>
@@ -95,7 +95,7 @@ export const dashboardMethods = {
                         <i class="fa-solid fa-puzzle-piece"></i>
                     </div>
                     ${game.is_draft ? `
-                    <span class="inline-flex items-center gap-1.5 bg-amber-100 text-amber-700 text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full" title="Este jogo foi salvo automaticamente durante a criação, mas ainda não foi finalizado com o botão &quot;Salvar Jogo&quot;.">
+                    <span class="inline-flex items-center gap-1.5 bg-amber-100 text-amber-700 text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full" title="Este jogo foi salvo automaticamente durante a criação, mas ainda não foi finalizado com o botão &quot;Testar Jogo&quot;.">
                         <i class="fa-solid fa-pen"></i> Rascunho
                     </span>` : ''}
                 </div>

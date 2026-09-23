@@ -12,7 +12,7 @@
                                     <p class="text-[11px] uppercase tracking-[0.28em] text-slate-500 font-bold">Passo <span id="creator-step-current">1</span> de 3</p>
                                     <h3 class="text-lg font-black text-slate-900" id="creator-step-title">Dados do Jogo</h3>
                                 </div>
-                                <span id="autosave-indicator" class="text-sm font-bold text-slate-400 transition-opacity duration-300 opacity-0" aria-live="polite"></span>
+                                <span id="autosave-indicator" class="text-lg font-bold text-slate-400 transition-opacity duration-300 opacity-0" aria-live="polite"></span>
                             </div>
                             <div class="relative h-2 rounded-full bg-slate-200 overflow-hidden mt-4">
                                 <div id="creator-progress-fill" class="absolute inset-y-0 left-0 bg-gradient-to-r from-green-600 to-sky-500 rounded-full transition-all duration-300" style="width:33.33%"></div>
@@ -426,11 +426,8 @@
                         Voltar
                     </button>
                     <div id="creator-review-actions" class="ml-auto flex gap-3 hidden">
-                        <button onclick="app.testGameFromCreator()" title="Jogar o jogo como o aluno veria, sem salvar as alterações." class="bg-amber-500 text-white px-6 py-3 font-bold rounded-xl text-sm transition">
+                        <button onclick="app.testGameFromCreator()" title="Salva o jogo e permite jogá-lo como o aluno veria." class="bg-emerald-600 text-white px-6 py-3 font-bold rounded-xl text-sm transition">
                             Testar Jogo
-                        </button>
-                        <button onclick="app.saveGame()" title="Salvar o jogo com todas as informações preenchidas." class="bg-emerald-600 text-white px-6 py-3 font-bold rounded-xl text-sm transition">
-                            Salvar Jogo
                         </button>
                     </div>
                     <button id="creator-next-btn" onclick="app.creatorNextStep()" title="Avançar para o próximo passo do editor." class="ml-auto bg-gradient-to-r from-green-600 to-sky-500 hover:brightness-105 text-white px-6 py-3 font-bold rounded-xl text-sm transition">

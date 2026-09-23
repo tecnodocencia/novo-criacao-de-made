@@ -264,7 +264,29 @@ export const playerMethods = {
         });
     },
 
-    testGameFromCreator: function() {
+    testGameFromCreator: async function() {
+        // "Testar Jogo" agora também salva: sincroniza o DOM com o state,
+        // finaliza o rascunho (is_draft=false) e persiste no banco antes de
+        // abrir o teste. Substitui o antigo botão "Salvar Jogo" — ver
+        // sessao_2026-09-23 em agent-memory para o histórico dessa decisão.
+        this.persistEditorFields();
+        if (this._autoSaveTimer) clearTimeout(this._autoSaveTimer);
+        this.state.editingGame.is_draft = false;
+        try {
+            const jogoSalvo = await this.dbService.salvarJogo(this.state.editingGame);
+            this.state.editingGame.id = jogoSalvo.id;
+            if (jogoSalvo.share_code) this.state.editingGame.share_code = jogoSalvo.share_code;
+
+            const idx = this.state.games.findIndex(g => g.id === jogoSalvo.id);
+            if (idx !== -1) this.state.games[idx] = jogoSalvo;
+            else this.state.games.push(jogoSalvo);
+            this.renderDashboard();
+        } catch (error) {
+            console.error(error);
+            this.showNotification("Erro ao salvar o jogo no banco de dados.");
+            return;
+        }
+
         this.state.isTestingFromCreator = true;
         this.state.selectedGameIdForPlay = null;
         this.openDifficultyModal();
