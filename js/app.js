@@ -9,7 +9,7 @@ import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShel
 import { modalMethods } from './core/modals.js?v=1';
 import { gameTourMethods } from './core/gameTour.js?v=2';
 import { getGame } from './games/registry.js?v=1';
-import './games/codigo-secreto/index.js?v=3';
+import './games/codigo-secreto/index.js?v=4';
 
 // Métodos que pertencem ao modelo de jogo ativo (hoje só "Código Secreto").
 // app.js não implementa o comportamento: delega para o módulo registrado em games/registry.js,

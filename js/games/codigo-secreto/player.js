@@ -362,14 +362,16 @@ export const playerMethods = {
             if (enunciadoContent) enunciadoContent.innerHTML = this.state.activeGame.enunciado || "";
 
             document.getElementById('back-from-player-btn').classList.remove('hidden');
+            document.getElementById('test-saved-badge')?.classList.remove('hidden');
+            document.getElementById('test-saved-badge')?.classList.add('flex');
             this.switchView('player');
             this.applyCardDesigns();
             this.updateAttemptCounter();
             this.updateGameHeaderInfo();
             this.updateLevelInfoPanel();
 
-            const dupMsg = `Nível ${level}: ${getLevelDescription(level).fullText}. O código secreto terá ${this.state.currentCodeSize} cartas.`;
-            this.showNotification(dupMsg, "Jogo Iniciado!");
+            const dupMsg = `Suas alterações já foram salvas. Nível ${level}: ${getLevelDescription(level).fullText}. O código secreto terá ${this.state.currentCodeSize} cartas.`;
+            this.showNotification(dupMsg, "Jogo Salvo e Iniciado!");
 
         } else if(this.state.selectedGameIdForPlay) {
             this.playGame(this.state.selectedGameIdForPlay);
@@ -380,6 +382,8 @@ export const playerMethods = {
 
     playGame: function(id) {
         this.state.isTestingFromCreator = false;
+        document.getElementById('test-saved-badge')?.classList.add('hidden');
+        document.getElementById('test-saved-badge')?.classList.remove('flex');
         const game = this.state.games.find(x => x.id === id);
         if(!game) return;
 
