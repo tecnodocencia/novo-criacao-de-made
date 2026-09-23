@@ -21,5 +21,7 @@ export const state = {
     isTestingFromCreator: false,
     rankingManageGameId: null,
     libraryManagerFolder: null,
-    libraryModalFolder: null
+    libraryModalFolder: null,
+    gameTourStep: 0,
+    gameTourMuted: false
 };
