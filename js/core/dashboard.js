@@ -128,6 +128,9 @@ export const dashboardMethods = {
                     <button onclick="app.manageRanking('${game.id}')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-2xl text-sm transition flex items-center gap-1" title="Gerenciar ranking">
                         <i class="fa-solid fa-trophy"></i>
                     </button>
+                    <button onclick="app.deleteGame('${game.id}')" class="bg-white border border-slate-200 text-red-500 hover:bg-red-50 font-bold py-3 px-4 rounded-2xl text-sm transition flex items-center gap-1" title="Excluir jogo">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
                 </div>
             `;
             grid.appendChild(card);
@@ -176,6 +179,27 @@ export const dashboardMethods = {
 
     closeShareModal: function() {
         document.getElementById('modal-share').style.display = 'none';
+    },
+
+    deleteGame: function(gameId) {
+        const game = this.state.games.find(g => String(g.id) === String(gameId));
+        if (!game) return;
+
+        this.showConfirm(
+            'Excluir Jogo',
+            `Tem certeza que deseja excluir "${game.name || 'este jogo'}"? Essa ação não pode ser desfeita e o ranking associado também será perdido.`,
+            async () => {
+                try {
+                    await dbService.excluirJogo(game.id);
+                    this.state.games = this.state.games.filter(g => String(g.id) !== String(gameId));
+                    this.renderDashboard();
+                    this.showNotification('Jogo excluído com sucesso.');
+                } catch (err) {
+                    console.error(err);
+                    this.showNotification('Erro ao excluir jogo: ' + err.message);
+                }
+            }
+        );
     },
 
     // --- Gerenciar Ranking (limpar / remover jogadores) ---
