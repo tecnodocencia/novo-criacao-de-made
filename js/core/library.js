@@ -6,14 +6,16 @@ function findBankFolder(key) {
     return imageBankFolders.find(f => f.key === key) || null;
 }
 
-// Rotaciona as 4 cores de marca (verde/âmbar/azul/rosa) pelas pastas do banco
-// de imagens, na ordem em que aparecem em imageBankFolders, para o grid da
-// biblioteca não ficar todo na mesma cor fixa.
+// Rotaciona as 6 cores de marca (âmbar/verde/azul/rosa/roxo/vermelho) pelas
+// pastas do banco de imagens, na ordem em que aparecem em imageBankFolders,
+// para o grid da biblioteca não ficar todo na mesma cor fixa.
 const FOLDER_ACCENTS = [
-    { grad: 'from-green-50 to-emerald-50', border: 'border-green-100', borderHover: 'hover:border-green-400', icon: 'text-green-500', text: 'text-green-700', textLight: 'text-green-400' },
     { grad: 'from-amber-50 to-orange-50', border: 'border-amber-100', borderHover: 'hover:border-amber-400', icon: 'text-amber-500', text: 'text-amber-700', textLight: 'text-amber-400' },
+    { grad: 'from-green-50 to-emerald-50', border: 'border-green-100', borderHover: 'hover:border-green-400', icon: 'text-green-500', text: 'text-green-700', textLight: 'text-green-400' },
     { grad: 'from-sky-50 to-blue-50', border: 'border-sky-100', borderHover: 'hover:border-sky-400', icon: 'text-sky-500', text: 'text-sky-700', textLight: 'text-sky-400' },
-    { grad: 'from-pink-50 to-rose-50', border: 'border-pink-100', borderHover: 'hover:border-pink-400', icon: 'text-pink-500', text: 'text-pink-700', textLight: 'text-pink-400' }
+    { grad: 'from-pink-50 to-rose-50', border: 'border-pink-100', borderHover: 'hover:border-pink-400', icon: 'text-pink-500', text: 'text-pink-700', textLight: 'text-pink-400' },
+    { grad: 'from-purple-50 to-violet-50', border: 'border-purple-100', borderHover: 'hover:border-purple-400', icon: 'text-purple-500', text: 'text-purple-700', textLight: 'text-purple-400' },
+    { grad: 'from-red-50 to-rose-50', border: 'border-red-100', borderHover: 'hover:border-red-400', icon: 'text-red-500', text: 'text-red-700', textLight: 'text-red-400' }
 ];
 
 function folderAccent(folder) {

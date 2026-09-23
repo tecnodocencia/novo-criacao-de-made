@@ -62,7 +62,7 @@ export const dashboardMethods = {
             grid.innerHTML = `
                 <div class="col-span-full flex flex-col items-center py-20 px-6 text-center">
                     <div class="w-28 h-28 mb-6 rounded-[28px] bg-white border border-slate-100 shadow-sm flex items-center justify-center">
-                        <i class="fa-solid fa-shapes text-4xl bg-gradient-to-br from-green-500 via-sky-500 to-pink-500 bg-clip-text text-transparent"></i>
+                        <i class="fa-solid fa-shapes text-4xl bg-gradient-to-br from-amber-500 via-pink-500 to-purple-500 bg-clip-text text-transparent"></i>
                     </div>
                     <h3 class="text-lg font-black text-slate-800 mb-2">Nenhum material criado ainda</h3>
                     <p class="text-sm text-slate-500 max-w-sm mb-6">Comece criando seu primeiro jogo educacional. Leva poucos minutos para montar um "Código Secreto" completo.</p>
@@ -75,10 +75,12 @@ export const dashboardMethods = {
         }
 
         const CARD_ACCENTS = [
-            { bar: 'bg-green-500', chipBg: 'bg-green-200', chipText: 'text-green-800', cardBorder: 'border-green-200', trayBg: 'bg-green-50' },
             { bar: 'bg-amber-500', chipBg: 'bg-amber-200', chipText: 'text-amber-800', cardBorder: 'border-amber-200', trayBg: 'bg-amber-50' },
+            { bar: 'bg-green-500', chipBg: 'bg-green-200', chipText: 'text-green-800', cardBorder: 'border-green-200', trayBg: 'bg-green-50' },
             { bar: 'bg-sky-500', chipBg: 'bg-sky-200', chipText: 'text-sky-800', cardBorder: 'border-sky-200', trayBg: 'bg-sky-50' },
-            { bar: 'bg-pink-500', chipBg: 'bg-pink-200', chipText: 'text-pink-800', cardBorder: 'border-pink-200', trayBg: 'bg-pink-50' }
+            { bar: 'bg-pink-500', chipBg: 'bg-pink-200', chipText: 'text-pink-800', cardBorder: 'border-pink-200', trayBg: 'bg-pink-50' },
+            { bar: 'bg-purple-500', chipBg: 'bg-purple-200', chipText: 'text-purple-800', cardBorder: 'border-purple-200', trayBg: 'bg-purple-50' },
+            { bar: 'bg-red-500', chipBg: 'bg-red-200', chipText: 'text-red-800', cardBorder: 'border-red-200', trayBg: 'bg-red-50' }
         ];
 
         this.state.games.forEach((game, index) => {

@@ -1,28 +1,36 @@
         <!-- LADO ESQUERDO: Visual e Branding -->
-        <div class="hidden md:flex md:w-3/5 h-full bg-emerald-100 items-center justify-center p-8 lg:p-12 relative overflow-hidden">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] opacity-[0.03] pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/cubes.png');"></div>
+        <div class="hidden md:flex md:w-3/5 h-full bg-gradient-to-br from-slate-900 via-emerald-950 to-purple-950 items-center justify-center p-8 lg:p-12 relative overflow-hidden">
+            <!-- Marca d'água MADE -->
+            <p class="absolute -bottom-10 -right-6 text-[16rem] lg:text-[20rem] font-black text-white/[0.06] leading-none select-none pointer-events-none whitespace-nowrap">MADE</p>
+            <!-- Textura de grade diagonal -->
+            <div class="absolute inset-0 opacity-[0.07] pointer-events-none" style="background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.6) 0, rgba(255,255,255,0.6) 1px, transparent 1px, transparent 42px);"></div>
+            <!-- Formas decorativas coloridas -->
+            <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-gradient-to-br from-purple-500/40 to-pink-500/30 blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-gradient-to-tr from-amber-400/30 to-red-500/20 blur-3xl pointer-events-none"></div>
+            <div class="absolute top-1/3 right-10 w-24 h-24 rounded-3xl border-2 border-sky-400/30 rotate-12 pointer-events-none hidden lg:block"></div>
 
             <div class="relative z-10 text-center space-y-6 lg:space-y-8 max-w-xl px-4">
-                <div class="inline-flex items-center justify-center rounded-[40px] bg-white p-8 shadow-2xl shadow-emerald-900/5 mb-2 transform hover:scale-105 transition-transform duration-500">
+                <div class="inline-flex items-center justify-center rounded-[40px] bg-white p-8 shadow-2xl shadow-purple-500/20 mb-2 transform hover:scale-105 transition-transform duration-500">
                     <img src="Criação vermelho sem.png" alt="Logo MADE" class="h-32 lg:h-40 w-auto object-contain" />
                 </div>
                 <div class="space-y-4">
-                    <h1 class="text-4xl lg:text-5xl font-black text-slate-800 leading-tight tracking-tight">
+                    <p class="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.35em] text-amber-400">Plataforma Educacional · UFC</p>
+                    <h1 class="text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight">
                         Crie materiais que <br/>
-                        <span class="bg-gradient-to-r from-green-600 via-sky-500 to-pink-500 bg-clip-text text-transparent">transformam o ensino</span>.
+                        <span class="bg-gradient-to-r from-amber-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">transformam o ensino</span>.
                     </h1>
-                    <p class="text-slate-500 text-base lg:text-lg font-medium leading-relaxed max-w-md mx-auto">
+                    <p class="text-slate-300 text-base lg:text-lg font-medium leading-relaxed max-w-md mx-auto">
                         A plataforma MADE oferece ferramentas intuitivas para professores e alunos desenvolverem conteúdos educacionais autorais.
                     </p>
                 </div>
 
                 <!-- Parceria Institucional Integrada -->
-                <div class="pt-6 lg:pt-8 flex flex-col items-center gap-4 lg:gap-6 border-t border-slate-200/50 w-full mx-auto">
+                <div class="pt-6 lg:pt-8 flex flex-col items-center gap-4 lg:gap-6 border-t border-white/10 w-full mx-auto">
                     <p class="text-[9px] font-black uppercase tracking-[0.4em] text-slate-400">Realização</p>
-                    <div class="flex items-center justify-center gap-8 lg:gap-10">
-                        <img src="https://ufc2012.ufc.br/images/_images/a_universidade/identidade_visual/brasao/brasao2_vertical_cor_72dpi.png" alt="Brasão UFC" class="h-14 lg:h-16 w-auto grayscale hover:grayscale-0 transition-all duration-700 opacity-60 hover:opacity-100">
-                        <img src="imagens/icons/principal_UFC_virtual.png" alt="Principal UFC Virtual" class="h-14 lg:h-16 w-auto grayscale hover:grayscale-0 transition-all duration-700 opacity-60 hover:opacity-100">
-                        <img src="https://tecnodocencia.virtual.ufc.br/wp-content/uploads/2019/08/logo-dark-1.png" alt="Logo Tecnidocência" class="h-8 lg:h-10 w-auto grayscale hover:grayscale-0 transition-all duration-700 opacity-60 hover:opacity-100">
+                    <div class="flex items-center justify-center gap-6 lg:gap-8 bg-white rounded-2xl px-6 py-4 shadow-xl">
+                        <img src="https://ufc2012.ufc.br/images/_images/a_universidade/identidade_visual/brasao/brasao2_vertical_cor_72dpi.png" alt="Brasão UFC" class="h-14 lg:h-16 w-auto opacity-80 hover:opacity-100 transition-opacity duration-500">
+                        <img src="imagens/icons/principal_UFC_virtual.png" alt="Principal UFC Virtual" class="h-14 lg:h-16 w-auto opacity-80 hover:opacity-100 transition-opacity duration-500">
+                        <img src="https://tecnodocencia.virtual.ufc.br/wp-content/uploads/2019/08/logo-dark-1.png" alt="Logo Tecnidocência" class="h-8 lg:h-10 w-auto opacity-80 hover:opacity-100 transition-opacity duration-500">
                     </div>
                 </div>
             </div>
