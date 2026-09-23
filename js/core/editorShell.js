@@ -30,12 +30,12 @@ const BLOCK_TITLES = { 1: 'Regras', 2: 'Aparência', 3: 'Enunciado e Feedbacks',
 // Cor de fundo do editor: azul por padrão (igual ao resto do sistema), mas
 // assume o tom do bloco aberto (mesma cor do respectivo tile no hub)
 // enquanto ele está ativo.
-const DEFAULT_EDITOR_BG = ['bg-gradient-to-br', 'from-sky-600', 'via-blue-700', 'to-sky-800'];
+const DEFAULT_EDITOR_BG = ['bg-gradient-to-br', 'from-sky-400', 'via-blue-700', 'to-blue-950'];
 const BLOCK_THEME_BG = {
-    1: ['bg-gradient-to-br', 'from-amber-500', 'via-orange-600', 'to-amber-700'],
-    2: ['bg-gradient-to-br', 'from-emerald-500', 'via-green-600', 'to-emerald-700'],
-    3: ['bg-gradient-to-br', 'from-sky-500', 'via-blue-600', 'to-sky-700'],
-    4: ['bg-gradient-to-br', 'from-pink-500', 'via-rose-600', 'to-pink-700']
+    1: ['bg-gradient-to-br', 'from-amber-300', 'via-amber-600', 'to-amber-950'],
+    2: ['bg-gradient-to-br', 'from-emerald-300', 'via-emerald-600', 'to-emerald-950'],
+    3: ['bg-gradient-to-br', 'from-sky-400', 'via-blue-700', 'to-blue-950'],
+    4: ['bg-gradient-to-br', 'from-pink-300', 'via-pink-600', 'to-pink-950']
 };
 const ALL_EDITOR_BG_CLASSES = Array.from(new Set([...DEFAULT_EDITOR_BG, ...Object.values(BLOCK_THEME_BG).flat()]));
 const EDITOR_BG_TARGET_IDS = ['view-creator', 'editor-header', 'editor-aside', 'editor-footer'];
