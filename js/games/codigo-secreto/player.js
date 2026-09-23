@@ -340,6 +340,7 @@ export const playerMethods = {
             if (enunciadoContent) enunciadoContent.innerHTML = this.state.activeGame.enunciado || "";
 
             document.getElementById('back-from-player-btn').classList.remove('hidden');
+            document.getElementById('save-from-player-btn')?.classList.remove('hidden');
             this.switchView('player');
             this.applyCardDesigns();
             this.updateAttemptCounter();
@@ -358,6 +359,7 @@ export const playerMethods = {
 
     playGame: function(id) {
         this.state.isTestingFromCreator = false;
+        document.getElementById('save-from-player-btn')?.classList.add('hidden');
         const game = this.state.games.find(x => x.id === id);
         if(!game) return;
 

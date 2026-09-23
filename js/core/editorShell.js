@@ -420,6 +420,13 @@ export const editorShellMethods = {
             else this.state.games.push(jogoSalvo);
 
             this.state.editingGame = null;
+            // Se chamado a partir do botão "Salvar Jogo" dentro do teste
+            // (view-player), garante que o app não fique "preso" pensando
+            // que ainda está em modo de teste — senão o próximo "Jogar" a
+            // partir do dashboard tentaria reusar um editingGame já nulo.
+            this.state.isTestingFromCreator = false;
+            document.getElementById('back-from-player-btn')?.classList.add('hidden');
+            document.getElementById('save-from-player-btn')?.classList.add('hidden');
             this.renderDashboard();
             this.switchView('dashboard');
             this.showNotification("Jogo salvo com sucesso!");

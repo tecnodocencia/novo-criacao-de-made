@@ -3,13 +3,13 @@ import { dbService } from './database.js?v=2';
 import { state } from './core/state.js?v=2';
 import { utilsMethods } from './core/utils.js?v=4';
 import { authMethods } from './core/auth.js?v=2';
-import { dashboardMethods } from './core/dashboard.js?v=8';
+import { dashboardMethods } from './core/dashboard.js?v=9';
 import { libraryMethods } from './core/library.js?v=4';
-import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=10';
+import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=11';
 import { modalMethods } from './core/modals.js?v=1';
 import { gameTourMethods } from './core/gameTour.js?v=3';
 import { getGame } from './games/registry.js?v=1';
-import './games/codigo-secreto/index.js?v=4';
+import './games/codigo-secreto/index.js?v=5';
 
 // Métodos que pertencem ao modelo de jogo ativo (hoje só "Código Secreto").
 // app.js não implementa o comportamento: delega para o módulo registrado em games/registry.js,

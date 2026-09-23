@@ -295,6 +295,7 @@ export const dashboardMethods = {
         this.state.isTestingFromCreator = false;
 
         document.getElementById('back-from-player-btn').classList.add('hidden');
+        document.getElementById('save-from-player-btn')?.classList.add('hidden');
 
         if (isTesting) {
             this.switchView('creator');
