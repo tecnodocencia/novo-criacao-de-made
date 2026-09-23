@@ -246,14 +246,14 @@ export const editorShellMethods = {
 
         if (status === 'saving') {
             el.innerText = 'Salvando...';
-            el.className = 'text-[11px] font-bold text-slate-400 transition-opacity duration-300 opacity-100';
+            el.className = 'text-sm font-bold text-slate-400 transition-opacity duration-300 opacity-100';
         } else if (status === 'saved') {
             el.innerText = 'Salvo';
-            el.className = 'text-[11px] font-bold text-green-600 transition-opacity duration-300 opacity-100';
+            el.className = 'text-sm font-bold text-green-600 transition-opacity duration-300 opacity-100';
             this._autoSaveIndicatorHideTimer = setTimeout(() => { el.classList.add('opacity-0'); }, 2000);
         } else if (status === 'error') {
             el.innerText = 'Erro ao salvar automaticamente';
-            el.className = 'text-[11px] font-bold text-red-500 transition-opacity duration-300 opacity-100';
+            el.className = 'text-sm font-bold text-red-500 transition-opacity duration-300 opacity-100';
         }
     },
 
