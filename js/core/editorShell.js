@@ -399,6 +399,36 @@ export const editorShellMethods = {
         if (el) { el.innerText = msg; el.classList.remove('hidden'); }
     },
 
+    saveGame: async function() {
+        // Sincroniza o DOM com o state antes de salvar (garante campos do passo atual)
+        this.persistEditorFields();
+        // Cancela um auto-save pendente: persistEditorFields() acima acabou
+        // de reagendar o timer, e ele salvaria de novo ~1.8s depois com um
+        // this.state.editingGame que já foi zerado (ver abaixo), lançando
+        // uma exceção não tratada dentro de autoSaveNow (que já se protege
+        // com `if (!this.state.editingGame) return`, mas não há necessidade
+        // de deixar o timer solto).
+        if (this._autoSaveTimer) clearTimeout(this._autoSaveTimer);
+        // Único lugar do app que marca um jogo como definitivamente
+        // publicado/finalizado — auto-save nunca faz essa transição sozinho.
+        this.state.editingGame.is_draft = false;
+        try {
+            const jogoSalvo = await dbService.salvarJogo(this.state.editingGame);
+
+            const idx = this.state.games.findIndex(g => g.id === this.state.editingGame.id);
+            if(idx !== -1) this.state.games[idx] = jogoSalvo;
+            else this.state.games.push(jogoSalvo);
+
+            this.state.editingGame = null;
+            this.renderDashboard();
+            this.switchView('dashboard');
+            this.showNotification("Jogo salvo com sucesso!");
+        } catch (error) {
+            console.error(error);
+            this.showNotification("Erro ao salvar o jogo no banco de dados.");
+        }
+    },
+
     openAuthorModal: function() {
         document.getElementById('modal-author').style.display = 'flex';
         document.getElementById('modal-input-author').value = '';

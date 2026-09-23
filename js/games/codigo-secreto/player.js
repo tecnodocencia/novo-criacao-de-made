@@ -1,5 +1,5 @@
 // js/games/codigo-secreto/player.js
-import { difficultyRules, applyReplaySwap, resolveRepeatCount, getLevelDescription, calculateScore } from './model.js?v=3';
+import { difficultyRules, applyReplaySwap, resolveRepeatCount, getLevelDescription, calculateScore } from './model.js?v=4';
 
 export { difficultyRules };
 
@@ -267,29 +267,7 @@ export const playerMethods = {
         });
     },
 
-    testGameFromCreator: async function() {
-        // "Testar Jogo" agora também salva: sincroniza o DOM com o state,
-        // finaliza o rascunho (is_draft=false) e persiste no banco antes de
-        // abrir o teste. Substitui o antigo botão "Salvar Jogo" — ver
-        // sessao_2026-09-23 em agent-memory para o histórico dessa decisão.
-        this.persistEditorFields();
-        if (this._autoSaveTimer) clearTimeout(this._autoSaveTimer);
-        this.state.editingGame.is_draft = false;
-        try {
-            const jogoSalvo = await this.dbService.salvarJogo(this.state.editingGame);
-            this.state.editingGame.id = jogoSalvo.id;
-            if (jogoSalvo.share_code) this.state.editingGame.share_code = jogoSalvo.share_code;
-
-            const idx = this.state.games.findIndex(g => g.id === jogoSalvo.id);
-            if (idx !== -1) this.state.games[idx] = jogoSalvo;
-            else this.state.games.push(jogoSalvo);
-            this.renderDashboard();
-        } catch (error) {
-            console.error(error);
-            this.showNotification("Erro ao salvar o jogo no banco de dados.");
-            return;
-        }
-
+    testGameFromCreator: function() {
         this.state.isTestingFromCreator = true;
         this.state.selectedGameIdForPlay = null;
         this.openDifficultyModal();
@@ -362,16 +340,14 @@ export const playerMethods = {
             if (enunciadoContent) enunciadoContent.innerHTML = this.state.activeGame.enunciado || "";
 
             document.getElementById('back-from-player-btn').classList.remove('hidden');
-            document.getElementById('test-saved-badge')?.classList.remove('hidden');
-            document.getElementById('test-saved-badge')?.classList.add('flex');
             this.switchView('player');
             this.applyCardDesigns();
             this.updateAttemptCounter();
             this.updateGameHeaderInfo();
             this.updateLevelInfoPanel();
 
-            const dupMsg = `Suas alterações já foram salvas. Nível ${level}: ${getLevelDescription(level).fullText}. O código secreto terá ${this.state.currentCodeSize} cartas.`;
-            this.showNotification(dupMsg, "Jogo Salvo e Iniciado!");
+            const dupMsg = `Nível ${level}: ${getLevelDescription(level).fullText}. O código secreto terá ${this.state.currentCodeSize} cartas.`;
+            this.showNotification(dupMsg, "Jogo Iniciado!");
 
         } else if(this.state.selectedGameIdForPlay) {
             this.playGame(this.state.selectedGameIdForPlay);
@@ -382,8 +358,6 @@ export const playerMethods = {
 
     playGame: function(id) {
         this.state.isTestingFromCreator = false;
-        document.getElementById('test-saved-badge')?.classList.add('hidden');
-        document.getElementById('test-saved-badge')?.classList.remove('flex');
         const game = this.state.games.find(x => x.id === id);
         if(!game) return;
 

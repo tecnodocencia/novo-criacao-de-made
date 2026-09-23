@@ -431,8 +431,11 @@
                         Voltar
                     </button>
                     <div id="creator-review-actions" class="ml-auto flex gap-3 hidden">
-                        <button onclick="app.testGameFromCreator()" title="Salva o jogo e permite jogá-lo como o aluno veria." class="bg-emerald-600 text-white px-6 py-3 font-bold rounded-xl text-sm transition">
+                        <button onclick="app.testGameFromCreator()" title="Jogar o jogo como o aluno veria, sem salvar as alterações." class="bg-amber-500 text-white px-6 py-3 font-bold rounded-xl text-sm transition">
                             Testar Jogo
+                        </button>
+                        <button onclick="app.saveGame()" title="Salvar o jogo com todas as informações preenchidas." class="bg-emerald-600 text-white px-6 py-3 font-bold rounded-xl text-sm transition">
+                            Salvar Jogo
                         </button>
                     </div>
                     <button id="creator-next-btn" onclick="app.creatorNextStep()" title="Avançar para o próximo passo do editor." class="ml-auto bg-gradient-to-r from-green-600 to-sky-500 hover:brightness-105 text-white px-6 py-3 font-bold rounded-xl text-sm transition">

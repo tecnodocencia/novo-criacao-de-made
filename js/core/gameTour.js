@@ -16,7 +16,7 @@
 // ('.bank-card', '.bank-card-inner', '.history-row' escopado, '.feedback-dot')
 // são seguras porque não são consultadas globalmente fora do seu contexto real.
 
-import { getDemoGames } from '../games/codigo-secreto/model.js?v=3';
+import { getDemoGames } from '../games/codigo-secreto/model.js?v=4';
 
 const demoGame = getDemoGames()[0]; // "Jogo dos Mamíferos (Texto)"
 const demoCorrect = demoGame.cards.filter(c => c.isCorrect); // 6 cartas certas

@@ -95,7 +95,7 @@ export const dashboardMethods = {
                         <i class="fa-solid fa-puzzle-piece"></i>
                     </div>
                     ${game.is_draft ? `
-                    <span class="inline-flex items-center gap-1.5 bg-amber-100 text-amber-700 text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full" title="Este jogo foi salvo automaticamente durante a criação, mas ainda não foi finalizado com o botão &quot;Testar Jogo&quot;.">
+                    <span class="inline-flex items-center gap-1.5 bg-amber-100 text-amber-700 text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full" title="Este jogo foi salvo automaticamente durante a criação, mas ainda não foi finalizado com o botão &quot;Salvar Jogo&quot;.">
                         <i class="fa-solid fa-pen"></i> Rascunho
                     </span>` : ''}
                 </div>
