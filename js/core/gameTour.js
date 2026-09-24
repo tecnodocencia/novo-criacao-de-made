@@ -20,8 +20,14 @@
 
 const TOUR_STEPS = [
     {
+        id: 'intro-explanation',
+        caption: 'O Código Secreto é um jogo de dedução. O baralho tem cartas certas sobre o tema escolhido, misturadas com cartas erradas (pegadinhas). A senha secreta é formada só por cartas certas — mas atenção: nem todas as cartas certas entram na senha, só uma parte delas. O desafio do aluno é descobrir quais cartas certas fazem parte da senha e em que ordem exata elas aparecem. A cada tentativa, pinos coloridos dão as pistas: mostram se a carta está certa e no lugar certo, se está certa mas no lugar errado, ou se nem faz parte da senha. Vamos ver isso na prática.',
+        spotlight: null,
+        button: 'Entendi, vamos testar'
+    },
+    {
         id: 'welcome',
-        caption: 'O Código Secreto é um jogo de dedução: o baralho tem cartas certas sobre o tema escolhido, misturadas com pegadinhas. O jogo sorteia uma senha secreta usando só as cartas certas, e o aluno precisa descobrir quais são e em que ordem, tentativa após tentativa, usando pistas coloridas. Vamos te guiar numa partida de teste de verdade — o mesmo jogo que você está criando. Clique em "Vamos lá" para começar.',
+        caption: 'Vamos te guiar numa partida de teste de verdade — o mesmo jogo que você está criando. Clique em "Vamos lá" para começar.',
         spotlight: null,
         button: 'Vamos lá'
     },
