@@ -7,7 +7,7 @@ import { dashboardMethods } from './core/dashboard.js?v=10';
 import { libraryMethods } from './core/library.js?v=4';
 import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=11';
 import { modalMethods } from './core/modals.js?v=1';
-import { gameTourMethods } from './core/gameTour.js?v=8';
+import { gameTourMethods } from './core/gameTour.js?v=9';
 import { getGame } from './games/registry.js?v=1';
 import './games/codigo-secreto/index.js?v=6';
 

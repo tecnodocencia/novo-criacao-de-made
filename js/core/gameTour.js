@@ -65,13 +65,13 @@ const TOUR_STEPS = [
     },
     {
         id: 'intro-cards',
-        caption: 'O baralho tem 12 cartas: 6 são respostas certas sobre o tema, e 6 são erradas de propósito — pegadinhas para quem não domina bem o conteúdo. Só as cartas certas podem fazer parte da senha secreta.',
+        caption: 'O baralho tem 12 cartas: 6 são respostas certas sobre o tema, e 6 são erradas de propósito — pegadinhas para quem não domina bem o conteúdo. Só as cartas certas podem fazer parte do código secreto.',
         spotlight: null,
         button: 'Continuar'
     },
     {
         id: 'intro-secret',
-        caption: 'No início da partida, o jogo escolhe em segredo ALGUMAS das cartas certas — normalmente entre 3 e 6 — e as organiza numa ordem específica: essa sequência escondida é a senha, o Código Secreto. Atenção, esse é o ponto que mais confunde: pode sobrar carta certa de fora! Se a senha usa 4 das 6 cartas certas, por exemplo, as outras 2 continuam sendo respostas certas sobre o tema — só não entraram nessa senha específica. O objetivo do aluno é descobrir, tentativa após tentativa, exatamente quais cartas estão na senha e em que ordem: ele monta uma tentativa colocando cartas do banco nos espaços vazios, e clica em Validar para conferir.',
+        caption: 'No início da partida, o jogo escolhe em segredo ALGUMAS das cartas certas — normalmente entre 3 e 6 — e as organiza numa ordem específica: essa sequência escondida é o Código Secreto. Atenção, esse é o ponto que mais confunde: pode sobrar carta certa de fora! Se a senha usa 4 das 6 cartas certas, por exemplo, as outras 2 continuam sendo respostas certas sobre o tema — só não entraram nessa senha específica. O objetivo do aluno é descobrir, tentativa após tentativa, exatamente quais cartas estão na senha e em que ordem: ele monta uma tentativa colocando cartas do banco nos espaços vazios, e clica em Validar para conferir.',
         spotlight: null,
         button: 'Mas como eu sei se acertei?'
     },
@@ -126,21 +126,9 @@ const TOUR_STEPS = [
         button: 'Entendi, vou continuar tentando'
     },
     {
-        id: 'waiting',
-        caption: 'Continue jogando, usando as pistas de cada tentativa, até vencer ou até suas tentativas acabarem. O tour volta sozinho quando a partida terminar.',
+        id: 'wrap-up',
+        caption: 'A partir daqui é só continuar tentando! Quando você vencer — ou esgotar as tentativas — o jogo revela o Código Secreto, mostrando também as outras cartas certas que não entraram na senha, pra não ter dúvida. Se vencer, você também ganha pontos: quanto menos tentativas, maior o nível e maior o código, mais pontos. A qualquer momento dá pra clicar em Reiniciar para embaralhar o banco e tentar de novo, com parte da senha trocada. Isso é tudo que você precisa saber para jogar o Código Secreto!',
         spotlight: null,
-        button: null
-    },
-    {
-        id: 'solution',
-        caption: 'Ao acertar — ou ao esgotar as tentativas — o Código Secreto é revelado, junto com as outras cartas certas que não faziam parte da senha. Se você venceu, também ganha pontos: quanto menos tentativas, maior o nível e maior o código, mais pontos.',
-        spotlight: '#solution-other-correct-section',
-        button: 'Entendi'
-    },
-    {
-        id: 'restart',
-        caption: 'Quer tentar de novo? O botão Reiniciar embaralha o banco e troca parte do código secreto, conforme o nível escolhido — o desafio nunca fica exatamente igual. Esse é o Código Secreto! Agora é sua vez de decifrar, ou de continuar criando o seu próprio jogo na MADE.',
-        spotlight: '#btn-restart-game',
         button: 'Concluir Tour'
     }
 ];
@@ -220,7 +208,7 @@ export const gameTourMethods = {
             return;
         }
 
-        if (step.id === 'restart') {
+        if (step.id === 'wrap-up') {
             this.gameTourExit();
             return;
         }
@@ -256,28 +244,18 @@ export const gameTourMethods = {
                 if (step.id === 'validate') this._gameTourGoToStepId('result-pins');
                 break;
 
-            case 'solution-opened': {
-                // Força o avanço até o passo da solução mesmo que o
-                // jogador tenha vencido/perdido na primeira tentativa
-                // validada, pulando os passos informativos 6 e 7 (que
-                // dependem de clique manual no painel) — o modal de
-                // resultado real já explica tudo de novo.
-                const solutionIdx = TOUR_STEPS.findIndex(s => s.id === 'solution');
-                if (solutionIdx !== -1 && this.state.gameTourStep < solutionIdx) {
-                    this._gameTourGoToIndex(solutionIdx);
-                }
-                break;
-            }
-
-            case 'solution-closed':
-                if (step.id === 'solution') this._gameTourGoToStepId('restart');
-                break;
-
-            // 'restart-requested' (disparado por askRestart()) não avança
-            // nenhum passo hoje — o passo 'restart' só termina pelo botão
-            // "Concluir Tour" do painel. Gancho reservado para eventual uso
-            // futuro; mantido de propósito para não "vazar" lógica de tour
-            // para dentro do gameplay real além do necessário.
+            // O tour termina em 'wrap-up' (botão "Concluir Tour"), sem
+            // esperar o jogador vencer ou esgotar as tentativas de verdade
+            // — ver histórico do git para a versão anterior, que aguardava
+            // 'solution-opened'/'solution-closed'. Os checkpoints
+            // 'solution-opened', 'solution-closed' e 'restart-requested'
+            // (disparados por openSolutionModal/closeSolutionModal/
+            // askRestart em player.js) continuam sendo chamados no
+            // gameplay real, mas não têm mais nenhum passo correspondente
+            // aqui — na prática são NO-OP, porque o tour já foi encerrado
+            // (gameTourActive:false) bem antes de uma partida real chegar
+            // nesse ponto. Gancho mantido em player.js de propósito, para
+            // eventual uso futuro.
         }
     },
 
