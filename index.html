@@ -1954,11 +1954,12 @@
                 <div class="flex-1 min-w-0">
                     <div class="flex items-center justify-between gap-3 mb-1.5">
                         <p id="tour-coach-progress" class="text-[11px] font-black text-sky-500 uppercase tracking-widest">Passo 1 de 10</p>
-                        <button onclick="app.closeGameTour()" title="Sair do tour guiado." class="text-slate-400 hover:text-slate-600 transition text-xs font-bold uppercase tracking-widest shrink-0">
+                        <button onclick="app.gameTourExit()" title="Sair do tour guiado." class="text-slate-400 hover:text-slate-600 transition text-xs font-bold uppercase tracking-widest shrink-0">
                             <i class="fa-solid fa-xmark mr-1"></i>Sair do tour
                         </button>
                     </div>
                     <p id="tour-coach-caption" class="text-sm font-semibold text-slate-700 leading-relaxed"></p>
+                    <div id="tour-coach-visual" class="hidden"></div>
                     <div class="flex items-center justify-between gap-3 mt-3">
                         <div id="tour-coach-voice-controls" class="flex items-center gap-2">
                             <button id="tour-coach-btn-speech" onclick="app.gameTourToggleSpeech()" title="Pausar ou retomar a narração deste passo." class="w-9 h-9 rounded-full bg-sky-50 text-sky-700 hover:bg-sky-100 flex items-center justify-center transition">
@@ -2048,6 +2049,6 @@
         </div>
     </div>
 
-    <script type="module" src="js/app.js?v=13"></script>
+    <script type="module" src="js/app.js?v=14"></script>
 </body>
 </html>

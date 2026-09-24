@@ -18,18 +18,37 @@
 // um NO-OP silencioso quando state.gameTourActive é false, então o
 // gameplay normal (fora do tour) nunca é afetado por essas chamadas.
 
+const PIN_LEGEND_HTML = `
+    <div class="flex flex-col gap-2.5 my-3 bg-slate-50 rounded-2xl p-3.5 border border-slate-100">
+        <div class="flex items-center gap-3">
+            <span class="feedback-dot green" style="flex-shrink:0;"></span>
+            <span class="text-xs text-slate-700"><strong>Verde:</strong> a carta está certa E na posição certa.</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <span class="feedback-dot yellow" style="flex-shrink:0;"></span>
+            <span class="text-xs text-slate-700"><strong>Amarelo:</strong> a carta faz parte da senha, mas está na posição errada.</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <span class="feedback-dot white" style="flex-shrink:0;"></span>
+            <span class="text-xs text-slate-700"><strong>Branco:</strong> essa carta nem faz parte da senha.</span>
+        </div>
+    </div>
+`;
+
 const TOUR_STEPS = [
     {
-        id: 'intro-explanation',
-        caption: 'O Código Secreto é um jogo de dedução. O baralho tem cartas certas sobre o tema escolhido, misturadas com cartas erradas (pegadinhas). A senha secreta é formada só por cartas certas — mas atenção: nem todas as cartas certas entram na senha, só uma parte delas. O desafio do aluno é descobrir quais cartas certas fazem parte da senha e em que ordem exata elas aparecem. A cada tentativa, pinos coloridos dão as pistas: mostram se a carta está certa e no lugar certo, se está certa mas no lugar errado, ou se nem faz parte da senha. Vamos ver isso na prática.',
+        id: 'intro-cards',
+        caption: 'O Código Secreto é um jogo de dedução. O baralho tem cartas certas sobre o tema escolhido, misturadas com cartas erradas (pegadinhas). A senha secreta é formada só por cartas certas — mas atenção: nem todas as cartas certas entram na senha, só uma parte delas. O desafio é descobrir quais cartas certas fazem parte da senha e em que ordem exata elas aparecem.',
         spotlight: null,
-        button: 'Entendi, vamos testar'
+        visual: null,
+        button: 'Entendi, e os pinos?'
     },
     {
-        id: 'welcome',
-        caption: 'Vamos te guiar numa partida de teste de verdade — o mesmo jogo que você está criando. Clique em "Vamos lá" para começar.',
+        id: 'intro-pins',
+        caption: 'A cada tentativa, pinos coloridos dão as pistas:',
         spotlight: null,
-        button: 'Vamos lá'
+        visual: PIN_LEGEND_HTML,
+        button: 'Entendi, vamos testar'
     },
     {
         id: 'difficulty',
@@ -107,6 +126,22 @@ export const gameTourMethods = {
         if (panel) panel.classList.add('hidden');
     },
 
+    // Ponto de saída do tour usado pela UI ("Sair do tour" e "Concluir
+    // Tour"): se uma partida de teste real já foi iniciada (passou do passo
+    // 'intro-pins'), devolve o professor para onde ele estava antes de abrir
+    // o tour — a tela de criação do jogo — reaproveitando backFromPlayer()
+    // (que já sabe voltar para view-creator/fase 3 quando isTestingFromCreator
+    // é true, e já limpa o tour via guarda própria). Se o tour ainda está nos
+    // passos introdutórios (antes do jogo começar), só fecha o painel — a
+    // pessoa nunca saiu da tela de criação, não há pra onde "voltar".
+    gameTourExit: function() {
+        if (this.state.isTestingFromCreator) {
+            this.backFromPlayer();
+        } else {
+            this.closeGameTour();
+        }
+    },
+
     // Único botão de avanço manual do painel coach. Seu rótulo e
     // comportamento mudam conforme o passo atual (ver TOUR_STEPS). Os
     // demais passos ("de ação") avançam sozinhos via _gameTourCheckpoint,
@@ -116,7 +151,7 @@ export const gameTourMethods = {
         const step = TOUR_STEPS[idx];
         if (!step) return;
 
-        if (step.id === 'welcome') {
+        if (step.id === 'intro-pins') {
             // Mesmo fluxo real de "Testar Jogo": sincroniza os campos do
             // editor com o DOM antes de iniciar (mesma convenção usada por
             // showBlock/showPhase ao navegar entre telas do editor) e abre
@@ -128,7 +163,7 @@ export const gameTourMethods = {
         }
 
         if (step.id === 'restart') {
-            this.closeGameTour();
+            this.gameTourExit();
             return;
         }
 
@@ -212,6 +247,17 @@ export const gameTourMethods = {
 
         const caption = document.getElementById('tour-coach-caption');
         if (caption) caption.innerText = step.caption;
+
+        const visual = document.getElementById('tour-coach-visual');
+        if (visual) {
+            if (step.visual) {
+                visual.innerHTML = step.visual;
+                visual.classList.remove('hidden');
+            } else {
+                visual.innerHTML = '';
+                visual.classList.add('hidden');
+            }
+        }
 
         const btn = document.getElementById('tour-coach-btn-continue');
         if (btn) {
