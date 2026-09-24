@@ -1,4 +1,11 @@
 // js/games/codigo-secreto/player.js
+//
+// Chamadas a this._gameTourCheckpoint('...') espalhadas neste arquivo
+// (startGameWithDifficulty, renderCurrentGuess, validateGuess,
+// openSolutionModal, closeSolutionModal, askRestart) são o gancho do tour
+// guiado interativo (js/core/gameTour.js). _gameTourCheckpoint é um NO-OP
+// silencioso quando state.gameTourActive é false — não afetam em nada o
+// fluxo normal de jogo/teste fora do tour.
 import { difficultyRules, applyReplaySwap, resolveRepeatCount, getLevelDescription, calculateScore } from './model.js?v=4';
 
 export { difficultyRules };
@@ -203,6 +210,7 @@ export const playerMethods = {
                 </div>
             `;
         });
+        this._gameTourCheckpoint('guess-changed');
     },
 
     addHistoryRow: function(guess, black, white) {
@@ -349,6 +357,7 @@ export const playerMethods = {
 
             const dupMsg = `Nível ${level}: ${getLevelDescription(level).fullText}. O código secreto terá ${this.state.currentCodeSize} cartas.`;
             this.showNotification(dupMsg, "Jogo Iniciado!");
+            this._gameTourCheckpoint('difficulty-chosen');
 
         } else if(this.state.selectedGameIdForPlay) {
             this.playGame(this.state.selectedGameIdForPlay);
@@ -563,6 +572,7 @@ export const playerMethods = {
         this.state.attempts.push({ guess, result: { black, white } });
         this.addHistoryRow(guess, black, white);
         this.updateAttemptCounter();
+        this._gameTourCheckpoint('guess-validated');
 
         if(black === size) {
             this.state.gameOver = 'win';
@@ -639,6 +649,7 @@ export const playerMethods = {
         });
 
         this.renderOtherCorrectCards(secret);
+        this._gameTourCheckpoint('solution-opened');
     },
 
     // Mostra, junto do resultado, as demais cartas corretas (isCorrect: true)
@@ -681,6 +692,7 @@ export const playerMethods = {
     closeSolutionModal: function() {
         document.getElementById('modal-solution').style.display = 'none';
         document.querySelectorAll('.solution-card-container').forEach(c => c.classList.remove('flipped'));
+        this._gameTourCheckpoint('solution-closed');
     },
 
     askRestart: function() {
@@ -698,5 +710,6 @@ export const playerMethods = {
         this.showConfirm("Reiniciar Partida", msg, () => {
             this.replayGame();
         });
+        this._gameTourCheckpoint('restart-requested');
     }
 };

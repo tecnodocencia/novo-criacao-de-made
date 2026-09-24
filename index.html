@@ -646,6 +646,22 @@
             z-index: 0;
         }
         .hero-content { position: relative; z-index: 10; }
+
+        /* Destaque visual (spotlight) do Tour Guiado Interativo do Código
+           Secreto — aplicado no elemento REAL da tela (nunca um clone)
+           enquanto state.gameTourActive é true. Ver js/core/gameTour.js. */
+        .game-tour-spotlight {
+            position: relative;
+            z-index: 55;
+            outline: 4px solid #0ea5e9;
+            outline-offset: 4px;
+            border-radius: 20px;
+            animation: game-tour-pulse 1.6s ease-in-out infinite;
+        }
+        @keyframes game-tour-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.55); }
+            50% { box-shadow: 0 0 0 14px rgba(14, 165, 233, 0); }
+        }
     </style>
 </head>
 <body class="overflow-hidden">
@@ -1925,49 +1941,37 @@
         </div>
     </div>
 
-    <!-- MODAL: TOUR GUIADO DO CÓDIGO SECRETO -->
-    <div id="modal-game-tour" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-white w-full max-w-5xl rounded-[40px] shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
-            <div class="p-6 sm:p-8 border-b border-slate-100 shrink-0 bg-slate-50 flex items-center justify-between gap-4">
-                <div class="flex items-center gap-4 min-w-0">
-                    <div class="w-12 h-12 shrink-0 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center text-lg">
-                        <i class="fa-solid fa-circle-play"></i>
-                    </div>
-                    <div class="min-w-0">
-                        <h3 class="text-xl font-black text-slate-900">Entenda o Jogo: Código Secreto</h3>
-                        <p id="tour-progress-label" class="text-sm text-slate-400 font-bold uppercase mt-1 tracking-widest">Cena 1 de 13</p>
-                    </div>
+    <!-- PAINEL: TOUR GUIADO INTERATIVO DO CÓDIGO SECRETO -->
+    <!-- Não é um modal: fica sobreposto (flutuante, sem backdrop) por cima
+         do editor ou da partida de teste real, sem bloquear a interação com
+         o jogo por baixo. Ver js/core/gameTour.js. -->
+    <div id="tour-coach-panel" class="hidden fixed bottom-4 inset-x-0 z-[10010] flex justify-center px-4 pointer-events-none">
+        <div class="bg-white w-full max-w-2xl rounded-[28px] shadow-2xl border border-sky-100 p-5 pointer-events-auto">
+            <div class="flex items-start gap-4">
+                <div class="w-11 h-11 shrink-0 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-circle-play"></i>
                 </div>
-                <button onclick="app.closeGameTour()" title="Fechar o tour guiado." class="w-11 h-11 shrink-0 rounded-full bg-white border shadow-sm hover:bg-slate-50 transition flex items-center justify-center">
-                    <i class="fa-solid fa-xmark text-slate-500"></i>
-                </button>
-            </div>
-
-            <div class="p-6 sm:p-8 space-y-5 overflow-y-auto custom-scrollbar flex-1">
-                <div id="tour-scene-caption" class="bg-slate-900 text-white rounded-2xl px-5 py-4 text-sm font-semibold text-center leading-relaxed"></div>
-
-                <div id="tour-scene-visual" class="rounded-3xl border border-slate-200/60 bg-slate-50/60 p-6 flex items-center justify-center" style="min-height:280px;"></div>
-
-                <div id="tour-voice-controls" class="flex items-center justify-center gap-3">
-                    <button id="tour-btn-speech" onclick="app.gameTourToggleSpeech()" title="Pausar ou retomar a narração desta cena." class="w-11 h-11 rounded-full bg-sky-100 text-sky-700 hover:bg-sky-200 flex items-center justify-center transition">
-                        <i class="fa-solid fa-pause"></i>
-                    </button>
-                    <button id="tour-btn-mute" onclick="app.gameTourToggleMute()" title="Ativar ou desativar a narração por voz." class="w-11 h-11 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 flex items-center justify-center transition">
-                        <i class="fa-solid fa-volume-high"></i>
-                    </button>
-                    <p class="text-[11px] text-slate-400 font-bold uppercase tracking-widest">Narração automática em português</p>
-                </div>
-            </div>
-
-            <div class="p-6 border-t bg-slate-50 shrink-0 flex items-center justify-between gap-3">
-                <div id="tour-dots" class="flex items-center gap-1.5"></div>
-                <div class="flex items-center gap-3">
-                    <button id="tour-btn-prev" onclick="app.gameTourPrev()" title="Voltar para a cena anterior." class="px-5 py-2.5 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-bold rounded-xl text-sm transition">
-                        Voltar
-                    </button>
-                    <button id="tour-btn-next" onclick="app.gameTourNext()" title="Avançar para a próxima cena." class="px-6 py-2.5 bg-gradient-to-r from-green-600 to-sky-500 hover:brightness-105 text-white font-bold rounded-xl text-sm transition flex items-center gap-2">
-                        Próximo <i class="fa-solid fa-arrow-right"></i>
-                    </button>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-3 mb-1.5">
+                        <p id="tour-coach-progress" class="text-[11px] font-black text-sky-500 uppercase tracking-widest">Passo 1 de 10</p>
+                        <button onclick="app.closeGameTour()" title="Sair do tour guiado." class="text-slate-400 hover:text-slate-600 transition text-xs font-bold uppercase tracking-widest shrink-0">
+                            <i class="fa-solid fa-xmark mr-1"></i>Sair do tour
+                        </button>
+                    </div>
+                    <p id="tour-coach-caption" class="text-sm font-semibold text-slate-700 leading-relaxed"></p>
+                    <div class="flex items-center justify-between gap-3 mt-3">
+                        <div id="tour-coach-voice-controls" class="flex items-center gap-2">
+                            <button id="tour-coach-btn-speech" onclick="app.gameTourToggleSpeech()" title="Pausar ou retomar a narração deste passo." class="w-9 h-9 rounded-full bg-sky-50 text-sky-700 hover:bg-sky-100 flex items-center justify-center transition">
+                                <i class="fa-solid fa-pause text-xs"></i>
+                            </button>
+                            <button id="tour-coach-btn-mute" onclick="app.gameTourToggleMute()" title="Ativar ou desativar a narração por voz." class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 flex items-center justify-center transition">
+                                <i class="fa-solid fa-volume-high text-xs"></i>
+                            </button>
+                        </div>
+                        <button id="tour-coach-btn-continue" onclick="app.gameTourContinue()" class="hidden px-5 py-2.5 bg-gradient-to-r from-green-600 to-sky-500 hover:brightness-105 text-white font-bold rounded-xl text-sm transition">
+                            Entendi, continuar
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2044,6 +2048,6 @@
         </div>
     </div>
 
-    <script type="module" src="js/app.js?v=10"></script>
+    <script type="module" src="js/app.js?v=11"></script>
 </body>
 </html>

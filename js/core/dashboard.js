@@ -288,6 +288,14 @@ export const dashboardMethods = {
     },
 
     backFromPlayer: function() {
+        // Se o professor sair da partida pelo botão real "Voltar" enquanto
+        // o tour guiado interativo está ativo (em vez de usar "Sair do
+        // tour" ou "Concluir Tour" do próprio painel), encerra o tour aqui
+        // — evita deixar o painel coach flutuando, fora de sincronia, sobre
+        // uma tela que ele não acompanha mais. NO-OP quando o tour não
+        // está ativo. Ver js/core/gameTour.js.
+        if (this.state.gameTourActive) this.closeGameTour();
+
         const isTesting = this.state.isTestingFromCreator;
 
         this.state.activeGame = null;

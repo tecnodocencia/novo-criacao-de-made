@@ -22,6 +22,7 @@ export const state = {
     rankingManageGameId: null,
     libraryManagerFolder: null,
     libraryModalFolder: null,
+    gameTourActive: false,
     gameTourStep: 0,
     gameTourMuted: false
 };
