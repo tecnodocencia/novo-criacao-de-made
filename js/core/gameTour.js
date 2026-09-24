@@ -21,7 +21,7 @@
 const TOUR_STEPS = [
     {
         id: 'welcome',
-        caption: 'Vamos te guiar numa partida de teste de verdade do Código Secreto — o mesmo jogo que você está criando. Clique em "Vamos lá" para começar.',
+        caption: 'O Código Secreto é um jogo de dedução: o baralho tem cartas certas sobre o tema escolhido, misturadas com pegadinhas. O jogo sorteia uma senha secreta usando só as cartas certas, e o aluno precisa descobrir quais são e em que ordem, tentativa após tentativa, usando pistas coloridas. Vamos te guiar numa partida de teste de verdade — o mesmo jogo que você está criando. Clique em "Vamos lá" para começar.',
         spotlight: null,
         button: 'Vamos lá'
     },

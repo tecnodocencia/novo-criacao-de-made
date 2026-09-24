@@ -1945,8 +1945,8 @@
     <!-- Não é um modal: fica sobreposto (flutuante, sem backdrop) por cima
          do editor ou da partida de teste real, sem bloquear a interação com
          o jogo por baixo. Ver js/core/gameTour.js. -->
-    <div id="tour-coach-panel" class="hidden fixed bottom-4 inset-x-0 z-[10010] flex justify-center px-4 pointer-events-none">
-        <div class="bg-white w-full max-w-2xl rounded-[28px] shadow-2xl border border-sky-100 p-5 pointer-events-auto">
+    <div id="tour-coach-panel" class="hidden fixed bottom-4 right-4 left-4 sm:left-auto z-[10010] flex justify-end pointer-events-none">
+        <div class="bg-white w-full sm:max-w-sm rounded-[28px] shadow-2xl border border-sky-100 p-5 pointer-events-auto">
             <div class="flex items-start gap-4">
                 <div class="w-11 h-11 shrink-0 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center text-lg">
                     <i class="fa-solid fa-circle-play"></i>
@@ -2048,6 +2048,6 @@
         </div>
     </div>
 
-    <script type="module" src="js/app.js?v=11"></script>
+    <script type="module" src="js/app.js?v=12"></script>
 </body>
 </html>
