@@ -24,5 +24,7 @@ export const state = {
     libraryModalFolder: null,
     gameTourActive: false,
     gameTourStep: 0,
-    gameTourMuted: false
+    gameTourMuted: false,
+    gameTourReturnStep: null,
+    gameTourReturnBlock: null
 };

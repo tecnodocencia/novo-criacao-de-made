@@ -1,13 +1,13 @@
 // js/app.js
 import { dbService } from './database.js?v=2';
-import { state } from './core/state.js?v=2';
+import { state } from './core/state.js?v=3';
 import { utilsMethods } from './core/utils.js?v=4';
 import { authMethods } from './core/auth.js?v=2';
 import { dashboardMethods } from './core/dashboard.js?v=10';
 import { libraryMethods } from './core/library.js?v=4';
 import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=11';
 import { modalMethods } from './core/modals.js?v=1';
-import { gameTourMethods } from './core/gameTour.js?v=7';
+import { gameTourMethods } from './core/gameTour.js?v=8';
 import { getGame } from './games/registry.js?v=1';
 import './games/codigo-secreto/index.js?v=6';
 
