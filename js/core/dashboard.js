@@ -62,11 +62,11 @@ export const dashboardMethods = {
             grid.innerHTML = `
                 <div class="col-span-full flex flex-col items-center py-20 px-6 text-center">
                     <div class="w-28 h-28 mb-6 rounded-[28px] bg-white border border-slate-100 shadow-sm flex items-center justify-center">
-                        <i class="fa-solid fa-shapes text-4xl bg-gradient-to-br from-amber-500 via-pink-500 to-purple-500 bg-clip-text text-transparent"></i>
+                        <i class="fa-solid fa-shapes text-4xl text-pink-500"></i>
                     </div>
                     <h3 class="text-lg font-black text-slate-800 mb-2">Nenhum material criado ainda</h3>
                     <p class="text-sm text-slate-500 max-w-sm mb-6">Comece criando seu primeiro jogo educacional. Leva poucos minutos para montar um "Código Secreto" completo.</p>
-                    <button onclick="app.newGame()" class="bg-gradient-to-r from-green-600 to-sky-500 hover:brightness-105 text-white font-bold py-3 px-6 rounded-2xl text-sm shadow-lg shadow-green-100 transition flex items-center gap-2">
+                    <button onclick="app.newGame()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-2xl text-sm shadow-lg shadow-green-100 transition flex items-center gap-2">
                         <i class="fa-solid fa-plus"></i> Criar meu primeiro jogo
                     </button>
                 </div>
