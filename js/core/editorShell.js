@@ -331,6 +331,9 @@ export const editorShellMethods = {
             stepTitle.innerText = (phase === 2 && block) ? BLOCK_TITLES[block] : (PHASE_TITLES[phase] || 'Editor');
         }
 
+        // Dentro de um bloco o rodapé não tem nenhum botão: some por completo para não reservar espaço vazio.
+        document.getElementById('editor-footer')?.classList.toggle('hidden', phase === 2 && block !== null);
+
         const bgClasses = (phase === 2 && block && BLOCK_THEME_BG[block]) ? BLOCK_THEME_BG[block] : DEFAULT_EDITOR_BG;
         EDITOR_BG_TARGET_IDS.forEach(id => {
             const el = document.getElementById(id);
