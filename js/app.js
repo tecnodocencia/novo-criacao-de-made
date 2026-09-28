@@ -2,7 +2,7 @@
 import { dbService } from './database.js?v=3';
 import { state } from './core/state.js?v=3';
 import { utilsMethods } from './core/utils.js?v=4';
-import { authMethods } from './core/auth.js?v=2';
+import { authMethods } from './core/auth.js?v=3';
 import { dashboardMethods } from './core/dashboard.js?v=12';
 import { libraryMethods } from './core/library.js?v=6';
 import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=15';
