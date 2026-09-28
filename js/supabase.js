@@ -5,7 +5,11 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const SUPABASE_URL = 'https://konypqczisjmzsudchan.supabase.co'
 const SUPABASE_KEY = 'sb_publishable_D50R4q-jcKukbF1hVGUqfg__fnn3kvt'
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+// A sessão fica em sessionStorage (e não no localStorage padrão): ao fechar a aba/janela
+// ela é descartada e o próximo acesso exige login novamente.
+export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
+    auth: { storage: window.sessionStorage }
+})
 
 // Supabase processa o token de recuperação de senha da URL assim que o client é criado,
 // antes mesmo do resto do app (partials HTML) terminar de carregar. Registramos a escuta
