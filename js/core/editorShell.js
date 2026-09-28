@@ -29,11 +29,10 @@ const BLOCK_TITLES = { 1: 'Regras', 2: 'Aparência', 3: 'Enunciado e Feedbacks',
 
 // Cor de fundo do editor: rosa (igual ao resto do sistema) por padrão, mas assume o
 // tom do bloco aberto (par do respectivo tile no hub) enquanto ele está ativo.
-// O bloco 2 (Aparência) não tem cor própria e fica no rosa padrão.
 const DEFAULT_EDITOR_BG = ['bg-[#FCB6C0]'];
 const BLOCK_THEME_BG = {
     1: ['bg-[#FDE2B5]'],
-    2: ['bg-[#FCB6C0]'],
+    2: ['bg-[#BAF7CE]'],
     3: ['bg-[#B8E7FA]'],
     4: ['bg-[#FCB6D4]']
 };
