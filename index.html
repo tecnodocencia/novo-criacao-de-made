@@ -632,19 +632,6 @@
             background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.7) 0, rgba(255,255,255,0.7) 1px, transparent 1px, transparent 42px);
             pointer-events: none;
         }
-        .hero-watermark {
-            position: absolute;
-            top: -1.5rem;
-            right: -0.5rem;
-            font-size: 7rem;
-            font-weight: 900;
-            color: rgba(255,255,255,0.25);
-            line-height: 1;
-            white-space: nowrap;
-            pointer-events: none;
-            user-select: none;
-            z-index: 0;
-        }
         .hero-content { position: relative; z-index: 10; }
 
         /* Destaque visual (spotlight) do Tour Guiado Interativo do Código
@@ -785,7 +772,7 @@
         </div>
     </section>
 
-    <div id="main-layout" class="hidden h-screen w-full flex relative isolate overflow-hidden bg-gradient-to-br from-rose-400 via-[#F40D30] to-rose-950">
+    <div id="main-layout" class="hidden h-screen w-full flex relative isolate overflow-hidden bg-[#FCB6C0]">
 
         <aside class="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 shadow-sm">
             <div class="p-6 flex items-center justify-center">
@@ -827,7 +814,7 @@
 
         <main class="flex-1 flex flex-col overflow-hidden min-h-screen relative z-0">
             
-            <section id="view-dashboard" class="hero-surface view-section flex-col active bg-gradient-to-br from-rose-400 via-[#F40D30] to-rose-950">
+            <section id="view-dashboard" class="hero-surface view-section flex-col active bg-[#FCB6C0]">
                 <div class="flex justify-between items-center mb-8">
                     <h2 class="text-2xl font-bold text-slate-800">Materiais Criados</h2>
                 </div>
@@ -835,7 +822,7 @@
                     </div>
             </section>
 
-            <section id="view-settings" class="hero-surface view-section flex-col hidden bg-gradient-to-br from-rose-400 via-[#F40D30] to-rose-950">
+            <section id="view-settings" class="hero-surface view-section flex-col hidden bg-[#FCB6C0]">
                 <div class="flex justify-between items-center mb-8">
                     <h2 class="text-2xl font-bold text-slate-800">Configurações da Conta</h2>
                 </div>
@@ -879,7 +866,7 @@
                 </div>
             </section>
 
-            <section id="view-library" class="hero-surface view-section flex-col hidden bg-gradient-to-br from-rose-400 via-[#F40D30] to-rose-950">
+            <section id="view-library" class="hero-surface view-section flex-col hidden bg-[#FCB6C0]">
                 <div class="flex justify-between items-center mb-8">
                     <div>
                         <h2 class="text-2xl font-bold text-slate-800">Minha Biblioteca</h2>
@@ -897,7 +884,7 @@
                 </div>
             </section>
 
-            <section id="view-creator" class="hero-surface view-section flex-col bg-gradient-to-br from-rose-400 via-[#F40D30] to-rose-950 hidden h-full">
+            <section id="view-creator" class="hero-surface view-section flex-col bg-[#FCB6C0] hidden h-full">
                 <header class="h-20 border-b px-8 flex items-center justify-between shrink-0 bg-white z-10">
                     <div>
                         <h2 class="font-bold text-lg" id="editor-title-display">Novo Jogo</h2>
