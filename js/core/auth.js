@@ -62,15 +62,15 @@ export const authMethods = {
 
         const loginBtn = document.getElementById('auth-login-btn');
         const registerBtn = document.getElementById('auth-register-btn');
-        const inactiveClass = "flex-1 py-3.5 rounded-[18px] text-slate-500 hover:bg-white/70 transition-all duration-300";
+        const inactiveClass = "flex-1 py-3.5 rounded-[18px] hover:bg-white/50 transition-all duration-300";
         if (loginBtn) {
             loginBtn.className = (mode === 'login')
-                ? "flex-1 py-3.5 rounded-[18px] text-white shadow-md transition-all duration-300 bg-[#EA3257]"
+                ? "flex-1 py-3.5 rounded-[18px] bg-white text-emerald-700 shadow-sm transition-all duration-300"
                 : inactiveClass;
         }
         if (registerBtn) {
             registerBtn.className = (mode === 'register')
-                ? "flex-1 py-3.5 rounded-[18px] text-white shadow-md transition-all duration-300 bg-[#EA3257]"
+                ? "flex-1 py-3.5 rounded-[18px] bg-white text-emerald-700 shadow-sm transition-all duration-300"
                 : inactiveClass;
         }
         const feedback = document.getElementById('auth-feedback');
