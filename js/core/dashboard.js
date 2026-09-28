@@ -74,20 +74,19 @@ export const dashboardMethods = {
             return;
         }
 
+        // Acentos pastel, pares das cores de fundo dos blocos do editor (pêssego, verde, azul, rosa).
         const CARD_ACCENTS = [
-            { bar: 'bg-amber-500', chipBg: 'bg-amber-200', chipText: 'text-amber-800', cardBorder: 'border-amber-200', trayBg: 'bg-amber-50' },
-            { bar: 'bg-green-500', chipBg: 'bg-green-200', chipText: 'text-green-800', cardBorder: 'border-green-200', trayBg: 'bg-green-50' },
-            { bar: 'bg-sky-500', chipBg: 'bg-sky-200', chipText: 'text-sky-800', cardBorder: 'border-sky-200', trayBg: 'bg-sky-50' },
-            { bar: 'bg-pink-500', chipBg: 'bg-pink-200', chipText: 'text-pink-800', cardBorder: 'border-pink-200', trayBg: 'bg-pink-50' },
-            { bar: 'bg-purple-500', chipBg: 'bg-purple-200', chipText: 'text-purple-800', cardBorder: 'border-purple-200', trayBg: 'bg-purple-50' },
-            { bar: 'bg-red-500', chipBg: 'bg-red-200', chipText: 'text-red-800', cardBorder: 'border-red-200', trayBg: 'bg-red-50' }
+            { bar: 'bg-[#F9C77A]', chipBg: 'bg-[#FDE2B5]', chipText: 'text-amber-800', cardBorder: 'border-[#F9C77A]', trayBg: 'bg-[#FFF6E8]' },
+            { bar: 'bg-[#7FDDA0]', chipBg: 'bg-[#BAF7CE]', chipText: 'text-emerald-800', cardBorder: 'border-[#7FDDA0]', trayBg: 'bg-[#EFFCF3]' },
+            { bar: 'bg-[#7CCBEF]', chipBg: 'bg-[#B8E7FA]', chipText: 'text-sky-800', cardBorder: 'border-[#7CCBEF]', trayBg: 'bg-[#EEF9FE]' },
+            { bar: 'bg-[#F08BB8]', chipBg: 'bg-[#FCB6D4]', chipText: 'text-pink-800', cardBorder: 'border-[#F08BB8]', trayBg: 'bg-[#FEF0F6]' }
         ];
 
         this.state.games.forEach((game, index) => {
             const accent = CARD_ACCENTS[index % CARD_ACCENTS.length];
             const card = document.createElement('div');
-            const cardBg = game.is_draft ? 'bg-slate-200' : 'bg-white';
-            card.className = `relative overflow-hidden ${cardBg} p-6 rounded-[32px] border ${accent.cardBorder} shadow-sm hover:shadow-md transition group`;
+            const cardBg = game.is_draft ? 'bg-[#FFF8EE] border-dashed' : 'bg-white';
+            card.className = `relative overflow-hidden ${cardBg} p-6 rounded-[32px] border ${accent.cardBorder} shadow-lg shadow-rose-300/40 hover:shadow-xl hover:-translate-y-0.5 transition group`;
             card.innerHTML = `
                 <div class="absolute top-0 left-0 right-0 h-1.5 ${accent.bar}"></div>
                 <div class="flex justify-between items-start mb-4 mt-1.5">
@@ -99,20 +98,20 @@ export const dashboardMethods = {
                         <i class="fa-solid fa-pen"></i> Rascunho
                     </span>` : ''}
                 </div>
-                <h3 class="text-lg font-bold text-slate-800 mb-4">${game.name || 'Sem título'}</h3>
-                <div class="space-y-2 text-sm text-slate-500 mb-4">
-                    <p><strong class="text-slate-800">Modelo:</strong> ${game.model || 'Código Secreto'}</p>
-                    <p><strong class="text-slate-800">Disciplina:</strong> ${game.disciplineInfo?.disciplina || '-'}</p>
-                    <p><strong class="text-slate-800">Conteúdo:</strong> ${game.disciplineInfo?.conteudo || '-'}</p>
-                    <p><strong class="text-slate-800">Série:</strong> ${game.disciplineInfo?.serie || '-'}</p>
-                    <p><strong class="text-slate-800">Autores:</strong> ${game.disciplineInfo?.autores?.length ? game.disciplineInfo.autores.join(', ') : '-'}</p>
-                    <div class="pt-2 border-t border-slate-100 mt-2 space-y-1">
-                        <p class="text-[11px] font-black uppercase text-slate-400">Enunciado</p>
-                        <p class="text-sm">${game.enunciado || '-'}</p>
+                <h3 class="text-xl font-extrabold text-rose-950 leading-snug mb-4">${game.name || 'Sem título'}</h3>
+                <div class="space-y-2 text-[15px] leading-relaxed text-slate-600 mb-4">
+                    <p><strong class="font-bold text-rose-950">Modelo:</strong> ${game.model || 'Código Secreto'}</p>
+                    <p><strong class="font-bold text-rose-950">Disciplina:</strong> ${game.disciplineInfo?.disciplina || '-'}</p>
+                    <p><strong class="font-bold text-rose-950">Conteúdo:</strong> ${game.disciplineInfo?.conteudo || '-'}</p>
+                    <p><strong class="font-bold text-rose-950">Série:</strong> ${game.disciplineInfo?.serie || '-'}</p>
+                    <p><strong class="font-bold text-rose-950">Autores:</strong> ${game.disciplineInfo?.autores?.length ? game.disciplineInfo.autores.join(', ') : '-'}</p>
+                    <div class="pt-3 border-t border-rose-100 mt-3 space-y-1">
+                        <p class="text-xs font-black uppercase tracking-widest text-rose-700">Enunciado</p>
+                        <p class="text-[15px]">${game.enunciado || '-'}</p>
                     </div>
-                    <div class="space-y-1">
-                        <p class="text-[11px] font-black uppercase text-slate-400">Regra</p>
-                        <p class="text-sm">${game.regra || '-'}</p>
+                    <div class="space-y-1 pt-1">
+                        <p class="text-xs font-black uppercase tracking-widest text-rose-700">Regra</p>
+                        <p class="text-[15px]">${game.regra || '-'}</p>
                     </div>
                 </div>
                 <div class="rounded-3xl border ${accent.cardBorder} ${accent.trayBg} p-2 flex gap-2">
