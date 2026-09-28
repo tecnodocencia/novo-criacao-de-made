@@ -114,20 +114,20 @@ export const dashboardMethods = {
                         <p class="text-[15px]">${game.regra || '-'}</p>
                     </div>
                 </div>
-                <div class="rounded-3xl border ${accent.cardBorder} ${accent.trayBg} p-2 flex gap-2">
-                    <button onclick="app.openDifficultySelect('${game.id}')" class="flex-1 bg-green-600 text-white font-bold py-3 px-4 rounded-2xl text-sm shadow-lg shadow-green-100 transition hover:bg-green-700 flex items-center justify-center gap-2">
+                <div class="rounded-3xl border ${accent.cardBorder} ${accent.trayBg} p-2 flex flex-wrap gap-2">
+                    <button onclick="app.openDifficultySelect('${game.id}')" class="flex-1 min-w-[96px] bg-green-600 text-white font-bold py-3 px-4 rounded-2xl text-sm shadow-lg shadow-green-100 transition hover:bg-green-700 flex items-center justify-center gap-2">
                         <i class="fa-solid fa-play"></i> Jogar
                     </button>
-                    <button onclick="app.editGame('${game.id}')" class="bg-white border border-slate-200 text-slate-600 font-bold py-3 px-4 rounded-2xl text-sm transition hover:bg-slate-50">
+                    <button onclick="app.editGame('${game.id}')" class="shrink-0 bg-white border border-slate-200 text-slate-600 font-bold py-3 px-4 rounded-2xl text-sm transition hover:bg-slate-50">
                         Editar
                     </button>
-                    <button onclick="app.shareGame('${game.id}')" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded-2xl text-sm transition flex items-center gap-1" title="Compartilhar jogo">
+                    <button onclick="app.shareGame('${game.id}')" class="shrink-0 bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded-2xl text-sm transition flex items-center gap-1" title="Compartilhar jogo">
                         <i class="fa-solid fa-share-nodes"></i>
                     </button>
-                    <button onclick="app.manageRanking('${game.id}')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-2xl text-sm transition flex items-center gap-1" title="Gerenciar ranking">
+                    <button onclick="app.manageRanking('${game.id}')" class="shrink-0 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-2xl text-sm transition flex items-center gap-1" title="Gerenciar ranking">
                         <i class="fa-solid fa-trophy"></i>
                     </button>
-                    <button onclick="app.deleteGame('${game.id}')" class="bg-white border border-slate-200 text-red-500 hover:bg-red-50 font-bold py-3 px-4 rounded-2xl text-sm transition flex items-center gap-1" title="Excluir jogo">
+                    <button onclick="app.deleteGame('${game.id}')" class="shrink-0 bg-white border border-slate-200 text-red-500 hover:bg-red-50 font-bold py-3 px-4 rounded-2xl text-sm transition flex items-center gap-1" title="Excluir jogo">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </div>
