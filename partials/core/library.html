@@ -12,14 +12,17 @@
                                 <p class="text-sm font-medium text-rose-900/80">Gerencie suas imagens para usar nos jogos.</p>
                             </div>
                         </div>
-                        <label class="cursor-pointer bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-2xl font-bold text-sm transition shadow-lg shadow-rose-300/50 inline-flex items-center gap-2">
+                    </div>
+
+                    <div class="bg-white rounded-[32px] border border-slate-200 shadow-lg shadow-rose-300/40 p-6 space-y-6">
+                        <label class="cursor-pointer bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-2xl font-bold text-sm transition shadow-md shadow-amber-200 inline-flex items-center gap-2">
                             <i class="fa-solid fa-cloud-arrow-up"></i>
                             Enviar Imagem
                             <input type="file" class="hidden" accept="image/*" onchange="app.handleLibraryFileUpload(event)">
                         </label>
-                    </div>
 
-                    <div id="manager-library-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-                        <!-- Imagens serão carregadas aqui -->
+                        <div id="manager-library-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                            <!-- Imagens serão carregadas aqui -->
+                        </div>
                     </div>
                 </div>

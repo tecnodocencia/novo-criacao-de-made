@@ -24,7 +24,7 @@ function folderAccent(folder) {
 function bankFolderTileEl(folder, onClick) {
     const accent = folderAccent(folder);
     const el = document.createElement('div');
-    el.className = `group relative aspect-square ${accent.bg} rounded-3xl border-2 ${accent.border} overflow-hidden cursor-pointer ${accent.borderHover} shadow-lg shadow-rose-300/40 hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col items-center justify-center gap-2 text-center p-2`;
+    el.className = `group relative aspect-square ${accent.bg} rounded-3xl border-2 ${accent.border} overflow-hidden cursor-pointer ${accent.borderHover} shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all flex flex-col items-center justify-center gap-2 text-center p-2`;
     el.title = `Abrir a pasta "${folder.label}" do banco de imagens.`;
     el.innerHTML = `
         <i class="fa-solid ${folder.icon} text-4xl ${accent.icon}"></i>
@@ -133,7 +133,7 @@ function renderOwnImagesStatus(container, imagensOrError, onImageClick) {
     container.innerHTML = '';
     imagensOrError.forEach(img => {
         const item = document.createElement('div');
-        item.className = "group relative aspect-square bg-white rounded-3xl border border-rose-100 overflow-hidden shadow-lg shadow-rose-300/40 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer";
+        item.className = "group relative aspect-square bg-slate-50 rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer";
         item.innerHTML = `
             <img src="${img.url}" class="w-full h-full object-contain p-4" />
             <div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all">
@@ -157,7 +157,7 @@ export const libraryMethods = {
                 folder,
                 () => this.closeLibraryManagerFolder(),
                 (url) => this.previewImageDirect(url),
-                "group relative aspect-square bg-white rounded-3xl border border-rose-100 overflow-hidden shadow-lg shadow-rose-300/40 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer",
+                "group relative aspect-square bg-slate-50 rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer",
                 true
             );
             return;
