@@ -27,13 +27,15 @@ export const backDesigns = [
 const PHASE_TITLES = { 1: 'Dados do Jogo', 2: 'Blocos de Edição', 3: 'Revisão e Teste' };
 const BLOCK_TITLES = { 1: 'Regras', 2: 'Aparência', 3: 'Enunciado e Feedbacks', 4: 'Criação de Cartas' };
 
-// Cor de fundo do editor: rosa (igual ao resto do sistema) em todas as fases e blocos.
+// Cor de fundo do editor: rosa (igual ao resto do sistema) por padrão, mas assume o
+// tom do bloco aberto (par do respectivo tile no hub) enquanto ele está ativo.
+// O bloco 2 (Aparência) não tem cor própria e fica no rosa padrão.
 const DEFAULT_EDITOR_BG = ['bg-[#FCB6C0]'];
 const BLOCK_THEME_BG = {
-    1: ['bg-[#FCB6C0]'],
+    1: ['bg-[#FDE2B5]'],
     2: ['bg-[#FCB6C0]'],
-    3: ['bg-[#FCB6C0]'],
-    4: ['bg-[#FCB6C0]']
+    3: ['bg-[#B8E7FA]'],
+    4: ['bg-[#FCB6D4]']
 };
 const ALL_EDITOR_BG_CLASSES = Array.from(new Set([...DEFAULT_EDITOR_BG, ...Object.values(BLOCK_THEME_BG).flat()]));
 const EDITOR_BG_TARGET_IDS = ['view-creator', 'editor-aside', 'editor-footer'];
