@@ -1,5 +1,5 @@
 // js/core/dashboard.js
-import { dbService } from '../database.js?v=2';
+import { dbService } from '../database.js?v=3';
 
 function formatDateTimeBR(dateStr) {
     if (!dateStr) return '';

@@ -1,5 +1,5 @@
 // js/core/editorShell.js
-import { dbService } from '../database.js?v=2';
+import { dbService } from '../database.js?v=3';
 import { getGame } from '../games/registry.js?v=1';
 
 export const frontDesigns = [

@@ -1,5 +1,5 @@
 // js/database.js
-import { supabase, passwordRecoveryPending } from './supabase.js?v=1'
+import { supabase, passwordRecoveryPending } from './supabase.js?v=2'
 
 /**
  * Remap: converte objeto cru do Supabase (snake_case) para camelCase do app.
