@@ -6,16 +6,14 @@ function findBankFolder(key) {
     return imageBankFolders.find(f => f.key === key) || null;
 }
 
-// Rotaciona as 6 cores de marca (âmbar/verde/azul/rosa/roxo/vermelho) pelas
-// pastas do banco de imagens, na ordem em que aparecem em imageBankFolders,
-// para o grid da biblioteca não ficar todo na mesma cor fixa.
+// Rotaciona as 4 cores pastel (pêssego/verde/azul/rosa, as mesmas dos blocos do
+// editor) pelas pastas do banco de imagens, na ordem em que aparecem em
+// imageBankFolders, para o grid da biblioteca não ficar todo na mesma cor.
 const FOLDER_ACCENTS = [
-    { grad: 'from-amber-50 to-orange-50', border: 'border-amber-100', borderHover: 'hover:border-amber-400', icon: 'text-amber-500', text: 'text-amber-700', textLight: 'text-amber-400' },
-    { grad: 'from-green-50 to-emerald-50', border: 'border-green-100', borderHover: 'hover:border-green-400', icon: 'text-green-500', text: 'text-green-700', textLight: 'text-green-400' },
-    { grad: 'from-sky-50 to-blue-50', border: 'border-sky-100', borderHover: 'hover:border-sky-400', icon: 'text-sky-500', text: 'text-sky-700', textLight: 'text-sky-400' },
-    { grad: 'from-pink-50 to-rose-50', border: 'border-pink-100', borderHover: 'hover:border-pink-400', icon: 'text-pink-500', text: 'text-pink-700', textLight: 'text-pink-400' },
-    { grad: 'from-purple-50 to-violet-50', border: 'border-purple-100', borderHover: 'hover:border-purple-400', icon: 'text-purple-500', text: 'text-purple-700', textLight: 'text-purple-400' },
-    { grad: 'from-red-50 to-rose-50', border: 'border-red-100', borderHover: 'hover:border-red-400', icon: 'text-red-500', text: 'text-red-700', textLight: 'text-red-400' }
+    { bg: 'bg-[#FDE2B5]', border: 'border-[#F9C77A]', borderHover: 'hover:border-amber-500', icon: 'text-amber-600', text: 'text-amber-900', textLight: 'text-amber-700' },
+    { bg: 'bg-[#BAF7CE]', border: 'border-[#7FDDA0]', borderHover: 'hover:border-emerald-500', icon: 'text-emerald-600', text: 'text-emerald-900', textLight: 'text-emerald-700' },
+    { bg: 'bg-[#B8E7FA]', border: 'border-[#7CCBEF]', borderHover: 'hover:border-sky-500', icon: 'text-sky-600', text: 'text-sky-900', textLight: 'text-sky-700' },
+    { bg: 'bg-[#FCB6D4]', border: 'border-[#F08BB8]', borderHover: 'hover:border-pink-500', icon: 'text-pink-600', text: 'text-pink-900', textLight: 'text-pink-700' }
 ];
 
 function folderAccent(folder) {
@@ -26,25 +24,25 @@ function folderAccent(folder) {
 function bankFolderTileEl(folder, onClick) {
     const accent = folderAccent(folder);
     const el = document.createElement('div');
-    el.className = `group relative aspect-square bg-gradient-to-br ${accent.grad} rounded-3xl border-2 ${accent.border} overflow-hidden cursor-pointer ${accent.borderHover} hover:shadow-md transition-all flex flex-col items-center justify-center gap-2 text-center p-2`;
+    el.className = `group relative aspect-square ${accent.bg} rounded-3xl border-2 ${accent.border} overflow-hidden cursor-pointer ${accent.borderHover} shadow-lg shadow-rose-300/40 hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col items-center justify-center gap-2 text-center p-2`;
     el.title = `Abrir a pasta "${folder.label}" do banco de imagens.`;
     el.innerHTML = `
-        <i class="fa-solid ${folder.icon} text-3xl ${accent.icon}"></i>
-        <span class="font-black text-sm ${accent.text} leading-tight">${folder.label}</span>
-        <span class="text-[11px] font-bold ${accent.textLight} uppercase tracking-wide">${folder.images.length} imagens</span>
+        <i class="fa-solid ${folder.icon} text-4xl ${accent.icon}"></i>
+        <span class="font-black text-base ${accent.text} leading-tight">${folder.label}</span>
+        <span class="text-xs font-bold ${accent.textLight} uppercase tracking-wide">${folder.images.length} imagens</span>
     `;
     el.onclick = onClick;
     return el;
 }
 
 // bankSectionHeaderEl/ownSectionHeaderEl/folderBackHeaderEl são usados tanto
-// na página "Minha Biblioteca" (fundo azul escuro, hero-surface) quanto no
+// na página "Minha Biblioteca" (fundo rosa, hero-surface) quanto no
 // modal de seleção de imagem do editor (fundo branco) — `onDark` escolhe a
 // cor de texto com contraste adequado para cada caso.
 function bankSectionHeaderEl(onDark) {
     const el = document.createElement('div');
     el.className = "col-span-full mb-1";
-    const textClass = onDark ? 'text-sky-100' : 'text-slate-400';
+    const textClass = onDark ? 'text-rose-900' : 'text-slate-400';
     el.innerHTML = `<h3 class="text-sm font-black ${textClass} uppercase tracking-widest">Banco de Imagens</h3>`;
     return el;
 }
@@ -52,7 +50,7 @@ function bankSectionHeaderEl(onDark) {
 function ownSectionHeaderEl(label, onDark) {
     const el = document.createElement('div');
     el.className = "col-span-full mt-2 mb-1";
-    const textClass = onDark ? 'text-sky-100' : 'text-slate-400';
+    const textClass = onDark ? 'text-rose-900' : 'text-slate-400';
     el.innerHTML = `<h3 class="text-sm font-black ${textClass} uppercase tracking-widest">${label}</h3>`;
     return el;
 }
@@ -61,10 +59,10 @@ function folderBackHeaderEl(folder, onBack, onDark) {
     const accent = folderAccent(folder);
     const el = document.createElement('div');
     el.className = "col-span-full flex items-center gap-3 mb-1";
-    const labelClass = onDark ? 'text-white' : 'text-slate-700';
-    const countClass = onDark ? 'text-sky-100' : 'text-slate-400';
+    const labelClass = onDark ? 'text-rose-950' : 'text-slate-700';
+    const countClass = onDark ? 'text-rose-800' : 'text-slate-400';
     el.innerHTML = `
-        <button class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center hover:bg-slate-200 transition shrink-0" title="Voltar para a lista de pastas do banco de imagens.">
+        <button class="w-9 h-9 rounded-full bg-white text-rose-700 shadow flex items-center justify-center hover:bg-rose-50 transition shrink-0" title="Voltar para a lista de pastas do banco de imagens.">
             <i class="fa-solid fa-arrow-left"></i>
         </button>
         <i class="fa-solid ${folder.icon} ${accent.icon}"></i>
@@ -135,7 +133,7 @@ function renderOwnImagesStatus(container, imagensOrError, onImageClick) {
     container.innerHTML = '';
     imagensOrError.forEach(img => {
         const item = document.createElement('div');
-        item.className = "group relative aspect-square bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer";
+        item.className = "group relative aspect-square bg-white rounded-3xl border border-rose-100 overflow-hidden shadow-lg shadow-rose-300/40 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer";
         item.innerHTML = `
             <img src="${img.url}" class="w-full h-full object-contain p-4" />
             <div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all">
@@ -159,7 +157,7 @@ export const libraryMethods = {
                 folder,
                 () => this.closeLibraryManagerFolder(),
                 (url) => this.previewImageDirect(url),
-                "group relative aspect-square bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer",
+                "group relative aspect-square bg-white rounded-3xl border border-rose-100 overflow-hidden shadow-lg shadow-rose-300/40 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer",
                 true
             );
             return;
