@@ -146,6 +146,9 @@ export const editorCartasMethods = {
         this.closeCardModal();
         this.renderEditorGrid();
         this.updateSecretCardCounter();
-        this.scheduleAutoSave();
+        // Salva na hora, sem o debounce de digitação: o modal já foi fechado,
+        // não há mais nada "vindo por aí" que justifique esperar — e esperar
+        // arrisca perder a carta se o professor sair da tela em seguida.
+        this.saveNow();
     }
 };

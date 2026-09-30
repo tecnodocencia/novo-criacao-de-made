@@ -199,6 +199,26 @@ export const editorShellMethods = {
         this._autoSaveTimer = setTimeout(() => { this.autoSaveNow(); }, 1800);
     },
 
+    // Salva imediatamente, sem o debounce de 1.8s do scheduleAutoSave().
+    // Usado depois de uma ação discreta já concluída num clique só (ex.:
+    // confirmar um autor, salvar o conteúdo de uma carta no modal, trocar o
+    // design da frente/verso) — ações assim não têm mais nada "vindo por
+    // aí" para esperar, e esperar só arrisca perder a mudança se o
+    // professor sair da tela (fechar a aba, navegar para outra) antes do
+    // timer disparar. Fica reservado o mesmo _autoSavePending usado pelo
+    // debounce para o caso de já haver um save em andamento — nesse caso a
+    // mudança não é perdida, só entra na fila para rodar assim que o save
+    // atual terminar (ver finally de autoSaveNow abaixo).
+    saveNow: function() {
+        if (this._autoSaveTimer) { clearTimeout(this._autoSaveTimer); this._autoSaveTimer = null; }
+        if (this.state.autoSaving) {
+            this._autoSavePending = true;
+            this._autoSavePendingImmediate = true;
+            return;
+        }
+        this.autoSaveNow();
+    },
+
     autoSaveNow: async function() {
         if (!this.state.editingGame || this.state.autoSaving) return;
 
@@ -233,7 +253,12 @@ export const editorShellMethods = {
             this.state.autoSaving = false;
             if (this._autoSavePending) {
                 this._autoSavePending = false;
-                this.scheduleAutoSave();
+                if (this._autoSavePendingImmediate) {
+                    this._autoSavePendingImmediate = false;
+                    this.autoSaveNow();
+                } else {
+                    this.scheduleAutoSave();
+                }
             }
         }
     },
@@ -462,7 +487,7 @@ export const editorShellMethods = {
             if (!this.state.editingGame.disciplineInfo.autores.includes(value)) {
                 this.state.editingGame.disciplineInfo.autores.push(value);
                 this.renderAuthorsList();
-                this.scheduleAutoSave();
+                this.saveNow();
             }
         }
         this.closeAuthorModal();
@@ -472,7 +497,7 @@ export const editorShellMethods = {
         if(this.state.editingGame && Array.isArray(this.state.editingGame.disciplineInfo?.autores)) {
             this.state.editingGame.disciplineInfo.autores.splice(idx, 1);
             this.renderAuthorsList();
-            this.scheduleAutoSave();
+            this.saveNow();
         }
     },
 
@@ -561,7 +586,7 @@ export const editorShellMethods = {
         else idx = (idx - 1 + frontDesigns.length) % frontDesigns.length;
         this.state.editingGame.frontDesign = frontDesigns[idx];
         document.getElementById('preview-front').src = this.state.editingGame.frontDesign;
-        this.scheduleAutoSave();
+        this.saveNow();
     },
 
     toggleBackDesign: function(dir) {
@@ -571,7 +596,7 @@ export const editorShellMethods = {
         else idx = (idx - 1 + backDesigns.length) % backDesigns.length;
         this.state.editingGame.backDesign = backDesigns[idx];
         document.getElementById('preview-back').src = this.state.editingGame.backDesign;
-        this.scheduleAutoSave();
+        this.saveNow();
     },
 
     handleExternalFrontImageUpload: async function(event) {
@@ -588,7 +613,7 @@ export const editorShellMethods = {
             if (this.state.editingGame) this.state.editingGame.frontDesign = publicUrl;
             document.getElementById('preview-front').src = publicUrl;
             document.getElementById('review-preview-front').src = publicUrl;
-            this.scheduleAutoSave();
+            this.saveNow();
         } catch (error) {
             console.error(error);
             this.showNotification("Erro ao enviar frente da carta.");
@@ -604,7 +629,7 @@ export const editorShellMethods = {
         }
         document.getElementById('preview-front').src = frontDesigns[0];
         document.getElementById('review-preview-front').src = frontDesigns[0];
-        this.scheduleAutoSave();
+        this.saveNow();
     },
 
     handleExternalBackImageUpload: async function(event) {
@@ -621,7 +646,7 @@ export const editorShellMethods = {
             if (this.state.editingGame) this.state.editingGame.backDesign = publicUrl;
             document.getElementById('preview-back').src = publicUrl;
             document.getElementById('review-preview-back').src = publicUrl;
-            this.scheduleAutoSave();
+            this.saveNow();
         } catch (error) {
             console.error(error);
             this.showNotification("Erro ao enviar verso da carta.");
@@ -637,6 +662,6 @@ export const editorShellMethods = {
         }
         document.getElementById('preview-back').src = backDesigns[0];
         document.getElementById('review-preview-back').src = backDesigns[0];
-        this.scheduleAutoSave();
+        this.saveNow();
     }
 };
