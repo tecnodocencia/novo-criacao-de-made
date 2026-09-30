@@ -276,6 +276,15 @@ export const playerMethods = {
     },
 
     testGameFromCreator: function() {
+        // Testar o jogo já tira o rascunho do status de rascunho — o
+        // professor validou o conteúdo ao chegar até aqui, não é preciso
+        // esperar o botão "Salvar Jogo" de dentro do teste para isso. O
+        // save em si roda em segundo plano (mesmo caminho do auto-save),
+        // sem atrasar a abertura do modal de dificuldade.
+        if (this.state.editingGame) {
+            this.state.editingGame.is_draft = false;
+            this.autoSaveNow();
+        }
         this.state.isTestingFromCreator = true;
         this.state.selectedGameIdForPlay = null;
         this.openDifficultyModal();
