@@ -671,8 +671,11 @@ export const playerMethods = {
         const container = document.getElementById('solution-other-correct-cards');
         if (!section || !container || !this.state.activeGame) return;
 
-        const secretContents = new Set(secretCards.map(c => c.content));
-        const otherCorrect = this.state.activeGame.cards.filter(c => c.isCorrect && !secretContents.has(c.content));
+        // Identidade por `id` (cartas só com imagem têm `content` vazio, o que
+        // fazia todas colidirem e sumirem da lista); `content` só como reserva.
+        const keyOf = c => (c.id !== undefined && c.id !== null) ? `id:${c.id}` : `c:${c.content}`;
+        const secretKeys = new Set(secretCards.map(keyOf));
+        const otherCorrect = this.state.activeGame.cards.filter(c => c.isCorrect && !secretKeys.has(keyOf(c)));
 
         if (otherCorrect.length === 0) {
             section.classList.add('hidden');

@@ -134,6 +134,24 @@ const TOUR_STEPS = [
 ];
 
 export const gameTourMethods = {
+    // Vídeo animado (animacao/index.html) que explica o Código Secreto; abre
+    // num modal com iframe. O src só é definido ao abrir e limpo ao fechar,
+    // o que também interrompe o áudio da narração.
+    openGameVideo: function() {
+        const frame = document.getElementById('game-video-frame');
+        const modal = document.getElementById('modal-game-video');
+        if (!frame || !modal) return;
+        frame.src = 'animacao/index.html';
+        modal.style.display = 'flex';
+    },
+
+    closeGameVideo: function() {
+        const frame = document.getElementById('game-video-frame');
+        const modal = document.getElementById('modal-game-video');
+        if (frame) frame.src = 'about:blank';
+        if (modal) modal.style.display = 'none';
+    },
+
     openGameTour: function() {
         if (!this.state.editingGame) {
             this.showNotification('Abra ou crie um jogo antes de iniciar o tour guiado.');

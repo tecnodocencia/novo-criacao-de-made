@@ -7,9 +7,9 @@ import { dashboardMethods } from './core/dashboard.js?v=14';
 import { libraryMethods } from './core/library.js?v=6';
 import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=16';
 import { modalMethods } from './core/modals.js?v=1';
-import { gameTourMethods } from './core/gameTour.js?v=9';
+import { gameTourMethods } from './core/gameTour.js?v=10';
 import { getGame } from './games/registry.js?v=1';
-import './games/codigo-secreto/index.js?v=8';
+import './games/codigo-secreto/index.js?v=9';
 
 // Métodos que pertencem ao modelo de jogo ativo (hoje só "Código Secreto").
 // app.js não implementa o comportamento: delega para o módulo registrado em games/registry.js,

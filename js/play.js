@@ -659,8 +659,10 @@ function renderOtherCorrectCards(frontDesign) {
     const container = document.getElementById('play-solution-other-cards');
     if (!section || !container) return;
 
-    const secretContents = new Set(gs.secretCode.map(c => c.content));
-    const otherCorrect = gs.game.cards.filter(c => c.isCorrect && !secretContents.has(c.content));
+    // Identidade por `id` (cartas só com imagem têm `content` vazio); `content` só como reserva.
+    const keyOf = c => (c.id !== undefined && c.id !== null) ? `id:${c.id}` : `c:${c.content}`;
+    const secretKeys = new Set(gs.secretCode.map(keyOf));
+    const otherCorrect = gs.game.cards.filter(c => c.isCorrect && !secretKeys.has(keyOf(c)));
 
     if (otherCorrect.length === 0) {
         section.style.display = 'none';

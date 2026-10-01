@@ -3,7 +3,7 @@ import { registerGame } from '../registry.js?v=1';
 import { difficultyRules, getDefaultData, getDemoGames } from './model.js?v=4';
 import { editorCartasMethods } from './editorCartas.js?v=6';
 import { reviewMethods } from './review.js?v=3';
-import { playerMethods } from './player.js?v=11';
+import { playerMethods } from './player.js?v=12';
 
 const codigoSecretoModule = {
     difficultyRules,
