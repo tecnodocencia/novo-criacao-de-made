@@ -624,6 +624,9 @@
         /* Fundo "hero" reutilizável das telas do sistema (a textura de listras e a
            marca d'água MADE foram removidas). */
         .hero-surface { position: relative; overflow: hidden; }
+        /* Na tela inicial (verde) o fundo atrás do conteúdo também é verde, para
+           o rosa do layout não aparecer na borda ao lado da barra de rolagem. */
+        #main-layout:has(#view-dashboard.active) { background-color: #E0F8E3; }
         .hero-content { position: relative; z-index: 10; }
 
         /* Destaque visual (spotlight) do Tour Guiado Interativo do Código
