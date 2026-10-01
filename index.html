@@ -627,6 +627,8 @@
         /* Na tela inicial (verde) o fundo atrás do conteúdo também é verde, para
            o rosa do layout não aparecer na borda ao lado da barra de rolagem. */
         #main-layout:has(#view-dashboard.active) { background-color: #E0F8E3; }
+        #main-layout:has(#view-creator.active) { background-color: #FFF0D1; }
+        #main-layout:has(#view-library.active) { background-color: #DCF1FC; }
         .hero-content { position: relative; z-index: 10; }
 
         /* Destaque visual (spotlight) do Tour Guiado Interativo do Código
@@ -861,7 +863,7 @@
                 </div>
             </section>
 
-            <section id="view-library" class="hero-surface view-section flex-col hidden bg-[#FCB6C0]">
+            <section id="view-library" class="hero-surface view-section flex-col hidden bg-[#DCF1FC]">
                 <div class="flex justify-between items-center mb-8">
                     <div>
                         <h2 class="text-2xl font-bold text-slate-800">Minha Biblioteca</h2>
@@ -879,7 +881,7 @@
                 </div>
             </section>
 
-            <section id="view-creator" class="hero-surface view-section flex-col bg-[#FCB6C0] hidden h-full">
+            <section id="view-creator" class="hero-surface view-section flex-col bg-[#FFF0D1] hidden h-full">
                 <header class="h-20 border-b px-8 flex items-center justify-between shrink-0 bg-white z-10">
                     <div>
                         <h2 class="font-bold text-lg" id="editor-title-display">Novo Jogo</h2>
@@ -2043,6 +2045,6 @@
         </div>
     </div>
 
-    <script type="module" src="js/app.js?v=33"></script>
+    <script type="module" src="js/app.js?v=34"></script>
 </body>
 </html>
