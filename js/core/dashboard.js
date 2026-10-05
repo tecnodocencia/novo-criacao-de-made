@@ -27,10 +27,8 @@ export const dashboardMethods = {
         if (viewId === 'settings' && this.state.activeUser) {
             const nameEl = document.getElementById('settings-user-name');
             const emailEl = document.getElementById('settings-user-email');
-            const roleEl = document.getElementById('settings-user-role');
             if (nameEl) nameEl.innerText = this.state.activeUser.name || this.state.activeUser.email;
             if (emailEl) emailEl.innerText = this.state.activeUser.email;
-            if (roleEl) roleEl.innerText = this.state.activeUser.role || 'Usuário';
             this.syncSettingsRoleButtons();
             this.syncSettingsProfileFields();
         }
@@ -69,9 +67,8 @@ export const dashboardMethods = {
         try {
             await dbService.updateUserRole(role);
             this.state.activeUser.role = role;
-            const roleEl = document.getElementById('settings-user-role');
-            if (roleEl) roleEl.innerText = role;
             this.syncSettingsRoleButtons();
+            this.syncSettingsProfileFields();
             const feedback = document.getElementById('settings-role-feedback');
             if (feedback) {
                 feedback.innerText = `Perfil atualizado para ${role === 'professor' ? 'Professor' : 'Aluno'}.`;
@@ -120,15 +117,21 @@ export const dashboardMethods = {
         const summaryName = document.getElementById('settings-summary-name');
         const summaryGender = document.getElementById('settings-summary-gender');
         const summaryAge = document.getElementById('settings-summary-age');
+        const summaryRole = document.getElementById('settings-summary-role');
+        const roleEl = document.getElementById('settings-user-role');
+        const roleLabel = user.role === 'aluno' ? 'Aluno' : 'Professor';
         if (summaryName) summaryName.innerText = user.name || 'Não informado';
         if (summaryGender) summaryGender.innerText = GENDER_LABELS[user.gender] || GENDER_LABELS.prefiro_nao_informar;
         if (summaryAge) summaryAge.innerText = (user.age === null || user.age === undefined) ? 'Não informada' : user.age;
+        if (summaryRole) summaryRole.innerText = roleLabel;
+        if (roleEl) roleEl.innerText = roleLabel;
 
         this.updateProfileIncompleteBanner();
     },
 
     openEditProfileModal: function() {
         this.syncSettingsProfileFields();
+        this.syncSettingsRoleButtons();
         document.getElementById('modal-edit-profile').style.display = 'flex';
     },
 

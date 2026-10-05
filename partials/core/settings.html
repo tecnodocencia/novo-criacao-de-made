@@ -54,11 +54,11 @@
                             <div class="pt-6 border-t border-slate-100">
                                 <div class="flex items-center justify-between gap-3 mb-4">
                                     <h4 class="text-sm font-black text-slate-400 uppercase tracking-widest">Editar Perfil</h4>
-                                    <button type="button" onclick="app.openEditProfileModal()" title="Abrir o popup para editar nome, gênero e idade." class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-widest rounded-xl px-4 py-2.5 transition flex items-center gap-2">
+                                    <button type="button" onclick="app.openEditProfileModal()" title="Abrir o popup para editar nome, gênero, idade e tipo de conta." class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-widest rounded-xl px-4 py-2.5 transition flex items-center gap-2">
                                         <i class="fa-solid fa-pen"></i> Editar Perfil
                                     </button>
                                 </div>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                                     <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
                                         <p class="text-[11px] font-black text-slate-400 uppercase mb-1">Nome</p>
                                         <p id="settings-summary-name" class="text-sm font-bold text-slate-700">—</p>
@@ -71,19 +71,10 @@
                                         <p class="text-[11px] font-black text-slate-400 uppercase mb-1">Idade</p>
                                         <p id="settings-summary-age" class="text-sm font-bold text-slate-700">—</p>
                                     </div>
-                                </div>
-
-                                <div class="pt-6 mt-6 border-t border-slate-100">
-                                    <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-3">Tipo de conta</p>
-                                    <div class="flex gap-3">
-                                        <button type="button" onclick="app.updateUserRole('professor')" data-role="professor" class="settings-role-btn flex-1 py-3 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 font-bold text-sm transition flex items-center justify-center gap-2">
-                                            <i class="fa-solid fa-chalkboard-user"></i> Professor
-                                        </button>
-                                        <button type="button" onclick="app.updateUserRole('aluno')" data-role="aluno" class="settings-role-btn flex-1 py-3 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 font-bold text-sm transition flex items-center justify-center gap-2">
-                                            <i class="fa-solid fa-user-graduate"></i> Aluno
-                                        </button>
+                                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                                        <p class="text-[11px] font-black text-slate-400 uppercase mb-1">Tipo de conta</p>
+                                        <p id="settings-summary-role" class="text-sm font-bold text-slate-700">—</p>
                                     </div>
-                                    <p id="settings-role-feedback" class="text-xs font-bold text-emerald-600 mt-3 hidden"></p>
                                 </div>
                             </div>
                         </div>
