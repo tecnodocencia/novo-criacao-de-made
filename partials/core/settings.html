@@ -40,16 +40,47 @@
 
                             <div class="pt-6 border-t border-slate-100">
                                 <h4 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-1">Editar Perfil</h4>
-                                <p class="text-sm text-slate-500 mb-4">Defina se esta conta acessa o MADE como professor ou como aluno.</p>
-                                <div class="flex gap-3">
-                                    <button type="button" onclick="app.updateUserRole('professor')" data-role="professor" class="settings-role-btn flex-1 py-3 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 font-bold text-sm transition flex items-center justify-center gap-2">
-                                        <i class="fa-solid fa-chalkboard-user"></i> Professor
-                                    </button>
-                                    <button type="button" onclick="app.updateUserRole('aluno')" data-role="aluno" class="settings-role-btn flex-1 py-3 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 font-bold text-sm transition flex items-center justify-center gap-2">
-                                        <i class="fa-solid fa-user-graduate"></i> Aluno
-                                    </button>
+                                <p class="text-sm text-slate-500 mb-4">Atualize seu nome, gênero e idade.</p>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div class="space-y-2 md:col-span-2">
+                                        <label class="block text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Nome completo</label>
+                                        <input id="settings-edit-name" type="text" placeholder="Seu nome" class="w-full px-5 py-3 border-2 border-slate-200 rounded-2xl bg-white text-slate-800 outline-none focus:border-emerald-500 transition-all text-sm font-medium" />
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="block text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Gênero</label>
+                                        <div class="relative">
+                                            <select id="settings-edit-gender" class="w-full px-5 py-3 pr-10 border-2 border-slate-200 rounded-2xl bg-white text-slate-800 outline-none focus:border-emerald-500 transition-all text-sm font-medium appearance-none cursor-pointer">
+                                                <option value="prefiro_nao_informar">Prefiro não informar</option>
+                                                <option value="feminino">Feminino</option>
+                                                <option value="masculino">Masculino</option>
+                                                <option value="outro">Outro</option>
+                                            </select>
+                                            <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none"></i>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="block text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Idade</label>
+                                        <input id="settings-edit-age" type="number" min="1" max="120" placeholder="Ex: 32" class="w-full px-5 py-3 border-2 border-slate-200 rounded-2xl bg-white text-slate-800 outline-none focus:border-emerald-500 transition-all text-sm font-medium" />
+                                    </div>
                                 </div>
-                                <p id="settings-role-feedback" class="text-xs font-bold text-emerald-600 mt-3 hidden"></p>
+                                <button type="button" onclick="app.saveProfileDetails()" title="Salvar nome, gênero e idade no Supabase." class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-2xl px-6 py-3 transition">
+                                    Salvar alterações
+                                </button>
+                                <p id="settings-profile-feedback" class="text-xs font-bold text-emerald-600 mt-3 hidden"></p>
+
+                                <div class="pt-6 mt-6 border-t border-slate-100">
+                                    <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-3">Tipo de conta</p>
+                                    <div class="flex gap-3">
+                                        <button type="button" onclick="app.updateUserRole('professor')" data-role="professor" class="settings-role-btn flex-1 py-3 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 font-bold text-sm transition flex items-center justify-center gap-2">
+                                            <i class="fa-solid fa-chalkboard-user"></i> Professor
+                                        </button>
+                                        <button type="button" onclick="app.updateUserRole('aluno')" data-role="aluno" class="settings-role-btn flex-1 py-3 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 font-bold text-sm transition flex items-center justify-center gap-2">
+                                            <i class="fa-solid fa-user-graduate"></i> Aluno
+                                        </button>
+                                    </div>
+                                    <p id="settings-role-feedback" class="text-xs font-bold text-emerald-600 mt-3 hidden"></p>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 // js/core/dashboard.js
-import { dbService } from '../database.js?v=5';
+import { dbService } from '../database.js?v=6';
 
 function formatDateTimeBR(dateStr) {
     if (!dateStr) return '';
@@ -32,6 +32,7 @@ export const dashboardMethods = {
             if (emailEl) emailEl.innerText = this.state.activeUser.email;
             if (roleEl) roleEl.innerText = this.state.activeUser.role || 'Usuário';
             this.syncSettingsRoleButtons();
+            this.syncSettingsProfileFields();
         }
 
         if (viewId === 'library' && this.state.activeUser) {
@@ -94,6 +95,54 @@ export const dashboardMethods = {
             btn.classList.toggle('border-slate-200', !active);
             btn.classList.toggle('text-slate-600', !active);
         });
+    },
+
+    // Preenche o formulário de Editar Perfil com os dados já salvos, toda
+    // vez que a tela de Configurações é aberta.
+    syncSettingsProfileFields: function() {
+        const user = this.state.activeUser;
+        if (!user) return;
+        const nameInput = document.getElementById('settings-edit-name');
+        const genderSelect = document.getElementById('settings-edit-gender');
+        const ageInput = document.getElementById('settings-edit-age');
+        if (nameInput) nameInput.value = user.name || '';
+        if (genderSelect) genderSelect.value = user.gender || 'prefiro_nao_informar';
+        if (ageInput) ageInput.value = user.age ?? '';
+    },
+
+    saveProfileDetails: async function() {
+        if (!this.state.activeUser) return;
+        const feedback = document.getElementById('settings-profile-feedback');
+        const name = document.getElementById('settings-edit-name')?.value.trim();
+        const gender = document.getElementById('settings-edit-gender')?.value;
+        const ageRaw = document.getElementById('settings-edit-age')?.value;
+        const age = ageRaw ? parseInt(ageRaw, 10) : null;
+
+        if (!name) {
+            this.showNotification('Informe seu nome para salvar.');
+            return;
+        }
+        if (ageRaw && (isNaN(age) || age < 1 || age > 120)) {
+            this.showNotification('Informe uma idade válida.');
+            return;
+        }
+
+        try {
+            await dbService.updateUserProfile({ name, gender, age });
+            this.state.activeUser.name = name;
+            this.state.activeUser.gender = gender;
+            this.state.activeUser.age = age;
+            const nameEl = document.getElementById('settings-user-name');
+            if (nameEl) nameEl.innerText = name;
+            if (feedback) {
+                feedback.innerText = 'Perfil atualizado com sucesso.';
+                feedback.classList.remove('hidden');
+                setTimeout(() => feedback.classList.add('hidden'), 3000);
+            }
+        } catch (error) {
+            console.error(error);
+            this.showNotification('Erro ao salvar o perfil: ' + error.message);
+        }
     },
 
     renderDashboard: function() {

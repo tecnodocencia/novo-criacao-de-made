@@ -295,9 +295,19 @@ export const dbService = {
         }
     },
 
-    async updateUserRole(role) {
-        const { error } = await supabase.auth.updateUser({ data: { role } })
+    // Faz merge explícito com o user_metadata atual antes de enviar — não
+    // confiamos no updateUser() do Supabase para preservar sozinho os campos
+    // que não estão em `fields` (ex.: atualizar só o nome não pode apagar o
+    // role já salvo).
+    async updateUserProfile(fields) {
+        const { data: { user } } = await supabase.auth.getUser()
+        const merged = { ...(user?.user_metadata || {}), ...fields }
+        const { error } = await supabase.auth.updateUser({ data: merged })
         if (error) throw error
+    },
+
+    async updateUserRole(role) {
+        return this.updateUserProfile({ role })
     },
 
     isPasswordRecoveryPending() {
