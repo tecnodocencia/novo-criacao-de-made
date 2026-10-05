@@ -278,6 +278,11 @@ export const dbService = {
         }
     },
 
+    async updateUserRole(role) {
+        const { error } = await supabase.auth.updateUser({ data: { role } })
+        if (error) throw error
+    },
+
     isPasswordRecoveryPending() {
         return passwordRecoveryPending
     },

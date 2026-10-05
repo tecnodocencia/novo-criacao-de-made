@@ -38,11 +38,17 @@
                             </div>
 
                             <div class="pt-6 border-t border-slate-100">
-                                <h4 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-4">Ações da Conta</h4>
-                                <button onclick="app.logout()" class="flex items-center gap-3 px-6 py-3 bg-red-50 text-red-600 hover:bg-red-100 rounded-2xl font-bold text-sm transition-all border border-red-100">
-                                    <i class="fa-solid fa-right-from-bracket"></i>
-                                    Sair da Conta
-                                </button>
+                                <h4 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-1">Editar Perfil</h4>
+                                <p class="text-sm text-slate-500 mb-4">Defina se esta conta acessa o MADE como professor ou como aluno.</p>
+                                <div class="flex gap-3">
+                                    <button type="button" onclick="app.updateUserRole('professor')" data-role="professor" class="settings-role-btn flex-1 py-3 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 font-bold text-sm transition flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-chalkboard-user"></i> Professor
+                                    </button>
+                                    <button type="button" onclick="app.updateUserRole('aluno')" data-role="aluno" class="settings-role-btn flex-1 py-3 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 font-bold text-sm transition flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-user-graduate"></i> Aluno
+                                    </button>
+                                </div>
+                                <p id="settings-role-feedback" class="text-xs font-bold text-emerald-600 mt-3 hidden"></p>
                             </div>
                         </div>
                     </div>

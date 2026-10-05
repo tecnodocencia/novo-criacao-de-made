@@ -1,5 +1,5 @@
 // js/core/dashboard.js
-import { dbService } from '../database.js?v=3';
+import { dbService } from '../database.js?v=4';
 
 function formatDateTimeBR(dateStr) {
     if (!dateStr) return '';
@@ -29,6 +29,7 @@ export const dashboardMethods = {
             const roleEl = document.getElementById('settings-user-role');
             if (emailEl) emailEl.innerText = this.state.activeUser.email;
             if (roleEl) roleEl.innerText = this.state.activeUser.role || 'Usuário';
+            this.syncSettingsRoleButtons();
         }
 
         if (viewId === 'library' && this.state.activeUser) {
@@ -50,6 +51,46 @@ export const dashboardMethods = {
             } else {
                 b.className = "nav-btn w-full flex items-center gap-3 p-3 rounded-xl transition text-slate-500 hover:bg-slate-50";
             }
+        });
+    },
+
+    // Alterna o perfil da conta (professor/aluno), gravado no user_metadata
+    // do Supabase Auth. Destacar o botão certo mesmo sem clicar em nada é
+    // papel de syncSettingsRoleButtons(), chamada ao abrir Configurações.
+    updateUserRole: async function(role) {
+        if (!this.state.activeUser) return;
+        if (this.state.activeUser.role === role) {
+            this.syncSettingsRoleButtons();
+            return;
+        }
+        try {
+            await dbService.updateUserRole(role);
+            this.state.activeUser.role = role;
+            const roleEl = document.getElementById('settings-user-role');
+            if (roleEl) roleEl.innerText = role;
+            this.syncSettingsRoleButtons();
+            const feedback = document.getElementById('settings-role-feedback');
+            if (feedback) {
+                feedback.innerText = `Perfil atualizado para ${role === 'professor' ? 'Professor' : 'Aluno'}.`;
+                feedback.classList.remove('hidden');
+                setTimeout(() => feedback.classList.add('hidden'), 3000);
+            }
+        } catch (error) {
+            console.error(error);
+            this.showNotification('Erro ao atualizar o perfil: ' + error.message);
+        }
+    },
+
+    syncSettingsRoleButtons: function() {
+        const role = this.state.activeUser?.role || 'professor';
+        document.querySelectorAll('.settings-role-btn').forEach(btn => {
+            const active = btn.dataset.role === role;
+            btn.classList.toggle('bg-sky-600', active);
+            btn.classList.toggle('border-sky-600', active);
+            btn.classList.toggle('text-white', active);
+            btn.classList.toggle('bg-white', !active);
+            btn.classList.toggle('border-slate-200', !active);
+            btn.classList.toggle('text-slate-600', !active);
         });
     },
 
