@@ -52,35 +52,26 @@
                             </div>
 
                             <div class="pt-6 border-t border-slate-100">
-                                <h4 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-1">Editar Perfil</h4>
-                                <p class="text-sm text-slate-500 mb-4">Atualize seu nome, gênero e idade.</p>
-
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                    <div class="space-y-2 md:col-span-2">
-                                        <label class="block text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Nome completo</label>
-                                        <input id="settings-edit-name" type="text" placeholder="Seu nome" class="w-full px-5 py-3 border-2 border-slate-200 rounded-2xl bg-white text-slate-800 outline-none focus:border-emerald-500 transition-all text-sm font-medium" />
+                                <div class="flex items-center justify-between gap-3 mb-4">
+                                    <h4 class="text-sm font-black text-slate-400 uppercase tracking-widest">Editar Perfil</h4>
+                                    <button type="button" onclick="app.openEditProfileModal()" title="Abrir o popup para editar nome, gênero e idade." class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-widest rounded-xl px-4 py-2.5 transition flex items-center gap-2">
+                                        <i class="fa-solid fa-pen"></i> Editar Perfil
+                                    </button>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                                        <p class="text-[11px] font-black text-slate-400 uppercase mb-1">Nome</p>
+                                        <p id="settings-summary-name" class="text-sm font-bold text-slate-700">—</p>
                                     </div>
-                                    <div class="space-y-2">
-                                        <label class="block text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Gênero</label>
-                                        <div class="relative">
-                                            <select id="settings-edit-gender" class="w-full px-5 py-3 pr-10 border-2 border-slate-200 rounded-2xl bg-white text-slate-800 outline-none focus:border-emerald-500 transition-all text-sm font-medium appearance-none cursor-pointer">
-                                                <option value="prefiro_nao_informar">Prefiro não informar</option>
-                                                <option value="feminino">Feminino</option>
-                                                <option value="masculino">Masculino</option>
-                                                <option value="outro">Outro</option>
-                                            </select>
-                                            <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none"></i>
-                                        </div>
+                                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                                        <p class="text-[11px] font-black text-slate-400 uppercase mb-1">Gênero</p>
+                                        <p id="settings-summary-gender" class="text-sm font-bold text-slate-700">—</p>
                                     </div>
-                                    <div class="space-y-2">
-                                        <label class="block text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Idade</label>
-                                        <input id="settings-edit-age" type="number" min="1" max="120" placeholder="Ex: 32" class="w-full px-5 py-3 border-2 border-slate-200 rounded-2xl bg-white text-slate-800 outline-none focus:border-emerald-500 transition-all text-sm font-medium" />
+                                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                                        <p class="text-[11px] font-black text-slate-400 uppercase mb-1">Idade</p>
+                                        <p id="settings-summary-age" class="text-sm font-bold text-slate-700">—</p>
                                     </div>
                                 </div>
-                                <button type="button" onclick="app.saveProfileDetails()" title="Salvar nome, gênero e idade no Supabase." class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-2xl px-6 py-3 transition">
-                                    Salvar alterações
-                                </button>
-                                <p id="settings-profile-feedback" class="text-xs font-bold text-emerald-600 mt-3 hidden"></p>
 
                                 <div class="pt-6 mt-6 border-t border-slate-100">
                                     <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-3">Tipo de conta</p>

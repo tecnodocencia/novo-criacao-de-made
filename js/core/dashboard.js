@@ -97,11 +97,19 @@ export const dashboardMethods = {
         });
     },
 
-    // Preenche o formulário de Editar Perfil com os dados já salvos, toda
-    // vez que a tela de Configurações é aberta.
+    // Preenche os campos do popup de Editar Perfil e o resumo somente
+    // leitura da tela de Perfil, toda vez que a tela é aberta (e de novo ao
+    // salvar). GENDER_LABELS fica aqui mesmo por só ter esse único uso.
     syncSettingsProfileFields: function() {
         const user = this.state.activeUser;
         if (!user) return;
+        const GENDER_LABELS = {
+            prefiro_nao_informar: 'Prefiro não informar',
+            feminino: 'Feminino',
+            masculino: 'Masculino',
+            outro: 'Outro'
+        };
+
         const nameInput = document.getElementById('settings-edit-name');
         const genderSelect = document.getElementById('settings-edit-gender');
         const ageInput = document.getElementById('settings-edit-age');
@@ -109,7 +117,23 @@ export const dashboardMethods = {
         if (genderSelect) genderSelect.value = user.gender || 'prefiro_nao_informar';
         if (ageInput) ageInput.value = user.age ?? '';
 
+        const summaryName = document.getElementById('settings-summary-name');
+        const summaryGender = document.getElementById('settings-summary-gender');
+        const summaryAge = document.getElementById('settings-summary-age');
+        if (summaryName) summaryName.innerText = user.name || 'Não informado';
+        if (summaryGender) summaryGender.innerText = GENDER_LABELS[user.gender] || GENDER_LABELS.prefiro_nao_informar;
+        if (summaryAge) summaryAge.innerText = (user.age === null || user.age === undefined) ? 'Não informada' : user.age;
+
         this.updateProfileIncompleteBanner();
+    },
+
+    openEditProfileModal: function() {
+        this.syncSettingsProfileFields();
+        document.getElementById('modal-edit-profile').style.display = 'flex';
+    },
+
+    closeEditProfileModal: function() {
+        document.getElementById('modal-edit-profile').style.display = 'none';
     },
 
     // Contas criadas antes do cadastro pedir nome/idade ficam sem esses
@@ -139,14 +163,15 @@ export const dashboardMethods = {
         banner.classList.remove('hidden');
     },
 
+    // Chamado pelo botão "Completar" do aviso de perfil incompleto: abre o
+    // popup já focado no campo de nome.
     focusProfileNameField: function() {
-        const input = document.getElementById('settings-edit-name');
-        if (input) input.focus();
+        this.openEditProfileModal();
+        document.getElementById('settings-edit-name')?.focus();
     },
 
     saveProfileDetails: async function() {
         if (!this.state.activeUser) return;
-        const feedback = document.getElementById('settings-profile-feedback');
         const name = document.getElementById('settings-edit-name')?.value.trim();
         const gender = document.getElementById('settings-edit-gender')?.value;
         const ageRaw = document.getElementById('settings-edit-age')?.value;
@@ -168,12 +193,9 @@ export const dashboardMethods = {
             this.state.activeUser.age = age;
             const nameEl = document.getElementById('settings-user-name');
             if (nameEl) nameEl.innerText = name;
-            this.updateProfileIncompleteBanner();
-            if (feedback) {
-                feedback.innerText = 'Perfil atualizado com sucesso.';
-                feedback.classList.remove('hidden');
-                setTimeout(() => feedback.classList.add('hidden'), 3000);
-            }
+            this.syncSettingsProfileFields();
+            this.closeEditProfileModal();
+            this.showNotification('Perfil atualizado com sucesso.');
         } catch (error) {
             console.error(error);
             this.showNotification('Erro ao salvar o perfil: ' + error.message);
