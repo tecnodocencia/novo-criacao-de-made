@@ -108,6 +108,40 @@ export const dashboardMethods = {
         if (nameInput) nameInput.value = user.name || '';
         if (genderSelect) genderSelect.value = user.gender || 'prefiro_nao_informar';
         if (ageInput) ageInput.value = user.age ?? '';
+
+        this.updateProfileIncompleteBanner();
+    },
+
+    // Contas criadas antes do cadastro pedir nome/idade ficam sem esses
+    // campos no metadata (name: '' e age: null, ver extrairPerfil() em
+    // database.js). Gênero fica de fora dessa checagem: o valor padrão
+    // "prefiro_nao_informar" é também uma escolha legítima, não dá pra
+    // distinguir de "nunca preencheu".
+    getMissingProfileFields: function() {
+        const user = this.state.activeUser;
+        if (!user) return [];
+        const missing = [];
+        if (!user.name) missing.push('nome');
+        if (user.age === null || user.age === undefined) missing.push('idade');
+        return missing;
+    },
+
+    updateProfileIncompleteBanner: function() {
+        const banner = document.getElementById('settings-profile-incomplete-banner');
+        const text = document.getElementById('settings-profile-incomplete-text');
+        if (!banner) return;
+        const missing = this.getMissingProfileFields();
+        if (missing.length === 0) {
+            banner.classList.add('hidden');
+            return;
+        }
+        if (text) text.innerText = `Falta informar seu${missing.length > 1 ? 's' : ''} ${missing.join(' e ')}. Isso leva poucos segundos.`;
+        banner.classList.remove('hidden');
+    },
+
+    focusProfileNameField: function() {
+        const input = document.getElementById('settings-edit-name');
+        if (input) input.focus();
     },
 
     saveProfileDetails: async function() {
@@ -134,6 +168,7 @@ export const dashboardMethods = {
             this.state.activeUser.age = age;
             const nameEl = document.getElementById('settings-user-name');
             if (nameEl) nameEl.innerText = name;
+            this.updateProfileIncompleteBanner();
             if (feedback) {
                 feedback.innerText = 'Perfil atualizado com sucesso.';
                 feedback.classList.remove('hidden');

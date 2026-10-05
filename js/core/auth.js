@@ -219,22 +219,28 @@ export const authMethods = {
         }
     },
 
-    logout: async function() {
-        try {
-            await dbService.logout();
-            this.state.activeUser = null;
-            document.getElementById('main-layout').classList.add('hidden');
-            document.getElementById('view-login').classList.add('active');
-            document.getElementById('view-login').classList.remove('hidden');
-            this.setAuthMode('login');
+    logout: function() {
+        this.showConfirm(
+            'Sair da Conta',
+            'Tem certeza que deseja sair? Você vai precisar fazer login de novo para continuar criando ou jogando.',
+            async () => {
+                try {
+                    await dbService.logout();
+                    this.state.activeUser = null;
+                    document.getElementById('main-layout').classList.add('hidden');
+                    document.getElementById('view-login').classList.add('active');
+                    document.getElementById('view-login').classList.remove('hidden');
+                    this.setAuthMode('login');
 
-            // Limpa campos de input
-            const emailInput = document.getElementById('auth-email');
-            const passInput = document.getElementById('auth-password');
-            if(emailInput) emailInput.value = '';
-            if(passInput) passInput.value = '';
-        } catch (error) {
-            console.error("Erro ao sair:", error);
-        }
+                    // Limpa campos de input
+                    const emailInput = document.getElementById('auth-email');
+                    const passInput = document.getElementById('auth-password');
+                    if(emailInput) emailInput.value = '';
+                    if(passInput) passInput.value = '';
+                } catch (error) {
+                    console.error("Erro ao sair:", error);
+                }
+            }
+        );
     }
 };
