@@ -14,6 +14,22 @@ function remapJogo(jogo) {
 }
 
 /**
+ * Extrai o perfil (role, nome, gênero, idade) do user_metadata do Supabase
+ * Auth. `fallback` é usado logo após o cadastro, quando o retorno do
+ * signUp às vezes ainda não ecoa os campos recém-enviados.
+ */
+function extrairPerfil(userMetadata, fallback) {
+    const meta = userMetadata || {}
+    const fb = fallback || {}
+    return {
+        role: meta.role || fb.role || 'professor',
+        name: meta.name ?? fb.name ?? '',
+        gender: meta.gender ?? fb.gender ?? 'prefiro_nao_informar',
+        age: meta.age ?? fb.age ?? null
+    }
+}
+
+/**
  * Camada de abstração para o banco de dados.
  * Se você mudar de banco no futuro, basta alterar este arquivo.
  */
@@ -224,31 +240,32 @@ export const dbService = {
             email,
             password,
         })
-        
+
         if (error) throw error
-        // Retornamos o usuário com o role extraído do metadata
+        // Retornamos o usuário com o perfil (role, nome, gênero, idade) extraído do metadata
         return {
             ...data.user,
-            role: data.user.user_metadata.role || 'professor'
+            ...extrairPerfil(data.user.user_metadata)
         }
     },
 
-    async registrar(email, password, role) {
+    // profile: { role, name, gender, age } — age pode vir null quando o
+    // professor/aluno não informou no cadastro.
+    async registrar(email, password, profile) {
+        const { role, name, gender, age } = profile || {}
         const { data, error } = await supabase.auth.signUp({
             email,
             password,
             options: {
-                data: {
-                    role: role
-                }
+                data: { role, name, gender, age }
             }
         })
-        
+
         if (error) throw error
         // hasSession: true quando o Supabase confirma o cadastro na hora (sem exigir
         // clique em link de email) — nesse caso o usuário já está autenticado.
         return {
-            user: data.user ? { ...data.user, role: data.user.user_metadata?.role || role || 'professor' } : null,
+            user: data.user ? { ...data.user, ...extrairPerfil(data.user.user_metadata, profile) } : null,
             hasSession: !!data.session
         }
     },
@@ -274,7 +291,7 @@ export const dbService = {
         if (!user) return null
         return {
             ...user,
-            role: user.user_metadata?.role || 'professor'
+            ...extrairPerfil(user.user_metadata)
         }
     },
 

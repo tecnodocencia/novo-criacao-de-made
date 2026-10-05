@@ -1,5 +1,5 @@
 // js/core/auth.js
-import { dbService } from '../database.js?v=4';
+import { dbService } from '../database.js?v=5';
 import { getGame } from '../games/registry.js?v=1';
 
 export const authMethods = {
@@ -110,23 +110,31 @@ export const authMethods = {
     },
 
     register: async function() {
+        const name = document.getElementById('register-name')?.value.trim();
         const email = document.getElementById('register-email')?.value.trim();
         const password = document.getElementById('register-password')?.value;
         const confirm = document.getElementById('register-password-confirm')?.value;
+        const gender = document.getElementById('register-gender')?.value;
+        const ageRaw = document.getElementById('register-age')?.value;
+        const age = ageRaw ? parseInt(ageRaw, 10) : null;
         const role = document.getElementById('register-role')?.value;
         const feedback = document.getElementById('auth-feedback');
 
-        if(!email || !password || !confirm) {
-            if (feedback) { feedback.classList.remove('hidden'); feedback.innerText = 'Preencha todos os campos.'; }
+        if(!name || !email || !password || !confirm) {
+            if (feedback) { feedback.classList.remove('hidden'); feedback.innerText = 'Preencha nome, email e senha para continuar.'; }
             return;
         }
         if(password !== confirm) {
             if (feedback) { feedback.classList.remove('hidden'); feedback.innerText = 'As senhas não coincidem.'; }
             return;
         }
+        if(ageRaw && (isNaN(age) || age < 1 || age > 120)) {
+            if (feedback) { feedback.classList.remove('hidden'); feedback.innerText = 'Informe uma idade válida.'; }
+            return;
+        }
 
         try {
-            const { user, hasSession } = await dbService.registrar(email, password, role);
+            const { user, hasSession } = await dbService.registrar(email, password, { role, name, gender, age });
             if (user && user.identities && user.identities.length === 0) {
                 if (feedback) { feedback.classList.remove('hidden'); feedback.innerText = 'Este email já está cadastrado. Tente fazer login.'; }
                 return;

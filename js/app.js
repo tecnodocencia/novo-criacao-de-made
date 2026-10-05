@@ -1,9 +1,9 @@
 // js/app.js
-import { dbService } from './database.js?v=4';
+import { dbService } from './database.js?v=5';
 import { state } from './core/state.js?v=3';
 import { utilsMethods } from './core/utils.js?v=4';
-import { authMethods } from './core/auth.js?v=4';
-import { dashboardMethods } from './core/dashboard.js?v=15';
+import { authMethods } from './core/auth.js?v=5';
+import { dashboardMethods } from './core/dashboard.js?v=16';
 import { libraryMethods } from './core/library.js?v=6';
 import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=17';
 import { modalMethods } from './core/modals.js?v=1';

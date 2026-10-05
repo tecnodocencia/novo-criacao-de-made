@@ -1,5 +1,5 @@
 // js/core/dashboard.js
-import { dbService } from '../database.js?v=4';
+import { dbService } from '../database.js?v=5';
 
 function formatDateTimeBR(dateStr) {
     if (!dateStr) return '';
@@ -25,8 +25,10 @@ export const dashboardMethods = {
 
         // Se for a aba de configurações, preenche os dados do usuário
         if (viewId === 'settings' && this.state.activeUser) {
+            const nameEl = document.getElementById('settings-user-name');
             const emailEl = document.getElementById('settings-user-email');
             const roleEl = document.getElementById('settings-user-role');
+            if (nameEl) nameEl.innerText = this.state.activeUser.name || this.state.activeUser.email;
             if (emailEl) emailEl.innerText = this.state.activeUser.email;
             if (roleEl) roleEl.innerText = this.state.activeUser.role || 'Usuário';
             this.syncSettingsRoleButtons();
