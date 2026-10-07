@@ -190,6 +190,13 @@ function endMatch(app, winnerIdx) {
     renderAll(app);
 }
 
+// Ritmo da vez do computador: duas pausas curtas (pensar, depois agir) em vez
+// de resolver tudo no instante em que o timer de "pensando" acaba — sem elas
+// a jogada do bot parecia instantânea demais (decisão e efeito no mesmo
+// quadro). Jogada humana não usa nenhuma dessas pausas.
+const BOT_THINK_MS = 900;
+const BOT_ACT_MS = 550;
+
 function afterTurnChange(app) {
     const e = elim(app);
     if (e.winner != null) { renderAll(app); return; }
@@ -198,7 +205,7 @@ function afterTurnChange(app) {
     e.awaitingHandoff = !cur.isBot;
     renderAll(app);
     if (cur.isBot) {
-        setTimeout(() => botTakeTurn(app), 700);
+        setTimeout(() => botTakeTurn(app), BOT_THINK_MS);
     }
 }
 
@@ -251,16 +258,22 @@ function botTakeTurn(app) {
     const special = player.hand.filter(c => c.kind !== 'base' && cardMatchesTags(c, top));
     const chosen = normal[0] || special[0];
 
-    if (chosen) { resolvePlay(app, playerIdx, chosen); return; }
+    if (chosen) {
+        // Pausa curta entre "decidiu" e "jogou", pra dar tempo do jogador ver
+        // qual carta o computador escolheu antes dela ir pro descarte.
+        setTimeout(() => resolvePlay(app, playerIdx, chosen), BOT_ACT_MS);
+        return;
+    }
 
     const drawn = drawOne(app);
-    if (drawn) {
-        player.hand.push(drawn);
-        if (cardMatchesTags(drawn, top)) { resolvePlay(app, playerIdx, drawn); return; }
-    }
-    advanceTurn(app, 1);
-    e.turnDrawn = false;
-    afterTurnChange(app);
+    if (drawn) player.hand.push(drawn);
+    renderAll(app); // mostra a compra (monte diminui, mão aumenta) antes de decidir o que fazer com ela
+    setTimeout(() => {
+        if (drawn && cardMatchesTags(drawn, top)) { resolvePlay(app, playerIdx, drawn); return; }
+        advanceTurn(app, 1);
+        e.turnDrawn = false;
+        afterTurnChange(app);
+    }, BOT_ACT_MS);
 }
 
 function openWildModal(app, kind) {
@@ -379,14 +392,16 @@ function renderAll(app) {
         if (cur.isBot || e.awaitingHandoff || e.winner != null) {
             handEl.innerHTML = '';
         } else {
-            const top = topTags(app);
+            // Toda carta da mão pode ser clicada e tentada — não existe mais
+            // distinção visual de "jogável"/"desabilitada". Quem decide se a
+            // carta vale é elimPlayHandCard(), que mostra um popup e balança
+            // a carta no lugar (elimShakeHandCard) quando ela não combina.
             handEl.innerHTML = cur.hand.map((card, idx) => {
-                const playable = cardMatchesTags(card, top);
                 const { angle, lift, marginLeft } = handFanTransform(idx, cur.hand.length);
                 const slotStyle = `transform: rotate(${angle.toFixed(1)}deg) translateY(${lift.toFixed(1)}px); margin-left:${marginLeft.toFixed(1)}px; z-index:${idx};`;
                 return `
                     <div class="elim-hand-slot" style="${slotStyle}">
-                        <div class="elim-hand-card ${playable ? 'playable' : 'disabled'}" data-instance="${card.instanceId}" style="background-image:url('${frontDesign}');">
+                        <div class="elim-hand-card" data-instance="${card.instanceId}" style="background-image:url('${frontDesign}');">
                             <div class="zoom-icon" title="Visualizar ampliado"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
                             <div class="elim-hand-card-inner">${cardFaceHtml(card, attributes)}</div>
                         </div>
@@ -518,10 +533,23 @@ export const playerMethods = {
         const card = player.hand.find(c => c.instanceId === cardInstanceId);
         if (!card) return;
         if (!cardMatchesTags(card, topTags(this))) {
-            this.showNotification('Essa carta não compartilha nenhum atributo com a carta da mesa.');
+            this.elimShakeHandCard(cardInstanceId);
+            this.showNotification('Essa carta não compartilha nenhum atributo com a carta da mesa. Tente outra.', 'Carta incorreta');
             return;
         }
         resolvePlay(this, playerIdx, card);
+    },
+
+    // Balança a carta clicada no lugar (ela nunca chega a sair da mão, já que
+    // a jogada só é efetivada depois da checagem acima) — o retorno visual
+    // de "ela volta" pedido pelo professor.
+    elimShakeHandCard: function(cardInstanceId) {
+        const el = document.querySelector(`#elim-hand .elim-hand-card[data-instance="${cardInstanceId}"]`);
+        if (!el) return;
+        el.classList.remove('rejected');
+        void el.offsetWidth; // força o navegador a reiniciar a animação se a carta já estava balançando
+        el.classList.add('rejected');
+        setTimeout(() => el.classList.remove('rejected'), 400);
     },
 
     elimDrawCard: function() {

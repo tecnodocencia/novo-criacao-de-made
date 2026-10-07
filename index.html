@@ -508,13 +508,23 @@
             box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12);
             transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
         }
-        .elim-hand-card.playable:hover {
+        .elim-hand-card:hover {
             transform: translateY(-20px) scale(1.07);
             box-shadow: 0 18px 30px rgba(15, 23, 42, 0.26);
         }
-        .elim-hand-card.disabled {
-            opacity: 0.45;
-            cursor: not-allowed;
+        /* O jogador pode tentar jogar qualquer carta da mão — não existe mais
+           um estado "desabilitado" visual. Se a carta não combinar com a
+           carta da mesa, ela balança no lugar (em vez de sumir e voltar,
+           já que nunca chega a sair da mão) e um popup avisa o motivo. */
+        .elim-hand-card.rejected {
+            animation: elim-card-shake 0.4s ease;
+        }
+        @keyframes elim-card-shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px) rotate(-3deg); }
+            40% { transform: translateX(9px) rotate(3deg); }
+            60% { transform: translateX(-6px) rotate(-2deg); }
+            80% { transform: translateX(4px) rotate(1deg); }
         }
         /* Cada carta da mão fica num "slot" que recebe a rotação/altura do
            leque (calculadas em js/games/eliminacao/player.js, função
@@ -2340,6 +2350,6 @@
         </div>
     </div>
 
-    <script type="module" src="js/app.js?v=43"></script>
+    <script type="module" src="js/app.js?v=44"></script>
 </body>
 </html>
