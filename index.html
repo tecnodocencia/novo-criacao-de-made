@@ -498,9 +498,9 @@
         /* --- Modelo Eliminação (Can Can): mesa de jogo e cartas na mão --- */
         .elim-hand-card {
             position: relative;
-            width: 96px;
-            height: 128px;
-            border-radius: 18px;
+            width: 148px;
+            height: 198px;
+            border-radius: 20px;
             cursor: pointer;
             user-select: none;
             background-size: cover;
@@ -530,17 +530,17 @@
         .elim-hand-slot:hover { z-index: 999 !important; }
         .elim-hand-card-inner {
             position: absolute;
-            inset: 6px;
-            border-radius: 14px;
+            inset: 8px;
+            border-radius: 15px;
             background: rgba(255, 255, 255, 0.92);
             border: 2px solid #cbd5e1;
             overflow: hidden;
         }
         .elim-pile-card {
             position: relative;
-            width: 110px;
-            height: 146px;
-            border-radius: 20px;
+            width: 160px;
+            height: 214px;
+            border-radius: 22px;
             border: 3px solid white;
             box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
             background-color: #f1f5f9;
@@ -552,6 +552,25 @@
             transition: transform 0.15s ease;
         }
         #elim-draw-pile:hover { transform: translateY(-4px); }
+        /* Efeito de "várias cartas empilhadas" só no monte de Comprar (nunca
+           no monte de descarte, que mostra de verdade só a última carta
+           jogada): duas cópias fantasmas do verso da carta, levemente
+           giradas e deslocadas atrás da carta da frente. */
+        #elim-draw-pile::before,
+        #elim-draw-pile::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: inherit;
+            background-size: cover;
+            background-position: center;
+            border: 3px solid white;
+            box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12);
+            z-index: -1;
+        }
+        #elim-draw-pile::before { transform: translate(-7px, -5px) rotate(-6deg); }
+        #elim-draw-pile::after { transform: translate(7px, -3px) rotate(5deg); }
         .elim-pile-count {
             position: absolute;
             bottom: -10px;
@@ -2321,6 +2340,6 @@
         </div>
     </div>
 
-    <script type="module" src="js/app.js?v=42"></script>
+    <script type="module" src="js/app.js?v=43"></script>
 </body>
 </html>
