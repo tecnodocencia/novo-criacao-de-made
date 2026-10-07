@@ -14,16 +14,16 @@ import { buildDeck, cardMatchesTags, calculateElimScore, masterValues, computeHa
 
 // --- Ícones inline (cartas especiais), nas cores pastel do MADE ---
 function svgSkip() {
-    return `<svg viewBox="0 0 48 48" class="w-11 h-11"><circle cx="24" cy="24" r="19" fill="#FCB6D4" stroke="#fff" stroke-width="3"/><line x1="13" y1="13" x2="35" y2="35" stroke="#fff" stroke-width="5" stroke-linecap="round"/></svg>`;
+    return `<svg viewBox="0 0 48 48" class="w-9 h-9"><circle cx="24" cy="24" r="19" fill="#FCB6D4" stroke="#fff" stroke-width="3"/><line x1="13" y1="13" x2="35" y2="35" stroke="#fff" stroke-width="5" stroke-linecap="round"/></svg>`;
 }
 function svgReverse() {
-    return `<svg viewBox="0 0 48 48" class="w-11 h-11"><path d="M14 16 A10 10 0 1 1 14 32" stroke="#7CCBEF" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M34 32 A10 10 0 1 1 34 16" stroke="#7CCBEF" stroke-width="5" fill="none" stroke-linecap="round"/><polygon points="14,10 20,17 9,19" fill="#7CCBEF"/><polygon points="34,38 28,31 39,29" fill="#7CCBEF"/></svg>`;
+    return `<svg viewBox="0 0 48 48" class="w-9 h-9"><path d="M14 16 A10 10 0 1 1 14 32" stroke="#7CCBEF" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M34 32 A10 10 0 1 1 34 16" stroke="#7CCBEF" stroke-width="5" fill="none" stroke-linecap="round"/><polygon points="14,10 20,17 9,19" fill="#7CCBEF"/><polygon points="34,38 28,31 39,29" fill="#7CCBEF"/></svg>`;
 }
 function svgDraw(n, color) {
-    return `<svg viewBox="0 0 48 48" class="w-11 h-11"><rect x="5" y="12" width="26" height="32" rx="6" fill="${color}" stroke="#fff" stroke-width="2"/><rect x="15" y="4" width="26" height="32" rx="6" fill="${color}" stroke="#fff" stroke-width="2"/><text x="28" y="25" font-size="15" font-weight="900" fill="#1f2937" text-anchor="middle">+${n}</text></svg>`;
+    return `<svg viewBox="0 0 48 48" class="w-9 h-9"><rect x="5" y="12" width="26" height="32" rx="6" fill="${color}" stroke="#fff" stroke-width="2"/><rect x="15" y="4" width="26" height="32" rx="6" fill="${color}" stroke="#fff" stroke-width="2"/><text x="28" y="25" font-size="15" font-weight="900" fill="#1f2937" text-anchor="middle">+${n}</text></svg>`;
 }
 function svgChoose() {
-    return `<svg viewBox="0 0 48 48" class="w-11 h-11"><rect x="4" y="4" width="19" height="19" rx="3" fill="#FDE2B5"/><rect x="25" y="4" width="19" height="19" rx="3" fill="#BAF7CE"/><rect x="4" y="25" width="19" height="19" rx="3" fill="#B8E7FA"/><rect x="25" y="25" width="19" height="19" rx="3" fill="#FCB6D4"/></svg>`;
+    return `<svg viewBox="0 0 48 48" class="w-9 h-9"><rect x="4" y="4" width="19" height="19" rx="3" fill="#FDE2B5"/><rect x="25" y="4" width="19" height="19" rx="3" fill="#BAF7CE"/><rect x="4" y="25" width="19" height="19" rx="3" fill="#B8E7FA"/><rect x="25" y="25" width="19" height="19" rx="3" fill="#FCB6D4"/></svg>`;
 }
 
 const SPECIAL_ICONS = {
@@ -40,7 +40,7 @@ function valueContentHtml(value) {
     if (!value) return '';
     return value.image
         ? `<img src="${value.image}" class="max-w-full max-h-full object-contain" />`
-        : `<p class="text-[15px] leading-tight font-black text-slate-800 text-center px-1.5">${value.text || ''}</p>`;
+        : `<p class="text-[13px] leading-tight font-black text-slate-800 text-center px-1">${value.text || ''}</p>`;
 }
 
 // Face de uma carta (base ou especial). Para especiais "wild" (+4/Escolher)
@@ -75,7 +75,7 @@ function cardFaceHtml(card, attributes) {
 // na mão, pra imitar o formato de um leque segurado na mão (cartas do meio
 // mais altas e sem giro, cartas das pontas mais baixas e giradas pra fora).
 // `CARD_W` tem que bater com a largura de `.elim-hand-card` no CSS.
-const CARD_W = 148;
+const CARD_W = 128;
 function handFanTransform(index, total) {
     if (total <= 1) return { angle: 0, lift: 0, marginLeft: 0 };
     const center = (total - 1) / 2;
