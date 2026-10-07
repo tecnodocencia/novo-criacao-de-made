@@ -1,7 +1,7 @@
 // js/games/eliminacao/model.js
 //
-// Modelo "Eliminação" (apelido interno "Can Can") — generalização educacional
-// do UNO. O professor define 2 atributos de conteúdo (ex.: "Relevo" e
+// Modelo "Eliminação" (apelido interno "Can Can") — jogo de cartas por
+// eliminação. O professor define 2 atributos de conteúdo (ex.: "Relevo" e
 // "Região"), cada um com 2 a 9 valores. Uma carta-base representa uma
 // combinação (valor do atributo 1, valor do atributo 2). Em cada atributo o
 // professor marca exatamente 2 valores como "cartas mestre" — os mesmos 2

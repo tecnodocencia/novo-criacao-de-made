@@ -1,7 +1,7 @@
 // js/games/eliminacao/player.js
 //
-// Motor de partida do modelo Eliminação (apelido "Can Can"): jogo estilo UNO
-// jogado "hotseat" (todos os jogadores humanos usam o mesmo dispositivo,
+// Motor de partida do modelo Eliminação (apelido "Can Can"): jogo de cartas
+// por eliminação, jogado "hotseat" (todos os jogadores humanos usam o mesmo dispositivo,
 // passando a vez na tela). Ver js/games/eliminacao/model.js para a geração
 // do baralho e as regras de combinação entre cartas.
 //
@@ -68,6 +68,25 @@ function cardFaceHtml(card, attributes) {
             <div class="absolute top-1 left-1">${icon}</div>
             <div class="mt-5 flex-1 flex items-center justify-center overflow-hidden">${valueContentHtml(v)}</div>
         </div>`;
+}
+
+// Geometria do leque de cartas na mão (ver uso em renderElimBoard): cada
+// carta recebe um ângulo e uma altura calculados a partir da posição dela
+// na mão, pra imitar o formato de um leque segurado na mão (cartas do meio
+// mais altas e sem giro, cartas das pontas mais baixas e giradas pra fora).
+// `CARD_W` tem que bater com a largura de `.elim-hand-card` no CSS.
+const CARD_W = 96;
+function handFanTransform(index, total) {
+    if (total <= 1) return { angle: 0, lift: 0, marginLeft: 0 };
+    const center = (total - 1) / 2;
+    const offset = index - center;
+    const maxAngle = Math.min(32, 8 + total * 1.6);
+    const angle = (maxAngle / (total - 1)) * offset;
+    const maxLift = 20;
+    const lift = Math.pow(offset / center, 2) * maxLift;
+    const overlapFraction = Math.min(0.62, 0.28 + total * 0.018);
+    const marginLeft = index === 0 ? 0 : -(CARD_W * overlapFraction);
+    return { angle, lift, marginLeft };
 }
 
 // --- Motor de turnos (funções internas, recebem `app` explicitamente) ---
@@ -361,12 +380,16 @@ function renderAll(app) {
             handEl.innerHTML = '';
         } else {
             const top = topTags(app);
-            handEl.innerHTML = cur.hand.map(card => {
+            handEl.innerHTML = cur.hand.map((card, idx) => {
                 const playable = cardMatchesTags(card, top);
+                const { angle, lift, marginLeft } = handFanTransform(idx, cur.hand.length);
+                const slotStyle = `transform: rotate(${angle.toFixed(1)}deg) translateY(${lift.toFixed(1)}px); margin-left:${marginLeft.toFixed(1)}px; z-index:${idx};`;
                 return `
-                    <div class="elim-hand-card ${playable ? 'playable' : 'disabled'}" data-instance="${card.instanceId}" style="background-image:url('${frontDesign}');">
-                        <div class="zoom-icon" title="Visualizar ampliado"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
-                        <div class="elim-hand-card-inner">${cardFaceHtml(card, attributes)}</div>
+                    <div class="elim-hand-slot" style="${slotStyle}">
+                        <div class="elim-hand-card ${playable ? 'playable' : 'disabled'}" data-instance="${card.instanceId}" style="background-image:url('${frontDesign}');">
+                            <div class="zoom-icon" title="Visualizar ampliado"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                            <div class="elim-hand-card-inner">${cardFaceHtml(card, attributes)}</div>
+                        </div>
                     </div>
                 `;
             }).join('');
