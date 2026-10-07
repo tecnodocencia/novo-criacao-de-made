@@ -37,7 +37,7 @@ const GAME_METHODS = [
     'elimOpenValueModal', 'elimCloseValueModal', 'elimHandleValueImageUrlInput',
     'elimRemoveValueImage', 'elimSaveValueModal',
     'elimOpenSetupModal', 'elimCloseSetupModal', 'elimStartMatch', 'elimRestartMatch',
-    'elimConfirmHandoff', 'elimPlayHandCard', 'elimDrawCard', 'elimPassTurn',
+    'elimConfirmHandoff', 'elimPlayHandCard', 'elimShakeHandCard', 'elimDrawCard', 'elimPassTurn',
     'elimChooseWildValue', 'elimPreviewHandCard', 'elimCloseResultModal'
 ];
 
