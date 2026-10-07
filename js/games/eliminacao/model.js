@@ -18,6 +18,17 @@ export function uuid() {
         : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
+// Um valor "vazio" (texto em branco e sem imagem) não vira carta — acontece
+// quando o professor clica em adicionar um valor na Criação de Cartas e sai
+// sem preencher. validateCreatorCards() (editorCartas.js) já bloqueia salvar
+// o bloco nesse estado, mas "Testar Jogo" não passa por essa validação (nem
+// passava no Código Secreto), então o baralho se protege sozinho aqui.
+function hasValueContent(value) {
+    if (!value) return false;
+    if (value.image) return true;
+    return ((value.text || '').replace(/<[^>]*>/g, '').trim().length > 0);
+}
+
 export function getDefaultData() {
     return {
         is_draft: true,
@@ -69,17 +80,20 @@ export function computeSpecialCopies(cartasBase) {
 // exatamente 2, mas a função é defensiva: usa os que existirem).
 export function masterValues(attribute) {
     if (!attribute || !Array.isArray(attribute.values)) return [];
-    return attribute.values.filter(v => v.isMaster);
+    return attribute.values.filter(v => v.isMaster && hasValueContent(v));
 }
 
 // --- Construção do baralho de uma partida ---
 
 // Gera as cartas-base (uma combinação por par de valores — sem cópias).
+// Valores sem conteúdo são ignorados (ver hasValueContent acima).
 function buildBaseCards(attributes) {
     const [a0, a1] = attributes;
+    const values0 = (a0.values || []).filter(hasValueContent);
+    const values1 = (a1.values || []).filter(hasValueContent);
     const cards = [];
-    (a0.values || []).forEach(v0 => {
-        (a1.values || []).forEach(v1 => {
+    values0.forEach(v0 => {
+        values1.forEach(v1 => {
             cards.push({
                 instanceId: uuid(),
                 kind: 'base',
@@ -97,7 +111,8 @@ function buildTaggedSpecial(kind, attributes, copies) {
     const out = [];
     for (let i = 0; i < copies; i++) {
         const attrIdx = i % 2;
-        const values = attributes[attrIdx].values;
+        const values = (attributes[attrIdx].values || []).filter(hasValueContent);
+        if (values.length === 0) continue;
         const valueId = values[i % values.length].id;
         out.push({ instanceId: uuid(), kind, tags: [{ attr: attrIdx, valueId }] });
     }

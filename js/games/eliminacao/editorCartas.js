@@ -3,7 +3,7 @@
 // define 2 atributos (nome + 2 a 9 valores cada) e marca exatamente 2
 // valores "carta mestre" por atributo. Ver js/games/eliminacao/model.js para
 // as regras derivadas (cartas-base, cópias de especiais, cartas mestre).
-import { countBaseCards, uuid } from './model.js?v=1';
+import { countBaseCards, uuid } from './model.js?v=2';
 
 const ATTR_LABELS = ['Atributo 1', 'Atributo 2'];
 

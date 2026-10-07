@@ -1,5 +1,5 @@
 // js/games/eliminacao/review.js
-import { countBaseCards } from './model.js?v=1';
+import { countBaseCards } from './model.js?v=2';
 
 export const reviewMethods = {
     populateReviewStep: function() {
