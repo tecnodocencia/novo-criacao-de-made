@@ -1,0 +1,113 @@
+                <div class="absolute top-4 right-4 z-20 flex items-center gap-3">
+                    <button id="save-from-player-btn" onclick="app.saveGame()" title="Salvar o jogo e voltar para a lista de materiais." class="hidden bg-emerald-600 text-white px-6 py-3 font-bold rounded-xl text-sm transition">
+                        Salvar Jogo
+                    </button>
+                    <button id="back-from-player-btn" onclick="app.backFromPlayer()" class="hidden bg-amber-500 text-white px-6 py-3 font-bold rounded-xl text-sm transition">
+                        Voltar
+                    </button>
+                </div>
+
+                <div class="flex-1 flex overflow-hidden">
+
+                    <!-- ESQUERDA: informações da partida -->
+                    <div class="w-[360px] border-r border-slate-300 bg-white p-4 overflow-y-auto shrink-0">
+                        <div class="mb-4">
+                            <h2 class="font-black text-lg">Eliminação</h2>
+                            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Jogadores</p>
+                        </div>
+                        <div id="elim-players-panel" class="space-y-2 mb-6"></div>
+
+                        <div class="grid grid-cols-1 gap-2 mb-6">
+                            <button onclick="app.showGameRules()" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-slate-200">
+                                <i class="fa-solid fa-circle-info mr-1"></i> Regras
+                            </button>
+                            <button onclick="app.showPlayObjetivo()" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-slate-200">
+                                <i class="fa-solid fa-bullseye mr-1"></i> Objetivo
+                            </button>
+                            <button onclick="app.showPlayExplicacao()" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-slate-200">
+                                <i class="fa-solid fa-circle-question mr-1"></i> Como Jogar
+                            </button>
+                            <button onclick="app.elimOpenSetupModal()" class="py-2 px-3 bg-red-50 hover:bg-red-100 text-red-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-red-100">
+                                <i class="fa-solid fa-rotate-left mr-1"></i> Nova Partida
+                            </button>
+                        </div>
+
+                        <div class="bg-white border border-slate-200 rounded-3xl px-4 py-3 shadow-sm space-y-2">
+                            <div>
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Título</span>
+                                <p id="elim-header-title" class="text-sm font-black text-slate-800 leading-tight">-</p>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Disciplina</span>
+                                <p id="elim-header-disciplina" class="text-sm font-bold text-slate-700">-</p>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Conteúdo</span>
+                                <p id="elim-header-conteudo" class="text-sm font-bold text-slate-700">-</p>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Série</span>
+                                <p id="elim-header-serie" class="text-sm font-bold text-slate-700">-</p>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Autores</span>
+                                <p id="elim-header-autores" class="text-sm font-semibold text-slate-600 leading-tight">-</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CENTRO: mesa de jogo -->
+                    <div class="flex-1 flex flex-col items-center justify-start p-6 overflow-y-auto min-w-0 relative">
+
+                        <div id="elim-enunciado" class="w-full max-w-2xl bg-white/50 border border-slate-200 p-4 rounded-3xl mb-4 text-center shadow-sm">
+                            <p class="text-sm font-black text-slate-400 uppercase tracking-widest mb-1">Enunciado</p>
+                            <div id="elim-enunciado-content" class="text-sm font-semibold text-slate-700"></div>
+                        </div>
+
+                        <div class="w-full max-w-md mb-4">
+                            <div id="elim-turn-banner" class="text-center bg-emerald-50 border border-emerald-200 text-emerald-800 font-black uppercase tracking-widest text-sm py-3 rounded-2xl">
+                                Vez de: -
+                            </div>
+                            <div id="elim-bot-indicator" class="hidden text-center text-slate-500 text-xs font-bold uppercase tracking-widest mt-2">
+                                <i class="fa-solid fa-robot fa-fade mr-1"></i> Computador jogando...
+                            </div>
+                        </div>
+
+                        <!-- MESA: monte de compra + descarte -->
+                        <div class="flex items-center justify-center gap-10 mb-8">
+                            <div class="flex flex-col items-center gap-2">
+                                <div id="elim-draw-pile" onclick="app.elimDrawCard()" class="elim-pile-card cursor-pointer" title="Comprar uma carta.">
+                                    <div class="elim-pile-count"><span id="elim-draw-pile-count">0</span></div>
+                                </div>
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Comprar</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2">
+                                <div id="elim-discard-top" class="elim-pile-card"></div>
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Mesa</span>
+                            </div>
+                        </div>
+
+                        <button id="elim-pass-btn" onclick="app.elimPassTurn()" class="hidden mb-6 bg-slate-700 hover:bg-slate-800 text-white px-8 py-3 rounded-2xl font-black tracking-wider text-sm uppercase">
+                            Passar a Vez
+                        </button>
+
+                        <!-- MÃO DO JOGADOR DA VEZ -->
+                        <div class="w-full">
+                            <p class="text-center text-[11px] font-black text-slate-400 uppercase tracking-widest mb-3">Sua mão</p>
+                            <div id="elim-hand" class="flex flex-wrap justify-center gap-3"></div>
+                        </div>
+
+                        <!-- OVERLAY: troca de dispositivo entre jogadores humanos -->
+                        <div id="elim-handoff-overlay" class="hidden absolute inset-0 bg-white/95 backdrop-blur-sm flex flex-col items-center justify-center gap-5 z-10 p-6 text-center">
+                            <i class="fa-solid fa-mobile-screen-button text-5xl text-slate-300"></i>
+                            <div>
+                                <p class="text-sm font-black text-slate-400 uppercase tracking-widest mb-1">Passe o dispositivo para</p>
+                                <p id="elim-handoff-name" class="text-2xl font-black text-slate-800">-</p>
+                            </div>
+                            <button onclick="app.elimConfirmHandoff()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-2xl font-black tracking-wider text-sm uppercase">
+                                Mostrar minha mão
+                            </button>
+                        </div>
+                    </div>
+
+                </div>

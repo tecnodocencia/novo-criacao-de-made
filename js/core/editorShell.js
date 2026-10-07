@@ -46,8 +46,8 @@ function stripHtml(html) {
 }
 
 export const editorShellMethods = {
-    newGame: function() {
-        const modelName = 'Código Secreto';
+    newGame: async function(modelName = 'Código Secreto') {
+        await this.ensureGamePartialsLoaded(modelName);
         const defaults = getGame(modelName).getDefaultData();
         this.state.editingGame = {
             id: "game-" + Date.now(),
@@ -58,17 +58,20 @@ export const editorShellMethods = {
         this.state.editingStep = 1;
         this.state.editingBlock = null;
         this.syncEditorUI();
-        this.updateSecretCardCounter();
         this.switchView('creator');
     },
 
-    editGame: function(id) {
+    editGame: async function(id) {
         const g = this.state.games.find(x => x.id === id);
+        if (!g) return;
+        await this.ensureGamePartialsLoaded(g.model || 'Código Secreto');
         this.state.editingGame = JSON.parse(JSON.stringify(g));
         // As 6 primeiras cartas sempre corretas e as 6 últimas sempre
         // distratoras (posição fixa) — normaliza jogos salvos antes dessa
         // regra existir, para o editor nunca mostrar um estado que não é
-        // mais possível de configurar.
+        // mais possível de configurar. Só se aplica ao Código Secreto —
+        // `cards` do Eliminação é um objeto ({attributes:[...]}), não um
+        // array, então Array.isArray já protege esse modelo automaticamente.
         if (Array.isArray(this.state.editingGame.cards)) {
             this.state.editingGame.cards.forEach((card, idx) => { card.isCorrect = idx < 6; });
         }
@@ -81,7 +84,6 @@ export const editorShellMethods = {
         this.state.editingStep = 1;
         this.state.editingBlock = null;
         this.syncEditorUI();
-        this.updateSecretCardCounter();
         this.switchView('creator');
     },
 
@@ -97,6 +99,8 @@ export const editorShellMethods = {
         document.querySelectorAll('#model-choices > div').forEach(d => d.style.borderColor = '#e5e7eb');
         const chosen = Array.from(document.querySelectorAll('#model-choices > div')).find(d => d.innerText.trim().includes(eg.model || ''));
         if (chosen) chosen.style.borderColor = '#10b981';
+        // O vídeo guiado só existe para o Código Secreto.
+        document.getElementById('open-game-video-btn')?.classList.toggle('hidden', eg.model !== 'Código Secreto');
 
         const disciplinaSelect = document.getElementById('edit-game-disciplina');
         const serieSelect = document.getElementById('edit-game-serie');
@@ -381,9 +385,10 @@ export const editorShellMethods = {
         setBadge(2, !!eg.frontDesign && !!eg.backDesign);
         setBadge(3, !!stripHtml(eg.enunciado) && !!(eg.explicacao || '').trim());
 
-        const filledCount = (eg.cards || []).filter(c => c.content.trim() !== "" || !!c.contentImage).length;
-        const correctCount = (eg.cards || []).filter(c => c.isCorrect).length;
-        setBadge(4, filledCount === 12 && correctCount === 6);
+        // Delegado ao modelo ativo (bloco "Criação de Cartas" tem formato
+        // diferente em cada modelo — ver validateCreatorCards/
+        // isCardsBlockComplete em cada js/games/<modelo>/editorCartas.js).
+        setBadge(4, !!this.isCardsBlockComplete());
     },
 
     creatorNextStep: function() {
@@ -398,16 +403,10 @@ export const editorShellMethods = {
         }
 
         if (phase === 2) {
-            const filledCount = this.state.editingGame.cards.filter(c => c.content.trim() !== "" || !!c.contentImage).length;
-            if (filledCount < 12) {
+            const result = this.validateCreatorCards();
+            if (!result || !result.valid) {
                 this.showBlock(4);
-                this.showValidationError("Preencha todas as 12 cartas com texto ou imagem antes de avançar para a revisão.");
-                return;
-            }
-            const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
-            if (correctCount !== 6) {
-                this.showBlock(4);
-                this.showValidationError("Exatamente 6 cartas precisam ser marcadas como possíveis para o código.");
+                this.showValidationError((result && result.message) || "Complete o bloco de Criação de Cartas antes de avançar para a revisão.");
                 return;
             }
             this.showPhase(3);
@@ -513,11 +512,44 @@ export const editorShellMethods = {
         });
     },
 
-    selectModel: function(modelName, el) {
+    selectModel: async function(modelName, el) {
         if (!this.state.editingGame) return;
-        this.state.editingGame.model = modelName;
-        document.querySelectorAll('#model-choices > div').forEach(d => d.style.borderColor = '#e5e7eb');
-        if (el) el.style.borderColor = '#10b981';
+        const prevModel = this.state.editingGame.model;
+        if (prevModel === modelName) return;
+
+        const doSwitch = async () => {
+            await this.ensureGamePartialsLoaded(modelName);
+            this.state.editingGame.model = modelName;
+            // A estrutura de "cards" é específica de cada modelo (array de
+            // 12 cartas no Código Secreto, {attributes:[...]} no
+            // Eliminação) — trocar de modelo reseta só essa parte para os
+            // defaults do novo modelo. Os demais campos (nome, disciplina,
+            // regra, objetivo, enunciado, explicação, design) são genéricos
+            // e continuam valendo, não há necessidade de reescrevê-los.
+            this.state.editingGame.cards = getGame(modelName).getDefaultData().cards;
+            document.querySelectorAll('#model-choices > div').forEach(d => d.style.borderColor = '#e5e7eb');
+            if (el) el.style.borderColor = '#10b981';
+            document.getElementById('open-game-video-btn')?.classList.toggle('hidden', modelName !== 'Código Secreto');
+            this.renderEditorGrid();
+            this.renderBlocksHub();
+            this.saveNow();
+        };
+
+        // Só pede confirmação se o bloco "Criação de Cartas" do modelo atual
+        // já estiver completo — ou seja, se trocar de modelo realmente
+        // descartaria trabalho pronto. Logo após criar um jogo novo e
+        // escolher o modelo pela primeira vez (caso mais comum), o bloco
+        // ainda está vazio e a troca acontece direto, sem pop-up.
+        const prevModelComplete = this.isCardsBlockComplete();
+        if (prevModelComplete) {
+            this.showConfirm(
+                'Trocar de modelo',
+                'Trocar o modelo de jogo reinicia o bloco "Criação de Cartas" (o conteúdo já criado nele será perdido). Os demais dados do jogo são mantidos. Deseja continuar?',
+                doSwitch
+            );
+        } else {
+            await doSwitch();
+        }
     },
 
     handleDisciplinaSelectChange: function(e) {

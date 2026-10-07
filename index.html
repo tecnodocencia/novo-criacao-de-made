@@ -495,6 +495,69 @@
             color: white;
         }
 
+        /* --- Modelo Eliminação (Can Can): mesa de jogo e cartas na mão --- */
+        .elim-hand-card {
+            position: relative;
+            width: 96px;
+            height: 128px;
+            border-radius: 18px;
+            cursor: pointer;
+            user-select: none;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+        }
+        .elim-hand-card.playable:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.18);
+        }
+        .elim-hand-card.disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+        .elim-hand-card-inner {
+            position: absolute;
+            inset: 6px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.92);
+            border: 2px solid #cbd5e1;
+            overflow: hidden;
+        }
+        .elim-pile-card {
+            position: relative;
+            width: 110px;
+            height: 146px;
+            border-radius: 20px;
+            border: 3px solid white;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+            background-color: #f1f5f9;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.15s ease;
+        }
+        #elim-draw-pile:hover { transform: translateY(-4px); }
+        .elim-pile-count {
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            background: #1f2937;
+            color: white;
+            font-weight: 900;
+            font-size: 12px;
+            min-width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid white;
+            padding: 0 6px;
+        }
+
         /* Botão genérico de símbolo especial */
         .sym-btn {
             width: 2.25rem;
@@ -2110,6 +2173,142 @@
         </div>
     </div>
 
-    <script type="module" src="js/app.js?v=40"></script>
+    <!-- MODELO ELIMINAÇÃO (Can Can): modais próprios. Hardcoded aqui, como
+         os demais modais do app (não são injetados por partial — ver
+         js/app.js, ensureGamePartialsLoaded só troca #creator-step-4 e
+         #view-player). Ids exclusivos, nunca colidem com os do Código
+         Secreto. -->
+
+    <!-- MODAL: editar valor de um atributo (bloco Criação de Cartas) -->
+    <div id="modal-elim-value" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4 overflow-y-auto">
+        <div class="bg-white w-full max-w-2xl rounded-[40px] shadow-2xl overflow-hidden my-8 flex flex-col max-h-[90vh] p-8 space-y-6">
+            <div class="shrink-0">
+                <h3 class="text-2xl font-black text-slate-900">Editar Valor</h3>
+                <p id="elim-value-modal-attr-label" class="text-sm text-slate-400 font-bold uppercase mt-1 tracking-widest">Atributo</p>
+            </div>
+            <div class="flex-1 min-h-0 space-y-4 overflow-y-auto pl-1 pr-4 custom-scrollbar">
+                <div>
+                    <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo Textual</label>
+                    <div class="richtext-field">
+                        <div class="richtext-toolbar">
+                            <button type="button" onclick="app.toggleBold('elim-value-modal-content')" class="richtext-btn" title="Negrito">
+                                <i class="fa-solid fa-bold"></i>
+                            </button>
+                            <button type="button" onclick="app.toggleItalic('elim-value-modal-content')" class="richtext-btn" title="Itálico">
+                                <i class="fa-solid fa-italic"></i>
+                            </button>
+                            <button type="button" onclick="app.toggleUnderline('elim-value-modal-content')" class="richtext-btn" title="Sublinhado">
+                                <i class="fa-solid fa-underline"></i>
+                            </button>
+                            <span class="richtext-divider"></span>
+                            <button type="button" onclick="app.wrapSelectionInRed('elim-value-modal-content')" class="richtext-btn" title="Marcar em vermelho o texto selecionado">
+                                <span class="richtext-color-a" style="--rt-color:#dc2626;">A</span>
+                            </button>
+                            <button type="button" onclick="app.removeRedFromSelection('elim-value-modal-content')" class="richtext-btn" title="Remover a cor vermelha do texto selecionado">
+                                <i class="fa-solid fa-eraser"></i>
+                            </button>
+                        </div>
+                        <div id="elim-value-modal-content" contenteditable="true" title="Texto deste valor do atributo." class="richtext-editable min-h-16 max-h-40 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;"></div>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo por Imagem (Opcional)</label>
+                    <div class="flex flex-col gap-3">
+                        <div class="flex items-center gap-2">
+                            <button onclick="app.openImageLibrary('elim-value-image')" title="Escolher, na biblioteca de imagens, uma imagem para ilustrar este valor." class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[11px] font-bold uppercase flex items-center gap-2">
+                                <i class="fa-solid fa-images"></i> Biblioteca
+                            </button>
+                            <button onclick="app.elimRemoveValueImage()" title="Remover a imagem associada a este valor." class="px-3 py-2 bg-red-500 text-white rounded-lg text-[11px] font-bold uppercase">Limpar</button>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">Ou Link da Imagem</label>
+                            <input id="elim-value-modal-image-url" type="text" oninput="app.elimHandleValueImageUrlInput(event)" title="Cole aqui o link (URL) de uma imagem para usar como conteúdo deste valor." class="w-full p-3 border-2 border-slate-100 rounded-2xl outline-none focus:border-emerald-500 transition text-sm" placeholder="https://exemplo.com/imagem.png">
+                        </div>
+                        <div id="elim-value-modal-image-preview-wrapper" class="hidden border-2 border-slate-100 rounded-2xl overflow-hidden bg-slate-50 aspect-video flex items-center justify-center">
+                            <img id="elim-value-modal-image-preview" src="" alt="Prévia" class="max-h-full max-w-full object-contain">
+                        </div>
+                    </div>
+                </div>
+                <label class="flex items-center gap-3 p-4 bg-amber-50 border border-amber-200 rounded-2xl cursor-pointer">
+                    <input id="elim-value-modal-master" type="checkbox" class="w-5 h-5 accent-amber-500">
+                    <span class="text-sm font-bold text-amber-800"><i class="fa-solid fa-star mr-1"></i> Esta é uma carta mestre deste atributo (máximo 2 por atributo — usadas também nas cartas "Comprar 4 e Escolher" / "Escolher").</span>
+                </label>
+            </div>
+            <div class="flex gap-3 shrink-0 justify-end">
+                <button onclick="app.elimCloseValueModal()" title="Fechar sem salvar as alterações feitas neste valor." class="px-8 py-3.5 border border-slate-200 hover:bg-slate-50 font-bold rounded-2xl text-sm transition">Cancelar</button>
+                <button onclick="app.elimSaveValueModal()" title="Salvar o conteúdo e as configurações deste valor." class="px-8 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl text-sm transition shadow-lg shadow-emerald-100">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: configurar partida (modo de jogo) -->
+    <div id="modal-elim-setup" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-50 w-full max-w-2xl rounded-[36px] shadow-2xl p-8 space-y-6">
+            <div class="text-center">
+                <h3 class="text-2xl font-black text-slate-900">Configurar Partida</h3>
+                <p id="elim-setup-game-name" class="text-sm text-slate-500 mt-2 font-bold"></p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button onclick="app.elimStartMatch('solo')" class="group text-left p-5 rounded-3xl border-2 border-slate-200 hover:border-green-500 hover:bg-green-50 transition flex flex-col items-center text-center gap-3">
+                    <i class="fa-solid fa-user text-3xl text-green-600"></i>
+                    <h4 class="font-black text-slate-800 group-hover:text-green-700">1 aluno + computador</h4>
+                    <p class="text-xs text-slate-500">Partida de 2 jogadores contra o computador.</p>
+                </button>
+                <button onclick="app.elimStartMatch('trio')" class="group text-left p-5 rounded-3xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 transition flex flex-col items-center text-center gap-3">
+                    <i class="fa-solid fa-users text-3xl text-sky-600"></i>
+                    <h4 class="font-black text-slate-800 group-hover:text-sky-700">2 alunos + computador</h4>
+                    <p class="text-xs text-slate-500">Partida de 3 jogadores. Ativa as cartas Perder a Vez e Retornar a Ordem.</p>
+                </button>
+                <button onclick="app.elimStartMatch('duo')" class="group text-left p-5 rounded-3xl border-2 border-slate-200 hover:border-pink-500 hover:bg-pink-50 transition flex flex-col items-center text-center gap-3">
+                    <i class="fa-solid fa-user-group text-3xl text-pink-600"></i>
+                    <h4 class="font-black text-slate-800 group-hover:text-pink-700">2 alunos, sem computador</h4>
+                    <p class="text-xs text-slate-500">Partida de 2 jogadores, só entre alunos, no mesmo dispositivo.</p>
+                </button>
+            </div>
+            <p class="text-xs text-slate-400 text-center">Todos os jogadores humanos jogam no mesmo dispositivo, passando a vez na tela.</p>
+            <div class="text-center">
+                <button onclick="app.elimCloseSetupModal()" class="px-6 py-2.5 border border-slate-200 text-slate-500 hover:bg-slate-50 font-bold rounded-xl text-sm transition">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: escolher novo valor em jogo (cartas Comprar 4 e Escolher / Escolher) -->
+    <div id="modal-elim-wild" class="fixed inset-0 bg-slate-900/50 backdrop-blur-md hidden items-center justify-center z-[70] p-4">
+        <div class="bg-white w-full max-w-lg rounded-[36px] shadow-2xl p-8 space-y-6">
+            <div class="text-center">
+                <div class="w-14 h-14 mx-auto rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center text-2xl mb-3">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <h3 id="elim-wild-title" class="text-base font-black text-slate-900">Escolha o novo valor em jogo</h3>
+            </div>
+            <div id="elim-wild-options" class="grid grid-cols-2 gap-3"></div>
+        </div>
+    </div>
+
+    <!-- MODAL: resultado da partida -->
+    <div id="modal-elim-result" class="fixed inset-0 bg-slate-900/50 backdrop-blur-md hidden items-center justify-center z-50 p-4 overflow-y-auto">
+        <div class="bg-white w-full max-w-lg rounded-[40px] shadow-2xl overflow-hidden my-8 flex flex-col max-h-[90vh]">
+            <div class="p-8 border-b border-slate-100 shrink-0 bg-slate-50 text-center">
+                <i id="elim-result-icon" class="fa-solid fa-trophy text-amber-500 text-3xl"></i>
+                <h3 id="elim-result-title" class="text-2xl font-black text-slate-900 mt-3">Fim de Jogo!</h3>
+                <p id="elim-result-subtitle" class="text-sm text-slate-500 font-bold mt-1"></p>
+            </div>
+            <div class="p-8 space-y-2 overflow-y-auto custom-scrollbar flex-1">
+                <div id="elim-result-scoreboard" class="space-y-2"></div>
+            </div>
+            <div class="p-6 border-t bg-slate-50 shrink-0 flex flex-col sm:flex-row gap-3 justify-end">
+                <button onclick="app.elimCloseResultModal(); app.backFromPlayer();" class="px-6 py-3 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-bold rounded-xl text-sm transition">
+                    Sair para o Início
+                </button>
+                <button onclick="app.elimRestartMatch();" class="px-6 py-3 bg-emerald-600 text-white font-bold rounded-xl text-sm transition shadow-lg shadow-emerald-200 hover:bg-emerald-700">
+                    Jogar Novamente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/app.js?v=41"></script>
 </body>
 </html>

@@ -1,0 +1,43 @@
+                            <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+                                <div class="space-y-4">
+                                    <p class="text-sm uppercase tracking-[0.28em] text-slate-500 font-black">Criação de Cartas</p>
+                                    <p class="text-sm text-slate-600">Defina os dois atributos do seu conteúdo. Cada carta do jogo é uma combinação de um valor do Atributo 1 com um valor do Atributo 2.</p>
+                                </div>
+                                <div>
+                                    <div class="rounded-[28px] border border-slate-200 bg-emerald-50 p-4 text-slate-700 space-y-2">
+                                        <p class="text-sm font-black">SOBRE AS CARTAS</p>
+                                        <p class="text-sm">Este jogo usa <strong>2 atributos</strong> do seu conteúdo (por exemplo, "Relevo" e "Região"). Cada atributo recebe de <strong>2 a 9 valores</strong> (texto ou imagem). Toda combinação possível entre um valor do Atributo 1 e um valor do Atributo 2 vira uma carta do jogo. Durante a partida, uma carta só pode ser jogada sobre a carta da mesa se compartilhar o valor de pelo menos um dos dois atributos com ela — igual ao UNO, trocando "cor e número" por estes dois atributos. Em cada atributo, marque exatamente <strong>2 valores como "carta mestre"</strong> (clique na estrela ao editar o valor): são os valores mais importantes, usados também nas cartas especiais "Comprar 4 e Escolher" e "Escolher".</p>
+                                    </div>
+                                </div>
+                                <div id="elim-attributes-wrap" class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                                    <div class="rounded-[28px] border-2 border-slate-200 p-5 space-y-4" style="background: linear-gradient(180deg, rgba(253,226,181,0.35), rgba(253,226,181,0.08));">
+                                        <div>
+                                            <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Nome do Atributo 1</label>
+                                            <input id="elim-attr-0-name" type="text" oninput="app.elimUpdateAttributeName(0, event)" title="Nome deste atributo (ex: Relevo, Número, Tipo de equação)." class="w-full py-3 px-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Relevo">
+                                        </div>
+                                        <div id="elim-attr-0-values" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+                                        <div class="flex items-center justify-between gap-3">
+                                            <button type="button" id="elim-attr-0-add" onclick="app.elimAddAttributeValue(0)" title="Adicionar um novo valor a este atributo (máximo 9)." class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-black uppercase tracking-widest transition flex items-center gap-2">
+                                                <i class="fa-solid fa-plus"></i> Adicionar valor
+                                            </button>
+                                        </div>
+                                        <p id="elim-attr-0-hint" class="text-xs font-bold mt-2 text-amber-700"></p>
+                                    </div>
+                                    <div class="rounded-[28px] border-2 border-slate-200 p-5 space-y-4" style="background: linear-gradient(180deg, rgba(184,231,250,0.35), rgba(184,231,250,0.08));">
+                                        <div>
+                                            <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Nome do Atributo 2</label>
+                                            <input id="elim-attr-1-name" type="text" oninput="app.elimUpdateAttributeName(1, event)" title="Nome deste atributo (ex: Região, Cor, Variável)." class="w-full py-3 px-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Região">
+                                        </div>
+                                        <div id="elim-attr-1-values" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+                                        <div class="flex items-center justify-between gap-3">
+                                            <button type="button" id="elim-attr-1-add" onclick="app.elimAddAttributeValue(1)" title="Adicionar um novo valor a este atributo (máximo 9)." class="px-4 py-2.5 bg-sky-500 hover:bg-sky-600 text-white rounded-xl text-xs font-black uppercase tracking-widest transition flex items-center gap-2">
+                                                <i class="fa-solid fa-plus"></i> Adicionar valor
+                                            </button>
+                                        </div>
+                                        <p id="elim-attr-1-hint" class="text-xs font-bold mt-2 text-amber-700"></p>
+                                    </div>
+                                </div>
+                                <div class="rounded-[28px] border border-slate-200 bg-slate-50 p-4 text-center">
+                                    <p class="text-sm font-bold text-slate-600">Total de cartas-base geradas (todas as combinações possíveis): <span id="elim-total-base-cards" class="text-slate-900">0</span></p>
+                                </div>
+                            </div>

@@ -107,6 +107,7 @@
                                     <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Modelo</label>
                                         <select id="edit-game-model" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" style="display:none;">
                                             <option value="Código Secreto">Código Secreto</option>
+                                            <option value="Eliminação">Eliminação</option>
                                         </select>
                                         <div id="model-choices" class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
                                             <div class="cursor-pointer rounded-xl border p-3 text-center" title="Modelo de jogo a ser criado. Define as regras, telas e formato das cartas." onclick="app.selectModel('Código Secreto', this)">
@@ -115,12 +116,11 @@
                                                 </div>
                                                 <div class="text-xs font-bold mt-1">Código Secreto</div>
                                             </div>
-                                            <div class="rounded-xl border p-3 text-center bg-slate-100 opacity-70 cursor-not-allowed" title="Modelo Can Can ainda está em construção." onclick="app.showNotification('O modelo Can Can ainda está em construção. Em breve estará disponível.', 'Em construção')">
-                                                <div class="w-full h-24 flex flex-col items-center justify-center gap-1 bg-slate-200 rounded-lg">
-                                                    <i class="fa-solid fa-hammer text-3xl text-slate-400"></i>
-                                                    <span class="text-[11px] font-black uppercase tracking-widest text-slate-400">Em construção</span>
+                                            <div class="cursor-pointer rounded-xl border p-3 text-center" title="Modelo de jogo a ser criado. Versão educacional do UNO: defina 2 atributos de conteúdo e seus valores." onclick="app.selectModel('Eliminação', this)">
+                                                <div class="w-full h-24 flex items-center justify-center gap-1 bg-[#FCB6D4] rounded-lg">
+                                                    <i class="fa-solid fa-layer-group text-4xl text-white"></i>
                                                 </div>
-                                                <div class="text-xs font-bold mt-1 text-slate-500">Can Can</div>
+                                                <div class="text-xs font-bold mt-1">Eliminação</div>
                                             </div>
                                             <div class="rounded-xl border p-3 text-center bg-slate-100 opacity-70 cursor-not-allowed" title="Modelo Timeline ainda está em construção." onclick="app.showNotification('O modelo Timeline ainda está em construção. Em breve estará disponível.', 'Em construção')">
                                                 <div class="w-full h-24 flex flex-col items-center justify-center gap-1 bg-slate-200 rounded-lg">
@@ -138,7 +138,7 @@
                                             </div>
                                         </div>
                                         <div class="mt-2">
-                                            <button type="button" onclick="app.openGameVideo()" title="Veja um vídeo animado, com narração, explicando como o jogo Código Secreto funciona para o aluno." class="inline-flex items-center gap-2 bg-[#EA3257] hover:bg-[#D12A4C] text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition">
+                                            <button id="open-game-video-btn" type="button" onclick="app.openGameVideo()" title="Veja um vídeo animado, com narração, explicando como o jogo Código Secreto funciona para o aluno." class="inline-flex items-center gap-2 bg-[#EA3257] hover:bg-[#D12A4C] text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition">
                                                 <i class="fa-solid fa-circle-play"></i> Entenda o Jogo Código Secreto
                                             </button>
                                         </div>

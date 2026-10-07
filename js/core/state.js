@@ -26,5 +26,14 @@ export const state = {
     gameTourStep: 0,
     gameTourMuted: false,
     gameTourReturnStep: null,
-    gameTourReturnBlock: null
+    gameTourReturnBlock: null,
+    // --- Modelo "Eliminação" (Can Can) ---
+    // Estado efêmero de uma partida em andamento (baralho, mãos, turno) —
+    // ver js/games/eliminacao/player.js. null quando não há partida ativa.
+    elim: null,
+    // Seleção temporária usada pelo modal de edição de valor de atributo no
+    // editor (bloco "Criação de Cartas") — ver js/games/eliminacao/editorCartas.js.
+    elimSelectedAttr: null,
+    elimSelectedValueIdx: null,
+    elimTempValueImage: null
 };

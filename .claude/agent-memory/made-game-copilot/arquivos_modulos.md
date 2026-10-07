@@ -49,7 +49,22 @@ HTML é montado em runtime: `index.html` (~1750 linhas) tem containers vazios
 
 ## js/games/registry.js (14 linhas)
 `registerGame(name, moduleObj)` / `getGame(name)` — registro simples em um `Map`/objeto.
-Padrão pensado para múltiplos modelos; hoje só "Código Secreto" se registra.
+ATUALIZADO 2026-10-07: desde a implementação do modelo "Eliminação" (ver
+[[sessao_2026-10-07_modelo_eliminacao]]), DOIS modelos registram de verdade —
+"Código Secreto" e "Eliminação". Essa sessão descobriu que `loadPartials()`
+(abaixo) era hardcoded pra carregar só os partials do Código Secreto em
+`#creator-step-4`/`#view-player`, SEMPRE, independente do modelo do jogo —
+inofensivo enquanto só havia um modelo, quebraria qualquer segundo modelo sem
+o fix. Corrigido com `ensureGamePartialsLoaded(modelName)` (novo, em
+`js/app.js`), chamado dinamicamente por `newGame`/`editGame`/`selectModel`
+(editorShell.js) e por `startPlayFlow` (novo, dashboard.js, usado pelo botão
+"Jogar"). IMPORTANTE: os modais de cada jogo (`#modal-card`/`#modal-difficulty`/
+`#modal-solution` do Código Secreto; `#modal-elim-*` do Eliminação) NÃO são
+injetados por partial — são hardcoded estaticamente em `index.html`, sempre
+presentes no DOM. `ensureGamePartialsLoaded` só troca `#creator-step-4` e
+`#view-player`. Um 3º modelo deve seguir o mesmo padrão (modais próprios
+hardcoded em `index.html`), não tentar reaproveitar `partials/.../modals.html`
+(código morto, nunca injetado, nem existe no disco para o Código Secreto).
 
 ## js/games/codigo-secreto/*.js (lógica específica do modelo "Código Secreto")
 - `model.js` (87 linhas) — `difficultyRules` (1-4, ver [[formato_dados_jogo]]),
@@ -62,6 +77,24 @@ Padrão pensado para múltiplos modelos; hoje só "Código Secreto" se registra.
   `replayGame`, `updateGameHeaderInfo`, etc. Ver [[funcoes_centrais]] para detalhes — os
   nomes de função da memória antiga continuam válidos, só o arquivo mudou.
 - `index.js` (24 linhas) — junta tudo acima e chama `registerGame('Código Secreto', ...)`.
+
+## js/games/eliminacao/*.js (lógica específica do modelo "Eliminação" / "Can Can", desde 2026-10-07)
+- `model.js` — construção de baralho (`buildDeck`), regra de combinação
+  (`cardMatchesTags`), pontuação (`calculateElimScore`), `getDefaultData()`.
+- `editorCartas.js` — bloco "Criação de Cartas" (2 atributos, 2-9 valores
+  cada, 2 "cartas mestre" por atributo). Exporta `validateCreatorCards`/
+  `isCardsBlockComplete`, agora um contrato GENÉRICO entre modelos (Código
+  Secreto também os implementa, extraídos de `editorShell.js` nesta sessão).
+- `review.js` — `populateReviewStep()` (mostra os 2 atributos e seus valores).
+- `player.js` — motor de partida hotseat completo (turnos, bot, baralho,
+  cartas especiais) + modais de jogo (`#modal-elim-setup/wild/result`,
+  estáticos em `index.html`). Arquitetura interna: métodos exportados são
+  finos, lógica real em funções de módulo que recebem `app` explicitamente
+  (não via `this`) — ver [[sessao_2026-10-07_modelo_eliminacao]] para o porquê.
+- `index.js` — junta tudo e chama `registerGame('Eliminação', ...)`. NÃO
+  declara partial de `modals` (ver nota acima sobre modais estáticos).
+- Sem compartilhamento público: `play.html`/`js/play.js` continuam exclusivos
+  do Código Secreto.
 
 ## Player público standalone (compartilhamento) — NÃO faz parte do app.js/index.html
 - `play.html` (raiz, ~530 linhas) + `js/play.js` (raiz, ~790 linhas, ES module).

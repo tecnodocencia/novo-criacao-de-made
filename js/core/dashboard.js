@@ -267,7 +267,7 @@ export const dashboardMethods = {
                     </div>
                 </div>
                 <div class="rounded-3xl border ${accent.cardBorder} ${accent.trayBg} p-2 flex flex-nowrap gap-1.5">
-                    <button onclick="app.openDifficultySelect('${game.id}')" class="flex-1 min-w-0 bg-green-600 text-white font-bold py-3 px-2 rounded-2xl text-sm shadow-lg shadow-green-100 transition hover:bg-green-700 flex items-center justify-center gap-1.5 whitespace-nowrap overflow-hidden">
+                    <button onclick="app.startPlayFlow('${game.id}')" class="flex-1 min-w-0 bg-green-600 text-white font-bold py-3 px-2 rounded-2xl text-sm shadow-lg shadow-green-100 transition hover:bg-green-700 flex items-center justify-center gap-1.5 whitespace-nowrap overflow-hidden">
                         <i class="fa-solid fa-play shrink-0"></i> <span class="truncate">Jogar</span>
                     </button>
                     <button onclick="app.editGame('${game.id}')" class="shrink-0 bg-white border border-slate-200 text-slate-600 font-bold py-3 px-3 rounded-2xl text-sm transition hover:bg-slate-50 whitespace-nowrap">
@@ -288,9 +288,34 @@ export const dashboardMethods = {
         });
     },
 
+    // Ponto de entrada único do botão "Jogar" do dashboard: resolve o
+    // modelo do jogo e garante que os partials corretos (#creator-step-4 /
+    // #view-player) estejam carregados ANTES de delegar para
+    // app.openDifficultySelect(gameId) — método implementado por cada
+    // modelo (ver js/games/<modelo>/player.js). Isso também é o que permite
+    // ao despachante genérico (resolveModelName em js/app.js) saber qual
+    // modelo está ativo nesse primeiro clique, antes de existir
+    // state.activeGame (setar selectedGameIdForPlay aqui, antes da
+    // chamada, é o que resolve isso).
+    startPlayFlow: async function(gameId) {
+        const game = this.state.games.find(g => String(g.id) === String(gameId));
+        if (!game) return;
+        this.state.selectedGameIdForPlay = gameId;
+        await this.ensureGamePartialsLoaded(game.model || 'Código Secreto');
+        this.openDifficultySelect(gameId);
+    },
+
     shareGame: async function(gameId) {
         const game = this.state.games.find(g => String(g.id) === String(gameId));
         if (!game) return;
+
+        // Compartilhamento público (play.html) e o ranking associado só
+        // existem hoje para o Código Secreto — ver nota no relatório da
+        // implementação do modelo Eliminação.
+        if (game.model === 'Eliminação') {
+            this.showNotification('O compartilhamento público ainda não está disponível para o modelo Eliminação. Use o botão "Jogar" para jogar diretamente pela plataforma.');
+            return;
+        }
 
         try {
             let shareCode = game.share_code;
@@ -358,6 +383,11 @@ export const dashboardMethods = {
     manageRanking: async function(gameId) {
         const game = this.state.games.find(g => String(g.id) === String(gameId));
         if (!game) return;
+
+        if (game.model === 'Eliminação') {
+            this.showNotification('O modelo Eliminação ainda não tem ranking online — a pontuação é mostrada no fim de cada partida, direto na tela de jogo.');
+            return;
+        }
 
         if (!game.share_code) {
             this.showNotification('Este jogo ainda não foi compartilhado — gere o link (botão azul) antes de gerenciar o ranking. Sem compartilhamento, nenhum aluno pode ter pontuado nele ainda.');

@@ -379,6 +379,14 @@ export const libraryMethods = {
             const urlInput = document.getElementById('modal-card-image-url');
             if (urlInput) urlInput.value = '';
             this.state.tempContentImage = url;
+        } else if (target === 'elim-value-image') {
+            const preview = document.getElementById('elim-value-modal-image-preview');
+            const wrapper = document.getElementById('elim-value-modal-image-preview-wrapper');
+            if (preview) preview.src = url;
+            if (wrapper) wrapper.classList.remove('hidden');
+            const urlInput = document.getElementById('elim-value-modal-image-url');
+            if (urlInput) urlInput.value = '';
+            this.state.elimTempValueImage = url;
         } else if (target === 'front-design') {
             const extFrontPreview = document.getElementById('external-front-preview');
             const extFrontWrapper = document.getElementById('external-front-preview-wrapper');

@@ -45,6 +45,11 @@ export const editorCartasMethods = {
             `;
             grid.appendChild(cardEl);
         });
+
+        // Mantém o contador de cartas corretas sempre em dia com a grade
+        // acima de modo autocontido — o editor genérico (editorShell.js) não
+        // precisa mais chamar updateSecretCardCounter() separadamente.
+        this.updateSecretCardCounter();
     },
 
     updateSecretCardCounter: function() {
@@ -52,6 +57,27 @@ export const editorCartasMethods = {
         if (!counterEl || !this.state.editingGame) return;
         const correctCount = this.state.editingGame.cards.filter(c => c.isCorrect).length;
         counterEl.innerText = `${correctCount} / 6 corretas`;
+    },
+
+    // --- Validação (delegada pelo editor genérico, ver editorShell.js) ---
+    validateCreatorCards: function() {
+        const cards = this.state.editingGame?.cards || [];
+        const filledCount = cards.filter(c => c.content.trim() !== "" || !!c.contentImage).length;
+        if (filledCount < 12) {
+            return { valid: false, message: "Preencha todas as 12 cartas com texto ou imagem antes de avançar para a revisão." };
+        }
+        const correctCount = cards.filter(c => c.isCorrect).length;
+        if (correctCount !== 6) {
+            return { valid: false, message: "Exatamente 6 cartas precisam ser marcadas como possíveis para o código." };
+        }
+        return { valid: true, message: '' };
+    },
+
+    isCardsBlockComplete: function() {
+        const cards = this.state.editingGame?.cards || [];
+        const filledCount = cards.filter(c => c.content.trim() !== "" || !!c.contentImage).length;
+        const correctCount = cards.filter(c => c.isCorrect).length;
+        return filledCount === 12 && correctCount === 6;
     },
 
     openCardModal: function(idx) {
