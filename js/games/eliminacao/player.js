@@ -75,7 +75,7 @@ function cardFaceHtml(card, attributes) {
 // na mão, pra imitar o formato de um leque segurado na mão (cartas do meio
 // mais altas e sem giro, cartas das pontas mais baixas e giradas pra fora).
 // `CARD_W` tem que bater com a largura de `.elim-hand-card` no CSS.
-const CARD_W = 128;
+const CARD_W = 160;
 function handFanTransform(index, total) {
     if (total <= 1) return { angle: 0, lift: 0, marginLeft: 0 };
     const center = (total - 1) / 2;
@@ -401,7 +401,7 @@ function renderAll(app) {
                 const slotStyle = `transform: rotate(${angle.toFixed(1)}deg) translateY(${lift.toFixed(1)}px); margin-left:${marginLeft.toFixed(1)}px; z-index:${idx};`;
                 return `
                     <div class="elim-hand-slot" style="${slotStyle}">
-                        <div class="elim-hand-card" data-instance="${card.instanceId}" style="background-image:url('${frontDesign}');">
+                        <div class="elim-hand-card" data-instance="${card.instanceId}">
                             <div class="zoom-icon" title="Visualizar ampliado"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
                             <div class="elim-hand-card-inner">${cardFaceHtml(card, attributes)}</div>
                         </div>
