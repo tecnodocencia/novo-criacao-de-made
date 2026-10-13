@@ -197,6 +197,70 @@ function endMatch(app, winnerIdx) {
 const BOT_THINK_MS = 900;
 const BOT_ACT_MS = 550;
 
+// --- Animações de jogada / compra ---
+// Uma cópia da carta ("fantasma", position:fixed) voa da origem até o destino
+// e some; o DOM real só é redesenhado por renderAll(). Ignorado quando o
+// sistema pede menos movimento (prefers-reduced-motion).
+const FLY_MS = 480;
+
+function playerRowEl(playerIdx) {
+    return document.getElementById('elim-players-panel')?.children[playerIdx] || null;
+}
+
+function flyCard(app, fromEl, toEl, card) {
+    if (!fromEl || !toEl || !document.body.animate) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const game = app.state.activeGame;
+    const from = fromEl.getBoundingClientRect();
+    const to = toEl.getBoundingClientRect();
+    // Compra (card == null): a carta nasce do monte e voa até a linha do
+    // jogador; jogada: nasce na mão/linha do jogador e pousa na mesa.
+    const base = card ? to : from;
+    if (!base.width) return;
+
+    const ghost = document.createElement('div');
+    ghost.className = 'elim-pile-card';
+    ghost.style.cssText = `position:fixed;left:${base.left}px;top:${base.top}px;width:${base.width}px;height:${base.height}px;margin:0;z-index:10050;pointer-events:none;`;
+    if (card) {
+        ghost.style.backgroundImage = `url('${game.frontDesign || 'imagens/frente/frente01.png'}')`;
+        ghost.innerHTML = cardFaceHtml(card, game.cards.attributes);
+    } else {
+        ghost.style.backgroundImage = `url('${game.backDesign || 'imagens/verso/Cópia de Trás da Carta - Natureza.png'}')`;
+    }
+    ghost.style.backgroundSize = 'cover';
+    ghost.style.backgroundPosition = 'center';
+    document.body.appendChild(ghost);
+
+    const dx = (from.left + from.width / 2) - (to.left + to.width / 2);
+    const dy = (from.top + from.height / 2) - (to.top + to.height / 2);
+    const scale = Math.min(1, Math.max(0.3, (card ? from.width / to.width : 0.3)));
+    const keyframes = card
+        ? [
+            { transform: `translate(${dx}px, ${dy}px) scale(${scale}) rotate(-14deg)`, opacity: 0.85 },
+            { transform: 'translate(0, 0) scale(1) rotate(0deg)', opacity: 1 }
+        ]
+        : [
+            { transform: 'translate(0, 0) scale(1) rotate(0deg)', opacity: 1 },
+            { transform: `translate(${-dx}px, ${-dy}px) scale(${scale}) rotate(10deg)`, opacity: 0.6 }
+        ];
+    const anim = ghost.animate(keyframes, { duration: FLY_MS, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' });
+    anim.onfinish = () => ghost.remove();
+    setTimeout(() => ghost.remove(), FLY_MS + 200);
+}
+
+function pulsePlayerRow(playerIdx) {
+    const row = playerRowEl(playerIdx);
+    if (!row) return;
+    row.classList.remove('elim-player-pulse');
+    void row.offsetWidth;
+    row.classList.add('elim-player-pulse');
+}
+
+function animatePlay(app, playerIdx, card) {
+    const handCard = document.querySelector(`#elim-hand .elim-hand-card[data-instance="${card.instanceId}"]`);
+    flyCard(app, handCard || playerRowEl(playerIdx), document.getElementById('elim-discard-top'), card);
+}
+
 function afterTurnChange(app) {
     const e = elim(app);
     if (e.winner != null) { renderAll(app); return; }
@@ -217,6 +281,8 @@ function resolvePlay(app, playerIdx, card) {
     const player = e.players[playerIdx];
     const idx = player.hand.findIndex(c => c.instanceId === card.instanceId);
     if (idx === -1) return;
+    animatePlay(app, playerIdx, card);
+    e.landFx = true; // renderAll faz a carta "pousar" na mesa quando o voo terminar
     player.hand.splice(idx, 1);
     e.discardPile.push(card);
 
@@ -261,12 +327,16 @@ function botTakeTurn(app) {
     if (chosen) {
         // Pausa curta entre "decidiu" e "jogou", pra dar tempo do jogador ver
         // qual carta o computador escolheu antes dela ir pro descarte.
+        pulsePlayerRow(playerIdx);
         setTimeout(() => resolvePlay(app, playerIdx, chosen), BOT_ACT_MS);
         return;
     }
 
     const drawn = drawOne(app);
-    if (drawn) player.hand.push(drawn);
+    if (drawn) {
+        player.hand.push(drawn);
+        flyCard(app, document.getElementById('elim-draw-pile'), playerRowEl(playerIdx), null);
+    }
     renderAll(app); // mostra a compra (monte diminui, mão aumenta) antes de decidir o que fazer com ela
     setTimeout(() => {
         if (drawn && cardMatchesTags(drawn, top)) { resolvePlay(app, playerIdx, drawn); return; }
@@ -366,6 +436,12 @@ function renderAll(app) {
         discardEl.style.backgroundSize = 'cover';
         discardEl.style.backgroundPosition = 'center';
         discardEl.innerHTML = top ? cardFaceHtml(top, attributes) : '';
+        discardEl.classList.remove('elim-pile-land');
+        if (e.landFx) {
+            e.landFx = false;
+            void discardEl.offsetWidth;
+            discardEl.classList.add('elim-pile-land');
+        }
     }
 
     const drawPileEl = document.getElementById('elim-draw-pile');
@@ -401,7 +477,7 @@ function renderAll(app) {
                 const slotStyle = `transform: rotate(${angle.toFixed(1)}deg) translateY(${lift.toFixed(1)}px); margin-left:${marginLeft.toFixed(1)}px; z-index:${idx};`;
                 return `
                     <div class="elim-hand-slot" style="${slotStyle}">
-                        <div class="elim-hand-card" data-instance="${card.instanceId}">
+                        <div class="elim-hand-card" data-instance="${card.instanceId}" style="background-image:url('${frontDesign}');">
                             <div class="zoom-icon" title="Visualizar ampliado"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
                             <div class="elim-hand-card-inner">${cardFaceHtml(card, attributes)}</div>
                         </div>
