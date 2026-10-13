@@ -197,6 +197,14 @@ function endMatch(app, winnerIdx) {
 const BOT_THINK_MS = 900;
 const BOT_ACT_MS = 550;
 
+// As molduras padrão (imagens/frente/*) trazem um contorno vermelho grosso
+// colado na borda da imagem; ampliar o fundo em 10% (centralizado) joga esse
+// contorno pra fora da carta sem mexer no desenho de dentro. Imagens enviadas
+// pelo professor (qualquer outro caminho) continuam com "cover".
+function frontBgSize(design) {
+    return (design || "").startsWith("imagens/frente/") ? "110% 110%" : "cover";
+}
+
 // --- Animações de jogada / compra ---
 // Uma cópia da carta ("fantasma", position:fixed) voa da origem até o destino
 // e some; o DOM real só é redesenhado por renderAll(). Ignorado quando o
@@ -227,7 +235,7 @@ function flyCard(app, fromEl, toEl, card) {
     } else {
         ghost.style.backgroundImage = `url('${game.backDesign || 'imagens/verso/Cópia de Trás da Carta - Natureza.png'}')`;
     }
-    ghost.style.backgroundSize = 'cover';
+    ghost.style.backgroundSize = card ? frontBgSize(game.frontDesign || 'imagens/frente/frente01.png') : 'cover';
     ghost.style.backgroundPosition = 'center';
     document.body.appendChild(ghost);
 
@@ -433,7 +441,7 @@ function renderAll(app) {
     if (discardEl) {
         const top = e.discardPile[e.discardPile.length - 1];
         discardEl.style.backgroundImage = `url('${frontDesign}')`;
-        discardEl.style.backgroundSize = 'cover';
+        discardEl.style.backgroundSize = frontBgSize(frontDesign);
         discardEl.style.backgroundPosition = 'center';
         discardEl.innerHTML = top ? cardFaceHtml(top, attributes) : '';
         discardEl.classList.remove('elim-pile-land');
@@ -477,7 +485,7 @@ function renderAll(app) {
                 const slotStyle = `transform: rotate(${angle.toFixed(1)}deg) translateY(${lift.toFixed(1)}px); margin-left:${marginLeft.toFixed(1)}px; z-index:${idx};`;
                 return `
                     <div class="elim-hand-slot" style="${slotStyle}">
-                        <div class="elim-hand-card" data-instance="${card.instanceId}" style="background-image:url('${frontDesign}');">
+                        <div class="elim-hand-card" data-instance="${card.instanceId}" style="background-image:url('${frontDesign}'); background-size:${frontBgSize(frontDesign)};">
                             <div class="zoom-icon" title="Visualizar ampliado"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
                             <div class="elim-hand-card-inner">${cardFaceHtml(card, attributes)}</div>
                         </div>
@@ -672,7 +680,7 @@ export const playerMethods = {
         const container = document.getElementById('preview-card-container');
         const text = document.getElementById('preview-card-text');
         container.style.backgroundImage = `url('${this.state.activeGame.frontDesign || 'imagens/frente/frente01.png'}')`;
-        container.style.backgroundSize = 'cover';
+        container.style.backgroundSize = frontBgSize(this.state.activeGame.frontDesign || 'imagens/frente/frente01.png');
         container.style.backgroundPosition = 'center';
         container.innerHTML = cardFaceHtml(card, this.state.activeGame.cards.attributes);
         text.innerText = 'Carta Selecionada';
