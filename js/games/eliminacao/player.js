@@ -118,10 +118,13 @@ function cardFaceHtml(card, attributes) {
     }
     const tag = card.tags[0];
     const v = findValue(attributes, tag.attr, tag.valueId);
+    // O valor fica na mesma metade em que aparece nas cartas normais (1º
+    // atributo em cima, 2º embaixo); a ilustração ocupa a outra metade.
+    const artHtml = `<div class="w-full min-h-0 flex items-center justify-center" style="flex:3 1 0;">${art}</div>`;
+    const valueHtml = `<div class="w-full min-h-0 flex items-center justify-center overflow-hidden" style="flex:2 1 0;">${valueContentHtml(v)}</div>`;
     return `
         <div class="w-full h-full flex flex-col items-center justify-center p-1" style="gap:2px;">
-            <div class="w-full min-h-0 flex items-center justify-center" style="flex:3 1 0;">${art}</div>
-            <div class="w-full min-h-0 flex items-center justify-center overflow-hidden" style="flex:2 1 0;">${valueContentHtml(v)}</div>
+            ${tag.attr === 0 ? valueHtml + artHtml : artHtml + valueHtml}
         </div>`;
 }
 
