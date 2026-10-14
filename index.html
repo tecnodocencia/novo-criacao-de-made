@@ -496,10 +496,19 @@
         }
 
         /* --- Modelo Eliminação (Can Can): mesa de jogo e cartas na mão --- */
+        /* Tamanhos proporcionais à altura da janela, pra mesa inteira caber sem rolagem. */
+        :root {
+            --e-hand-h: clamp(112px, 23vh, 215px);
+            --e-hand-w: calc(var(--e-hand-h) * 0.744);
+            --e-pile-h: clamp(100px, 19vh, 188px);
+            --e-pile-w: calc(var(--e-pile-h) * 0.745);
+            --e-opp-h: clamp(52px, 8vh, 86px);
+            --e-opp-w: calc(var(--e-opp-h) * 0.744);
+        }
         .elim-hand-card {
             position: relative;
-            width: 160px;
-            height: 215px;
+            width: var(--e-hand-w);
+            height: var(--e-hand-h);
             border-radius: 20px;
             cursor: pointer;
             user-select: none;
@@ -570,8 +579,8 @@
             transform-origin: top center;
         }
         .elim-opp-card {
-            width: 64px;
-            height: 86px;
+            width: var(--e-opp-w);
+            height: var(--e-opp-h);
             border-radius: 9px;
             background-size: cover;
             background-position: center;
@@ -596,8 +605,8 @@
         }
         .elim-pile-card {
             position: relative;
-            width: 140px;
-            height: 188px;
+            width: var(--e-pile-w);
+            height: var(--e-pile-h);
             border-radius: 20px;
             border: 3px solid white;
             box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
@@ -2398,6 +2407,6 @@
         </div>
     </div>
 
-    <script type="module" src="js/app.js?v=54"></script>
+    <script type="module" src="js/app.js?v=55"></script>
 </body>
 </html>

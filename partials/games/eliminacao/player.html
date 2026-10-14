@@ -15,7 +15,13 @@
                             <h2 class="font-black text-lg">Eliminação</h2>
                             <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Jogadores</p>
                         </div>
-                        <div id="elim-players-panel" class="space-y-2 mb-6"></div>
+                        <div id="elim-turn-banner" class="text-center bg-emerald-50 border border-emerald-200 text-emerald-800 font-black uppercase tracking-widest text-xs py-2 rounded-2xl mb-1">
+                            Vez de: -
+                        </div>
+                        <div id="elim-bot-indicator" class="hidden text-center text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2">
+                            <i class="fa-solid fa-robot fa-fade mr-1"></i> Computador jogando...
+                        </div>
+                        <div id="elim-players-panel" class="space-y-2 mb-4 mt-2"></div>
 
                         <div class="grid grid-cols-1 gap-2 mb-6">
                             <button onclick="app.showGameRules()" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-slate-200">
@@ -57,27 +63,18 @@
                     </div>
 
                     <!-- CENTRO: mesa de jogo -->
-                    <div class="flex-1 flex flex-col items-center justify-start p-3 overflow-y-auto min-w-0 relative">
+                    <div class="flex-1 flex flex-col items-center justify-between px-3 pt-2 pb-1 overflow-hidden min-w-0 min-h-0 relative">
 
-                        <div id="elim-enunciado" class="w-full max-w-2xl bg-white/50 border border-slate-200 p-3 rounded-3xl mb-2 text-center shadow-sm">
-                            <p class="text-sm font-black text-slate-400 uppercase tracking-widest mb-1">Enunciado</p>
-                            <div id="elim-enunciado-content" class="text-sm font-semibold text-slate-700"></div>
-                        </div>
-
-                        <div class="w-full max-w-md mb-1">
-                            <div id="elim-turn-banner" class="text-center bg-emerald-50 border border-emerald-200 text-emerald-800 font-black uppercase tracking-widest text-sm py-2 rounded-2xl">
-                                Vez de: -
-                            </div>
-                            <div id="elim-bot-indicator" class="hidden text-center text-slate-500 text-xs font-bold uppercase tracking-widest mt-1">
-                                <i class="fa-solid fa-robot fa-fade mr-1"></i> Computador jogando...
-                            </div>
+                        <div id="elim-enunciado" class="w-full max-w-3xl bg-white/50 border border-slate-200 px-4 py-1.5 rounded-2xl text-center shadow-sm shrink-0 mr-24">
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mr-2">Enunciado</span>
+                            <div id="elim-enunciado-content" class="inline text-xs font-semibold text-slate-700"></div>
                         </div>
 
                         <!-- OPONENTES: cartas viradas para baixo, em leque invertido (do outro lado da mesa) -->
-                        <div id="elim-opponents" class="w-full flex items-start justify-center flex-wrap gap-x-10 gap-y-2 mb-2"></div>
+                        <div id="elim-opponents" class="w-full flex items-start justify-center flex-wrap gap-x-10 gap-y-1 shrink-0"></div>
 
                         <!-- MESA: monte de compra + descarte -->
-                        <div class="flex items-center justify-center gap-8 mb-2">
+                        <div class="flex items-center justify-center gap-8 shrink-0">
                             <div class="flex flex-col items-center gap-1">
                                 <div id="elim-draw-pile" onclick="app.elimDrawCard()" class="elim-pile-card cursor-pointer" title="Comprar uma carta.">
                                     <div class="elim-pile-count"><span id="elim-draw-pile-count">0</span></div>
@@ -90,14 +87,14 @@
                             </div>
                         </div>
 
-                        <button id="elim-pass-btn" onclick="app.elimPassTurn()" class="hidden mb-2 bg-slate-700 hover:bg-slate-800 text-white px-8 py-3 rounded-2xl font-black tracking-wider text-sm uppercase">
+                        <button id="elim-pass-btn" onclick="app.elimPassTurn()" class="hidden absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-slate-700 hover:bg-slate-800 text-white px-6 py-3 rounded-2xl font-black tracking-wider text-sm uppercase shadow-lg">
                             Passar a Vez
                         </button>
 
                         <!-- MÃO DO JOGADOR DA VEZ -->
-                        <div class="w-full">
-                            <p class="text-center text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Sua mão</p>
-                            <div id="elim-hand" class="flex items-end justify-center flex-nowrap overflow-x-auto px-4" style="padding-top: 26px; padding-bottom: 20px;"></div>
+                        <div class="w-full shrink-0">
+                            <p class="text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">Sua mão</p>
+                            <div id="elim-hand" class="flex items-end justify-center flex-nowrap px-4" style="padding-top: 18px; padding-bottom: 6px;"></div>
                         </div>
 
                         <!-- OVERLAY: troca de dispositivo entre jogadores humanos -->

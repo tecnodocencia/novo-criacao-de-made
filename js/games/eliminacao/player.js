@@ -86,7 +86,7 @@ function handFanTransform(index, total, cardW = CARD_W) {
     const lift = Math.pow(offset / center, 2) * maxLift;
     const overlapFraction = Math.min(0.62, 0.28 + total * 0.018);
     const marginLeft = index === 0 ? 0 : -(cardW * overlapFraction);
-    return { angle, lift, marginLeft };
+    return { angle, lift, marginLeft, overlap: index === 0 ? 0 : overlapFraction };
 }
 
 // --- Motor de turnos (funções internas, recebem `app` explicitamente) ---
@@ -492,15 +492,15 @@ function renderAll(app) {
         oppEl.innerHTML = e.players.map((p, idx) => {
             if (idx === viewerIdx) return '';
             const slots = p.hand.map((_, i) => {
-                const { angle, lift, marginLeft } = handFanTransform(i, p.hand.length, 64);
-                const style = `transform: rotate(${(-angle).toFixed(1)}deg) translateY(${(-lift * 0.4).toFixed(1)}px); margin-left:${marginLeft.toFixed(1)}px; z-index:${i};`;
+                const { angle, lift, overlap } = handFanTransform(i, p.hand.length, 64);
+                const style = `transform: rotate(${(-angle).toFixed(1)}deg) translateY(calc(var(--e-opp-h) * -${(lift / 215).toFixed(3)})); margin-left:calc(var(--e-opp-w) * -${overlap.toFixed(3)}); z-index:${i};`;
                 return `<div class="elim-opp-slot" style="${style}"><div class="elim-opp-card" style="background-image:url('${backDesign}');"></div></div>`;
             }).join('');
             const active = idx === e.currentPlayerIndex && e.winner == null;
             const icon = p.isBot ? 'fa-robot' : 'fa-user';
             return `
                 <div id="elim-opp-${idx}" class="flex flex-col items-center ${active ? 'elim-opp-active' : ''}" style="min-width:90px;">
-                    <div class="flex items-start justify-center flex-nowrap" style="min-height:96px;">${slots}</div>
+                    <div class="flex items-start justify-center flex-nowrap" style="min-height:var(--e-opp-h);">${slots}</div>
                     <span class="elim-opp-label"><i class="fa-solid ${icon} mr-1"></i>${app.escapeCardText(p.name)} · ${p.hand.length}</span>
                 </div>`;
         }).join('');
@@ -516,8 +516,10 @@ function renderAll(app) {
             // carta vale é elimPlayHandCard(), que mostra um popup e balança
             // a carta no lugar (elimShakeHandCard) quando ela não combina.
             handEl.innerHTML = cur.hand.map((card, idx) => {
-                const { angle, lift, marginLeft } = handFanTransform(idx, cur.hand.length);
-                const slotStyle = `transform: rotate(${angle.toFixed(1)}deg) translateY(${lift.toFixed(1)}px); margin-left:${marginLeft.toFixed(1)}px; z-index:${idx};`;
+                const { angle, lift, overlap } = handFanTransform(idx, cur.hand.length);
+                // Medidas relativas ao tamanho da carta (--e-hand-w/-h, ver CSS), que
+                // varia com a altura da janela.
+                const slotStyle = `transform: rotate(${angle.toFixed(1)}deg) translateY(calc(var(--e-hand-h) * ${(lift / 215).toFixed(3)})); margin-left:calc(var(--e-hand-w) * -${overlap.toFixed(3)}); z-index:${idx};`;
                 return `
                     <div class="elim-hand-slot" style="${slotStyle}">
                         <div class="elim-hand-card" data-instance="${card.instanceId}" style="background-image:url('${frontDesign}'); background-size:${frontBgSize(frontDesign)};">
