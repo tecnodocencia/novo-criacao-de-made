@@ -500,6 +500,19 @@ function openWildModal(app, kind) {
             });
         });
     }
+
+    // Mostra a mão de quem está escolhendo, para ajudar a decidir o valor.
+    const handEl = document.getElementById('elim-wild-hand');
+    if (handEl) {
+        const e = elim(app);
+        const hand = e.players[e.currentPlayerIndex]?.hand || [];
+        const frontDesign = app.state.activeGame.frontDesign || 'imagens/frente/frente01.png';
+        handEl.innerHTML = hand.map(card => `
+            <div class="elim-wild-hand-card" style="background-image:url('${frontDesign}'); background-size:${frontBgSize(frontDesign)};">
+                <div class="elim-hand-card-inner">${cardFaceHtml(card, attrs)}</div>
+            </div>`).join('');
+    }
+
     const modal = document.getElementById('modal-elim-wild');
     if (modal) modal.style.display = 'flex';
 }
