@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 1230">
+  <!-- Capa do modelo Eliminação, no mesmo estilo da capa do Código Secreto
+       (moldura vermelha/preta, fundo aquarelado, traço vinho desenhado à mão). -->
+  <defs>
+    <radialGradient id="wash1" cx="0.25" cy="0.2" r="0.55">
+      <stop offset="0" stop-color="#C44B5A" stop-opacity="0.55"/>
+      <stop offset="0.45" stop-color="#9B8FB5" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#E6F4FD" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="wash2" cx="0.75" cy="0.82" r="0.55">
+      <stop offset="0" stop-color="#C44B5A" stop-opacity="0.45"/>
+      <stop offset="0.4" stop-color="#8FD3EC" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#E6F4FD" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="wash3" cx="0.8" cy="0.35" r="0.35">
+      <stop offset="0" stop-color="#F7A8C8" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#E6F4FD" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7"/>
+      <feDisplacementMap in="SourceGraphic" scale="6"/>
+    </filter>
+  </defs>
+
+  <!-- Moldura externa -->
+  <rect x="0" y="0" width="950" height="1230" fill="#000"/>
+  <rect x="22" y="14" width="906" height="1202" fill="none" stroke="#FF0000" stroke-width="12"/>
+  <rect x="68" y="58" width="814" height="1108" fill="#E6F4FD"/>
+
+  <!-- Aquarela -->
+  <g filter="url(#rough)">
+    <rect x="68" y="58" width="814" height="1108" fill="url(#wash1)"/>
+    <rect x="68" y="58" width="814" height="1108" fill="url(#wash2)"/>
+    <rect x="68" y="58" width="814" height="1108" fill="url(#wash3)"/>
+  </g>
+
+  <g stroke="#6B0000" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Moldura interna desenhada à mão -->
+    <path d="M118 122 Q300 112 520 120 M118 122 Q112 600 126 1086 Q450 1100 826 1096 Q820 700 828 352" stroke-width="16"/>
+
+    <!-- Quadradinhos decorativos (canto superior direito) -->
+    <g stroke-width="9">
+      <rect x="585" y="112" width="92" height="44"/>
+      <rect x="752" y="100" width="36" height="38"/>
+      <path d="M822 58 V90 H852 V124 H882"/>
+      <path d="M686 206 H738 V258 H710 V318 H668 V258 H686 Z"/>
+      <path d="M800 266 H830 V234 H858 V266 H880 V300 H800 Z"/>
+      <rect x="764" y="350" width="30" height="30"/>
+    </g>
+    <!-- Quadradinhos decorativos (canto inferior esquerdo) -->
+    <g stroke-width="9">
+      <rect x="152" y="916" width="28" height="30"/>
+      <rect x="88" y="976" width="58" height="56"/>
+      <path d="M302 960 H328 V932 H354 V986 H302 Z"/>
+      <path d="M164 1044 H210 V1020 H238 V1084 H192 V1112 H164 Z"/>
+      <rect x="250" y="1090" width="108" height="34"/>
+      <path d="M68 1096 H104 V1166 M130 1130 V1166"/>
+      <rect x="382" y="1150" width="28" height="16"/>
+    </g>
+  </g>
+
+  <!-- Título -->
+  <g font-family="'Comic Sans MS', 'Chalkboard SE', 'Segoe Print', cursive" font-weight="900" text-anchor="middle">
+    <text x="475" y="372" font-size="150" fill="#6B0000" stroke="#6B0000" stroke-width="6" stroke-linejoin="round" letter-spacing="-4">Elimi</text>
+    <text x="475" y="530" font-size="150" fill="#6B0000" stroke="#6B0000" stroke-width="6" stroke-linejoin="round" letter-spacing="-4">nação</text>
+  </g>
+  <!-- "X" de eliminado sobre a carta do título -->
+  <g transform="translate(215 215) rotate(-14)" stroke="#6B0000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="-40" y="-56" width="80" height="112" rx="12" fill="#fff"/>
+    <path d="M-20 -24 L20 24 M20 -24 L-20 24" stroke="#EA3257" stroke-width="12"/>
+  </g>
+
+  <!-- Leque de cartas especiais -->
+  <g stroke="#6B0000" stroke-linecap="round" stroke-linejoin="round" stroke-width="11">
+    <!-- +2 -->
+    <g transform="translate(245 790) rotate(-22)">
+      <rect x="-70" y="-100" width="140" height="200" rx="18" fill="#D6F3E0"/>
+      <text x="0" y="28" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="78" text-anchor="middle" fill="#6B0000" stroke="none">+2</text>
+    </g>
+    <!-- Inverter -->
+    <g transform="translate(390 750) rotate(-8)">
+      <rect x="-70" y="-100" width="140" height="200" rx="18" fill="#DDF0FB"/>
+      <path d="M-34 -6 A36 36 0 0 1 26 -30" fill="none"/>
+      <path d="M12 -44 L30 -30 L10 -16" fill="none"/>
+      <path d="M34 6 A36 36 0 0 1 -26 30" fill="none"/>
+      <path d="M-12 44 L-30 30 L-10 16" fill="none"/>
+    </g>
+    <!-- Perder a vez -->
+    <g transform="translate(560 750) rotate(8)">
+      <rect x="-70" y="-100" width="140" height="200" rx="18" fill="#FFF0F5"/>
+      <circle cx="0" cy="0" r="40" fill="none"/>
+      <path d="M-28 -28 L28 28"/>
+    </g>
+    <!-- +4 -->
+    <g transform="translate(705 790) rotate(22)">
+      <rect x="-70" y="-100" width="140" height="200" rx="18" fill="#FBD9E7"/>
+      <text x="0" y="28" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="78" text-anchor="middle" fill="#6B0000" stroke="none">+4</text>
+    </g>
+  </g>
+
+  <!-- Brilhos -->
+  <g fill="#6B0000">
+    <path d="M150 620 l8 22 22 8 -22 8 -8 22 -8 -22 -22 -8 22 -8z"/>
+    <path d="M790 610 l6 16 16 6 -16 6 -6 16 -6 -16 -16 -6 16 -6z"/>
+    <path d="M470 960 l6 16 16 6 -16 6 -6 16 -6 -16 -16 -6 16 -6z"/>
+  </g>
+</svg>
