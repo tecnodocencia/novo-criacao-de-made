@@ -1,5 +1,5 @@
 // js/core/library.js
-import { dbService } from '../database.js?v=6';
+import { dbService } from '../database.js?v=7';
 import { imageBankFolders } from './imageBank.js?v=1';
 
 function findBankFolder(key) {
@@ -379,14 +379,14 @@ export const libraryMethods = {
             const urlInput = document.getElementById('modal-card-image-url');
             if (urlInput) urlInput.value = '';
             this.state.tempContentImage = url;
-        } else if (target === 'elim-value-image') {
-            const preview = document.getElementById('elim-value-modal-image-preview');
-            const wrapper = document.getElementById('elim-value-modal-image-preview-wrapper');
+        } else if (target === 'descarte-value-image') {
+            const preview = document.getElementById('descarte-value-modal-image-preview');
+            const wrapper = document.getElementById('descarte-value-modal-image-preview-wrapper');
             if (preview) preview.src = url;
             if (wrapper) wrapper.classList.remove('hidden');
-            const urlInput = document.getElementById('elim-value-modal-image-url');
+            const urlInput = document.getElementById('descarte-value-modal-image-url');
             if (urlInput) urlInput.value = '';
-            this.state.elimTempValueImage = url;
+            this.state.descarteTempValueImage = url;
         } else if (target === 'front-design') {
             const extFrontPreview = document.getElementById('external-front-preview');
             const extFrontWrapper = document.getElementById('external-front-preview-wrapper');

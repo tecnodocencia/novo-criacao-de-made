@@ -1,5 +1,5 @@
 // js/core/dashboard.js
-import { dbService } from '../database.js?v=6';
+import { dbService } from '../database.js?v=7';
 
 function formatDateTimeBR(dateStr) {
     if (!dateStr) return '';
@@ -311,9 +311,9 @@ export const dashboardMethods = {
 
         // Compartilhamento público (play.html) e o ranking associado só
         // existem hoje para o Código Secreto — ver nota no relatório da
-        // implementação do modelo Eliminação.
-        if (game.model === 'Eliminação') {
-            this.showNotification('O compartilhamento público ainda não está disponível para o modelo Eliminação. Use o botão "Jogar" para jogar diretamente pela plataforma.');
+        // implementação do modelo Descarte a Carta.
+        if (game.model === 'Descarte a Carta') {
+            this.showNotification('O compartilhamento público ainda não está disponível para o modelo Descarte a Carta. Use o botão "Jogar" para jogar diretamente pela plataforma.');
             return;
         }
 
@@ -384,8 +384,8 @@ export const dashboardMethods = {
         const game = this.state.games.find(g => String(g.id) === String(gameId));
         if (!game) return;
 
-        if (game.model === 'Eliminação') {
-            this.showNotification('O modelo Eliminação ainda não tem ranking online — a pontuação é mostrada no fim de cada partida, direto na tela de jogo.');
+        if (game.model === 'Descarte a Carta') {
+            this.showNotification('O modelo Descarte a Carta ainda não tem ranking online — a pontuação é mostrada no fim de cada partida, direto na tela de jogo.');
             return;
         }
 

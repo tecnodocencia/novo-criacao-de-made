@@ -27,13 +27,13 @@ export const state = {
     gameTourMuted: false,
     gameTourReturnStep: null,
     gameTourReturnBlock: null,
-    // --- Modelo "Eliminação" (Can Can) ---
+    // --- Modelo "Descarte a Carta" (Can Can) ---
     // Estado efêmero de uma partida em andamento (baralho, mãos, turno) —
-    // ver js/games/eliminacao/player.js. null quando não há partida ativa.
-    elim: null,
+    // ver js/games/descarte/player.js. null quando não há partida ativa.
+    descarte: null,
     // Seleção temporária usada pelo modal de edição de valor de atributo no
-    // editor (bloco "Criação de Cartas") — ver js/games/eliminacao/editorCartas.js.
-    elimSelectedAttr: null,
-    elimSelectedValueIdx: null,
-    elimTempValueImage: null
+    // editor (bloco "Criação de Cartas") — ver js/games/descarte/editorCartas.js.
+    descarteSelectedAttr: null,
+    descarteSelectedValueIdx: null,
+    descarteTempValueImage: null
 };

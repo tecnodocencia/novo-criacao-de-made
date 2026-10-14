@@ -107,7 +107,7 @@
                                     <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Modelo</label>
                                         <select id="edit-game-model" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" style="display:none;">
                                             <option value="Código Secreto">Código Secreto</option>
-                                            <option value="Eliminação">Eliminação</option>
+                                            <option value="Descarte a Carta">Descarte a Carta</option>
                                         </select>
                                         <div id="model-choices" class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
                                             <div class="cursor-pointer rounded-xl border p-3 text-center" title="Modelo de jogo a ser criado. Define as regras, telas e formato das cartas." onclick="app.selectModel('Código Secreto', this)">
@@ -116,11 +116,11 @@
                                                 </div>
                                                 <div class="text-xs font-bold mt-1">Código Secreto</div>
                                             </div>
-                                            <div class="cursor-pointer rounded-xl border p-3 text-center" title="Modelo de jogo a ser criado. Jogo de cartas por eliminação: defina 2 atributos de conteúdo e seus valores." onclick="app.selectModel('Eliminação', this)">
+                                            <div class="cursor-pointer rounded-xl border p-3 text-center" title="Modelo de jogo a ser criado. Jogo de cartas por descarte: defina 2 atributos de conteúdo e seus valores." onclick="app.selectModel('Descarte a Carta', this)">
                                                 <div class="w-full h-24 flex items-center justify-center overflow-visible">
-                                                    <img src="imagens/modelos/eliminacao.svg" alt="Eliminação" class="max-w-full max-h-full w-auto h-auto object-contain" />
+                                                    <img src="imagens/modelos/descarte.svg" alt="Descarte a Carta" class="max-w-full max-h-full w-auto h-auto object-contain" />
                                                 </div>
-                                                <div class="text-xs font-bold mt-1">Eliminação</div>
+                                                <div class="text-xs font-bold mt-1">Descarte a Carta</div>
                                             </div>
                                             <div class="rounded-xl border p-3 text-center bg-slate-100 opacity-70 cursor-not-allowed" title="Modelo Timeline ainda está em construção." onclick="app.showNotification('O modelo Timeline ainda está em construção. Em breve estará disponível.', 'Em construção')">
                                                 <div class="w-full h-24 flex flex-col items-center justify-center gap-1 bg-slate-200 rounded-lg">

@@ -1,5 +1,5 @@
 // js/core/editorShell.js
-import { dbService } from '../database.js?v=6';
+import { dbService } from '../database.js?v=7';
 import { getGame } from '../games/registry.js?v=1';
 
 export const frontDesigns = [
@@ -70,7 +70,7 @@ export const editorShellMethods = {
         // distratoras (posição fixa) — normaliza jogos salvos antes dessa
         // regra existir, para o editor nunca mostrar um estado que não é
         // mais possível de configurar. Só se aplica ao Código Secreto —
-        // `cards` do Eliminação é um objeto ({attributes:[...]}), não um
+        // `cards` do Descarte a Carta é um objeto ({attributes:[...]}), não um
         // array, então Array.isArray já protege esse modelo automaticamente.
         if (Array.isArray(this.state.editingGame.cards)) {
             this.state.editingGame.cards.forEach((card, idx) => { card.isCorrect = idx < 6; });
@@ -548,7 +548,7 @@ export const editorShellMethods = {
             this.state.editingGame.model = modelName;
             // A estrutura de "cards" é específica de cada modelo (array de
             // 12 cartas no Código Secreto, {attributes:[...]} no
-            // Eliminação) — trocar de modelo reseta só essa parte para os
+            // Descarte a Carta) — trocar de modelo reseta só essa parte para os
             // defaults do novo modelo. Os demais campos (nome, disciplina,
             // regra, objetivo, enunciado, explicação, design) são genéricos
             // e continuam valendo, não há necessidade de reescrevê-los.

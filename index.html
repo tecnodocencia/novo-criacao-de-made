@@ -495,7 +495,7 @@
             color: white;
         }
 
-        /* --- Modelo Eliminação (Can Can): mesa de jogo e cartas na mão --- */
+        /* --- Modelo Descarte a Carta (Can Can): mesa de jogo e cartas na mão --- */
         /* Tamanhos proporcionais à altura da janela, pra mesa inteira caber sem rolagem. */
         :root {
             --e-hand-h: clamp(112px, 23vh, 215px);
@@ -505,7 +505,7 @@
             --e-opp-h: clamp(68px, 11vh, 120px);
             --e-opp-w: calc(var(--e-opp-h) * 0.744);
         }
-        .elim-hand-card {
+        .descarte-hand-card {
             position: relative;
             width: var(--e-hand-w);
             height: var(--e-hand-h);
@@ -517,7 +517,7 @@
             box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12);
             transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
         }
-        .elim-hand-card:hover {
+        .descarte-hand-card:hover {
             transform: translateY(-20px) scale(1.07);
             box-shadow: 0 18px 30px rgba(15, 23, 42, 0.26);
         }
@@ -525,10 +525,10 @@
            um estado "desabilitado" visual. Se a carta não combinar com a
            carta da mesa, ela balança no lugar (em vez de sumir e voltar,
            já que nunca chega a sair da mão) e um popup avisa o motivo. */
-        .elim-hand-card.rejected {
-            animation: elim-card-shake 0.4s ease;
+        .descarte-hand-card.rejected {
+            animation: descarte-card-shake 0.4s ease;
         }
-        @keyframes elim-card-shake {
+        @keyframes descarte-card-shake {
             0%, 100% { transform: translateX(0); }
             20% { transform: translateX(-10px) rotate(-3deg); }
             40% { transform: translateX(9px) rotate(3deg); }
@@ -536,29 +536,29 @@
             80% { transform: translateX(4px) rotate(1deg); }
         }
         /* Cada carta da mão fica num "slot" que recebe a rotação/altura do
-           leque (calculadas em js/games/eliminacao/player.js, função
+           leque (calculadas em js/games/descarte/player.js, função
            handFanTransform) — imita uma mão de cartas de verdade, em leque,
            em vez de uma fileira reta. O slot sobe para frente (z-index) ao
            passar o mouse, para a carta não ficar escondida atrás da vizinha. */
-        .elim-hand-slot {
+        .descarte-hand-slot {
             position: relative;
             flex-shrink: 0;
             transform-origin: bottom center;
             transition: transform 0.18s ease;
         }
-        .elim-hand-slot:hover { z-index: 999 !important; }
-        .elim-hand-card-inner {
+        .descarte-hand-slot:hover { z-index: 999 !important; }
+        .descarte-hand-card-inner {
             position: absolute;
             inset: 12px;
             border-radius: 12px;
             overflow: hidden;
         }
         /* Mão do jogador mostrada (só para consulta) no modal "Escolher". */
-        .elim-wild-hand-slot {
+        .descarte-wild-hand-slot {
             flex-shrink: 0;
             transform-origin: bottom center;
         }
-        .elim-wild-hand-card {
+        .descarte-wild-hand-card {
             position: relative;
             width: 120px;
             height: 161px;
@@ -567,46 +567,46 @@
             background-position: center;
             box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
         }
-        .elim-wild-hand-card .elim-hand-card-inner { inset: 8px; border-radius: 8px; }
-        /* Animações do Eliminação: a carta jogada "pousa" na mesa depois do voo
-           (o voo em si é feito por flyCard() em js/games/eliminacao/player.js) e
+        .descarte-wild-hand-card .descarte-hand-card-inner { inset: 8px; border-radius: 8px; }
+        /* Animações do Descarte a Carta: a carta jogada "pousa" na mesa depois do voo
+           (o voo em si é feito por flyCard() em js/games/descarte/player.js) e
            a linha do jogador que vai jogar pulsa. */
-        .elim-pile-land { animation: elim-pile-land 0.45s ease var(--land-delay, 0.42s) both; }
+        .descarte-pile-land { animation: descarte-pile-land 0.45s ease var(--land-delay, 0.42s) both; }
         /* Destaque da vez do jogador (barra lateral) e dica de "compre uma carta". */
-        .elim-turn-you {
+        .descarte-turn-you {
             background: #ea3257 !important;
             border-color: #d12a4c !important;
             color: #ffffff !important;
             font-size: 14px !important;
             box-shadow: 0 6px 16px rgba(234, 50, 87, 0.45);
         }
-        .elim-draw-hint { animation: elim-draw-hint 1.1s ease-in-out infinite; }
-        @keyframes elim-draw-hint {
+        .descarte-draw-hint { animation: descarte-draw-hint 1.1s ease-in-out infinite; }
+        @keyframes descarte-draw-hint {
             0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(234, 50, 87, 0.6); }
             50% { transform: scale(1.06); box-shadow: 0 0 0 10px rgba(234, 50, 87, 0); }
         }
-        @keyframes elim-pile-land {
+        @keyframes descarte-pile-land {
             0% { opacity: 0; transform: scale(0.9); }
             60% { opacity: 1; transform: scale(1.08); box-shadow: 0 0 0 7px rgba(234, 50, 87, 0.35); }
             100% { opacity: 1; transform: scale(1); }
         }
-        .elim-player-pulse { animation: elim-player-pulse 0.55s ease; }
-        @keyframes elim-player-pulse {
+        .descarte-player-pulse { animation: descarte-player-pulse 0.55s ease; }
+        @keyframes descarte-player-pulse {
             0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(234, 50, 87, 0); }
             50% { transform: scale(1.04); box-shadow: 0 0 0 5px rgba(234, 50, 87, 0.35); }
         }
         @media (prefers-reduced-motion: reduce) {
-            .elim-pile-land, .elim-player-pulse, .elim-turn-you, .elim-draw-hint { animation: none; }
+            .descarte-pile-land, .descarte-player-pulse, .descarte-turn-you, .descarte-draw-hint { animation: none; }
         }
         /* Mão dos oponentes: cartas viradas para baixo em leque invertido (o
            leque do jogador abre pra cima, o do oponente abre pra baixo, como se
            ele estivesse do outro lado da mesa). */
-        .elim-opp-slot {
+        .descarte-opp-slot {
             position: relative;
             flex-shrink: 0;
             transform-origin: top center;
         }
-        .elim-opp-card {
+        .descarte-opp-card {
             width: var(--e-opp-w);
             height: var(--e-opp-h);
             border-radius: 9px;
@@ -615,7 +615,7 @@
             border: 2px solid white;
             box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2);
         }
-        .elim-opp-label {
+        .descarte-opp-label {
             margin-top: 6px;
             padding: 4px 14px;
             border-radius: 9999px;
@@ -626,12 +626,12 @@
             border: 1px solid #e2e8f0;
             white-space: nowrap;
         }
-        .elim-opp-active .elim-opp-label {
+        .descarte-opp-active .descarte-opp-label {
             background: #ecfdf5;
             color: #047857;
             border-color: #a7f3d0;
         }
-        .elim-pile-card {
+        .descarte-pile-card {
             position: relative;
             width: var(--e-pile-w);
             height: var(--e-pile-h);
@@ -646,13 +646,13 @@
             justify-content: center;
             transition: transform 0.15s ease;
         }
-        #elim-draw-pile:hover { transform: translateY(-4px); }
+        #descarte-draw-pile:hover { transform: translateY(-4px); }
         /* Efeito de "várias cartas empilhadas" só no monte de Comprar (nunca
            no monte de descarte, que mostra de verdade só a última carta
            jogada): duas cópias fantasmas do verso da carta, levemente
            giradas e deslocadas atrás da carta da frente. */
-        #elim-draw-pile::before,
-        #elim-draw-pile::after {
+        #descarte-draw-pile::before,
+        #descarte-draw-pile::after {
             content: "";
             position: absolute;
             inset: 0;
@@ -664,9 +664,9 @@
             box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12);
             z-index: -1;
         }
-        #elim-draw-pile::before { transform: translate(-7px, -5px) rotate(-6deg); }
-        #elim-draw-pile::after { transform: translate(7px, -3px) rotate(5deg); }
-        .elim-pile-count {
+        #descarte-draw-pile::before { transform: translate(-7px, -5px) rotate(-6deg); }
+        #descarte-draw-pile::after { transform: translate(7px, -3px) rotate(5deg); }
+        .descarte-pile-count {
             position: absolute;
             bottom: -10px;
             right: -10px;
@@ -2299,93 +2299,93 @@
         </div>
     </div>
 
-    <!-- MODELO ELIMINAÇÃO (Can Can): modais próprios. Hardcoded aqui, como
+    <!-- MODELO DESCARTE A CARTA (Can Can): modais próprios. Hardcoded aqui, como
          os demais modais do app (não são injetados por partial — ver
          js/app.js, ensureGamePartialsLoaded só troca #creator-step-4 e
          #view-player). Ids exclusivos, nunca colidem com os do Código
          Secreto. -->
 
     <!-- MODAL: editar valor de um atributo (bloco Criação de Cartas) -->
-    <div id="modal-elim-value" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4 overflow-y-auto">
+    <div id="modal-descarte-value" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4 overflow-y-auto">
         <div class="bg-white w-full max-w-2xl rounded-[40px] shadow-2xl overflow-hidden my-8 flex flex-col max-h-[90vh] p-8 space-y-6">
             <div class="shrink-0">
                 <h3 class="text-2xl font-black text-slate-900">Editar Valor</h3>
-                <p id="elim-value-modal-attr-label" class="text-sm text-slate-400 font-bold uppercase mt-1 tracking-widest">Atributo</p>
+                <p id="descarte-value-modal-attr-label" class="text-sm text-slate-400 font-bold uppercase mt-1 tracking-widest">Atributo</p>
             </div>
             <div class="flex-1 min-h-0 space-y-4 overflow-y-auto pl-1 pr-4 custom-scrollbar">
                 <div>
                     <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo Textual</label>
                     <div class="richtext-field">
                         <div class="richtext-toolbar">
-                            <button type="button" onclick="app.toggleBold('elim-value-modal-content')" class="richtext-btn" title="Negrito">
+                            <button type="button" onclick="app.toggleBold('descarte-value-modal-content')" class="richtext-btn" title="Negrito">
                                 <i class="fa-solid fa-bold"></i>
                             </button>
-                            <button type="button" onclick="app.toggleItalic('elim-value-modal-content')" class="richtext-btn" title="Itálico">
+                            <button type="button" onclick="app.toggleItalic('descarte-value-modal-content')" class="richtext-btn" title="Itálico">
                                 <i class="fa-solid fa-italic"></i>
                             </button>
-                            <button type="button" onclick="app.toggleUnderline('elim-value-modal-content')" class="richtext-btn" title="Sublinhado">
+                            <button type="button" onclick="app.toggleUnderline('descarte-value-modal-content')" class="richtext-btn" title="Sublinhado">
                                 <i class="fa-solid fa-underline"></i>
                             </button>
                             <span class="richtext-divider"></span>
-                            <button type="button" onclick="app.wrapSelectionInRed('elim-value-modal-content')" class="richtext-btn" title="Marcar em vermelho o texto selecionado">
+                            <button type="button" onclick="app.wrapSelectionInRed('descarte-value-modal-content')" class="richtext-btn" title="Marcar em vermelho o texto selecionado">
                                 <span class="richtext-color-a" style="--rt-color:#dc2626;">A</span>
                             </button>
-                            <button type="button" onclick="app.removeRedFromSelection('elim-value-modal-content')" class="richtext-btn" title="Remover a cor vermelha do texto selecionado">
+                            <button type="button" onclick="app.removeRedFromSelection('descarte-value-modal-content')" class="richtext-btn" title="Remover a cor vermelha do texto selecionado">
                                 <i class="fa-solid fa-eraser"></i>
                             </button>
                         </div>
-                        <div id="elim-value-modal-content" contenteditable="true" title="Texto deste valor do atributo." class="richtext-editable min-h-16 max-h-40 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;"></div>
+                        <div id="descarte-value-modal-content" contenteditable="true" title="Texto deste valor do atributo." class="richtext-editable min-h-16 max-h-40 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;"></div>
                     </div>
                 </div>
                 <div>
                     <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo por Imagem (Opcional)</label>
                     <div class="flex flex-col gap-3">
                         <div class="flex items-center gap-2">
-                            <button onclick="app.openImageLibrary('elim-value-image')" title="Escolher, na biblioteca de imagens, uma imagem para ilustrar este valor." class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[11px] font-bold uppercase flex items-center gap-2">
+                            <button onclick="app.openImageLibrary('descarte-value-image')" title="Escolher, na biblioteca de imagens, uma imagem para ilustrar este valor." class="px-3 py-2 bg-amber-500 text-white rounded-lg text-[11px] font-bold uppercase flex items-center gap-2">
                                 <i class="fa-solid fa-images"></i> Biblioteca
                             </button>
-                            <button onclick="app.elimRemoveValueImage()" title="Remover a imagem associada a este valor." class="px-3 py-2 bg-red-500 text-white rounded-lg text-[11px] font-bold uppercase">Limpar</button>
+                            <button onclick="app.descarteRemoveValueImage()" title="Remover a imagem associada a este valor." class="px-3 py-2 bg-red-500 text-white rounded-lg text-[11px] font-bold uppercase">Limpar</button>
                         </div>
                         <div class="space-y-1">
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">Ou Link da Imagem</label>
-                            <input id="elim-value-modal-image-url" type="text" oninput="app.elimHandleValueImageUrlInput(event)" title="Cole aqui o link (URL) de uma imagem para usar como conteúdo deste valor." class="w-full p-3 border-2 border-slate-100 rounded-2xl outline-none focus:border-emerald-500 transition text-sm" placeholder="https://exemplo.com/imagem.png">
+                            <input id="descarte-value-modal-image-url" type="text" oninput="app.descarteHandleValueImageUrlInput(event)" title="Cole aqui o link (URL) de uma imagem para usar como conteúdo deste valor." class="w-full p-3 border-2 border-slate-100 rounded-2xl outline-none focus:border-emerald-500 transition text-sm" placeholder="https://exemplo.com/imagem.png">
                         </div>
-                        <div id="elim-value-modal-image-preview-wrapper" class="hidden border-2 border-slate-100 rounded-2xl overflow-hidden bg-slate-50 aspect-video flex items-center justify-center">
-                            <img id="elim-value-modal-image-preview" src="" alt="Prévia" class="max-h-full max-w-full object-contain">
+                        <div id="descarte-value-modal-image-preview-wrapper" class="hidden border-2 border-slate-100 rounded-2xl overflow-hidden bg-slate-50 aspect-video flex items-center justify-center">
+                            <img id="descarte-value-modal-image-preview" src="" alt="Prévia" class="max-h-full max-w-full object-contain">
                         </div>
                     </div>
                 </div>
                 <label class="flex items-center gap-3 p-4 bg-amber-50 border border-amber-200 rounded-2xl cursor-pointer">
-                    <input id="elim-value-modal-master" type="checkbox" class="w-5 h-5 accent-amber-500">
+                    <input id="descarte-value-modal-master" type="checkbox" class="w-5 h-5 accent-amber-500">
                     <span class="text-sm font-bold text-amber-800"><i class="fa-solid fa-star mr-1"></i> Esta é uma carta mestre deste atributo (máximo 2 por atributo — usadas também nas cartas "Comprar 4 e Escolher" / "Escolher").</span>
                 </label>
             </div>
             <div class="flex gap-3 shrink-0 justify-end">
-                <button onclick="app.elimCloseValueModal()" title="Fechar sem salvar as alterações feitas neste valor." class="px-8 py-3.5 border border-slate-200 hover:bg-slate-50 font-bold rounded-2xl text-sm transition">Cancelar</button>
-                <button onclick="app.elimSaveValueModal()" title="Salvar o conteúdo e as configurações deste valor." class="px-8 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl text-sm transition shadow-lg shadow-emerald-100">Salvar</button>
+                <button onclick="app.descarteCloseValueModal()" title="Fechar sem salvar as alterações feitas neste valor." class="px-8 py-3.5 border border-slate-200 hover:bg-slate-50 font-bold rounded-2xl text-sm transition">Cancelar</button>
+                <button onclick="app.descarteSaveValueModal()" title="Salvar o conteúdo e as configurações deste valor." class="px-8 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl text-sm transition shadow-lg shadow-emerald-100">Salvar</button>
             </div>
         </div>
     </div>
 
     <!-- MODAL: configurar partida (modo de jogo) -->
-    <div id="modal-elim-setup" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div id="modal-descarte-setup" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
         <div class="bg-slate-50 w-full max-w-2xl rounded-[36px] shadow-2xl p-8 space-y-6">
             <div class="text-center">
                 <h3 class="text-2xl font-black text-slate-900">Configurar Partida</h3>
-                <p id="elim-setup-game-name" class="text-sm text-slate-500 mt-2 font-bold"></p>
+                <p id="descarte-setup-game-name" class="text-sm text-slate-500 mt-2 font-bold"></p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <button onclick="app.elimStartMatch('solo')" class="group text-left p-5 rounded-3xl border-2 border-slate-200 hover:border-green-500 hover:bg-green-50 transition flex flex-col items-center text-center gap-3">
+                <button onclick="app.descarteStartMatch('solo')" class="group text-left p-5 rounded-3xl border-2 border-slate-200 hover:border-green-500 hover:bg-green-50 transition flex flex-col items-center text-center gap-3">
                     <i class="fa-solid fa-user text-3xl text-green-600"></i>
                     <h4 class="font-black text-slate-800 group-hover:text-green-700">1 aluno + computador</h4>
                     <p class="text-xs text-slate-500">Partida de 2 jogadores contra o computador.</p>
                 </button>
-                <button onclick="app.elimStartMatch('trio')" class="group text-left p-5 rounded-3xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 transition flex flex-col items-center text-center gap-3">
+                <button onclick="app.descarteStartMatch('trio')" class="group text-left p-5 rounded-3xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 transition flex flex-col items-center text-center gap-3">
                     <i class="fa-solid fa-users text-3xl text-sky-600"></i>
                     <h4 class="font-black text-slate-800 group-hover:text-sky-700">2 alunos + computador</h4>
                     <p class="text-xs text-slate-500">Partida de 3 jogadores. Ativa as cartas Perder a Vez e Retornar a Ordem.</p>
                 </button>
-                <button onclick="app.elimStartMatch('duo')" class="group text-left p-5 rounded-3xl border-2 border-slate-200 hover:border-pink-500 hover:bg-pink-50 transition flex flex-col items-center text-center gap-3">
+                <button onclick="app.descarteStartMatch('duo')" class="group text-left p-5 rounded-3xl border-2 border-slate-200 hover:border-pink-500 hover:bg-pink-50 transition flex flex-col items-center text-center gap-3">
                     <i class="fa-solid fa-user-group text-3xl text-pink-600"></i>
                     <h4 class="font-black text-slate-800 group-hover:text-pink-700">2 alunos, sem computador</h4>
                     <p class="text-xs text-slate-500">Partida de 2 jogadores, só entre alunos, no mesmo dispositivo.</p>
@@ -2393,7 +2393,7 @@
             </div>
             <p class="text-xs text-slate-400 text-center">Todos os jogadores humanos jogam no mesmo dispositivo, passando a vez na tela.</p>
             <div class="text-center">
-                <button onclick="app.elimCloseSetupModal()" class="px-6 py-2.5 border border-slate-200 text-slate-500 hover:bg-slate-50 font-bold rounded-xl text-sm transition">
+                <button onclick="app.descarteCloseSetupModal()" class="px-6 py-2.5 border border-slate-200 text-slate-500 hover:bg-slate-50 font-bold rounded-xl text-sm transition">
                     Cancelar
                 </button>
             </div>
@@ -2401,44 +2401,44 @@
     </div>
 
     <!-- MODAL: escolher novo valor em jogo (cartas Comprar 4 e Escolher / Escolher) -->
-    <div id="modal-elim-wild" class="fixed inset-0 bg-slate-900/50 backdrop-blur-md hidden items-center justify-center z-[70] p-4">
+    <div id="modal-descarte-wild" class="fixed inset-0 bg-slate-900/50 backdrop-blur-md hidden items-center justify-center z-[70] p-4">
         <div class="bg-white w-full max-w-4xl max-h-full overflow-y-auto rounded-[36px] shadow-2xl p-8 space-y-6">
             <div class="text-center">
                 <div class="w-14 h-14 mx-auto rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center text-2xl mb-3">
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
                 </div>
-                <h3 id="elim-wild-title" class="text-base font-black text-slate-900">Escolha o novo valor em jogo</h3>
+                <h3 id="descarte-wild-title" class="text-base font-black text-slate-900">Escolha o novo valor em jogo</h3>
             </div>
-            <div id="elim-wild-options" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
+            <div id="descarte-wild-options" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
             <div class="rounded-3xl bg-slate-50 border border-slate-100 px-4 pt-3 pb-2 overflow-hidden">
                 <p class="text-[11px] font-black uppercase tracking-widest text-slate-400 text-center">Suas cartas</p>
-                <div id="elim-wild-hand" class="flex items-end justify-center flex-nowrap" style="padding-top: 22px; padding-bottom: 4px;"></div>
+                <div id="descarte-wild-hand" class="flex items-end justify-center flex-nowrap" style="padding-top: 22px; padding-bottom: 4px;"></div>
             </div>
         </div>
     </div>
 
     <!-- MODAL: resultado da partida -->
-    <div id="modal-elim-result" class="fixed inset-0 bg-slate-900/50 backdrop-blur-md hidden items-center justify-center z-50 p-4 overflow-y-auto">
+    <div id="modal-descarte-result" class="fixed inset-0 bg-slate-900/50 backdrop-blur-md hidden items-center justify-center z-50 p-4 overflow-y-auto">
         <div class="bg-white w-full max-w-lg rounded-[40px] shadow-2xl overflow-hidden my-8 flex flex-col max-h-[90vh]">
             <div class="p-8 border-b border-slate-100 shrink-0 bg-slate-50 text-center">
-                <i id="elim-result-icon" class="fa-solid fa-trophy text-amber-500 text-3xl"></i>
-                <h3 id="elim-result-title" class="text-2xl font-black text-slate-900 mt-3">Fim de Jogo!</h3>
-                <p id="elim-result-subtitle" class="text-sm text-slate-500 font-bold mt-1"></p>
+                <i id="descarte-result-icon" class="fa-solid fa-trophy text-amber-500 text-3xl"></i>
+                <h3 id="descarte-result-title" class="text-2xl font-black text-slate-900 mt-3">Fim de Jogo!</h3>
+                <p id="descarte-result-subtitle" class="text-sm text-slate-500 font-bold mt-1"></p>
             </div>
             <div class="p-8 space-y-2 overflow-y-auto custom-scrollbar flex-1">
-                <div id="elim-result-scoreboard" class="space-y-2"></div>
+                <div id="descarte-result-scoreboard" class="space-y-2"></div>
             </div>
             <div class="p-6 border-t bg-slate-50 shrink-0 flex flex-col sm:flex-row gap-3 justify-end">
-                <button onclick="app.elimCloseResultModal(); app.backFromPlayer();" class="px-6 py-3 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-bold rounded-xl text-sm transition">
+                <button onclick="app.descarteCloseResultModal(); app.backFromPlayer();" class="px-6 py-3 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-bold rounded-xl text-sm transition">
                     Sair para o Início
                 </button>
-                <button onclick="app.elimRestartMatch();" class="px-6 py-3 bg-emerald-600 text-white font-bold rounded-xl text-sm transition shadow-lg shadow-emerald-200 hover:bg-emerald-700">
+                <button onclick="app.descarteRestartMatch();" class="px-6 py-3 bg-emerald-600 text-white font-bold rounded-xl text-sm transition shadow-lg shadow-emerald-200 hover:bg-emerald-700">
                     Jogar Novamente
                 </button>
             </div>
         </div>
     </div>
 
-    <script type="module" src="js/app.js?v=69"></script>
+    <script type="module" src="js/app.js?v=70"></script>
 </body>
 </html>

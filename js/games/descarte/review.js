@@ -1,4 +1,4 @@
-// js/games/eliminacao/review.js
+// js/games/descarte/review.js
 import { countBaseCards } from './model.js?v=4';
 
 export const reviewMethods = {

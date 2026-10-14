@@ -1,13 +1,13 @@
-// js/games/eliminacao/model.js
+// js/games/descarte/model.js
 //
-// Modelo "Eliminação" (apelido interno "Can Can") — jogo de cartas por
-// eliminação. O professor define 2 atributos de conteúdo (ex.: "Relevo" e
+// Modelo "Descarte a Carta" (apelido interno "Can Can") — jogo de cartas por
+// descarte. O professor define 2 atributos de conteúdo (ex.: "Relevo" e
 // "Região"), cada um com 2 a 9 valores. Uma carta-base representa uma
 // combinação (valor do atributo 1, valor do atributo 2). Em cada atributo o
 // professor marca exatamente 2 valores como "cartas mestre" — os mesmos 2
 // valores usados nas cartas especiais "Comprar 4 e Escolher" / "Escolher".
 //
-// Ver js/games/eliminacao/player.js para o motor de partida (baralho, mãos,
+// Ver js/games/descarte/player.js para o motor de partida (baralho, mãos,
 // turnos, bot) que consome os dados gerados aqui.
 
 export const SPECIAL_KINDS = ['skip', 'reverse', 'draw1', 'draw2', 'draw4choose', 'choose'];
@@ -39,7 +39,7 @@ export function getDefaultData() {
         objetivo: 'Ser o primeiro jogador a se livrar de todas as cartas da sua mão.',
         enunciado: 'As cartas estão relacionadas com os conteúdos de <strong style="color:#b91c1c">Matemática sobre Números e Cores</strong>. Escolha a carta que tem o <strong style="color:#b91c1c">Número ou a Cor</strong> igual à carta da mesa. Caso não seja possível, compre uma carta.',
         explicacao: '• Observe as cartas que estão em sua mão.<br>• Observe a carta que está na mesa.<br>• Verifique se existe alguma carta na sua mão com <strong style="color:#b91c1c">o Número ou a Cor</strong> compatível com a carta que está na mesa.<br>• Se houver compatibilidade, descarte a carta.<br>• Se não houver, compre uma carta do monte.',
-        // Estrutura específica do modelo Eliminação: 2 atributos, cada um com
+        // Estrutura específica do modelo Descarte a Carta: 2 atributos, cada um com
         // 2 a 9 valores. Cada valor pode ser texto simples, texto com
         // destaque em vermelho (mesmo mecanismo do Código Secreto) ou
         // imagem. Exatamente 2 valores por atributo são "cartas mestre"
@@ -161,6 +161,6 @@ export function cardMatchesTags(card, topTags) {
 
 // --- Pontuação (decisão 7) ---
 // Vencedor ganha pontos = soma, por oponente, das cartas que sobraram na mão × 10.
-export function calculateElimScore(players, winnerIndex) {
+export function calculateDescarteScore(players, winnerIndex) {
     return players.reduce((sum, p, idx) => idx === winnerIndex ? sum : sum + (p.hand.length * 10), 0);
 }

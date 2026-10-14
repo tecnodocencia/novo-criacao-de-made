@@ -4,9 +4,13 @@ import { supabase, passwordRecoveryPending } from './supabase.js?v=2'
 /**
  * Remap: converte objeto cru do Supabase (snake_case) para camelCase do app.
  */
+// Nomes antigos de modelo, ainda gravados em jogos salvos antes da troca.
+const LEGACY_MODEL_NAMES = { 'Eliminação': 'Descarte a Carta' }
+
 function remapJogo(jogo) {
     return {
         ...jogo,
+        model: LEGACY_MODEL_NAMES[jogo.model] || jogo.model,
         frontDesign: jogo.frontdesign,
         backDesign: jogo.backdesign,
         disciplineInfo: jogo.disciplineinfo

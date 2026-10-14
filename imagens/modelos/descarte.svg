@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 1230">
-  <!-- Capa do modelo Eliminação, no mesmo estilo da capa do Código Secreto
+  <!-- Capa do modelo Descarte a Carta, no mesmo estilo da capa do Código Secreto
        (moldura vermelha/preta, fundo aquarelado, traço vinho desenhado à mão). -->
   <defs>
     <radialGradient id="wash1" cx="0.25" cy="0.2" r="0.55">
@@ -60,14 +60,17 @@
   </g>
 
   <!-- Título -->
-  <g font-family="'Comic Sans MS', 'Chalkboard SE', 'Segoe Print', cursive" font-weight="900" text-anchor="middle">
-    <text x="475" y="372" font-size="150" fill="#6B0000" stroke="#6B0000" stroke-width="6" stroke-linejoin="round" letter-spacing="-4">Elimi</text>
-    <text x="475" y="530" font-size="150" fill="#6B0000" stroke="#6B0000" stroke-width="6" stroke-linejoin="round" letter-spacing="-4">nação</text>
+  <g font-family="'Comic Sans MS', 'Chalkboard SE', 'Segoe Print', cursive" font-weight="900" text-anchor="middle" fill="#6B0000" stroke="#6B0000" stroke-width="6" stroke-linejoin="round">
+    <text x="462" y="390" font-size="112" letter-spacing="-3">Descarte</text>
+    <text x="462" y="530" font-size="112" letter-spacing="-3">a Carta</text>
   </g>
-  <!-- "X" de eliminado sobre a carta do título -->
-  <g transform="translate(215 215) rotate(-14)" stroke="#6B0000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="-40" y="-56" width="80" height="112" rx="12" fill="#fff"/>
-    <path d="M-20 -24 L20 24 M20 -24 L-20 24" stroke="#EA3257" stroke-width="12"/>
+  <!-- Carta sendo jogada na mesa (com rastro de movimento) -->
+  <g stroke="#6B0000" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M330 214 Q380 196 420 206 M340 248 Q385 236 418 244" stroke-width="8"/>
+    <g transform="translate(480 205) rotate(16)" stroke-width="10">
+      <rect x="-38" y="-54" width="76" height="108" rx="12" fill="#fff"/>
+      <path d="M-14 -14 L14 -14 M-14 4 L14 4" stroke="#EA3257" stroke-width="9"/>
+    </g>
   </g>
 
   <!-- Leque de cartas especiais -->

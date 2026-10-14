@@ -12,16 +12,16 @@
                     <!-- ESQUERDA: informações da partida -->
                     <div class="w-[360px] border-r border-slate-300 bg-white p-4 overflow-y-auto shrink-0">
                         <div class="mb-4">
-                            <h2 class="font-black text-lg">Eliminação</h2>
+                            <h2 class="font-black text-lg">Descarte a Carta</h2>
                             <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Jogadores</p>
                         </div>
-                        <div id="elim-turn-banner" class="text-center bg-emerald-50 border border-emerald-200 text-emerald-800 font-black uppercase tracking-widest text-xs py-2 rounded-2xl mb-1">
+                        <div id="descarte-turn-banner" class="text-center bg-emerald-50 border border-emerald-200 text-emerald-800 font-black uppercase tracking-widest text-xs py-2 rounded-2xl mb-1">
                             Vez de: -
                         </div>
-                        <div id="elim-bot-indicator" class="hidden text-center text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2">
+                        <div id="descarte-bot-indicator" class="hidden text-center text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2">
                             <i class="fa-solid fa-robot mr-1"></i> Computador jogando...
                         </div>
-                        <div id="elim-players-panel" class="space-y-2 mb-4 mt-2"></div>
+                        <div id="descarte-players-panel" class="space-y-2 mb-4 mt-2"></div>
 
                         <div class="grid grid-cols-1 gap-2 mb-6">
                             <button onclick="app.showGameRules()" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-slate-200">
@@ -33,7 +33,7 @@
                             <button onclick="app.showPlayExplicacao()" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-slate-200">
                                 <i class="fa-solid fa-circle-question mr-1"></i> Como Jogar
                             </button>
-                            <button onclick="app.elimOpenSetupModal()" class="py-2 px-3 bg-red-50 hover:bg-red-100 text-red-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-red-100">
+                            <button onclick="app.descarteOpenSetupModal()" class="py-2 px-3 bg-red-50 hover:bg-red-100 text-red-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-red-100">
                                 <i class="fa-solid fa-rotate-left mr-1"></i> Nova Partida
                             </button>
                         </div>
@@ -41,23 +41,23 @@
                         <div class="bg-white border border-slate-200 rounded-3xl px-4 py-3 shadow-sm space-y-2">
                             <div>
                                 <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Título</span>
-                                <p id="elim-header-title" class="text-sm font-black text-slate-800 leading-tight">-</p>
+                                <p id="descarte-header-title" class="text-sm font-black text-slate-800 leading-tight">-</p>
                             </div>
                             <div>
                                 <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Disciplina</span>
-                                <p id="elim-header-disciplina" class="text-sm font-bold text-slate-700">-</p>
+                                <p id="descarte-header-disciplina" class="text-sm font-bold text-slate-700">-</p>
                             </div>
                             <div>
                                 <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Conteúdo</span>
-                                <p id="elim-header-conteudo" class="text-sm font-bold text-slate-700">-</p>
+                                <p id="descarte-header-conteudo" class="text-sm font-bold text-slate-700">-</p>
                             </div>
                             <div>
                                 <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Série</span>
-                                <p id="elim-header-serie" class="text-sm font-bold text-slate-700">-</p>
+                                <p id="descarte-header-serie" class="text-sm font-bold text-slate-700">-</p>
                             </div>
                             <div>
                                 <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Autores</span>
-                                <p id="elim-header-autores" class="text-sm font-semibold text-slate-600 leading-tight">-</p>
+                                <p id="descarte-header-autores" class="text-sm font-semibold text-slate-600 leading-tight">-</p>
                             </div>
                         </div>
                     </div>
@@ -65,46 +65,46 @@
                     <!-- CENTRO: mesa de jogo -->
                     <div class="flex-1 flex flex-col items-center justify-between px-3 pt-2 pb-1 overflow-hidden min-w-0 min-h-0 relative">
 
-                        <div id="elim-enunciado" class="w-full max-w-3xl bg-white/50 border border-slate-200 px-4 py-1.5 rounded-2xl text-center shadow-sm shrink-0 mr-24">
+                        <div id="descarte-enunciado" class="w-full max-w-3xl bg-white/50 border border-slate-200 px-4 py-1.5 rounded-2xl text-center shadow-sm shrink-0 mr-24">
                             <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mr-2">Enunciado</span>
-                            <div id="elim-enunciado-content" class="inline text-xs font-semibold text-slate-700"></div>
+                            <div id="descarte-enunciado-content" class="inline text-xs font-semibold text-slate-700"></div>
                         </div>
 
                         <!-- OPONENTES: cartas viradas para baixo, em leque invertido (do outro lado da mesa) -->
-                        <div id="elim-opponents" class="w-full flex items-start justify-center flex-wrap gap-x-10 gap-y-1 shrink-0"></div>
+                        <div id="descarte-opponents" class="w-full flex items-start justify-center flex-wrap gap-x-10 gap-y-1 shrink-0"></div>
 
                         <!-- MESA: monte de compra + descarte -->
                         <div class="flex items-center justify-center gap-8 shrink-0">
                             <div class="flex flex-col items-center gap-1">
-                                <div id="elim-draw-pile" onclick="app.elimDrawCard()" class="elim-pile-card cursor-pointer" title="Comprar uma carta.">
-                                    <div class="elim-pile-count"><span id="elim-draw-pile-count">0</span></div>
+                                <div id="descarte-draw-pile" onclick="app.descarteDrawCard()" class="descarte-pile-card cursor-pointer" title="Comprar uma carta.">
+                                    <div class="descarte-pile-count"><span id="descarte-draw-pile-count">0</span></div>
                                 </div>
                                 <span class="text-sm font-black text-slate-400 uppercase tracking-widest">Comprar</span>
                             </div>
                             <div class="flex flex-col items-center gap-1">
-                                <div id="elim-discard-top" class="elim-pile-card"></div>
+                                <div id="descarte-discard-top" class="descarte-pile-card"></div>
                                 <span class="text-sm font-black text-slate-400 uppercase tracking-widest">Mesa</span>
                             </div>
                         </div>
 
-                        <button id="elim-pass-btn" onclick="app.elimPassTurn()" class="hidden absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-slate-700 hover:bg-slate-800 text-white px-6 py-3 rounded-2xl font-black tracking-wider text-sm uppercase shadow-lg">
+                        <button id="descarte-pass-btn" onclick="app.descartePassTurn()" class="hidden absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-slate-700 hover:bg-slate-800 text-white px-6 py-3 rounded-2xl font-black tracking-wider text-sm uppercase shadow-lg">
                             Passar a Vez
                         </button>
 
                         <!-- MÃO DO JOGADOR DA VEZ -->
                         <div class="w-full shrink-0">
                             <p class="text-center text-sm font-black text-slate-500 uppercase tracking-widest">Sua mão</p>
-                            <div id="elim-hand" class="flex items-end justify-center flex-nowrap px-4" style="padding-top: 18px; padding-bottom: 6px;"></div>
+                            <div id="descarte-hand" class="flex items-end justify-center flex-nowrap px-4" style="padding-top: 18px; padding-bottom: 6px;"></div>
                         </div>
 
                         <!-- OVERLAY: troca de dispositivo entre jogadores humanos -->
-                        <div id="elim-handoff-overlay" class="hidden absolute inset-0 bg-white/95 backdrop-blur-sm flex flex-col items-center justify-center gap-5 z-10 p-6 text-center">
+                        <div id="descarte-handoff-overlay" class="hidden absolute inset-0 bg-white/95 backdrop-blur-sm flex flex-col items-center justify-center gap-5 z-10 p-6 text-center">
                             <i class="fa-solid fa-mobile-screen-button text-5xl text-slate-300"></i>
                             <div>
                                 <p class="text-sm font-black text-slate-400 uppercase tracking-widest mb-1">Passe o dispositivo para</p>
-                                <p id="elim-handoff-name" class="text-2xl font-black text-slate-800">-</p>
+                                <p id="descarte-handoff-name" class="text-2xl font-black text-slate-800">-</p>
                             </div>
-                            <button onclick="app.elimConfirmHandoff()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-2xl font-black tracking-wider text-sm uppercase">
+                            <button onclick="app.descarteConfirmHandoff()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-2xl font-black tracking-wider text-sm uppercase">
                                 Mostrar minha mão
                             </button>
                         </div>

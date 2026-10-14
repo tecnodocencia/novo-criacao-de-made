@@ -1,19 +1,19 @@
 // js/app.js
-import { dbService } from './database.js?v=6';
-import { state } from './core/state.js?v=4';
+import { dbService } from './database.js?v=7';
+import { state } from './core/state.js?v=5';
 import { utilsMethods } from './core/utils.js?v=5';
-import { authMethods } from './core/auth.js?v=6';
-import { dashboardMethods } from './core/dashboard.js?v=22';
-import { libraryMethods } from './core/library.js?v=7';
-import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=19';
+import { authMethods } from './core/auth.js?v=7';
+import { dashboardMethods } from './core/dashboard.js?v=23';
+import { libraryMethods } from './core/library.js?v=8';
+import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=20';
 import { modalMethods } from './core/modals.js?v=1';
 import { gameTourMethods } from './core/gameTour.js?v=10';
 import { getGame } from './games/registry.js?v=1';
 import './games/codigo-secreto/index.js?v=11';
-import './games/eliminacao/index.js?v=25';
+import './games/descarte/index.js?v=25';
 
 // Métodos que pertencem ao modelo de jogo ativo ("Código Secreto" e
-// "Eliminação" hoje). app.js não implementa o comportamento: delega para o
+// "Descarte a Carta" hoje). app.js não implementa o comportamento: delega para o
 // módulo registrado em games/registry.js, preservando o mesmo nome de
 // método em todo lugar que o chama (HTML/onclick ou outro método do mesmo
 // módulo chamando `this.algumNome(...)`). Cada modelo só precisa implementar
@@ -32,13 +32,13 @@ const GAME_METHODS = [
     'startGameWithDifficulty', 'playGame', 'replayGame', 'applyCardDesigns', 'renderGameSlots',
     'updateGameHeaderInfo', 'updateLevelInfoPanel', 'showPlayObjetivo', 'showPlayExplicacao',
     'updateAttemptCounter', 'validateGuess', 'openSolutionModal', 'closeSolutionModal', 'askRestart',
-    // Específico do Eliminação (Can Can)
-    'elimUpdateAttributeName', 'elimAddAttributeValue', 'elimRemoveAttributeValue',
-    'elimOpenValueModal', 'elimCloseValueModal', 'elimHandleValueImageUrlInput',
-    'elimRemoveValueImage', 'elimSaveValueModal',
-    'elimOpenSetupModal', 'elimCloseSetupModal', 'elimStartMatch', 'elimRestartMatch',
-    'elimConfirmHandoff', 'elimPlayHandCard', 'elimShakeHandCard', 'elimDrawCard', 'elimPassTurn',
-    'elimChooseWildValue', 'elimPreviewHandCard', 'elimCloseResultModal'
+    // Específico do Descarte a Carta (Can Can)
+    'descarteUpdateAttributeName', 'descarteAddAttributeValue', 'descarteRemoveAttributeValue',
+    'descarteOpenValueModal', 'descarteCloseValueModal', 'descarteHandleValueImageUrlInput',
+    'descarteRemoveValueImage', 'descarteSaveValueModal',
+    'descarteOpenSetupModal', 'descarteCloseSetupModal', 'descarteStartMatch', 'descarteRestartMatch',
+    'descarteConfirmHandoff', 'descartePlayHandCard', 'descarteShakeHandCard', 'descarteDrawCard', 'descartePassTurn',
+    'descarteChooseWildValue', 'descartePreviewHandCard', 'descarteCloseResultModal'
 ];
 
 function resolveModelName() {
@@ -46,7 +46,7 @@ function resolveModelName() {
     if (app.state.activeGame && app.state.activeGame.model) return app.state.activeGame.model;
     // Flow "Jogar" a partir do dashboard: o dispatcher precisa saber o
     // modelo do jogo ANTES de activeGame existir (só é criado dentro do
-    // método per-model openDifficultySelect/elimOpenSetupModal). Por isso
+    // método per-model openDifficultySelect/descarteOpenSetupModal). Por isso
     // dashboardMethods.startPlayFlow() seta selectedGameIdForPlay antes de
     // chamar app.openDifficultySelect() — ver js/core/dashboard.js.
     if (app.state.selectedGameIdForPlay) {
@@ -105,10 +105,10 @@ async function fetchPartialText(url) {
 // o modelo de jogo ativo são #creator-step-4 (bloco "Criação de Cartas" do
 // editor) e #view-player (tela de jogo) — confirmado lendo o HTML: os
 // modais de cada jogo (Código Secreto: #modal-card/#modal-difficulty/
-// #modal-solution; Eliminação: #modal-elim-*) já vivem hardcoded e estáticos
+// #modal-solution; Descarte a Carta: #modal-descarte-*) já vivem hardcoded e estáticos
 // dentro de index.html (como os modais "core"), nunca dentro de um mount
 // injetado — não há nada para trocar ali. O cache evita refazer fetch toda
-// vez que o professor alterna entre um jogo Código Secreto e um Eliminação.
+// vez que o professor alterna entre um jogo Código Secreto e um Descarte a Carta.
 const gamePartialsCache = {};
 let currentGamePartialsModel = null;
 
@@ -165,12 +165,12 @@ window.addEventListener('DOMContentLoaded', async () => {
         if (event.target == document.getElementById('modal-notification')) app.closeNotification();
         if (event.target == document.getElementById('modal-share')) app.closeShareModal();
         if (event.target == document.getElementById('modal-ranking')) app.closeRankingModal();
-        // Modais do modelo Eliminação (hardcoded e estáticos em index.html,
+        // Modais do modelo Descarte a Carta (hardcoded e estáticos em index.html,
         // como os do Código Secreto — ficam sempre no DOM, só raramente
         // visíveis, por isso essas linhas são inofensivas mesmo com o
         // Código Secreto ativo).
-        if (event.target == document.getElementById('modal-elim-value')) app.elimCloseValueModal();
-        if (event.target == document.getElementById('modal-elim-setup')) app.elimCloseSetupModal();
-        if (event.target == document.getElementById('modal-elim-result')) app.elimCloseResultModal();
+        if (event.target == document.getElementById('modal-descarte-value')) app.descarteCloseValueModal();
+        if (event.target == document.getElementById('modal-descarte-setup')) app.descarteCloseSetupModal();
+        if (event.target == document.getElementById('modal-descarte-result')) app.descarteCloseResultModal();
     }
 });
