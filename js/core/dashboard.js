@@ -234,7 +234,15 @@ export const dashboardMethods = {
             { bar: 'bg-[#F08BB8]', chipBg: 'bg-[#FCB6D4]', chipText: 'text-pink-800', cardBorder: 'border-[#F08BB8]', trayBg: 'bg-[#FEF0F6]' }
         ];
 
+        // Capa de cada modelo (a mesma da escolha de modelo no editor).
+        const MODEL_COVERS = {
+            'Código Secreto': 'imagens/modelos/codigo_secreto.png',
+            'Descarte a Carta': 'imagens/modelos/descarte.svg'
+        };
+
         this.state.games.forEach((game, index) => {
+            const modelName = game.model || 'Código Secreto';
+            const cover = MODEL_COVERS[modelName];
             const accent = CARD_ACCENTS[index % CARD_ACCENTS.length];
             const card = document.createElement('div');
             const cardBg = game.is_draft ? 'bg-[#FFF8EE] border-dashed' : 'bg-white';
@@ -252,11 +260,16 @@ export const dashboardMethods = {
                 </div>
                 <h3 class="text-xl font-extrabold text-rose-950 leading-snug mb-4">${game.name || 'Sem título'}</h3>
                 <div class="space-y-2 text-[15px] leading-relaxed text-slate-600 mb-4 flex-1">
-                    <p><strong class="font-bold text-rose-950">Modelo:</strong> ${game.model || 'Código Secreto'}</p>
-                    <p><strong class="font-bold text-rose-950">Disciplina:</strong> ${game.disciplineInfo?.disciplina || '-'}</p>
-                    <p><strong class="font-bold text-rose-950">Conteúdo:</strong> ${game.disciplineInfo?.conteudo || '-'}</p>
-                    <p><strong class="font-bold text-rose-950">Série:</strong> ${game.disciplineInfo?.serie || '-'}</p>
-                    <p><strong class="font-bold text-rose-950">Autores:</strong> ${game.disciplineInfo?.autores?.length ? game.disciplineInfo.autores.join(', ') : '-'}</p>
+                    <div class="flex items-start gap-4">
+                        <div class="flex-1 min-w-0 space-y-2">
+                            <p><strong class="font-bold text-rose-950">Modelo:</strong> ${modelName}</p>
+                            <p><strong class="font-bold text-rose-950">Disciplina:</strong> ${game.disciplineInfo?.disciplina || '-'}</p>
+                            <p><strong class="font-bold text-rose-950">Conteúdo:</strong> ${game.disciplineInfo?.conteudo || '-'}</p>
+                            <p><strong class="font-bold text-rose-950">Série:</strong> ${game.disciplineInfo?.serie || '-'}</p>
+                            <p><strong class="font-bold text-rose-950">Autores:</strong> ${game.disciplineInfo?.autores?.length ? game.disciplineInfo.autores.join(', ') : '-'}</p>
+                        </div>
+                        ${cover ? `<img src="${cover}" alt="${modelName}" title="Modelo ${modelName}" class="w-24 shrink-0 rounded-lg shadow-md object-contain" />` : ''}
+                    </div>
                     <div class="pt-3 border-t border-rose-100 mt-3 space-y-1">
                         <p class="text-xs font-black uppercase tracking-widest text-rose-700">Enunciado</p>
                         <p class="text-[15px]">${game.enunciado || '-'}</p>
