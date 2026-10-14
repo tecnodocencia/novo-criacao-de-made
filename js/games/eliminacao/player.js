@@ -189,6 +189,7 @@ function drawN(app, playerIdx, n) {
         const c = drawOne(app);
         if (!c) break;
         e.players[playerIdx].hand.push(c);
+        queueDrawAnim(app, playerIdx, c);
     }
 }
 
@@ -269,7 +270,38 @@ function frontBgSize(design) {
 // sistema pede menos movimento (prefers-reduced-motion).
 const FLY_MS = 500;        // jogada do próprio jogador (da mão pra mesa)
 const FLY_OPP_MS = 2200;   // jogada de oponente/computador: lenta, pra dar pra acompanhar
-const FLY_DRAW_MS = 900;   // compra do computador
+const FLY_DRAW_MS = 900;   // compra (monte -> mão)
+const DRAW_STAGGER_MS = 250; // intervalo entre cartas de uma compra múltipla (+2, +4)
+
+// Compras são enfileiradas e só animadas no fim de renderAll(), quando a mão
+// de destino já foi redesenhada com as cartas novas (é preciso o elemento
+// delas pra saber pra onde voar).
+function queueDrawAnim(app, playerIdx, card) {
+    const e = elim(app);
+    (e.drawAnims = e.drawAnims || []).push({ playerIdx, card });
+}
+
+function flushDrawAnims(app) {
+    const e = elim(app);
+    const queue = e.drawAnims || [];
+    e.drawAnims = [];
+    queue.forEach(({ playerIdx, card }, i) => {
+        const handCard = document.querySelector(`#elim-hand .elim-hand-card[data-instance="${card.instanceId}"]`);
+        // A carta nova fica escondida na mão até a cópia chegar.
+        if (handCard) handCard.style.visibility = 'hidden';
+        setTimeout(() => {
+            const pile = document.getElementById('elim-draw-pile');
+            // Mão visível (vez de quem comprou): a carta sai virada do monte e
+            // vira durante o voo. Senão (computador / outro jogador), voa
+            // virada pra baixo até a mão dele.
+            const target = handCard && handCard.isConnected ? handCard : null;
+            const duration = target
+                ? flyCard(app, pile, target, card, { duration: FLY_DRAW_MS, flip: true })
+                : flyCard(app, pile, playerRowEl(playerIdx), null, { duration: FLY_DRAW_MS });
+            if (target) setTimeout(() => { target.style.visibility = ''; }, duration);
+        }, i * DRAW_STAGGER_MS);
+    });
+}
 
 function playerRowEl(playerIdx) {
     // Prefere uma carta da mão do oponente (na mesa); cai pra linha da lista lateral.
@@ -467,7 +499,7 @@ function botTakeTurn(app) {
     const drawn = drawOne(app);
     if (drawn) {
         player.hand.push(drawn);
-        flyCard(app, document.getElementById('elim-draw-pile'), playerRowEl(playerIdx), null, { duration: FLY_DRAW_MS });
+        queueDrawAnim(app, playerIdx, drawn);
     }
     renderAll(app); // mostra a compra (monte diminui, mão aumenta) antes de decidir o que fazer com ela
     setTimeout(() => {
@@ -687,6 +719,7 @@ function renderAll(app) {
     }
     const passBtn = document.getElementById('elim-pass-btn');
     if (passBtn) passBtn.classList.toggle('hidden', !(canAct && e.turnDrawn));
+    flushDrawAnims(app);
 }
 
 export const playerMethods = {
@@ -831,6 +864,7 @@ export const playerMethods = {
         const card = drawOne(this);
         if (!card) { this.showNotification('O monte de compra está vazio.'); return; }
         player.hand.push(card);
+        queueDrawAnim(this, e.currentPlayerIndex, card);
         e.turnDrawn = true;
         renderAll(this);
     },
