@@ -773,7 +773,10 @@ export const playerMethods = {
         container.style.backgroundImage = `url('${this.state.activeGame.frontDesign || 'imagens/frente/frente01.png'}')`;
         container.style.backgroundSize = frontBgSize(this.state.activeGame.frontDesign || 'imagens/frente/frente01.png');
         container.style.backgroundPosition = 'center';
-        container.innerHTML = cardFaceHtml(card, this.state.activeGame.cards.attributes);
+        // O conteúdo da carta é desenhado em tamanho de mão; aqui ele é ampliado
+        // (scale) pra acompanhar o tamanho do zoom.
+        const k = 2.4;
+        container.innerHTML = `<div style="width:${(100 / k).toFixed(2)}%;height:${(100 / k).toFixed(2)}%;transform:scale(${k});transform-origin:center;flex-shrink:0;">${cardFaceHtml(card, this.state.activeGame.cards.attributes)}</div>`;
         text.innerText = 'Carta Selecionada';
         modal.style.display = 'flex';
     },
