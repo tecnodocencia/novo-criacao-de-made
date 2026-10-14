@@ -42,50 +42,39 @@ function findValue(attributes, attrIdx, valueId) {
 let artSeq = 0;
 function artSkip() {
     return `<svg viewBox="0 0 100 100" style="width:100%;height:100%" aria-hidden="true">
-        <circle cx="50" cy="50" r="42" fill="#FCB6D4" stroke="#BE185D" stroke-width="5"/>
-        <circle cx="50" cy="50" r="31" fill="#fff" fill-opacity="0.6"/>
-        <line x1="30" y1="30" x2="70" y2="70" stroke="#BE185D" stroke-width="13" stroke-linecap="round"/>
-        <line x1="30" y1="30" x2="70" y2="70" stroke="#FCB6D4" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="50" cy="50" r="36" fill="#FFF4F8" stroke="#F18AB5" stroke-width="5"/>
+        <line x1="26" y1="26" x2="74" y2="74" stroke="#F18AB5" stroke-width="5" stroke-linecap="round"/>
     </svg>`;
 }
 function artReverse() {
     const id = 'ar' + (++artSeq);
     return `<svg viewBox="0 0 100 100" style="width:100%;height:100%" aria-hidden="true">
-        <defs><marker id="${id}" markerUnits="userSpaceOnUse" markerWidth="22" markerHeight="22" refX="11" refY="11" orient="auto"><path d="M3 2 L20 11 L3 20 Z" fill="#0284C7" stroke="#0284C7" stroke-width="2" stroke-linejoin="round"/></marker></defs>
-        <circle cx="50" cy="50" r="42" fill="#D3EEFB" stroke="#0284C7" stroke-width="5"/>
-        <path d="M27 46 A24 24 0 0 1 66 29" fill="none" stroke="#0284C7" stroke-width="9" stroke-linecap="round" marker-end="url(#${id})"/>
-        <path d="M73 54 A24 24 0 0 1 34 71" fill="none" stroke="#0284C7" stroke-width="9" stroke-linecap="round" marker-end="url(#${id})"/>
+        <defs><marker id="${id}" markerUnits="userSpaceOnUse" markerWidth="20" markerHeight="20" refX="10" refY="10" orient="auto"><path d="M4 3 L17 10 L4 17 Z" fill="#6DBBE3" stroke="#6DBBE3" stroke-width="2" stroke-linejoin="round"/></marker></defs>
+        <path d="M24 46 A27 27 0 0 1 68 26" fill="none" stroke="#6DBBE3" stroke-width="6" stroke-linecap="round" marker-end="url(#${id})"/>
+        <path d="M76 54 A27 27 0 0 1 32 74" fill="none" stroke="#6DBBE3" stroke-width="6" stroke-linecap="round" marker-end="url(#${id})"/>
     </svg>`;
 }
-function artDraw(n, color, dark, withChoose) {
-    const badge = withChoose ? `
-        <g transform="translate(60 62)">
-            <rect width="30" height="30" rx="8" fill="#fff" stroke="${dark}" stroke-width="3"/>
-            <rect x="4" y="4" width="10" height="10" rx="2" fill="#FDE2B5"/><rect x="16" y="4" width="10" height="10" rx="2" fill="#BAF7CE"/>
-            <rect x="4" y="16" width="10" height="10" rx="2" fill="#B8E7FA"/><rect x="16" y="16" width="10" height="10" rx="2" fill="#FCB6D4"/>
-        </g>` : '';
+function artDraw(n, color, stroke) {
     return `<svg viewBox="0 0 100 100" style="width:100%;height:100%" aria-hidden="true">
-        <g transform="rotate(-14 38 54)"><rect x="12" y="24" width="44" height="58" rx="9" fill="${color}" stroke="${dark}" stroke-width="4"/></g>
-        <g transform="rotate(9 62 48)"><rect x="38" y="14" width="46" height="60" rx="9" fill="${color}" stroke="${dark}" stroke-width="4"/><rect x="45" y="21" width="32" height="46" rx="6" fill="#fff" fill-opacity="0.45"/></g>
-        <text x="61" y="55" text-anchor="middle" font-family="inherit" font-weight="900" font-size="32" fill="#1f2937" stroke="#fff" stroke-width="6" paint-order="stroke" stroke-linejoin="round">+${n}</text>${badge}
+        <g transform="rotate(-10 40 54)"><rect x="16" y="24" width="42" height="56" rx="8" fill="#fff" stroke="${stroke}" stroke-width="3"/></g>
+        <rect x="38" y="16" width="44" height="58" rx="8" fill="${color}" stroke="${stroke}" stroke-width="3"/>
+        <text x="60" y="55" text-anchor="middle" font-family="inherit" font-weight="800" font-size="28" fill="#475569">+${n}</text>
     </svg>`;
 }
 function artChoose() {
     return `<svg viewBox="0 0 100 100" style="width:100%;height:100%" aria-hidden="true">
-        <rect x="10" y="10" width="38" height="38" rx="10" fill="#FDE2B5" stroke="#B45309" stroke-width="4"/>
-        <rect x="52" y="10" width="38" height="38" rx="10" fill="#BAF7CE" stroke="#15803D" stroke-width="4"/>
-        <rect x="10" y="52" width="38" height="38" rx="10" fill="#B8E7FA" stroke="#0284C7" stroke-width="4"/>
-        <rect x="52" y="52" width="38" height="38" rx="10" fill="#FCB6D4" stroke="#BE185D" stroke-width="4"/>
-        <circle cx="50" cy="50" r="15" fill="#fff" stroke="#1f2937" stroke-width="4"/>
-        <text x="50" y="57" text-anchor="middle" font-family="inherit" font-weight="900" font-size="20" fill="#1f2937">?</text>
+        <rect x="14" y="14" width="34" height="34" rx="9" fill="#F9DDB0"/>
+        <rect x="52" y="14" width="34" height="34" rx="9" fill="#BDEBCB"/>
+        <rect x="14" y="52" width="34" height="34" rx="9" fill="#BCE4F5"/>
+        <rect x="52" y="52" width="34" height="34" rx="9" fill="#F7BBD3"/>
     </svg>`;
 }
 const SPECIAL_ART = {
     skip: artSkip,
     reverse: artReverse,
-    draw1: () => artDraw(1, '#FDE2B5', '#B45309', false),
-    draw2: () => artDraw(2, '#BAF7CE', '#15803D', false),
-    draw4choose: () => artDraw(4, '#FCB6D4', '#BE185D', true),
+    draw1: () => artDraw(1, '#FBE9CC', '#E8B26A'),
+    draw2: () => artDraw(2, '#D6F3E0', '#7CC79B'),
+    draw4choose: () => artDraw(4, '#FBD9E7', '#F18AB5'),
     choose: artChoose
 };
 const SPECIAL_LABELS = {
