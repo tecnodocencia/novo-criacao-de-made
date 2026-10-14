@@ -194,8 +194,8 @@ function endMatch(app, winnerIdx) {
 // de resolver tudo no instante em que o timer de "pensando" acaba — sem elas
 // a jogada do bot parecia instantânea demais (decisão e efeito no mesmo
 // quadro). Jogada humana não usa nenhuma dessas pausas.
-const BOT_THINK_MS = 1400;
-const BOT_ACT_MS = 900;
+const BOT_THINK_MS = 1000;
+const BOT_ACT_MS = 700;
 
 // As molduras padrão (imagens/frente/*) trazem um contorno vermelho grosso
 // colado na borda da imagem; ampliar o fundo em 10% (centralizado) joga esse
@@ -210,7 +210,7 @@ function frontBgSize(design) {
 // e some; o DOM real só é redesenhado por renderAll(). Ignorado quando o
 // sistema pede menos movimento (prefers-reduced-motion).
 const FLY_MS = 500;        // jogada do próprio jogador (da mão pra mesa)
-const FLY_OPP_MS = 1300;   // jogada de oponente/computador: lenta, pra dar pra acompanhar
+const FLY_OPP_MS = 2200;   // jogada de oponente/computador: lenta, pra dar pra acompanhar
 const FLY_DRAW_MS = 900;   // compra do computador
 
 function playerRowEl(playerIdx) {
@@ -306,8 +306,12 @@ function pulsePlayerRow(playerIdx) {
 function animatePlay(app, playerIdx, card) {
     const handCard = document.querySelector(`#elim-hand .elim-hand-card[data-instance="${card.instanceId}"]`);
     const fromOpponent = !handCard;
-    return flyCard(app, handCard || playerRowEl(playerIdx), document.getElementById('elim-discard-top'), card,
+    const source = handCard || playerRowEl(playerIdx);
+    const duration = flyCard(app, source, document.getElementById('elim-discard-top'), card,
         { duration: fromOpponent ? FLY_OPP_MS : FLY_MS, flip: fromOpponent });
+    // A carta de verdade some do lugar enquanto a cópia voa (senão apareceria duas vezes).
+    if (duration > 0 && source && source.style) source.style.visibility = 'hidden';
+    return duration;
 }
 
 function afterTurnChange(app) {
@@ -325,13 +329,31 @@ function afterTurnChange(app) {
 // Lógica comum a jogada humana e jogada do bot: remove da mão, empilha no
 // descarte, verifica vitória e resolve o efeito da carta (ou abre a escolha
 // de valor, no caso das cartas "Comprar 4 e Escolher"/"Escolher").
-function resolvePlay(app, playerIdx, card) {
+function resolvePlay(app, playerIdx, card, skipAnimation = false) {
     const e = elim(app);
     const player = e.players[playerIdx];
     const idx = player.hand.findIndex(c => c.instanceId === card.instanceId);
     if (idx === -1) return;
-    e.landDelay = animatePlay(app, playerIdx, card);
-    e.landFx = true; // renderAll faz a carta "pousar" na mesa quando o voo terminar
+
+    // 1ª passada: só anima o voo da carta. O estado do jogo (mão, mesa, efeito
+    // da carta, troca de vez) só muda DEPOIS que ela chega na mesa — senão a
+    // vez já passaria pro próximo jogador no meio da animação.
+    if (!skipAnimation) {
+        const flight = animatePlay(app, playerIdx, card);
+        if (flight > 0) {
+            e.busy = true;
+            setTimeout(() => {
+                if (elim(app) !== e) return; // partida reiniciada durante o voo
+                e.busy = false;
+                if (e.winner != null) return;
+                resolvePlay(app, playerIdx, card, true);
+            }, flight);
+            return;
+        }
+    }
+
+    e.landDelay = 0;
+    e.landFx = true; // renderAll faz a carta "pousar" na mesa (efeito de pulo)
     player.hand.splice(idx, 1);
     e.discardPile.push(card);
 
@@ -696,7 +718,7 @@ export const playerMethods = {
 
     elimPlayHandCard: function(cardInstanceId) {
         const e = this.state.elim;
-        if (!e || e.winner != null || e.awaitingHandoff || e.pendingWild) return;
+        if (!e || e.winner != null || e.awaitingHandoff || e.pendingWild || e.busy) return;
         const playerIdx = e.currentPlayerIndex;
         const player = e.players[playerIdx];
         if (player.isBot) return;
@@ -729,7 +751,7 @@ export const playerMethods = {
 
     elimDrawCard: function() {
         const e = this.state.elim;
-        if (!e || e.winner != null || e.awaitingHandoff || e.pendingWild) return;
+        if (!e || e.winner != null || e.awaitingHandoff || e.pendingWild || e.busy) return;
         const player = e.players[e.currentPlayerIndex];
         if (player.isBot || e.turnDrawn) return;
         const card = drawOne(this);
@@ -741,7 +763,7 @@ export const playerMethods = {
 
     elimPassTurn: function() {
         const e = this.state.elim;
-        if (!e || e.winner != null || e.awaitingHandoff || e.pendingWild) return;
+        if (!e || e.winner != null || e.awaitingHandoff || e.pendingWild || e.busy) return;
         const player = e.players[e.currentPlayerIndex];
         if (player.isBot || !e.turnDrawn) return;
         advanceTurn(this, 1);
