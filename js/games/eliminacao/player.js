@@ -539,10 +539,17 @@ function openWildModal(app, kind) {
         const e = elim(app);
         const hand = e.players[e.currentPlayerIndex]?.hand || [];
         const frontDesign = app.state.activeGame.frontDesign || 'imagens/frente/frente01.png';
-        handEl.innerHTML = hand.map(card => `
-            <div class="elim-wild-hand-card" style="background-image:url('${frontDesign}'); background-size:${frontBgSize(frontDesign)};">
-                <div class="elim-hand-card-inner">${cardFaceHtml(card, attrs)}</div>
-            </div>`).join('');
+        // Mesmo leque da mão na mesa (handFanTransform), em tamanho menor.
+        const cardW = 120;
+        handEl.innerHTML = hand.map((card, idx) => {
+            const { angle, lift, marginLeft } = handFanTransform(idx, hand.length, cardW);
+            return `
+            <div class="elim-wild-hand-slot" style="transform: rotate(${angle.toFixed(1)}deg) translateY(${(lift * 0.6).toFixed(1)}px); margin-left:${marginLeft.toFixed(1)}px; z-index:${idx};">
+                <div class="elim-wild-hand-card" style="background-image:url('${frontDesign}'); background-size:${frontBgSize(frontDesign)};">
+                    <div class="elim-hand-card-inner">${cardFaceHtml(card, attrs)}</div>
+                </div>
+            </div>`;
+        }).join('');
     }
 
     const modal = document.getElementById('modal-elim-wild');
