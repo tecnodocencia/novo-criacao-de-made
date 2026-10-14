@@ -313,6 +313,10 @@ export const dashboardMethods = {
     startPlayFlow: async function(gameId) {
         const game = this.state.games.find(g => String(g.id) === String(gameId));
         if (!game) return;
+        // Descarta restos de uma partida/edição anterior (ex.: saiu pelo menu
+        // lateral em vez de "Voltar"), que poderiam ser de outro modelo.
+        this.state.activeGame = null;
+        this.state.isTestingFromCreator = false;
         this.state.selectedGameIdForPlay = gameId;
         await this.ensureGamePartialsLoaded(game.model || 'Código Secreto');
         this.openDifficultySelect(gameId);

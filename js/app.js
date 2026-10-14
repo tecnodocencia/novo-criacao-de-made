@@ -3,7 +3,7 @@ import { dbService } from './database.js?v=7';
 import { state } from './core/state.js?v=5';
 import { utilsMethods } from './core/utils.js?v=5';
 import { authMethods } from './core/auth.js?v=7';
-import { dashboardMethods } from './core/dashboard.js?v=24';
+import { dashboardMethods } from './core/dashboard.js?v=25';
 import { libraryMethods } from './core/library.js?v=8';
 import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=20';
 import { modalMethods } from './core/modals.js?v=1';
@@ -41,7 +41,15 @@ const GAME_METHODS = [
     'descarteChooseWildValue', 'descartePreviewHandCard', 'descarteCloseResultModal'
 ];
 
+// Último modelo cujo fluxo foi aberto (ver ensureGamePartialsLoaded, chamado
+// na entrada de todo fluxo: Jogar, Novo Jogo, Editar, troca de modelo). É a
+// fonte mais confiável: editingGame/activeGame podem ficar "velhos" quando o
+// professor sai de uma partida ou do editor pelo menu lateral, e aí um
+// "Jogar" num jogo de outro modelo cairia no código do modelo anterior.
+let activeModelName = null;
+
 function resolveModelName() {
+    if (activeModelName) return activeModelName;
     if (app.state.editingGame && app.state.editingGame.model) return app.state.editingGame.model;
     if (app.state.activeGame && app.state.activeGame.model) return app.state.activeGame.model;
     // Flow "Jogar" a partir do dashboard: o dispatcher precisa saber o
@@ -115,6 +123,7 @@ let currentGamePartialsModel = null;
 async function ensureGamePartialsLoaded(modelName) {
     const game = getGame(modelName);
     if (!game || !game.partials) return;
+    activeModelName = modelName;
     if (currentGamePartialsModel === modelName) return;
 
     if (!gamePartialsCache[modelName]) {
