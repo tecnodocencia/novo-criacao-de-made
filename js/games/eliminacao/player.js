@@ -132,7 +132,7 @@ function cardFaceHtml(card, attributes) {
 // `CARD_W` tem que bater com a largura de `.elim-hand-card` no CSS.
 const CARD_W = 160;
 function handFanTransform(index, total, cardW = CARD_W) {
-    if (total <= 1) return { angle: 0, lift: 0, marginLeft: 0 };
+    if (total <= 1) return { angle: 0, lift: 0, marginLeft: 0, overlap: 0 };
     const center = (total - 1) / 2;
     const offset = index - center;
     const maxAngle = Math.min(32, 8 + total * 1.6);
