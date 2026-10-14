@@ -238,7 +238,7 @@ export const dashboardMethods = {
             const accent = CARD_ACCENTS[index % CARD_ACCENTS.length];
             const card = document.createElement('div');
             const cardBg = game.is_draft ? 'bg-[#FFF8EE] border-dashed' : 'bg-white';
-            card.className = `relative overflow-hidden ${cardBg} p-6 rounded-[32px] border ${accent.cardBorder} shadow-lg shadow-rose-300/40 hover:shadow-xl hover:-translate-y-0.5 transition group`;
+            card.className = `relative overflow-hidden flex flex-col ${cardBg} p-6 rounded-[32px] border ${accent.cardBorder} shadow-lg shadow-rose-300/40 hover:shadow-xl hover:-translate-y-0.5 transition group`;
             card.innerHTML = `
                 <div class="absolute top-0 left-0 right-0 h-1.5 ${accent.bar}"></div>
                 <div class="flex justify-between items-start mb-4 mt-1.5">
@@ -251,7 +251,7 @@ export const dashboardMethods = {
                     </span>` : ''}
                 </div>
                 <h3 class="text-xl font-extrabold text-rose-950 leading-snug mb-4">${game.name || 'Sem título'}</h3>
-                <div class="space-y-2 text-[15px] leading-relaxed text-slate-600 mb-4">
+                <div class="space-y-2 text-[15px] leading-relaxed text-slate-600 mb-4 flex-1">
                     <p><strong class="font-bold text-rose-950">Modelo:</strong> ${game.model || 'Código Secreto'}</p>
                     <p><strong class="font-bold text-rose-950">Disciplina:</strong> ${game.disciplineInfo?.disciplina || '-'}</p>
                     <p><strong class="font-bold text-rose-950">Conteúdo:</strong> ${game.disciplineInfo?.conteudo || '-'}</p>
