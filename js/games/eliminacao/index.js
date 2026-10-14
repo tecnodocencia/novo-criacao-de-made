@@ -3,7 +3,7 @@ import { registerGame } from '../registry.js?v=1';
 import { getDefaultData } from './model.js?v=2';
 import { editorCartasMethods } from './editorCartas.js?v=2';
 import { reviewMethods } from './review.js?v=2';
-import { playerMethods } from './player.js?v=10';
+import { playerMethods } from './player.js?v=11';
 
 const eliminacaoModule = {
     getDefaultData,

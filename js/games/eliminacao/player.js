@@ -76,7 +76,7 @@ function cardFaceHtml(card, attributes) {
 // mais altas e sem giro, cartas das pontas mais baixas e giradas pra fora).
 // `CARD_W` tem que bater com a largura de `.elim-hand-card` no CSS.
 const CARD_W = 160;
-function handFanTransform(index, total) {
+function handFanTransform(index, total, cardW = CARD_W) {
     if (total <= 1) return { angle: 0, lift: 0, marginLeft: 0 };
     const center = (total - 1) / 2;
     const offset = index - center;
@@ -85,7 +85,7 @@ function handFanTransform(index, total) {
     const maxLift = 20;
     const lift = Math.pow(offset / center, 2) * maxLift;
     const overlapFraction = Math.min(0.62, 0.28 + total * 0.018);
-    const marginLeft = index === 0 ? 0 : -(CARD_W * overlapFraction);
+    const marginLeft = index === 0 ? 0 : -(cardW * overlapFraction);
     return { angle, lift, marginLeft };
 }
 
@@ -212,6 +212,12 @@ function frontBgSize(design) {
 const FLY_MS = 480;
 
 function playerRowEl(playerIdx) {
+    // Prefere uma carta da mão do oponente (na mesa); cai pra linha da lista lateral.
+    const opp = document.getElementById(`elim-opp-${playerIdx}`);
+    if (opp) {
+        const cards = opp.querySelectorAll('.elim-opp-card');
+        if (cards.length) return cards[Math.floor(cards.length / 2)];
+    }
     return document.getElementById('elim-players-panel')?.children[playerIdx] || null;
 }
 
@@ -257,11 +263,16 @@ function flyCard(app, fromEl, toEl, card) {
 }
 
 function pulsePlayerRow(playerIdx) {
-    const row = playerRowEl(playerIdx);
-    if (!row) return;
-    row.classList.remove('elim-player-pulse');
-    void row.offsetWidth;
-    row.classList.add('elim-player-pulse');
+    const targets = [
+        document.getElementById('elim-players-panel')?.children[playerIdx],
+        document.getElementById(`elim-opp-${playerIdx}`)
+    ];
+    targets.forEach(row => {
+        if (!row) return;
+        row.classList.remove('elim-player-pulse');
+        void row.offsetWidth;
+        row.classList.add('elim-player-pulse');
+    });
 }
 
 function animatePlay(app, playerIdx, card) {
@@ -469,6 +480,30 @@ function renderAll(app) {
                 <span class="text-sm font-black text-slate-500 shrink-0">${p.hand.length} ${p.hand.length === 1 ? 'carta' : 'cartas'}</span>
             </div>
         `).join('');
+    }
+
+    // Oponentes: todos menos quem está "vendo" a tela (o humano da vez; durante
+    // a jogada do computador, o último humano que jogou). Cartas viradas.
+    if (!cur.isBot) e.viewerIdx = e.currentPlayerIndex;
+    let viewerIdx = e.viewerIdx;
+    if (viewerIdx == null) viewerIdx = Math.max(0, e.players.findIndex(p => !p.isBot));
+    const oppEl = document.getElementById('elim-opponents');
+    if (oppEl) {
+        oppEl.innerHTML = e.players.map((p, idx) => {
+            if (idx === viewerIdx) return '';
+            const slots = p.hand.map((_, i) => {
+                const { angle, lift, marginLeft } = handFanTransform(i, p.hand.length, 64);
+                const style = `transform: rotate(${(-angle).toFixed(1)}deg) translateY(${(-lift * 0.4).toFixed(1)}px); margin-left:${marginLeft.toFixed(1)}px; z-index:${i};`;
+                return `<div class="elim-opp-slot" style="${style}"><div class="elim-opp-card" style="background-image:url('${backDesign}');"></div></div>`;
+            }).join('');
+            const active = idx === e.currentPlayerIndex && e.winner == null;
+            const icon = p.isBot ? 'fa-robot' : 'fa-user';
+            return `
+                <div id="elim-opp-${idx}" class="flex flex-col items-center ${active ? 'elim-opp-active' : ''}" style="min-width:90px;">
+                    <div class="flex items-start justify-center flex-nowrap" style="min-height:96px;">${slots}</div>
+                    <span class="elim-opp-label"><i class="fa-solid ${icon} mr-1"></i>${app.escapeCardText(p.name)} · ${p.hand.length}</span>
+                </div>`;
+        }).join('');
     }
 
     const handEl = document.getElementById('elim-hand');

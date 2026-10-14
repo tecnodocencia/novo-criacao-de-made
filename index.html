@@ -561,6 +561,39 @@
         @media (prefers-reduced-motion: reduce) {
             .elim-pile-land, .elim-player-pulse { animation: none; }
         }
+        /* Mão dos oponentes: cartas viradas para baixo em leque invertido (o
+           leque do jogador abre pra cima, o do oponente abre pra baixo, como se
+           ele estivesse do outro lado da mesa). */
+        .elim-opp-slot {
+            position: relative;
+            flex-shrink: 0;
+            transform-origin: top center;
+        }
+        .elim-opp-card {
+            width: 64px;
+            height: 86px;
+            border-radius: 9px;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid white;
+            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2);
+        }
+        .elim-opp-label {
+            margin-top: 6px;
+            padding: 3px 10px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 800;
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+            white-space: nowrap;
+        }
+        .elim-opp-active .elim-opp-label {
+            background: #ecfdf5;
+            color: #047857;
+            border-color: #a7f3d0;
+        }
         .elim-pile-card {
             position: relative;
             width: 140px;
@@ -2365,6 +2398,6 @@
         </div>
     </div>
 
-    <script type="module" src="js/app.js?v=52"></script>
+    <script type="module" src="js/app.js?v=53"></script>
 </body>
 </html>
