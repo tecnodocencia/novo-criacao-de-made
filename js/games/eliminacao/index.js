@@ -1,9 +1,9 @@
 // js/games/eliminacao/index.js
 import { registerGame } from '../registry.js?v=1';
-import { getDefaultData } from './model.js?v=3';
+import { getDefaultData } from './model.js?v=4';
 import { editorCartasMethods } from './editorCartas.js?v=3';
 import { reviewMethods } from './review.js?v=3';
-import { playerMethods } from './player.js?v=22';
+import { playerMethods } from './player.js?v=23';
 
 const eliminacaoModule = {
     getDefaultData,

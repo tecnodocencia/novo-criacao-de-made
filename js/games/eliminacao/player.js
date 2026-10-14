@@ -10,7 +10,7 @@
 // GAME_METHODS em js/app.js) são finos — delegam para funções internas deste
 // módulo (não exportadas, recebem `app` explicitamente). Isso evita que cada
 // chamada interna precise passar pelo despachante genérico de js/app.js.
-import { buildDeck, cardMatchesTags, calculateElimScore, masterValues, computeHandSize } from './model.js?v=3';
+import { buildDeck, cardMatchesTags, calculateElimScore, masterValues, computeHandSize } from './model.js?v=4';
 
 // --- Ícones inline (cartas especiais), nas cores pastel do MADE ---
 function svgSkip() {
@@ -205,7 +205,7 @@ function applyWildEffect(app, card) {
     if (card.kind === 'draw4choose') {
         const nextIdx = peekNext(app, 1);
         drawN(app, nextIdx, 4);
-        advanceTurn(app, 2);
+        advanceTurn(app, 1);
     } else {
         advanceTurn(app, 1);
     }
@@ -225,13 +225,13 @@ function applyNonWildEffect(app, card) {
         case 'draw1': {
             const nextIdx = peekNext(app, 1);
             drawN(app, nextIdx, 1);
-            advanceTurn(app, 2);
+            advanceTurn(app, 1);
             break;
         }
         case 'draw2': {
             const nextIdx = peekNext(app, 1);
             drawN(app, nextIdx, 2);
-            advanceTurn(app, 2);
+            advanceTurn(app, 1);
             break;
         }
         default:
@@ -481,7 +481,7 @@ function botTakeTurn(app) {
 function openWildModal(app, kind) {
     const attrs = app.state.activeGame.cards.attributes;
     const title = kind === 'draw4choose'
-        ? 'Comprar 4 e Escolher: escolha o novo valor em jogo. O próximo jogador comprará 4 cartas e perderá a vez.'
+        ? 'Comprar 4 e Escolher: escolha o novo valor em jogo. O próximo jogador comprará 4 cartas.'
         : 'Escolher: escolha o novo valor em jogo.';
     const titleEl = document.getElementById('elim-wild-title');
     if (titleEl) titleEl.innerText = title;
@@ -899,9 +899,9 @@ export const playerMethods = {
                     <p class="font-black text-sm uppercase tracking-widest text-slate-500">Cartas especiais:</p>
                     ${row(svgSkip(), 'Perder a Vez', 'o próximo jogador perde a vez.')}
                     ${row(svgReverse(), 'Retornar a Ordem', 'inverte o sentido da rodada.')}
-                    ${row(svgDraw(1, '#FDE2B5'), 'Comprar 1', 'o próximo jogador compra 1 carta e perde a vez.')}
-                    ${row(svgDraw(2, '#BAF7CE'), 'Comprar 2', 'o próximo jogador compra 2 cartas e perde a vez.')}
-                    ${row(svgDraw(4, '#FCB6D4'), 'Comprar 4 e Escolher', 'jogável a qualquer momento. Você escolhe o novo valor em jogo e o próximo jogador compra 4 cartas e perde a vez.')}
+                    ${row(svgDraw(1, '#FDE2B5'), 'Comprar 1', 'o próximo jogador compra 1 carta.')}
+                    ${row(svgDraw(2, '#BAF7CE'), 'Comprar 2', 'o próximo jogador compra 2 cartas.')}
+                    ${row(svgDraw(4, '#FCB6D4'), 'Comprar 4 e Escolher', 'jogável a qualquer momento. Você escolhe o novo valor em jogo e o próximo jogador compra 4 cartas.')}
                     ${row(svgChoose(), 'Escolher', 'jogável a qualquer momento. Você escolhe o novo valor em jogo, sem forçar compra.')}
                 </div>
                 <div class="p-4 bg-sky-50 rounded-2xl border border-sky-200">
