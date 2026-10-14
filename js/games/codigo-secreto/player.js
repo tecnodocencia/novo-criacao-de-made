@@ -526,7 +526,7 @@ export const playerMethods = {
     showPlayExplicacao: function() {
         const g = this.state.activeGame;
         if (!g) return;
-        this.showNotification(g.explicacao || 'Explicação não definida.', 'Como Jogar');
+        this.showNotification(this.richTextHtml(g.explicacao) || 'Explicação não definida.', 'Como Jogar');
     },
 
     updateAttemptCounter: function() {

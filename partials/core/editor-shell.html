@@ -352,13 +352,17 @@
                                     </div>
                                     <div>
                                         <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Explicação</label>
-                                        <textarea id="edit-game-explicacao" oninput="app.autoResizeTextarea(this); app.scheduleAutoSave();" title="Texto exibido ao aluno ao final do jogo, explicando a resposta e como jogar." class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm min-h-[200px]" placeholder="Texto exibido ao final revelando o porquê da resposta..." style="resize: none;">• Observe as 12 possibilidades de cartas que estão no banco.
-• Clique na carta escolhida para adicioná-la à sua tentativa na mesa.
-• Repita o processo até que todos os espaços estejam preenchidos.
-• Clique no botão para validar a resposta.
-• Observe o feedback do jogo: um pino verde significa que você acertou a carta e a posição.
-• Um pino amarelo significa que a carta pertence ao código, mas está na posição errada.
-• Um pino branco significa que essa carta não faz parte do código secreto.</textarea>
+                                        <div class="richtext-field">
+                                            <div class="richtext-toolbar">
+                                                <button type="button" onclick="app.toggleBold('edit-game-explicacao')" class="richtext-btn" title="Negrito"><i class="fa-solid fa-bold"></i></button>
+                                                <button type="button" onclick="app.toggleItalic('edit-game-explicacao')" class="richtext-btn" title="Itálico"><i class="fa-solid fa-italic"></i></button>
+                                                <button type="button" onclick="app.toggleUnderline('edit-game-explicacao')" class="richtext-btn" title="Sublinhado"><i class="fa-solid fa-underline"></i></button>
+                                                <span class="richtext-divider"></span>
+                                                <button type="button" onclick="app.wrapSelectionInRed('edit-game-explicacao')" class="richtext-btn" title="Marcar em vermelho o texto selecionado"><span class="richtext-color-a" style="--rt-color:#dc2626;">A</span></button>
+                                                <button type="button" onclick="app.removeRedFromSelection('edit-game-explicacao')" class="richtext-btn" title="Remover a cor vermelha do texto selecionado"><i class="fa-solid fa-eraser"></i></button>
+                                            </div>
+                                            <div id="edit-game-explicacao" contenteditable="true" oninput="app.scheduleAutoSave()" title="Texto exibido ao aluno ao final do jogo, explicando a resposta e como jogar." class="richtext-editable min-h-48 max-h-72 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;"></div>
+                                        </div>
                                     </div>
                                     </div>
                                 </div>
@@ -382,6 +386,7 @@
                                 <div class="space-y-4 pt-4 border-t border-slate-200">
                                     <h4 class="text-sm font-black text-slate-700">Informações Gerais</h4>
                                     <div class="text-sm text-slate-600 space-y-2">
+                                        <p><strong>Modelo do Jogo:</strong> <span id="review-game-model">-</span></p>
                                         <p><strong>Título:</strong> <span id="review-game-name">-</span></p>
                                         <p><strong>Disciplina:</strong> <span id="review-game-disciplina">-</span></p>
                                         <p><strong>Conteúdo:</strong> <span id="review-game-conteudo">-</span></p>

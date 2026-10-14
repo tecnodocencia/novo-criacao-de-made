@@ -10,7 +10,7 @@
 // GAME_METHODS em js/app.js) são finos — delegam para funções internas deste
 // módulo (não exportadas, recebem `app` explicitamente). Isso evita que cada
 // chamada interna precise passar pelo despachante genérico de js/app.js.
-import { buildDeck, cardMatchesTags, calculateElimScore, masterValues, computeHandSize } from './model.js?v=2';
+import { buildDeck, cardMatchesTags, calculateElimScore, masterValues, computeHandSize } from './model.js?v=3';
 
 // --- Ícones inline (cartas especiais), nas cores pastel do MADE ---
 function svgSkip() {
@@ -736,10 +736,11 @@ export const playerMethods = {
                 <div class="w-9 h-9 shrink-0 flex items-center justify-center">${icon}</div>
                 <p class="text-sm"><strong>${title}:</strong> ${desc}</p>
             </div>`;
+        const regraJaCompleta = /cartas especiais/i.test(this.stripHtml(rulesHtml));
         const template = `
             <div class="text-left space-y-4">
                 <div>${rulesHtml}</div>
-                <div class="p-4 bg-slate-50 rounded-2xl space-y-3 border border-slate-200">
+                ${regraJaCompleta ? '' : `<div class="p-4 bg-slate-50 rounded-2xl space-y-3 border border-slate-200">
                     <p class="font-black text-sm uppercase tracking-widest text-slate-500">Cartas especiais:</p>
                     ${row(svgSkip(), 'Perder a Vez', 'o próximo jogador perde a vez.')}
                     ${row(svgReverse(), 'Retornar a Ordem', 'inverte o sentido da rodada.')}
@@ -750,7 +751,7 @@ export const playerMethods = {
                 </div>
                 <div class="p-4 bg-sky-50 rounded-2xl border border-sky-200">
                     <p class="text-sm text-sky-900"><i class="fa-solid fa-circle-info mr-1"></i> Uma carta só pode ser jogada sobre a carta da mesa se compartilhar o valor de pelo menos um dos dois atributos com ela.</p>
-                </div>
+                </div>`}
                 <div>${objectiveHtml}</div>
             </div>
         `;
@@ -768,6 +769,6 @@ export const playerMethods = {
     showPlayExplicacao: function() {
         const g = this.state.activeGame;
         if (!g) return;
-        this.showNotification(g.explicacao || 'Explicação não definida.', 'Como Jogar');
+        this.showNotification(this.richTextHtml(g.explicacao) || 'Explicação não definida.', 'Como Jogar');
     }
 };

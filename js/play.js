@@ -930,7 +930,7 @@ window.playApp = {
         showNotification(rulesHtml + note, 'Regras do Jogo');
     },
     showObjetivo() { showNotification(gs.game.objetivo || 'Nenhum objetivo definido.', 'Objetivo'); },
-    showExplicacao() { showNotification(gs.game.explicacao || 'Nenhuma explicação.', 'Como Jogar'); },
+    showExplicacao() { showNotification(((e) => e.includes('<') ? e : e.replace(/\n/g, '<br>'))(gs.game.explicacao || '') || 'Nenhuma explicação.', 'Como Jogar'); },
 
     closeNotificationPlay() { document.getElementById('modal-notification-play').style.display = 'none'; },
     closePreviewPlay() { document.getElementById('modal-preview-play').style.display = 'none'; },

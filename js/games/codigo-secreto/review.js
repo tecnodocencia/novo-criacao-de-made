@@ -14,6 +14,7 @@ export const reviewMethods = {
         };
 
         setSpan('review-game-name', eg.name);
+        setSpan('review-game-model', eg.model);
         setSpan('review-game-disciplina', eg.disciplineInfo.disciplina);
         setSpan('review-game-conteudo', eg.disciplineInfo.conteudo);
         setSpan('review-game-serie', eg.disciplineInfo.serie);
@@ -22,7 +23,7 @@ export const reviewMethods = {
         setHtml('review-game-enunciado', eg.enunciado);
         const rEl = document.getElementById('review-game-regra'); if (rEl) rEl.innerHTML = eg.regra || '-';
         const oEl = document.getElementById('review-game-objetivo'); if (oEl) oEl.innerHTML = eg.objetivo || '-';
-        setSpan('review-game-explicacao', eg.explicacao);
+        setHtml('review-game-explicacao', this.richTextHtml(eg.explicacao));
 
         document.getElementById('review-preview-front').src = eg.frontDesign || 'imagens/frente/frente01.png';
         document.getElementById('review-preview-back').src = eg.backDesign || 'imagens/verso/Cópia de Trás da Carta - Natureza.png';

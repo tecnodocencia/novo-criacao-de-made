@@ -1,5 +1,36 @@
 // js/core/utils.js
+// Clicar num botão da barra de formatação não pode tirar o foco/seleção do
+// campo de texto, senão o navegador perde o trecho selecionado antes do clique.
+if (typeof document !== 'undefined') {
+    document.addEventListener('mousedown', (e) => {
+        if (e.target && e.target.closest && e.target.closest('.richtext-btn')) e.preventDefault();
+    });
+}
+
+// Devolve { sel, range } se há texto selecionado DENTRO do campo `el`.
+function selectionInside(el) {
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0 || sel.isCollapsed) return null;
+    const range = sel.getRangeAt(0);
+    if (!el.contains(range.commonAncestorContainer)) return null;
+    return { sel, range };
+}
+
+function selectNodeContents(sel, node) {
+    const r = document.createRange();
+    r.selectNodeContents(node);
+    sel.removeAllRanges();
+    sel.addRange(r);
+}
+
 export const utilsMethods = {
+    // Textos ricos (regra, objetivo, enunciado, explicação) são HTML; textos
+    // antigos eram texto puro com "\n" — converte para exibir com quebras.
+    richTextHtml: function(text) {
+        const t = text || '';
+        return t.includes('<') ? t : t.replace(/\n/g, '<br>');
+    },
+
     autoResizeTextarea: function(elem) {
         if (!elem) return;
         elem.style.height = 'inherit';
@@ -73,15 +104,14 @@ export const utilsMethods = {
     wrapSelectionInRed: function(elementId) {
         const el = document.getElementById(elementId);
         if(!el) return;
-        const selection = window.getSelection();
-        if (selection.toString().length === 0) return;
-
-        const range = selection.getRangeAt(0);
+        const inside = selectionInside(el);
+        if (!inside) return;
+        const { sel: selection, range } = inside;
         const span = document.createElement('strong');
         span.style.color = '#b91c1c';
         span.appendChild(range.extractContents());
         range.insertNode(span);
-        selection.removeAllRanges();
+        selectNodeContents(selection, span);
         // Manipulação via Range API não dispara evento 'input' de forma
         // confiável em todos os navegadores — diferente de digitação direta
         // no contenteditable (coberta pelo oninput do próprio elemento no
@@ -96,26 +126,35 @@ export const utilsMethods = {
     toggleInlineFormat: function(elementId, tagName) {
         const el = document.getElementById(elementId);
         if (!el) return;
-        const selection = window.getSelection();
-        if (selection.toString().length === 0) return;
+        const inside = selectionInside(el);
+        if (!inside) return;
+        const { sel: selection, range } = inside;
 
-        let node = selection.anchorNode;
+        let node = range.commonAncestorContainer;
         while (node && node !== el) {
             if (node.nodeName === tagName) {
                 const parent = node.parentNode;
+                const first = node.firstChild;
+                const last = node.lastChild;
                 while (node.firstChild) parent.insertBefore(node.firstChild, node);
                 parent.removeChild(node);
+                if (first && last) {
+                    const r = document.createRange();
+                    r.setStartBefore(first);
+                    r.setEndAfter(last);
+                    selection.removeAllRanges();
+                    selection.addRange(r);
+                }
                 if (typeof this.scheduleAutoSave === 'function') this.scheduleAutoSave();
                 return;
             }
             node = node.parentNode;
         }
 
-        const range = selection.getRangeAt(0);
         const wrapper = document.createElement(tagName);
         wrapper.appendChild(range.extractContents());
         range.insertNode(wrapper);
-        selection.removeAllRanges();
+        selectNodeContents(selection, wrapper);
         // Ver comentário em wrapSelectionInRed sobre Range API + evento 'input'.
         if (typeof this.scheduleAutoSave === 'function') this.scheduleAutoSave();
     },
@@ -147,11 +186,10 @@ export const utilsMethods = {
     removeRedFromSelection: function(elementId) {
         const el = document.getElementById(elementId);
         if(!el) return;
-        const selection = window.getSelection();
-        if (selection.toString().length === 0) return;
-
-        const range = selection.getRangeAt(0);
-        let node = selection.anchorNode;
+        const inside = selectionInside(el);
+        if (!inside) return;
+        const { range } = inside;
+        let node = range.commonAncestorContainer;
         while (node && node !== el) {
             if (node.nodeName === 'STRONG' && node.style.color === 'rgb(185, 28, 28)') {
                 const parent = node.parentNode;

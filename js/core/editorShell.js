@@ -87,6 +87,35 @@ export const editorShellMethods = {
         this.switchView('creator');
     },
 
+    // Os 4 textos do jogo (regra, objetivo, enunciado, explicação) são HTML.
+    fillTextFields: function(eg) {
+        const set = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html || ""; };
+        set('edit-game-regra', eg.regra);
+        set('edit-game-objetivo', eg.objetivo);
+        set('edit-game-enunciado', eg.enunciado);
+        // Explicações antigas eram texto puro com quebras de linha.
+        const expl = eg.explicacao || "";
+        set('edit-game-explicacao', expl.includes('<') ? expl : expl.replace(/\n/g, '<br>'));
+    },
+
+    // Troca os textos que ainda são o padrão de `fromModel` pelo padrão do modelo
+    // atual (textos que o professor já personalizou nunca são tocados). A
+    // comparação é pelo texto visível, porque o navegador reescreve o HTML
+    // (aspas, estilos) quando o campo é salvo.
+    reconcileModelTexts: function(eg, fromModel) {
+        if (!eg || !eg.model || eg.model === fromModel) return false;
+        const plain = (h) => stripHtml(h).replace(/\s+/g, ' ').trim();
+        const oldDef = getGame(fromModel).getDefaultData();
+        const newDef = getGame(eg.model).getDefaultData();
+        let changed = false;
+        ['regra', 'objetivo', 'enunciado', 'explicacao'].forEach(k => {
+            if (!plain(eg[k]) || plain(eg[k]) === plain(oldDef[k])) {
+                if (eg[k] !== newDef[k]) { eg[k] = newDef[k]; changed = true; }
+            }
+        });
+        return changed;
+    },
+
     syncEditorUI: function() {
         if (!this.state.editingGame) return;
         const eg = this.state.editingGame;
@@ -128,13 +157,10 @@ export const editorShellMethods = {
         }
 
         if (document.getElementById('edit-game-conteudo')) document.getElementById('edit-game-conteudo').value = eg.disciplineInfo.conteudo || "";
-        if (document.getElementById('edit-game-regra')) document.getElementById('edit-game-regra').innerHTML = eg.regra || "";
-        if (document.getElementById('edit-game-objetivo')) document.getElementById('edit-game-objetivo').innerHTML = eg.objetivo || "";
-        if (document.getElementById('edit-game-enunciado')) document.getElementById('edit-game-enunciado').innerHTML = eg.enunciado || "";
-        if (document.getElementById('edit-game-explicacao')) {
-            document.getElementById('edit-game-explicacao').value = eg.explicacao || "";
-            this.autoResizeTextarea(document.getElementById('edit-game-explicacao'));
-        }
+        // Jogos criados antes da troca de modelo ainda podem carregar os textos
+        // padrão do Código Secreto — troca pelos do modelo atual.
+        this.reconcileModelTexts(eg, 'Código Secreto');
+        this.fillTextFields(eg);
 
         document.getElementById('preview-front').src = eg.frontDesign || 'imagens/frente/frente01.png';
         document.getElementById('preview-back').src = eg.backDesign || 'imagens/verso/Cópia de Trás da Carta - Natureza.png';
@@ -184,7 +210,7 @@ export const editorShellMethods = {
         this.state.editingGame.regra = document.getElementById('edit-game-regra')?.innerHTML || "";
         this.state.editingGame.objetivo = document.getElementById('edit-game-objetivo')?.innerHTML || "";
         this.state.editingGame.enunciado = document.getElementById('edit-game-enunciado')?.innerHTML || "";
-        this.state.editingGame.explicacao = document.getElementById('edit-game-explicacao')?.value || "";
+        this.state.editingGame.explicacao = document.getElementById('edit-game-explicacao')?.innerHTML || "";
     },
 
     // Debounce do auto-save: qualquer chamada reagenda o timer (~1.8s de
@@ -383,7 +409,7 @@ export const editorShellMethods = {
 
         setBadge(1, !!stripHtml(eg.regra) && !!stripHtml(eg.objetivo));
         setBadge(2, !!eg.frontDesign && !!eg.backDesign);
-        setBadge(3, !!stripHtml(eg.enunciado) && !!(eg.explicacao || '').trim());
+        setBadge(3, !!stripHtml(eg.enunciado) && !!stripHtml(eg.explicacao));
 
         // Delegado ao modelo ativo (bloco "Criação de Cartas" tem formato
         // diferente em cada modelo — ver validateCreatorCards/
@@ -527,6 +553,10 @@ export const editorShellMethods = {
             // regra, objetivo, enunciado, explicação, design) são genéricos
             // e continuam valendo, não há necessidade de reescrevê-los.
             this.state.editingGame.cards = getGame(modelName).getDefaultData().cards;
+            // Textos (regra, objetivo, enunciado, explicação) ainda no padrão do
+            // modelo anterior passam para o padrão do novo; os personalizados ficam.
+            this.reconcileModelTexts(this.state.editingGame, prevModel);
+            this.fillTextFields(this.state.editingGame);
             document.querySelectorAll('#model-choices > div').forEach(d => d.style.borderColor = '#e5e7eb');
             if (el) el.style.borderColor = '#10b981';
             document.getElementById('open-game-video-btn')?.classList.toggle('hidden', modelName !== 'Código Secreto');

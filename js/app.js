@@ -1,16 +1,16 @@
 // js/app.js
 import { dbService } from './database.js?v=6';
 import { state } from './core/state.js?v=4';
-import { utilsMethods } from './core/utils.js?v=4';
+import { utilsMethods } from './core/utils.js?v=5';
 import { authMethods } from './core/auth.js?v=6';
 import { dashboardMethods } from './core/dashboard.js?v=21';
 import { libraryMethods } from './core/library.js?v=7';
-import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=18';
+import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=19';
 import { modalMethods } from './core/modals.js?v=1';
 import { gameTourMethods } from './core/gameTour.js?v=10';
 import { getGame } from './games/registry.js?v=1';
-import './games/codigo-secreto/index.js?v=10';
-import './games/eliminacao/index.js?v=11';
+import './games/codigo-secreto/index.js?v=11';
+import './games/eliminacao/index.js?v=12';
 
 // Métodos que pertencem ao modelo de jogo ativo ("Código Secreto" e
 // "Eliminação" hoje). app.js não implementa o comportamento: delega para o
