@@ -374,7 +374,10 @@ function afterTurnChange(app) {
     if (e.winner != null) { renderAll(app); return; }
     e.pendingWild = null;
     const cur = e.players[e.currentPlayerIndex];
-    e.awaitingHandoff = !cur.isBot;
+    // A tela "Passe o dispositivo" só faz sentido quando há mais de um humano
+    // dividindo o aparelho; contra o computador ela só atrasa a partida.
+    const humanCount = e.players.filter(p => !p.isBot).length;
+    e.awaitingHandoff = !cur.isBot && humanCount > 1;
     renderAll(app);
     if (cur.isBot) {
         setTimeout(() => botTakeTurn(app), BOT_THINK_MS);
