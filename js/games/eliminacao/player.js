@@ -36,6 +36,67 @@ function findValue(attributes, attrIdx, valueId) {
     return attributes[attrIdx]?.values.find(v => v.id === valueId) || null;
 }
 
+// --- Ilustrações grandes das cartas especiais (aparecem na face da carta) ---
+// Os ícones pequenos acima continuam servindo à lista de regras; estas são
+// desenhadas pra ocupar a carta, com contorno escuro e cores pastel do MADE.
+let artSeq = 0;
+function artSkip() {
+    return `<svg viewBox="0 0 100 100" style="width:100%;height:100%" aria-hidden="true">
+        <circle cx="50" cy="50" r="42" fill="#FCB6D4" stroke="#BE185D" stroke-width="5"/>
+        <circle cx="50" cy="50" r="31" fill="#fff" fill-opacity="0.6"/>
+        <line x1="30" y1="30" x2="70" y2="70" stroke="#BE185D" stroke-width="13" stroke-linecap="round"/>
+        <line x1="30" y1="30" x2="70" y2="70" stroke="#FCB6D4" stroke-width="6" stroke-linecap="round"/>
+    </svg>`;
+}
+function artReverse() {
+    const id = 'ar' + (++artSeq);
+    return `<svg viewBox="0 0 100 100" style="width:100%;height:100%" aria-hidden="true">
+        <defs><marker id="${id}" markerUnits="userSpaceOnUse" markerWidth="22" markerHeight="22" refX="11" refY="11" orient="auto"><path d="M3 2 L20 11 L3 20 Z" fill="#0284C7" stroke="#0284C7" stroke-width="2" stroke-linejoin="round"/></marker></defs>
+        <circle cx="50" cy="50" r="42" fill="#D3EEFB" stroke="#0284C7" stroke-width="5"/>
+        <path d="M27 46 A24 24 0 0 1 66 29" fill="none" stroke="#0284C7" stroke-width="9" stroke-linecap="round" marker-end="url(#${id})"/>
+        <path d="M73 54 A24 24 0 0 1 34 71" fill="none" stroke="#0284C7" stroke-width="9" stroke-linecap="round" marker-end="url(#${id})"/>
+    </svg>`;
+}
+function artDraw(n, color, dark, withChoose) {
+    const badge = withChoose ? `
+        <g transform="translate(60 62)">
+            <rect width="30" height="30" rx="8" fill="#fff" stroke="${dark}" stroke-width="3"/>
+            <rect x="4" y="4" width="10" height="10" rx="2" fill="#FDE2B5"/><rect x="16" y="4" width="10" height="10" rx="2" fill="#BAF7CE"/>
+            <rect x="4" y="16" width="10" height="10" rx="2" fill="#B8E7FA"/><rect x="16" y="16" width="10" height="10" rx="2" fill="#FCB6D4"/>
+        </g>` : '';
+    return `<svg viewBox="0 0 100 100" style="width:100%;height:100%" aria-hidden="true">
+        <g transform="rotate(-14 38 54)"><rect x="12" y="24" width="44" height="58" rx="9" fill="${color}" stroke="${dark}" stroke-width="4"/></g>
+        <g transform="rotate(9 62 48)"><rect x="38" y="14" width="46" height="60" rx="9" fill="${color}" stroke="${dark}" stroke-width="4"/><rect x="45" y="21" width="32" height="46" rx="6" fill="#fff" fill-opacity="0.45"/></g>
+        <text x="61" y="55" text-anchor="middle" font-family="inherit" font-weight="900" font-size="32" fill="#1f2937" stroke="#fff" stroke-width="6" paint-order="stroke" stroke-linejoin="round">+${n}</text>${badge}
+    </svg>`;
+}
+function artChoose() {
+    return `<svg viewBox="0 0 100 100" style="width:100%;height:100%" aria-hidden="true">
+        <rect x="10" y="10" width="38" height="38" rx="10" fill="#FDE2B5" stroke="#B45309" stroke-width="4"/>
+        <rect x="52" y="10" width="38" height="38" rx="10" fill="#BAF7CE" stroke="#15803D" stroke-width="4"/>
+        <rect x="10" y="52" width="38" height="38" rx="10" fill="#B8E7FA" stroke="#0284C7" stroke-width="4"/>
+        <rect x="52" y="52" width="38" height="38" rx="10" fill="#FCB6D4" stroke="#BE185D" stroke-width="4"/>
+        <circle cx="50" cy="50" r="15" fill="#fff" stroke="#1f2937" stroke-width="4"/>
+        <text x="50" y="57" text-anchor="middle" font-family="inherit" font-weight="900" font-size="20" fill="#1f2937">?</text>
+    </svg>`;
+}
+const SPECIAL_ART = {
+    skip: artSkip,
+    reverse: artReverse,
+    draw1: () => artDraw(1, '#FDE2B5', '#B45309', false),
+    draw2: () => artDraw(2, '#BAF7CE', '#15803D', false),
+    draw4choose: () => artDraw(4, '#FCB6D4', '#BE185D', true),
+    choose: artChoose
+};
+const SPECIAL_LABELS = {
+    skip: 'Perde a vez',
+    reverse: 'Inverte a ordem',
+    draw1: 'Compra 1',
+    draw2: 'Compra 2',
+    draw4choose: 'Compra 4 e escolhe',
+    choose: 'Escolhe'
+};
+
 function valueContentHtml(value) {
     if (!value) return '';
     return value.image
@@ -57,16 +118,21 @@ function cardFaceHtml(card, attributes) {
                 <div class="flex-1 flex items-center justify-center overflow-hidden p-1">${valueContentHtml(v1)}</div>
             </div>`;
     }
-    const icon = SPECIAL_ICONS[card.kind] || '';
+    const art = (SPECIAL_ART[card.kind] || (() => ''))();
+    const label = SPECIAL_LABELS[card.kind] || '';
     if (!card.tags || card.tags.length === 0) {
-        return `<div class="w-full h-full flex items-center justify-center">${icon}</div>`;
+        return `
+            <div class="w-full h-full flex flex-col items-center justify-center p-1" style="gap:2px;">
+                <div class="w-full min-h-0 flex items-center justify-center" style="flex:4 1 0;">${art}</div>
+                <p class="text-[10px] leading-tight font-black text-slate-700 text-center uppercase tracking-wide">${label}</p>
+            </div>`;
     }
     const tag = card.tags[0];
     const v = findValue(attributes, tag.attr, tag.valueId);
     return `
-        <div class="w-full h-full flex flex-col items-center justify-center relative p-1">
-            <div class="absolute top-1 left-1">${icon}</div>
-            <div class="mt-5 flex-1 flex items-center justify-center overflow-hidden">${valueContentHtml(v)}</div>
+        <div class="w-full h-full flex flex-col items-center justify-center p-1" style="gap:2px;">
+            <div class="w-full min-h-0 flex items-center justify-center" style="flex:3 1 0;">${art}</div>
+            <div class="w-full min-h-0 flex items-center justify-center overflow-hidden" style="flex:2 1 0;">${valueContentHtml(v)}</div>
         </div>`;
 }
 
