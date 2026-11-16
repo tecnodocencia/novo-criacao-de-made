@@ -113,24 +113,22 @@ export const editorShellMethods = {
                 if (eg[k] !== newDef[k]) { eg[k] = newDef[k]; changed = true; }
             }
         });
+        // Disciplina, conteúdo e série seguem a mesma regra, juntos: só trocam
+        // se os três ainda forem o padrão do modelo anterior. Autores ficam.
+        const info = eg.disciplineInfo || {};
+        const oldInfo = oldDef.disciplineInfo || {};
+        const newInfo = newDef.disciplineInfo || {};
+        const isOldDefault = ['disciplina', 'conteudo', 'serie'].every(k => (info[k] || '') === (oldInfo[k] || ''));
+        if (isOldDefault && ['disciplina', 'conteudo', 'serie'].some(k => info[k] !== newInfo[k])) {
+            eg.disciplineInfo = { ...info, disciplina: newInfo.disciplina, conteudo: newInfo.conteudo, serie: newInfo.serie };
+            changed = true;
+        }
         return changed;
     },
 
-    syncEditorUI: function() {
-        if (!this.state.editingGame) return;
-        const eg = this.state.editingGame;
-
-        if (!eg.disciplineInfo) { eg.disciplineInfo = {}; }
-        if (!Array.isArray(eg.disciplineInfo.autores)) { eg.disciplineInfo.autores = []; }
-
-        if (document.getElementById('edit-game-name')) document.getElementById('edit-game-name').value = eg.name || "";
-        if (document.getElementById('edit-game-model')) document.getElementById('edit-game-model').value = eg.model || "Código Secreto";
-        document.querySelectorAll('#model-choices > div').forEach(d => d.style.borderColor = '#e5e7eb');
-        const chosen = Array.from(document.querySelectorAll('#model-choices > div')).find(d => d.innerText.trim().includes(eg.model || ''));
-        if (chosen) chosen.style.borderColor = '#10b981';
-        // O vídeo guiado só existe para o Código Secreto.
-        document.getElementById('open-game-video-btn')?.classList.toggle('hidden', eg.model !== 'Código Secreto');
-
+    // Disciplina, série (selects com opção "Outro") e conteúdo da Tela 1.
+    fillDisciplineFields: function(eg) {
+        if (!eg.disciplineInfo) eg.disciplineInfo = {};
         const disciplinaSelect = document.getElementById('edit-game-disciplina');
         const serieSelect = document.getElementById('edit-game-serie');
         const discVal = eg.disciplineInfo.disciplina || 'Biologia';
@@ -157,9 +155,28 @@ export const editorShellMethods = {
         }
 
         if (document.getElementById('edit-game-conteudo')) document.getElementById('edit-game-conteudo').value = eg.disciplineInfo.conteudo || "";
+    },
+
+    syncEditorUI: function() {
+        if (!this.state.editingGame) return;
+        const eg = this.state.editingGame;
+
+        if (!eg.disciplineInfo) { eg.disciplineInfo = {}; }
+        if (!Array.isArray(eg.disciplineInfo.autores)) { eg.disciplineInfo.autores = []; }
+
+        if (document.getElementById('edit-game-name')) document.getElementById('edit-game-name').value = eg.name || "";
+        if (document.getElementById('edit-game-model')) document.getElementById('edit-game-model').value = eg.model || "Código Secreto";
+        document.querySelectorAll('#model-choices > div').forEach(d => d.style.borderColor = '#e5e7eb');
+        const chosen = Array.from(document.querySelectorAll('#model-choices > div')).find(d => d.innerText.trim().includes(eg.model || ''));
+        if (chosen) chosen.style.borderColor = '#10b981';
+        // O vídeo guiado só existe para o Código Secreto.
+        document.getElementById('open-game-video-btn')?.classList.toggle('hidden', eg.model !== 'Código Secreto');
+
         // Jogos criados antes da troca de modelo ainda podem carregar os textos
-        // padrão do Código Secreto — troca pelos do modelo atual.
+        // (e a disciplina/conteúdo/série) padrão do Código Secreto — troca
+        // pelos do modelo atual, antes de preencher os campos.
         this.reconcileModelTexts(eg, 'Código Secreto');
+        this.fillDisciplineFields(eg);
         this.fillTextFields(eg);
 
         document.getElementById('preview-front').src = eg.frontDesign || 'imagens/frente/frente01.png';
@@ -556,6 +573,7 @@ export const editorShellMethods = {
             // Textos (regra, objetivo, enunciado, explicação) ainda no padrão do
             // modelo anterior passam para o padrão do novo; os personalizados ficam.
             this.reconcileModelTexts(this.state.editingGame, prevModel);
+            this.fillDisciplineFields(this.state.editingGame);
             this.fillTextFields(this.state.editingGame);
             document.querySelectorAll('#model-choices > div').forEach(d => d.style.borderColor = '#e5e7eb');
             if (el) el.style.borderColor = '#10b981';
