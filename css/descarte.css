@@ -188,3 +188,40 @@
     border: 3px solid white;
     padding: 0 6px;
 }
+
+/* Monte de compra reabastecido com as cartas da mesa (playReshuffleFx em
+   js/games/descarte/player.js): o monte pulsa ao receber as cartas e um aviso
+   aparece no alto da tela e some sozinho. */
+.descarte-pile-refill { animation: descarte-pile-refill 0.6s ease; }
+@keyframes descarte-pile-refill {
+    0%, 100% { transform: scale(1); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18); }
+    45% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0.35); }
+}
+.descarte-toast {
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    z-index: 10060;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: min(560px, calc(100vw - 32px));
+    padding: 12px 20px;
+    border-radius: 18px;
+    background: #065f46;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 14px;
+    line-height: 1.35;
+    box-shadow: 0 12px 28px rgba(6, 95, 70, 0.35);
+    opacity: 0;
+    transform: translate(-50%, -16px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.descarte-toast i { font-size: 18px; }
+.descarte-toast.show { opacity: 1; transform: translate(-50%, 0); }
+@media (prefers-reduced-motion: reduce) {
+    .descarte-pile-refill { animation: none; }
+    .descarte-toast { transition: none; }
+}

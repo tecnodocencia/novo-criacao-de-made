@@ -192,13 +192,19 @@ function advanceTurn(app, steps) {
     descarte(app).currentPlayerIndex = peekNext(app, steps);
 }
 
+// Monte de compra vazio: as cartas já jogadas (menos a do topo da mesa) são
+// embaralhadas e voltam para o monte. `reshuffleFx` faz o renderAll seguinte
+// mostrar a animação e o aviso (ver playReshuffleFx).
 function reshuffleDiscardIntoDraw(app) {
     const e = descarte(app);
     if (e.discardPile.length <= 1) return;
     const top = e.discardPile[e.discardPile.length - 1];
     const rest = e.discardPile.slice(0, e.discardPile.length - 1);
+    // "Comprar 4 e Escolher"/"Escolher" voltam sem o valor escolhido na jogada.
+    rest.forEach(c => { if (c.wild) c.tags = []; });
     e.discardPile = [top];
     e.drawPile = app.shuffleArray(rest);
+    e.reshuffleFx = (e.reshuffleFx || 0) + rest.length;
 }
 
 function drawOne(app) {
@@ -326,6 +332,73 @@ function flushDrawAnims(app) {
             if (target) setTimeout(() => { target.style.visibility = ''; }, duration);
         }, i * DRAW_STAGGER_MS);
     });
+}
+
+// Reabastecimento do monte: cópias das cartas saem da mesa, viram de costas e
+// voam para o monte de compra, uma atrás da outra, junto com um aviso.
+// `delay` espera as compras em andamento (a que esvaziou o monte) terminarem.
+const RESHUFFLE_FLY_MS = 700;
+const RESHUFFLE_STAGGER_MS = 90;
+function playReshuffleFx(app, count, delay) {
+    setTimeout(() => {
+        showDescarteToast('O monte acabou! As cartas já jogadas foram embaralhadas e voltaram para o monte de compra.');
+        const from = document.getElementById('descarte-discard-top');
+        const to = document.getElementById('descarte-draw-pile');
+        if (!from || !to || !document.body.animate) return;
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const game = app.state.activeGame;
+        const frontDesign = game.frontDesign || 'imagens/frente/frente01.png';
+        const backDesign = game.backDesign || 'imagens/verso/Cópia de Trás da Carta - Natureza.png';
+        const a = from.getBoundingClientRect();
+        const b = to.getBoundingClientRect();
+        if (!a.width) return;
+        const dx = (b.left + b.width / 2) - (a.left + a.width / 2);
+        const dy = (b.top + b.height / 2) - (a.top + a.height / 2);
+        const face = (bg, size, extra) => `<div class="descarte-pile-card" style="position:absolute;inset:0;width:100%;height:100%;margin:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background-image:url('${bg}');background-size:${size};background-position:center;${extra}"></div>`;
+        for (let i = 0; i < Math.min(count, 8); i++) {
+            setTimeout(() => {
+                const wrap = document.createElement('div');
+                wrap.style.cssText = `position:fixed;left:${a.left}px;top:${a.top}px;width:${a.width}px;height:${a.height}px;z-index:10050;pointer-events:none;perspective:900px;`;
+                wrap.innerHTML = `<div style="position:absolute;inset:0;transform-style:preserve-3d;">${face(frontDesign, frontBgSize(frontDesign), '')}${face(backDesign, 'cover', 'transform:rotateY(180deg);')}</div>`;
+                document.body.appendChild(wrap);
+                const spin = (i % 2 ? 1 : -1) * (6 + i * 2);
+                wrap.animate([
+                    { transform: 'translate(0, 0) rotate(0deg) scale(1)', offset: 0 },
+                    { transform: `translate(${dx * 0.5}px, ${dy * 0.5 - 60}px) rotate(${spin}deg) scale(1.05)`, offset: 0.5 },
+                    { transform: `translate(${dx}px, ${dy}px) rotate(0deg) scale(1)`, offset: 1 }
+                ], { duration: RESHUFFLE_FLY_MS, easing: 'ease-in-out' }).onfinish = () => wrap.remove();
+                wrap.firstElementChild.animate([
+                    { transform: 'rotateY(0deg)' }, { transform: 'rotateY(180deg)' }
+                ], { duration: RESHUFFLE_FLY_MS * 0.6, easing: 'ease-in-out', fill: 'forwards' });
+                setTimeout(() => wrap.remove(), RESHUFFLE_FLY_MS + 300);
+            }, i * RESHUFFLE_STAGGER_MS);
+        }
+        // O monte "recebe" as cartas: pulsa quando a última chega.
+        setTimeout(() => {
+            to.classList.remove('descarte-pile-refill');
+            void to.offsetWidth;
+            to.classList.add('descarte-pile-refill');
+        }, Math.min(count, 8) * RESHUFFLE_STAGGER_MS + RESHUFFLE_FLY_MS - 150);
+    }, delay);
+}
+
+// Aviso curto sobre a mesa, que some sozinho (não interrompe a partida).
+function showDescarteToast(message) {
+    let el = document.getElementById('descarte-toast');
+    if (!el) {
+        el = document.createElement('div');
+        el.id = 'descarte-toast';
+        el.className = 'descarte-toast';
+        el.setAttribute('role', 'status');
+        document.body.appendChild(el);
+    }
+    el.innerHTML = `<i class="fa-solid fa-shuffle"></i><span></span>`;
+    el.querySelector('span').innerText = message;
+    el.classList.remove('show');
+    void el.offsetWidth;
+    el.classList.add('show');
+    clearTimeout(el._hideTimer);
+    el._hideTimer = setTimeout(() => el.classList.remove('show'), 4000);
 }
 
 function playerRowEl(playerIdx) {
@@ -624,6 +697,11 @@ function renderAll(app) {
     const e = descarte(app);
     const game = app.state.activeGame;
     if (!e || !game) return;
+    // Monte acabou: reabastece na hora com as cartas da mesa (no convidado de
+    // uma partida em rede quem decide é o anfitrião, que manda `reshuffled`).
+    if (!isGuest(e) && e.winner == null && e.drawPile.length === 0 && e.discardPile.length > 1) {
+        reshuffleDiscardIntoDraw(app);
+    }
     const attributes = game.cards.attributes;
     const frontDesign = game.frontDesign || 'imagens/frente/frente01.png';
     const backDesign = game.backDesign || 'imagens/verso/Cópia de Trás da Carta - Natureza.png';
@@ -779,8 +857,15 @@ function renderAll(app) {
     if (passBtn) passBtn.classList.toggle('hidden', !(canAct && e.turnDrawn));
     // Anfitrião de partida em rede: todo redesenho manda o estado novo (com
     // as compras ainda por animar) para o outro computador.
-    if (e.net && e.net.onRender) e.net.onRender((e.drawAnims || []).slice());
+    const reshuffled = e.reshuffleFx || 0;
+    e.reshuffleFx = 0;
+    if (e.net && e.net.onRender) e.net.onRender((e.drawAnims || []).slice(), reshuffled);
+    // A animação de reabastecer espera as compras em andamento terminarem.
+    const pendingDraws = (e.drawAnims || []).length;
     flushDrawAnims(app);
+    if (reshuffled > 0) {
+        playReshuffleFx(app, reshuffled, pendingDraws ? (pendingDraws - 1) * DRAW_STAGGER_MS + FLY_DRAW_MS : 0);
+    }
 }
 
 // --- Montagem da partida e ações de jogador ---
@@ -830,11 +915,16 @@ function createMatch(app, sourceGame, roster, extra = {}) {
     return { numPlayers, handSize };
 }
 
-// Compra 1 carta para o jogador da vez. Retorna false se o monte acabou.
+// Compra 1 carta para o jogador da vez. Retorna false se não há carta nenhuma
+// (monte vazio e só a carta do topo na mesa) — aí a vez pode ser passada.
 function drawForCurrent(app) {
     const e = descarte(app);
     const card = drawOne(app);
-    if (!card) return false;
+    if (!card) {
+        e.turnDrawn = true;
+        renderAll(app);
+        return false;
+    }
     e.players[e.currentPlayerIndex].hand.push(card);
     queueDrawAnim(app, e.currentPlayerIndex, card);
     e.turnDrawn = true;
@@ -872,7 +962,7 @@ function applyRemoteAction(app, playerIdx, action) {
             const card = player.hand.find(c => c.instanceId === action.instanceId);
             if (card && cardMatchesTags(card, topTags(app))) { resolvePlay(app, playerIdx, card); return; }
         } else if (action.type === 'draw' && !e.pendingWild && !e.turnDrawn) {
-            if (drawForCurrent(app)) return;
+            drawForCurrent(app); return;
         } else if (action.type === 'pass' && !e.pendingWild && e.turnDrawn) {
             passTurn(app); return;
         } else if (action.type === 'wild' && e.pendingWild) {
@@ -884,7 +974,7 @@ function applyRemoteAction(app, playerIdx, action) {
 }
 
 // O que o anfitrião envia para o jogador `idx`.
-function viewFor(app, idx, drawAnims = []) {
+function viewFor(app, idx, drawAnims = [], reshuffled = 0) {
     const e = descarte(app);
     return {
         you: idx,
@@ -899,7 +989,8 @@ function viewFor(app, idx, drawAnims = []) {
         pendingWild: e.pendingWild,
         winner: e.winner,
         // Carta comprada só vai junto se for do próprio convidado.
-        draws: drawAnims.map(d => ({ playerIdx: d.playerIdx, card: d.playerIdx === idx ? d.card : null }))
+        draws: drawAnims.map(d => ({ playerIdx: d.playerIdx, card: d.playerIdx === idx ? d.card : null })),
+        reshuffled
     };
 }
 
@@ -927,7 +1018,8 @@ function applyGuestView(app, view, net) {
         winner: view.winner,
         localIdx: view.you,
         net,
-        drawAnims: (view.draws || []).map(d => ({ playerIdx: d.playerIdx, card: d.card || { instanceId: 'hidden' } }))
+        drawAnims: (view.draws || []).map(d => ({ playerIdx: d.playerIdx, card: d.card || { instanceId: 'hidden' } })),
+        reshuffleFx: view.reshuffled || 0
     };
     // Carta nova na mesa (ou valor escolhido num Escolher): efeito de pouso,
     // esperando a cópia que ainda está voando chegar.
@@ -1057,8 +1149,8 @@ export const playerMethods = {
     descarteDrawCard: function() {
         const e = this.state.descarte;
         if (!canLocalAct(e) || e.turnDrawn) return;
-        if (isGuest(e) && e.drawPile.length > 0) { sendToHost(this, { type: 'draw' }); return; }
-        if (isGuest(e) || !drawForCurrent(this)) this.showNotification('O monte de compra está vazio.');
+        if (isGuest(e)) { sendToHost(this, { type: 'draw' }); return; }
+        if (!drawForCurrent(this)) this.showNotification('Não há mais cartas para comprar: todas estão nas mãos dos jogadores. Passe a vez.', 'Monte vazio');
     },
 
     descartePassTurn: function() {

@@ -10,7 +10,7 @@
 import { supabase } from './supabase.js?v=2';
 import { utilsMethods } from './core/utils.js?v=5';
 import { modalMethods } from './core/modals.js?v=1';
-import { playerMethods, descarteEngine as engine } from './games/descarte/player.js?v=26';
+import { playerMethods, descarteEngine as engine } from './games/descarte/player.js?v=27';
 import { joinLobby, joinMatch, uid } from './games/descarte/net.js?v=1';
 
 const MODEL_NAMES = ['Descarte a Carta', 'Eliminação'];
@@ -114,7 +114,7 @@ function startOnlineAsHost() {
     if (ps.mode === 'trio') roster.push({ name: 'Computador', isBot: true });
     const net = {
         role: 'host',
-        onRender: draws => ps.match && ps.match.send('state', engine.viewFor(app, 1, draws)),
+        onRender: (draws, reshuffled) => ps.match && ps.match.send('state', engine.viewFor(app, 1, draws, reshuffled)),
         onPlayAnim: (playerIdx, card) => ps.match && ps.match.send('anim', { playerIdx, card })
     };
     closeGameModals();
