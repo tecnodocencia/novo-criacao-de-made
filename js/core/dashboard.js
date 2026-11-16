@@ -326,13 +326,10 @@ export const dashboardMethods = {
         const game = this.state.games.find(g => String(g.id) === String(gameId));
         if (!game) return;
 
-        // Compartilhamento público (play.html) e o ranking associado só
-        // existem hoje para o Código Secreto — ver nota no relatório da
-        // implementação do modelo Descarte a Carta.
-        if (game.model === 'Descarte a Carta') {
-            this.showNotification('O compartilhamento público ainda não está disponível para o modelo Descarte a Carta. Use o botão "Jogar" para jogar diretamente pela plataforma.');
-            return;
-        }
+        // O Descarte a Carta tem página pública própria (play-descarte.html),
+        // com partidas contra o computador ou entre alunos em computadores
+        // diferentes; o Código Secreto usa play.html.
+        const playPage = game.model === 'Descarte a Carta' ? 'play-descarte.html' : 'play.html';
 
         try {
             let shareCode = game.share_code;
@@ -343,10 +340,14 @@ export const dashboardMethods = {
 
             const origin = window.location.origin;
             const path = window.location.pathname.replace(/index\.html$/, '').replace(/\/?$/, '/');
-            const playUrl = `${origin}${path}play.html?code=${shareCode}`;
+            const playUrl = `${origin}${path}${playPage}?code=${shareCode}`;
 
             document.getElementById('modal-share-url').value = playUrl;
             document.getElementById('modal-share-game-name').innerText = game.name || 'Jogo';
+            const desc = document.getElementById('modal-share-desc');
+            if (desc) desc.innerText = game.model === 'Descarte a Carta'
+                ? 'Qualquer pessoa com este link pode jogar sem precisar de conta: contra o computador, ou com um colega, cada um no seu computador, abrindo este mesmo link.'
+                : 'Qualquer pessoa com este link pode jogar sem precisar de conta. Os resultados ficam no ranking do jogo.';
             document.getElementById('modal-share').style.display = 'flex';
         } catch (err) {
             console.error(err);

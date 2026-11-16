@@ -130,7 +130,7 @@ modelos futuros também podem reusar `cards` livremente, desde que o shape
 seja JSON-serializável.
 
 ## Limitação conhecida, decidida nesta sessão (não pedida, mas necessária)
-Compartilhamento público (`play.html`/`js/play.js`) e o ranking online
+[DESATUALIZADO em 2026-11-16: ver sessao_2026-11-16_descarte_link_rede] Compartilhamento público (`play.html`/`js/play.js`) e o ranking online
 (`public_plays`) continuam exclusivos do Código Secreto — `js/play.js` tem
 sua própria reimplementação completa do motor de Código Secreto (ver
 [[arquivos_modulos]]) e não foi tocado. `dashboardMethods.shareGame`/

@@ -854,6 +854,12 @@ async function init() {
 
         if (error || !data) throw new Error('Jogo não encontrado ou link inválido.');
 
+        // O Descarte a Carta tem página pública própria.
+        if (data.model === 'Descarte a Carta' || data.model === 'Eliminação') {
+            window.location.replace(`play-descarte.html${window.location.search}`);
+            return;
+        }
+
         gs.game = {
             ...data,
             frontDesign: data.frontdesign,

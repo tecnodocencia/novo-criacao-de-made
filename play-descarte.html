@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MADE — Descarte a Carta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="css/descarte.css?v=1" rel="stylesheet">
+    <style>
+        /* Página pública do Descarte a Carta (link compartilhado). A mesa de jogo
+           é o mesmo partial da plataforma, injetado em #descarte-mount por
+           js/play-descarte.js; o visual das cartas vem de css/descarte.css. */
+        html, body { height: 100%; margin: 0; padding: 0; }
+        body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: #f0fdf4; }
+        .play-screen { display: none; }
+        .play-screen.active { display: flex; }
+        #screen-game { flex-direction: column; height: 100vh; overflow: hidden; background: #f5f5ee; position: relative; }
+        .custom-scrollbar { scrollbar-width: thin; scrollbar-color: #94a3b8 transparent; }
+        /* Lupa das cartas na mão (mesmo estilo da plataforma). */
+        .zoom-icon {
+            position: absolute; top: 10px; left: 10px; z-index: 30;
+            background: rgba(255, 255, 255, 0.9); color: #047857;
+            width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: all 0.2s;
+        }
+        .zoom-icon:hover { transform: scale(1.1); background: #047857; color: white; }
+        .mode-card { transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease; }
+        .mode-card:hover { transform: translateY(-3px); }
+    </style>
+</head>
+<body>
+
+    <!-- ========== CARREGANDO / ERRO ========== -->
+    <div id="screen-loading" class="play-screen active min-h-screen items-center justify-center flex-col gap-4">
+        <i class="fa-solid fa-circle-notch fa-spin text-4xl text-emerald-500"></i>
+        <p class="text-slate-500 font-bold">Carregando jogo...</p>
+    </div>
+    <div id="screen-error" class="play-screen min-h-screen items-center justify-center flex-col gap-4 p-6">
+        <div class="text-center max-w-md">
+            <i class="fa-solid fa-circle-exclamation text-5xl text-red-400 mb-4"></i>
+            <h2 class="text-2xl font-black text-slate-800 mb-2">Jogo não encontrado</h2>
+            <p id="error-message" class="text-slate-500 text-sm">Verifique o link e tente novamente.</p>
+        </div>
+    </div>
+
+    <!-- ========== BOAS-VINDAS ========== -->
+    <div id="screen-welcome" class="play-screen min-h-screen items-center justify-center p-4 flex-col">
+        <div class="w-full max-w-lg">
+            <div class="text-center mb-6">
+                <img src="Criação vermelho sem.png" alt="MADE" class="h-12 w-auto mx-auto mb-2">
+                <p class="text-sm text-slate-400 font-bold uppercase tracking-widest">Material Autoral Digital Educacional</p>
+            </div>
+
+            <div class="bg-white rounded-[32px] shadow-xl border border-slate-100 overflow-hidden">
+                <div class="bg-gradient-to-br from-emerald-600 to-emerald-500 p-6 text-white">
+                    <p class="text-sm font-black uppercase tracking-[0.2em] opacity-70 mb-2">Descarte a Carta</p>
+                    <h1 id="welcome-game-name" class="text-2xl font-black leading-tight">Carregando...</h1>
+                </div>
+                <div class="p-6 space-y-3">
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Disciplina</span>
+                            <p id="welcome-disciplina" class="font-bold text-slate-700">-</p>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Conteúdo</span>
+                            <p id="welcome-conteudo" class="font-bold text-slate-700">-</p>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Série / Turma</span>
+                            <p id="welcome-serie" class="font-bold text-slate-700">-</p>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Autores</span>
+                            <p id="welcome-autores" class="font-bold text-slate-700 text-sm">-</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-100">
+                        <label for="player-name-input" class="text-xs font-black text-slate-500 uppercase tracking-widest block mb-2">Seu nome</label>
+                        <input id="player-name-input" type="text" maxlength="40"
+                            class="w-full px-4 py-3 border-2 border-slate-200 rounded-2xl font-bold text-slate-800 outline-none focus:border-emerald-500 transition text-sm"
+                            placeholder="Ex: João Silva"
+                            onkeydown="if(event.key==='Enter') app.startFromWelcome()">
+                    </div>
+
+                    <button onclick="app.startFromWelcome()"
+                        class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl text-sm transition shadow-lg shadow-emerald-100 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Continuar
+                    </button>
+                </div>
+            </div>
+
+            <p class="text-center text-sm text-slate-400 mt-4">Acesso livre — sem necessidade de cadastro</p>
+        </div>
+    </div>
+
+    <!-- ========== ESCOLHA DO MODO ========== -->
+    <div id="screen-mode" class="play-screen min-h-screen items-center justify-center p-4 flex-col">
+        <div class="w-full max-w-3xl bg-slate-50 rounded-[36px] shadow-2xl p-8 space-y-6">
+            <div class="text-center">
+                <h3 class="text-2xl font-black text-slate-900">Como você quer jogar?</h3>
+                <p class="text-sm text-slate-500 mt-2 font-bold">Jogador: <span id="mode-player-name" class="text-emerald-700"></span></p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button onclick="app.chooseMode('solo')" class="mode-card group p-5 rounded-3xl border-2 border-slate-200 bg-white hover:border-green-500 hover:bg-green-50 flex flex-col items-center text-center gap-3">
+                    <i class="fa-solid fa-user text-3xl text-green-600"></i>
+                    <h4 class="font-black text-slate-800 group-hover:text-green-700">1 aluno + computador</h4>
+                    <p class="text-xs text-slate-500">Partida de 2 jogadores contra o computador.</p>
+                </button>
+                <button onclick="app.chooseMode('trio')" class="mode-card group p-5 rounded-3xl border-2 border-slate-200 bg-white hover:border-sky-500 hover:bg-sky-50 flex flex-col items-center text-center gap-3">
+                    <i class="fa-solid fa-users text-3xl text-sky-600"></i>
+                    <h4 class="font-black text-slate-800 group-hover:text-sky-700">2 alunos + computador</h4>
+                    <p class="text-xs text-slate-500">Partida de 3 jogadores. Ativa as cartas Perder a Vez e Retornar a Ordem.</p>
+                </button>
+                <button onclick="app.chooseMode('duo')" class="mode-card group p-5 rounded-3xl border-2 border-slate-200 bg-white hover:border-pink-500 hover:bg-pink-50 flex flex-col items-center text-center gap-3">
+                    <i class="fa-solid fa-user-group text-3xl text-pink-600"></i>
+                    <h4 class="font-black text-slate-800 group-hover:text-pink-700">2 alunos, sem computador</h4>
+                    <p class="text-xs text-slate-500">Partida de 2 jogadores, só entre alunos, cada um no seu computador.</p>
+                </button>
+            </div>
+            <p class="text-xs text-slate-500 text-center bg-white border border-slate-200 rounded-2xl px-4 py-3">
+                <i class="fa-solid fa-circle-info mr-1 text-sky-500"></i>
+                Para jogar com um colega, os dois abrem este mesmo link, cada um no seu computador, e escolhem a mesma opção. A partida só começa quando os dois estiverem na sala, e ninguém vê as cartas do outro.
+            </p>
+            <div class="text-center">
+                <button onclick="app.goToWelcome()" class="px-6 py-2.5 border border-slate-200 text-slate-500 hover:bg-white font-bold rounded-xl text-sm transition">
+                    Trocar nome
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== SALA DE ESPERA ========== -->
+    <div id="screen-waiting" class="play-screen min-h-screen items-center justify-center p-4 flex-col">
+        <div class="w-full max-w-md bg-white rounded-[36px] shadow-2xl p-8 space-y-5 text-center">
+            <i class="fa-solid fa-circle-notch fa-spin text-4xl text-emerald-500"></i>
+            <div>
+                <p id="waiting-mode" class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1"></p>
+                <h3 id="waiting-title" class="text-2xl font-black text-slate-900">Aguardando outro aluno...</h3>
+            </div>
+            <p id="waiting-text" class="text-sm text-slate-500"></p>
+            <button onclick="app.cancelWaiting()" class="px-6 py-2.5 border border-slate-200 text-slate-500 hover:bg-slate-50 font-bold rounded-xl text-sm transition">
+                Cancelar
+            </button>
+        </div>
+    </div>
+
+    <!-- ========== MESA DE JOGO (partial partials/games/descarte/player.html) ========== -->
+    <div id="screen-game" class="play-screen">
+        <div id="descarte-mount" class="flex-1 flex flex-col min-h-0"></div>
+    </div>
+
+    <!-- ========== MODAIS (mesmos ids da plataforma, usados pelo motor) ========== -->
+    <div id="modal-notification" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-[10002] p-4">
+        <div class="bg-sky-50 w-full max-w-sm rounded-[36px] shadow-2xl p-8 space-y-6 text-center">
+            <div class="w-14 h-14 mx-auto rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center text-2xl">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <div>
+                <h3 id="notification-title" class="text-xl font-black text-slate-900">Aviso</h3>
+            </div>
+            <div id="notification-message" class="text-slate-600 max-h-[60vh] overflow-y-auto custom-scrollbar"></div>
+            <button onclick="app.closeNotification()" class="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl text-sm transition">OK</button>
+        </div>
+    </div>
+
+    <div id="modal-confirm" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-[10002] p-4">
+        <div class="bg-red-50 w-full max-w-sm rounded-[36px] shadow-2xl p-8 space-y-6 text-center">
+            <div class="w-14 h-14 mx-auto rounded-2xl bg-red-100 text-red-600 flex items-center justify-center text-2xl">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div>
+                <h3 id="confirm-title" class="text-xl font-black text-slate-900">Confirmar</h3>
+            </div>
+            <p id="confirm-message" class="text-slate-600"></p>
+            <div class="flex gap-3">
+                <button onclick="app.closeConfirm()" class="flex-1 py-3 border border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-sm transition">Cancelar</button>
+                <button id="confirm-btn-action" class="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-sm transition">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-preview" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center z-[60] p-4">
+        <div class="relative w-full max-w-lg">
+            <button onclick="app.closePreviewModal()" class="absolute -top-12 right-0 md:-right-12 md:top-0 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="bg-white w-full rounded-[40px] shadow-2xl overflow-hidden flex flex-col items-center p-8">
+                <div id="preview-card-container" class="w-full aspect-[4/5] bg-white rounded-3xl border-2 border-slate-100 shadow-inner flex items-center justify-center p-6 overflow-hidden mb-6"></div>
+                <h3 id="preview-card-text" class="text-xl font-black text-slate-800 text-center uppercase tracking-wider"></h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Escolher novo valor em jogo (cartas Comprar 4 e Escolher / Escolher) -->
+    <div id="modal-descarte-wild" class="fixed inset-0 bg-slate-900/50 backdrop-blur-md hidden items-center justify-center z-[70] p-4">
+        <div class="bg-white w-full max-w-4xl max-h-full overflow-y-auto rounded-[36px] shadow-2xl p-8 space-y-6">
+            <div class="text-center">
+                <div class="w-14 h-14 mx-auto rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center text-2xl mb-3">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <h3 id="descarte-wild-title" class="text-base font-black text-slate-900">Escolha o novo valor em jogo</h3>
+            </div>
+            <div id="descarte-wild-options" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
+            <div class="rounded-3xl bg-slate-50 border border-slate-100 px-4 pt-3 pb-2 overflow-hidden">
+                <p class="text-[11px] font-black uppercase tracking-widest text-slate-400 text-center">Suas cartas</p>
+                <div id="descarte-wild-hand" class="flex items-end justify-center flex-nowrap" style="padding-top: 22px; padding-bottom: 4px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resultado da partida -->
+    <div id="modal-descarte-result" class="fixed inset-0 bg-slate-900/50 backdrop-blur-md hidden items-center justify-center z-50 p-4 overflow-y-auto">
+        <div class="bg-white w-full max-w-lg rounded-[40px] shadow-2xl overflow-hidden my-8 flex flex-col max-h-[90vh]">
+            <div class="p-8 border-b border-slate-100 shrink-0 bg-slate-50 text-center">
+                <i id="descarte-result-icon" class="fa-solid fa-trophy text-amber-500 text-3xl"></i>
+                <h3 id="descarte-result-title" class="text-2xl font-black text-slate-900 mt-3">Fim de Jogo!</h3>
+                <p id="descarte-result-subtitle" class="text-sm text-slate-500 font-bold mt-1"></p>
+            </div>
+            <div class="p-8 space-y-2 overflow-y-auto custom-scrollbar flex-1">
+                <div id="descarte-result-scoreboard" class="space-y-2"></div>
+            </div>
+            <div class="p-6 border-t bg-slate-50 shrink-0 flex flex-col sm:flex-row gap-3 justify-end">
+                <button onclick="app.descarteExit()" class="px-6 py-3 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-bold rounded-xl text-sm transition">
+                    Sair
+                </button>
+                <button onclick="app.descarteRestartMatch();" class="px-6 py-3 bg-emerald-600 text-white font-bold rounded-xl text-sm transition shadow-lg shadow-emerald-200 hover:bg-emerald-700">
+                    Jogar Novamente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/play-descarte.js?v=1"></script>
+</body>
+</html>

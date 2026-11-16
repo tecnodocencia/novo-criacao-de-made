@@ -151,6 +151,31 @@ function handFanTransform(index, total, cardW = CARD_W) {
 
 function descarte(app) { return app.state.descarte; }
 
+// Partida em rede (link compartilhado, um aluno por computador — ver
+// js/games/descarte/net.js): `e.localIdx` é o jogador deste computador e
+// `e.net` traz os ganchos de sincronização (`role` 'host' ou 'guest'). Sem
+// `e.net` é a partida local de sempre, em que a vez é de quem não é o bot.
+function isLocalTurn(e) {
+    if (e.localIdx != null) return e.currentPlayerIndex === e.localIdx;
+    return !e.players[e.currentPlayerIndex].isBot;
+}
+
+function canLocalAct(e) {
+    return !!e && e.winner == null && !e.awaitingHandoff && !e.pendingWild && !e.busy && isLocalTurn(e);
+}
+
+function isGuest(e) { return !!(e && e.net && e.net.role === 'guest'); }
+
+// O convidado não roda o motor: manda a jogada para o anfitrião e espera o
+// estado novo. `busy` impede cliques repetidos enquanto isso (e se solta
+// sozinho se a resposta não vier).
+function sendToHost(app, action) {
+    const e = descarte(app);
+    e.busy = true;
+    e.net.send(action);
+    setTimeout(() => { if (descarte(app) === e) e.busy = false; }, 5000);
+}
+
 function topTags(app) {
     const d = descarte(app).discardPile;
     const top = d[d.length - 1];
@@ -397,8 +422,11 @@ function animatePlay(app, playerIdx, card) {
     const handCard = document.querySelector(`#descarte-hand .descarte-hand-card[data-instance="${card.instanceId}"]`);
     const fromOpponent = !handCard;
     const source = handCard || playerRowEl(playerIdx);
+    const e = descarte(app);
+    if (e.net && e.net.onPlayAnim) e.net.onPlayAnim(playerIdx, card);
     const duration = flyCard(app, source, document.getElementById('descarte-discard-top'), card,
         { duration: fromOpponent ? FLY_OPP_MS : FLY_MS, flip: fromOpponent });
+    if (e.net) e.net.flightEndsAt = Date.now() + duration;
     // A carta de verdade some do lugar enquanto a cópia voa (senão apareceria duas vezes).
     if (duration > 0 && source && source.style) source.style.visibility = 'hidden';
     return duration;
@@ -411,11 +439,12 @@ function afterTurnChange(app) {
     const cur = e.players[e.currentPlayerIndex];
     // A tela "Passe o dispositivo" só faz sentido quando há mais de um humano
     // dividindo o aparelho; contra o computador ela só atrasa a partida.
+    // Em rede cada aluno tem o próprio computador, então nunca há handoff.
     const humanCount = e.players.filter(p => !p.isBot).length;
-    e.awaitingHandoff = !cur.isBot && humanCount > 1;
+    e.awaitingHandoff = !e.net && !cur.isBot && humanCount > 1;
     renderAll(app);
     if (cur.isBot) {
-        setTimeout(() => botTakeTurn(app), BOT_THINK_MS);
+        setTimeout(() => { if (descarte(app) === e) botTakeTurn(app); }, BOT_THINK_MS);
     }
 }
 
@@ -431,9 +460,14 @@ function resolvePlay(app, playerIdx, card, skipAnimation = false) {
     // 1ª passada: só anima o voo da carta. O estado do jogo (mão, mesa, efeito
     // da carta, troca de vez) só muda DEPOIS que ela chega na mesa — senão a
     // vez já passaria pro próximo jogador no meio da animação.
+    // Exceção: jogada vinda do outro computador (player.remote). Lá o aluno
+    // já viu a carta voar e espera a resposta, então o estado muda na hora e
+    // aqui a carta só "pousa" na mesa (landDelay) quando a cópia chegar.
+    let landDelay = 0;
     if (!skipAnimation) {
         const flight = animatePlay(app, playerIdx, card);
-        if (flight > 0) {
+        if (player.remote) landDelay = flight;
+        else if (flight > 0) {
             e.busy = true;
             setTimeout(() => {
                 if (descarte(app) !== e) return; // partida reiniciada durante o voo
@@ -445,7 +479,7 @@ function resolvePlay(app, playerIdx, card, skipAnimation = false) {
         }
     }
 
-    e.landDelay = 0;
+    e.landDelay = landDelay;
     e.landFx = true; // renderAll faz a carta "pousar" na mesa (efeito de pulo)
     player.hand.splice(idx, 1);
     e.discardPile.push(card);
@@ -463,7 +497,8 @@ function resolvePlay(app, playerIdx, card, skipAnimation = false) {
         } else {
             e.pendingWild = { cardInstanceId: card.instanceId, kind: card.kind };
             renderAll(app);
-            openWildModal(app, card.kind);
+            // Aluno do outro computador escolhe lá (ver applyGuestView).
+            if (!player.remote) openWildModal(app, card.kind);
         }
         return;
     }
@@ -492,7 +527,7 @@ function botTakeTurn(app) {
         // Pausa curta entre "decidiu" e "jogou", pra dar tempo do jogador ver
         // qual carta o computador escolheu antes dela ir pro descarte.
         pulsePlayerRow(playerIdx);
-        setTimeout(() => resolvePlay(app, playerIdx, chosen), BOT_ACT_MS);
+        setTimeout(() => { if (descarte(app) === e) resolvePlay(app, playerIdx, chosen); }, BOT_ACT_MS);
         return;
     }
 
@@ -503,6 +538,7 @@ function botTakeTurn(app) {
     }
     renderAll(app); // mostra a compra (monte diminui, mão aumenta) antes de decidir o que fazer com ela
     setTimeout(() => {
+        if (descarte(app) !== e) return; // partida encerrada/reiniciada nesse meio-tempo
         if (drawn && cardMatchesTags(drawn, top)) { resolvePlay(app, playerIdx, drawn); return; }
         advanceTurn(app, 1);
         e.turnDrawn = false;
@@ -562,10 +598,13 @@ function openResultModal(app, winnerIdx, score) {
     const modal = document.getElementById('modal-descarte-result');
     if (!modal) return;
 
+    // Em rede, só o vencedor ganha o troféu na própria tela.
+    const youWon = e.localIdx != null ? winnerIdx === e.localIdx : !winner.isBot;
     const icon = document.getElementById('descarte-result-icon');
-    if (icon) icon.className = !winner.isBot ? 'fa-solid fa-trophy text-amber-500 text-3xl animate-bounce' : 'fa-solid fa-robot text-slate-500 text-3xl';
+    if (icon) icon.className = youWon ? 'fa-solid fa-trophy text-amber-500 text-3xl animate-bounce'
+        : winner.isBot ? 'fa-solid fa-robot text-slate-500 text-3xl' : 'fa-solid fa-flag-checkered text-slate-500 text-3xl';
     const titleEl = document.getElementById('descarte-result-title');
-    if (titleEl) titleEl.innerText = `${winner.name} venceu a partida!`;
+    if (titleEl) titleEl.innerText = e.localIdx === winnerIdx ? 'Você venceu a partida!' : `${winner.name} venceu a partida!`;
     const subEl = document.getElementById('descarte-result-subtitle');
     if (subEl) subEl.innerText = `Pontuação: ${score} pts (10 pts por carta restante na mão de cada oponente)`;
 
@@ -601,16 +640,24 @@ function renderAll(app) {
 
     const cur = e.players[e.currentPlayerIndex];
 
+    const localTurn = e.winner == null && isLocalTurn(e);
     const banner = document.getElementById('descarte-turn-banner');
     if (banner) {
-        banner.innerText = e.winner != null ? 'Partida encerrada' : `Vez de: ${cur.name}`;
-        const humanTurn = e.winner == null && !cur.isBot;
-        banner.className = humanTurn
+        banner.innerText = e.winner != null ? 'Partida encerrada'
+            : (e.localIdx != null && localTurn) ? 'Sua vez!' : `Vez de: ${cur.name}`;
+        banner.className = localTurn
             ? 'descarte-turn-you text-center border font-black uppercase tracking-widest text-xs py-3 rounded-2xl mb-1'
             : 'text-center bg-slate-100 border border-slate-200 text-slate-500 font-black uppercase tracking-widest text-xs py-2 rounded-2xl mb-1';
     }
 
-    document.getElementById('descarte-bot-indicator')?.classList.toggle('hidden', !(cur.isBot && e.winner == null));
+    const botIndicator = document.getElementById('descarte-bot-indicator');
+    if (botIndicator) {
+        botIndicator.classList.toggle('hidden', !(e.winner == null && !localTurn));
+        // Em rede, a vez pode ser do aluno do outro computador.
+        botIndicator.innerHTML = cur.isBot
+            ? '<i class="fa-solid fa-robot mr-1"></i> Computador jogando...'
+            : `<i class="fa-solid fa-hourglass-half mr-1"></i> ${e.pendingWild ? 'Escolhendo o valor' : 'Aguardando a jogada'} de ${app.escapeCardText(cur.name)}...`;
+    }
 
     const handoff = document.getElementById('descarte-handoff-overlay');
     if (handoff) {
@@ -648,7 +695,7 @@ function renderAll(app) {
     if (panel) {
         panel.innerHTML = e.players.map((p, idx) => `
             <div class="flex items-center justify-between gap-2 px-3 py-2 rounded-xl ${idx === e.currentPlayerIndex && e.winner == null ? 'bg-emerald-50 border border-emerald-200' : 'bg-slate-50 border border-slate-100'}">
-                <span class="text-sm font-bold text-slate-700 truncate">${p.isBot ? '<i class="fa-solid fa-robot mr-1.5 text-slate-400"></i>' : '<i class="fa-solid fa-user mr-1.5 text-slate-400"></i>'}${app.escapeCardText(p.name)}</span>
+                <span class="text-sm font-bold text-slate-700 truncate">${p.isBot ? '<i class="fa-solid fa-robot mr-1.5 text-slate-400"></i>' : '<i class="fa-solid fa-user mr-1.5 text-slate-400"></i>'}${app.escapeCardText(p.name)}${idx === e.localIdx ? ' <span class="text-emerald-600">(você)</span>' : ''}</span>
                 <span class="text-sm font-black text-slate-500 shrink-0">${p.hand.length} ${p.hand.length === 1 ? 'carta' : 'cartas'}</span>
             </div>
         `).join('');
@@ -656,8 +703,9 @@ function renderAll(app) {
 
     // Oponentes: todos menos quem está "vendo" a tela (o humano da vez; durante
     // a jogada do computador, o último humano que jogou). Cartas viradas.
+    // Em rede, é sempre o aluno deste computador.
     if (!cur.isBot) e.viewerIdx = e.currentPlayerIndex;
-    let viewerIdx = e.viewerIdx;
+    let viewerIdx = e.localIdx != null ? e.localIdx : e.viewerIdx;
     if (viewerIdx == null) viewerIdx = Math.max(0, e.players.findIndex(p => !p.isBot));
     const oppEl = document.getElementById('descarte-opponents');
     if (oppEl) {
@@ -678,17 +726,20 @@ function renderAll(app) {
         }).join('');
     }
 
+    // Em rede o aluno vê a própria mão o tempo todo (só joga na sua vez);
+    // na partida local, só a mão do humano da vez.
+    const handOwner = e.localIdx != null ? e.players[e.localIdx] : cur;
     const handEl = document.getElementById('descarte-hand');
     if (handEl) {
-        if (cur.isBot || e.awaitingHandoff || e.winner != null) {
+        if (e.localIdx == null && (cur.isBot || e.awaitingHandoff || e.winner != null)) {
             handEl.innerHTML = '';
         } else {
             // Toda carta da mão pode ser clicada e tentada — não existe mais
             // distinção visual de "jogável"/"desabilitada". Quem decide se a
             // carta vale é descartePlayHandCard(), que mostra um popup e balança
             // a carta no lugar (descarteShakeHandCard) quando ela não combina.
-            handEl.innerHTML = cur.hand.map((card, idx) => {
-                const { angle, lift, overlap } = handFanTransform(idx, cur.hand.length);
+            handEl.innerHTML = handOwner.hand.map((card, idx) => {
+                const { angle, lift, overlap } = handFanTransform(idx, handOwner.hand.length);
                 // Medidas relativas ao tamanho da carta (--e-hand-w/-h, ver CSS), que
                 // varia com a altura da janela.
                 const slotStyle = `transform: rotate(${angle.toFixed(1)}deg) translateY(calc(var(--e-hand-h) * ${(lift / 215).toFixed(3)})); margin-left:calc(var(--e-hand-w) * -${overlap.toFixed(3)}); z-index:${idx};`;
@@ -710,7 +761,7 @@ function renderAll(app) {
         }
     }
 
-    const canAct = !cur.isBot && e.winner == null && !e.awaitingHandoff && !e.pendingWild;
+    const canAct = localTurn && !e.awaitingHandoff && !e.pendingWild;
     if (drawPileEl) drawPileEl.classList.toggle('opacity-40', !(canAct && !e.turnDrawn));
     // Sem nenhuma carta jogável (e ainda sem ter comprado), comprar é obrigatório:
     // o monte pulsa e o rótulo avisa.
@@ -726,8 +777,198 @@ function renderAll(app) {
     }
     const passBtn = document.getElementById('descarte-pass-btn');
     if (passBtn) passBtn.classList.toggle('hidden', !(canAct && e.turnDrawn));
+    // Anfitrião de partida em rede: todo redesenho manda o estado novo (com
+    // as compras ainda por animar) para o outro computador.
+    if (e.net && e.net.onRender) e.net.onRender((e.drawAnims || []).slice());
     flushDrawAnims(app);
 }
+
+// --- Montagem da partida e ações de jogador ---
+// Compartilhadas entre a plataforma (playerMethods abaixo) e a página pública
+// do link compartilhado (js/play-descarte.js + js/games/descarte/net.js).
+
+// Cria a partida em app.state.descarte (baralho, mãos, carta inicial).
+// `roster`: [{ name, isBot, remote? }] — quem está no índice 0 começa.
+// `extra` entra no estado da partida (ex.: mode, localIdx, net).
+function createMatch(app, sourceGame, roster, extra = {}) {
+    const numPlayers = roster.length;
+    app.state.activeGame = JSON.parse(JSON.stringify(sourceGame));
+    const attributes = app.state.activeGame.cards.attributes;
+    const { deck, cartasBase } = buildDeck(attributes, numPlayers);
+    const shuffled = app.shuffleArray(deck);
+    const handSize = computeHandSize(cartasBase, numPlayers);
+
+    const players = roster.map(p => ({ ...p, hand: [] }));
+    for (let i = 0; i < handSize; i++) {
+        players.forEach(p => {
+            const c = shuffled.pop();
+            if (c) p.hand.push(c);
+        });
+    }
+
+    let discardTop = null;
+    const setAside = [];
+    while (shuffled.length > 0) {
+        const c = shuffled.pop();
+        if (c.kind === 'base') { discardTop = c; break; }
+        setAside.push(c);
+    }
+    const drawPile = [...shuffled, ...setAside];
+
+    app.state.descarte = {
+        players,
+        drawPile,
+        discardPile: discardTop ? [discardTop] : [],
+        currentPlayerIndex: 0,
+        direction: 1,
+        turnDrawn: false,
+        pendingWild: null,
+        awaitingHandoff: false,
+        winner: null,
+        ...extra
+    };
+    return { numPlayers, handSize };
+}
+
+// Compra 1 carta para o jogador da vez. Retorna false se o monte acabou.
+function drawForCurrent(app) {
+    const e = descarte(app);
+    const card = drawOne(app);
+    if (!card) return false;
+    e.players[e.currentPlayerIndex].hand.push(card);
+    queueDrawAnim(app, e.currentPlayerIndex, card);
+    e.turnDrawn = true;
+    renderAll(app);
+    return true;
+}
+
+function passTurn(app) {
+    advanceTurn(app, 1);
+    descarte(app).turnDrawn = false;
+    afterTurnChange(app);
+}
+
+function chooseWild(app, attrIdx, valueId) {
+    const e = descarte(app);
+    const card = e.discardPile.find(c => c.instanceId === e.pendingWild.cardInstanceId);
+    if (card) card.tags = [{ attr: attrIdx, valueId }];
+    if (card) applyWildEffect(app, card);
+    afterTurnChange(app);
+}
+
+// --- Partida em rede ---
+// O computador do anfitrião roda o motor inteiro; o convidado só recebe a
+// "visão" dele (a própria mão + quantas cartas cada um tem) e manda jogadas.
+// Assim nenhum aluno recebe as cartas do outro.
+
+// Jogada recebida do convidado (`playerIdx`), validada aqui no anfitrião.
+function applyRemoteAction(app, playerIdx, action) {
+    const e = descarte(app);
+    if (!e || !action) return;
+    const player = e.players[playerIdx];
+    const ok = e.winner == null && !e.busy && e.currentPlayerIndex === playerIdx && player && player.remote;
+    if (ok) {
+        if (action.type === 'play' && !e.pendingWild) {
+            const card = player.hand.find(c => c.instanceId === action.instanceId);
+            if (card && cardMatchesTags(card, topTags(app))) { resolvePlay(app, playerIdx, card); return; }
+        } else if (action.type === 'draw' && !e.pendingWild && !e.turnDrawn) {
+            if (drawForCurrent(app)) return;
+        } else if (action.type === 'pass' && !e.pendingWild && e.turnDrawn) {
+            passTurn(app); return;
+        } else if (action.type === 'wild' && e.pendingWild) {
+            const attr = app.state.activeGame.cards.attributes[action.attrIdx];
+            if (masterValues(attr).some(v => v.id === action.valueId)) { chooseWild(app, action.attrIdx, action.valueId); return; }
+        }
+    }
+    renderAll(app); // jogada recusada: reenvia o estado para destravar o convidado
+}
+
+// O que o anfitrião envia para o jogador `idx`.
+function viewFor(app, idx, drawAnims = []) {
+    const e = descarte(app);
+    return {
+        you: idx,
+        mode: e.mode,
+        players: e.players.map(p => ({ name: p.name, isBot: !!p.isBot, count: p.hand.length })),
+        hand: e.players[idx].hand,
+        drawCount: e.drawPile.length,
+        top: e.discardPile[e.discardPile.length - 1] || null,
+        currentPlayerIndex: e.currentPlayerIndex,
+        direction: e.direction,
+        turnDrawn: e.turnDrawn,
+        pendingWild: e.pendingWild,
+        winner: e.winner,
+        // Carta comprada só vai junto se for do próprio convidado.
+        draws: drawAnims.map(d => ({ playerIdx: d.playerIdx, card: d.playerIdx === idx ? d.card : null }))
+    };
+}
+
+// No convidado: monta um estado "de mentira" a partir da visão (mãos dos
+// outros e monte viram cartas vazias, só pela quantidade) e desenha a mesa
+// com o mesmo renderAll da partida local.
+function applyGuestView(app, view, net) {
+    const prev = descarte(app);
+    const hidden = (i, k) => ({ instanceId: `hidden-${i}-${k}`, kind: 'hidden', tags: [] });
+    const players = view.players.map((p, i) => ({
+        name: p.name,
+        isBot: p.isBot,
+        hand: i === view.you ? view.hand : Array.from({ length: p.count }, (_, k) => hidden(i, k))
+    }));
+    const e = {
+        mode: view.mode,
+        players,
+        drawPile: new Array(view.drawCount).fill(null),
+        discardPile: view.top ? [view.top] : [],
+        currentPlayerIndex: view.currentPlayerIndex,
+        direction: view.direction,
+        turnDrawn: view.turnDrawn,
+        pendingWild: view.pendingWild,
+        awaitingHandoff: false,
+        winner: view.winner,
+        localIdx: view.you,
+        net,
+        drawAnims: (view.draws || []).map(d => ({ playerIdx: d.playerIdx, card: d.card || { instanceId: 'hidden' } }))
+    };
+    // Carta nova na mesa (ou valor escolhido num Escolher): efeito de pouso,
+    // esperando a cópia que ainda está voando chegar.
+    const prevTop = prev && prev.discardPile[prev.discardPile.length - 1];
+    if (view.top && (!prevTop || prevTop.instanceId !== view.top.instanceId)) {
+        e.landFx = true;
+        e.landDelay = Math.max(0, (net.flightEndsAt || 0) - Date.now());
+    }
+    app.state.descarte = e;
+    renderAll(app);
+
+    const wildModal = document.getElementById('modal-descarte-wild');
+    if (e.winner == null && e.pendingWild && e.currentPlayerIndex === e.localIdx) {
+        if (!wildModal || wildModal.style.display !== 'flex') openWildModal(app, e.pendingWild.kind);
+    } else if (wildModal) {
+        wildModal.style.display = 'none';
+    }
+    const resultModal = document.getElementById('modal-descarte-result');
+    if (e.winner != null && (!prev || prev.winner == null)) {
+        openResultModal(app, e.winner, calculateDescarteScore(players, e.winner));
+    } else if (e.winner == null && resultModal) {
+        resultModal.style.display = 'none';
+    }
+}
+
+// No convidado: anima a carta que outro jogador acabou de jogar.
+function animateRemotePlay(app, playerIdx, card) {
+    const e = descarte(app);
+    if (!e || playerIdx === e.localIdx) return;
+    animatePlay(app, playerIdx, card);
+}
+
+export const descarteEngine = {
+    createMatch,
+    startTurns: afterTurnChange,
+    renderAll,
+    applyRemoteAction,
+    viewFor,
+    applyGuestView,
+    animateRemotePlay
+};
 
 export const playerMethods = {
     testGameFromCreator: function() {
@@ -737,80 +978,26 @@ export const playerMethods = {
         }
         this.state.isTestingFromCreator = true;
         this.state.selectedGameIdForPlay = null;
-        this.descarteOpenSetupModal();
+        this.descarteStartMatch();
     },
 
     openDifficultySelect: function(gameId) {
         this.state.selectedGameIdForPlay = gameId;
-        this.descarteOpenSetupModal();
+        this.descarteStartMatch();
     },
 
-    descarteOpenSetupModal: function() {
-        const game = this.state.isTestingFromCreator
-            ? this.state.editingGame
-            : this.state.games.find(g => String(g.id) === String(this.state.selectedGameIdForPlay));
-        const nameEl = document.getElementById('descarte-setup-game-name');
-        if (nameEl) nameEl.innerText = game?.name || '';
-        const modal = document.getElementById('modal-descarte-setup');
-        if (modal) modal.style.display = 'flex';
-    },
-
-    descarteCloseSetupModal: function() {
-        const modal = document.getElementById('modal-descarte-setup');
-        if (modal) modal.style.display = 'none';
-    },
-
-    descarteStartMatch: function(mode) {
+    // Na plataforma a partida é sempre 1 aluno contra o computador. As
+    // partidas entre alunos (cada um no seu computador) ficam no link
+    // compartilhado (play-descarte.html).
+    descarteStartMatch: function() {
         const sourceGame = this.state.isTestingFromCreator
             ? this.state.editingGame
             : this.state.games.find(g => String(g.id) === String(this.state.selectedGameIdForPlay));
         if (!sourceGame) return;
 
-        const configs = {
-            solo: [{ name: 'Você', isBot: false }, { name: 'Computador', isBot: true }],
-            trio: [{ name: 'Jogador 1', isBot: false }, { name: 'Jogador 2', isBot: false }, { name: 'Computador', isBot: true }],
-            duo: [{ name: 'Jogador 1', isBot: false }, { name: 'Jogador 2', isBot: false }]
-        };
-        const roster = configs[mode] || configs.solo;
-        const numPlayers = roster.length;
+        const { numPlayers, handSize } = createMatch(this, sourceGame,
+            [{ name: 'Você', isBot: false }, { name: 'Computador', isBot: true }], { mode: 'solo' });
 
-        this.state.activeGame = JSON.parse(JSON.stringify(sourceGame));
-        const attributes = this.state.activeGame.cards.attributes;
-        const { deck, cartasBase } = buildDeck(attributes, numPlayers);
-        const shuffled = this.shuffleArray(deck);
-        const handSize = computeHandSize(cartasBase, numPlayers);
-
-        const players = roster.map(p => ({ ...p, hand: [] }));
-        for (let i = 0; i < handSize; i++) {
-            players.forEach(p => {
-                const c = shuffled.pop();
-                if (c) p.hand.push(c);
-            });
-        }
-
-        let discardTop = null;
-        const setAside = [];
-        while (shuffled.length > 0) {
-            const c = shuffled.pop();
-            if (c.kind === 'base') { discardTop = c; break; }
-            setAside.push(c);
-        }
-        const drawPile = [...shuffled, ...setAside];
-
-        this.state.descarte = {
-            mode,
-            players,
-            drawPile,
-            discardPile: discardTop ? [discardTop] : [],
-            currentPlayerIndex: 0,
-            direction: 1,
-            turnDrawn: false,
-            pendingWild: null,
-            awaitingHandoff: false,
-            winner: null
-        };
-
-        this.descarteCloseSetupModal();
         this.switchView('player');
         document.getElementById('back-from-player-btn')?.classList.remove('hidden');
         document.getElementById('save-from-player-btn')?.classList.toggle('hidden', !this.state.isTestingFromCreator);
@@ -821,7 +1008,7 @@ export const playerMethods = {
 
     descarteRestartMatch: function() {
         this.descarteCloseResultModal();
-        if (this.state.descarte) this.descarteStartMatch(this.state.descarte.mode);
+        if (this.state.descarte) this.descarteStartMatch();
     },
 
     descarteConfirmHandoff: function() {
@@ -832,10 +1019,9 @@ export const playerMethods = {
 
     descartePlayHandCard: function(cardInstanceId) {
         const e = this.state.descarte;
-        if (!e || e.winner != null || e.awaitingHandoff || e.pendingWild || e.busy) return;
+        if (!canLocalAct(e)) return;
         const playerIdx = e.currentPlayerIndex;
         const player = e.players[playerIdx];
-        if (player.isBot) return;
         const card = player.hand.find(c => c.instanceId === cardInstanceId);
         if (!card) return;
         if (!cardMatchesTags(card, topTags(this))) {
@@ -846,6 +1032,11 @@ export const playerMethods = {
                 return;
             }
             this.showNotification('Essa carta não compartilha nenhum atributo com a carta da mesa. Tente outra.', 'Carta incorreta');
+            return;
+        }
+        if (isGuest(e)) {
+            animatePlay(this, playerIdx, card);
+            sendToHost(this, { type: 'play', instanceId: cardInstanceId });
             return;
         }
         resolvePlay(this, playerIdx, card);
@@ -865,44 +1056,32 @@ export const playerMethods = {
 
     descarteDrawCard: function() {
         const e = this.state.descarte;
-        if (!e || e.winner != null || e.awaitingHandoff || e.pendingWild || e.busy) return;
-        const player = e.players[e.currentPlayerIndex];
-        if (player.isBot || e.turnDrawn) return;
-        const card = drawOne(this);
-        if (!card) { this.showNotification('O monte de compra está vazio.'); return; }
-        player.hand.push(card);
-        queueDrawAnim(this, e.currentPlayerIndex, card);
-        e.turnDrawn = true;
-        renderAll(this);
+        if (!canLocalAct(e) || e.turnDrawn) return;
+        if (isGuest(e) && e.drawPile.length > 0) { sendToHost(this, { type: 'draw' }); return; }
+        if (isGuest(e) || !drawForCurrent(this)) this.showNotification('O monte de compra está vazio.');
     },
 
     descartePassTurn: function() {
         const e = this.state.descarte;
-        if (!e || e.winner != null || e.awaitingHandoff || e.pendingWild || e.busy) return;
-        const player = e.players[e.currentPlayerIndex];
-        if (player.isBot || !e.turnDrawn) return;
-        advanceTurn(this, 1);
-        e.turnDrawn = false;
-        afterTurnChange(this);
+        if (!canLocalAct(e) || !e.turnDrawn) return;
+        if (isGuest(e)) { sendToHost(this, { type: 'pass' }); return; }
+        passTurn(this);
     },
 
     descarteChooseWildValue: function(attrIdx, valueId) {
         const e = this.state.descarte;
-        const pw = e?.pendingWild;
-        if (!pw) return;
-        const card = e.discardPile.find(c => c.instanceId === pw.cardInstanceId);
-        if (card) card.tags = [{ attr: attrIdx, valueId }];
+        if (!e?.pendingWild) return;
         const modal = document.getElementById('modal-descarte-wild');
         if (modal) modal.style.display = 'none';
-        if (card) applyWildEffect(this, card);
-        afterTurnChange(this);
+        if (isGuest(e)) { sendToHost(this, { type: 'wild', attrIdx, valueId }); return; }
+        chooseWild(this, attrIdx, valueId);
     },
 
     descartePreviewHandCard: function(instanceId) {
         const e = this.state.descarte;
         if (!e || !this.state.activeGame) return;
-        const cur = e.players[e.currentPlayerIndex];
-        const card = cur.hand.find(c => c.instanceId === instanceId);
+        const owner = e.players[e.localIdx != null ? e.localIdx : e.currentPlayerIndex];
+        const card = owner.hand.find(c => c.instanceId === instanceId);
         if (!card) return;
         const modal = document.getElementById('modal-preview');
         const container = document.getElementById('preview-card-container');
