@@ -270,14 +270,21 @@ export const dashboardMethods = {
                         </div>
                         ${cover ? `<img src="${cover}" alt="${modelName}" title="Modelo ${modelName}" class="w-24 shrink-0 rounded-lg shadow-md object-contain" />` : ''}
                     </div>
-                    <div class="pt-3 border-t border-rose-100 mt-3 space-y-1">
-                        <p class="text-xs font-black uppercase tracking-widest text-rose-700">Enunciado</p>
-                        <p class="text-[15px]">${game.enunciado || '-'}</p>
-                    </div>
-                    <div class="space-y-1 pt-1">
-                        <p class="text-xs font-black uppercase tracking-widest text-rose-700">Regra</p>
-                        <p class="text-[15px]">${game.regra || '-'}</p>
-                    </div>
+                    <!-- Enunciado e Regra ficam recolhidos (podem ser longos); abrem no clique. -->
+                    <details class="game-card-details pt-3 border-t border-rose-100 mt-3">
+                        <summary class="flex items-center justify-between gap-2 cursor-pointer select-none text-xs font-black uppercase tracking-widest text-rose-700 hover:text-rose-900">
+                            <span>Enunciado e Regra</span>
+                            <i class="fa-solid fa-chevron-down game-card-details-chevron transition-transform"></i>
+                        </summary>
+                        <div class="space-y-1 pt-3">
+                            <p class="text-xs font-black uppercase tracking-widest text-rose-700">Enunciado</p>
+                            <p class="text-[15px]">${game.enunciado || '-'}</p>
+                        </div>
+                        <div class="space-y-1 pt-3">
+                            <p class="text-xs font-black uppercase tracking-widest text-rose-700">Regra</p>
+                            <p class="text-[15px]">${game.regra || '-'}</p>
+                        </div>
+                    </details>
                 </div>
                 <div class="rounded-3xl border ${accent.cardBorder} ${accent.trayBg} p-2 flex flex-nowrap gap-1.5">
                     <button onclick="app.startPlayFlow('${game.id}')" class="flex-1 min-w-0 bg-green-600 text-white font-bold py-3 px-2 rounded-2xl text-sm shadow-lg shadow-green-100 transition hover:bg-green-700 flex items-center justify-center gap-1.5 whitespace-nowrap overflow-hidden">
