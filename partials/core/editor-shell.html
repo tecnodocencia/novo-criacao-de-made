@@ -1,15 +1,15 @@
                 <div class="flex-1 min-h-0">
                     <aside id="editor-aside" class="hero-surface flex-1 h-full min-h-0 bg-[#FFF0D1]">
-                      <div class="hero-content h-full overflow-y-auto p-6">
+                      <div class="hero-content h-full overflow-y-auto px-6 py-3">
                       <div class="w-full space-y-5">
-<div class="flex items-center gap-4 mb-8">
-                        <div class="w-12 h-12 shrink-0 rounded-2xl bg-white text-amber-600 shadow flex items-center justify-center text-lg">
+<div class="flex items-center gap-4 mb-3">
+                        <div class="w-10 h-10 shrink-0 rounded-2xl bg-white text-amber-600 shadow flex items-center justify-center text-lg">
                             <i class="fa-solid fa-gamepad"></i>
                         </div>
                         <h2 class="text-2xl font-bold text-rose-950">Novo Jogo</h2>
                     </div>
-                        <div class="rounded-[32px] border border-slate-200 bg-white shadow-sm p-5 space-y-4">
-                        <div class="space-y-4">
+                        <div class="rounded-[32px] border border-slate-200 bg-white shadow-sm px-5 py-4 space-y-3">
+                        <div class="space-y-3">
                             <div class="flex items-center justify-between gap-3">
                                 <div>
                                     <p class="text-[11px] uppercase tracking-[0.28em] text-slate-500 font-bold">Passo <span id="creator-step-current">1</span> de 3</p>
@@ -17,30 +17,30 @@
                                 </div>
                                 <span id="autosave-indicator" class="text-lg font-bold text-slate-400 transition-opacity duration-300 opacity-0" aria-live="polite"></span>
                             </div>
-                            <div class="relative h-2 rounded-full bg-slate-200 overflow-hidden mt-2">
+                            <div class="relative h-2 rounded-full bg-slate-200 overflow-hidden">
                                 <div id="creator-progress-fill" class="absolute inset-y-0 left-0 bg-[#EA3257] rounded-full transition-all duration-300" style="width:33.33%"></div>
                             </div>
                         </div>
 
                         <div id="creator-phase-1" class="creator-phase">
-                            <div class="space-y-4">
-                                <div class="space-y-1">
+                            <div class="space-y-3">
+                                <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                                     <p class="text-sm uppercase tracking-[0.28em] text-slate-500 font-black">Informações iniciais</p>
                                     <p class="text-sm text-slate-600">Preencha os dados básicos do jogo e os autores.</p>
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
                                     <div>
-                                        <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Título do Jogo</label>
-                                        <input id="edit-game-name" type="text" oninput="app.scheduleAutoSave()" title="Nome que identifica o jogo. Aparecerá para o aluno e nas listagens do professor." class="w-full py-3 px-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Jogo dos Mamíferos">
+                                        <label class="text-xs font-black text-slate-500 uppercase block mb-1 tracking-widest">Título do Jogo</label>
+                                        <input id="edit-game-name" type="text" oninput="app.scheduleAutoSave()" title="Nome que identifica o jogo. Aparecerá para o aluno e nas listagens do professor." class="w-full py-2.5 px-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Jogo dos Mamíferos">
                                     </div>
                                     <div>
-                                        <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo</label>
-                                        <input id="edit-game-conteudo" type="text" oninput="app.scheduleAutoSave()" title="Assunto específico abordado pelo jogo dentro da disciplina escolhida." class="w-full py-3 px-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Mamíferos, Frações, Leitura...">
+                                        <label class="text-xs font-black text-slate-500 uppercase block mb-1 tracking-widest">Conteúdo</label>
+                                        <input id="edit-game-conteudo" type="text" oninput="app.scheduleAutoSave()" title="Assunto específico abordado pelo jogo dentro da disciplina escolhida." class="w-full py-2.5 px-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Mamíferos, Frações, Leitura...">
                                     </div>
                                     <div>
-                                        <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Disciplina</label>
+                                        <label class="text-xs font-black text-slate-500 uppercase block mb-1 tracking-widest">Disciplina</label>
                                         <div class="relative">
-                                            <select id="edit-game-disciplina" title="Disciplina escolar à qual o jogo pertence. Usada para organizar e filtrar os jogos." onchange="app.handleDisciplinaSelectChange(event); app.scheduleAutoSave();" class="w-full py-3 px-4 pr-11 border-2 border-slate-300 rounded-3xl outline-none focus:border-emerald-500 transition text-sm bg-white appearance-none cursor-pointer">
+                                            <select id="edit-game-disciplina" title="Disciplina escolar à qual o jogo pertence. Usada para organizar e filtrar os jogos." onchange="app.handleDisciplinaSelectChange(event); app.scheduleAutoSave();" class="w-full py-2.5 px-4 pr-11 border-2 border-slate-300 rounded-3xl outline-none focus:border-emerald-500 transition text-sm bg-white appearance-none cursor-pointer">
                                                 <option value="Biologia">Biologia</option>
                                                 <option value="Dança">Dança</option>
                                                 <option value="Educação Física">Educação Física</option>
@@ -68,9 +68,9 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Série</label>
+                                        <label class="text-xs font-black text-slate-500 uppercase block mb-1 tracking-widest">Série</label>
                                         <div class="relative">
-                                            <select id="edit-game-serie" title="Ano/série escolar para a qual o jogo foi pensado." onchange="app.handleSerieSelectChange(event); app.scheduleAutoSave();" class="w-full py-3 px-4 pr-11 border-2 border-slate-300 rounded-3xl outline-none focus:border-emerald-500 transition text-sm bg-white appearance-none cursor-pointer">
+                                            <select id="edit-game-serie" title="Ano/série escolar para a qual o jogo foi pensado." onchange="app.handleSerieSelectChange(event); app.scheduleAutoSave();" class="w-full py-2.5 px-4 pr-11 border-2 border-slate-300 rounded-3xl outline-none focus:border-emerald-500 transition text-sm bg-white appearance-none cursor-pointer">
                                                 <option value="1º ano">1º ano</option>
                                                 <option value="2º ano">2º ano</option>
                                                 <option value="3º ano">3º ano</option>
@@ -96,7 +96,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mt-2">
+                                <div>
                                     <div class="flex items-center gap-3 mb-1">
                                         <label class="text-xs font-black text-slate-500 uppercase tracking-widest">Autores</label>
                                         <button type="button" onclick="app.openAuthorModal()" title="Adicionar um autor responsável por este jogo." class="text-emerald-700 text-xs uppercase font-black hover:text-emerald-800 transition">Adicionar</button>
@@ -104,34 +104,34 @@
                                     <div id="edit-game-authors-list" title="Lista de autores do jogo. Clique no × de um nome para removê-lo." class="mt-2 flex flex-wrap gap-2"></div>
                                 </div>
                                 <div>
-                                    <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Modelo</label>
+                                    <label class="text-xs font-black text-slate-500 uppercase block mb-1 tracking-widest">Modelo</label>
                                         <select id="edit-game-model" class="w-full p-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" style="display:none;">
                                             <option value="Código Secreto">Código Secreto</option>
                                             <option value="Descarte a Carta">Descarte a Carta</option>
                                         </select>
-                                        <div id="model-choices" class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
-                                            <div class="cursor-pointer rounded-xl border p-3 text-center" title="Modelo de jogo a ser criado. Define as regras, telas e formato das cartas." onclick="app.selectModel('Código Secreto', this)">
-                                                <div class="w-full h-24 flex items-center justify-center overflow-visible">
+                                        <div id="model-choices" class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-1">
+                                            <div class="cursor-pointer rounded-xl border p-2 text-center" title="Modelo de jogo a ser criado. Define as regras, telas e formato das cartas." onclick="app.selectModel('Código Secreto', this)">
+                                                <div class="w-full h-14 flex items-center justify-center overflow-visible">
                                                     <img src="imagens/modelos/codigo_secreto.png" alt="Código Secreto" class="max-w-full max-h-full w-auto h-auto object-contain" />
                                                 </div>
                                                 <div class="text-xs font-bold mt-1">Código Secreto</div>
                                             </div>
-                                            <div class="cursor-pointer rounded-xl border p-3 text-center" title="Modelo de jogo a ser criado. Jogo de cartas por descarte: defina 2 atributos de conteúdo e seus valores." onclick="app.selectModel('Descarte a Carta', this)">
-                                                <div class="w-full h-24 flex items-center justify-center overflow-visible">
+                                            <div class="cursor-pointer rounded-xl border p-2 text-center" title="Modelo de jogo a ser criado. Jogo de cartas por descarte: defina 2 atributos de conteúdo e seus valores." onclick="app.selectModel('Descarte a Carta', this)">
+                                                <div class="w-full h-14 flex items-center justify-center overflow-visible">
                                                     <img src="imagens/modelos/descarte.svg" alt="Descarte a Carta" class="max-w-full max-h-full w-auto h-auto object-contain" />
                                                 </div>
                                                 <div class="text-xs font-bold mt-1">Descarte a Carta</div>
                                             </div>
-                                            <div class="rounded-xl border p-3 text-center bg-slate-100 opacity-70 cursor-not-allowed" title="Modelo Timeline ainda está em construção." onclick="app.showNotification('O modelo Timeline ainda está em construção. Em breve estará disponível.', 'Em construção')">
-                                                <div class="w-full h-24 flex flex-col items-center justify-center gap-1 bg-slate-200 rounded-lg">
-                                                    <i class="fa-solid fa-hammer text-3xl text-slate-400"></i>
+                                            <div class="rounded-xl border p-2 text-center bg-slate-100 opacity-70 cursor-not-allowed" title="Modelo Timeline ainda está em construção." onclick="app.showNotification('O modelo Timeline ainda está em construção. Em breve estará disponível.', 'Em construção')">
+                                                <div class="w-full h-14 flex flex-col items-center justify-center gap-1 bg-slate-200 rounded-lg">
+                                                    <i class="fa-solid fa-hammer text-2xl text-slate-400"></i>
                                                     <span class="text-[11px] font-black uppercase tracking-widest text-slate-400">Em construção</span>
                                                 </div>
                                                 <div class="text-xs font-bold mt-1 text-slate-500">Timeline</div>
                                             </div>
-                                            <div class="rounded-xl border p-3 text-center bg-slate-100 opacity-70 cursor-not-allowed" title="Modelo Lince ainda está em construção." onclick="app.showNotification('O modelo Lince ainda está em construção. Em breve estará disponível.', 'Em construção')">
-                                                <div class="w-full h-24 flex flex-col items-center justify-center gap-1 bg-slate-200 rounded-lg">
-                                                    <i class="fa-solid fa-hammer text-3xl text-slate-400"></i>
+                                            <div class="rounded-xl border p-2 text-center bg-slate-100 opacity-70 cursor-not-allowed" title="Modelo Lince ainda está em construção." onclick="app.showNotification('O modelo Lince ainda está em construção. Em breve estará disponível.', 'Em construção')">
+                                                <div class="w-full h-14 flex flex-col items-center justify-center gap-1 bg-slate-200 rounded-lg">
+                                                    <i class="fa-solid fa-hammer text-2xl text-slate-400"></i>
                                                     <span class="text-[11px] font-black uppercase tracking-widest text-slate-400">Em construção</span>
                                                 </div>
                                                 <div class="text-xs font-bold mt-1 text-slate-500">Lince</div>
