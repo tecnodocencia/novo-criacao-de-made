@@ -353,7 +353,7 @@ export const dashboardMethods = {
             document.getElementById('modal-share-game-name').innerText = game.name || 'Jogo';
             const desc = document.getElementById('modal-share-desc');
             if (desc) desc.innerText = game.model === 'Descarte a Carta'
-                ? 'Qualquer pessoa com este link pode jogar sem precisar de conta: contra o computador, ou com um colega, cada um no seu computador, abrindo este mesmo link.'
+                ? 'Qualquer pessoa com este link pode jogar sem precisar de conta: contra o computador, ou com um colega, cada um no seu computador, abrindo este mesmo link. As vitórias ficam no ranking do jogo.'
                 : 'Qualquer pessoa com este link pode jogar sem precisar de conta. Os resultados ficam no ranking do jogo.';
             document.getElementById('modal-share').style.display = 'flex';
         } catch (err) {
@@ -409,11 +409,6 @@ export const dashboardMethods = {
         const game = this.state.games.find(g => String(g.id) === String(gameId));
         if (!game) return;
 
-        if (game.model === 'Descarte a Carta') {
-            this.showNotification('O modelo Descarte a Carta ainda não tem ranking online — a pontuação é mostrada no fim de cada partida, direto na tela de jogo.');
-            return;
-        }
-
         if (!game.share_code) {
             this.showNotification('Este jogo ainda não foi compartilhado — gere o link (botão azul) antes de gerenciar o ranking. Sem compartilhamento, nenhum aluno pode ter pontuado nele ainda.');
             return;
@@ -440,12 +435,19 @@ export const dashboardMethods = {
                 return;
             }
 
+            // No Descarte a Carta, difficulty_level guarda o modo da partida
+            // (ver RANKING_MODES em js/play-descarte.js), não um nível.
+            const descarteModes = { 1: '1 aluno + computador', 2: '2 alunos + computador', 3: '2 alunos, sem computador' };
+            const isDescarte = game.model === 'Descarte a Carta';
+            const detail = r => isDescarte
+                ? `${r.score} pts &bull; ${descarteModes[r.difficulty_level] || ''}`
+                : `${r.score} pts &bull; ${r.attempts_used} tentativa${r.attempts_used !== 1 ? 's' : ''} &bull; Nível ${r.difficulty_level}`;
             list.innerHTML = rows.map((r, idx) => `
                 <div class="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 border border-slate-100">
                     <span class="text-sm font-black text-slate-400 w-5 text-center shrink-0">${idx + 1}</span>
                     <div class="flex-1 min-w-0">
                         <p class="font-bold text-slate-800 truncate text-sm">${this.escapeCardText(r.player_name)}</p>
-                        <p class="text-[11px] text-slate-400">${r.score} pts &bull; ${r.attempts_used} tentativa${r.attempts_used !== 1 ? 's' : ''} &bull; Nível ${r.difficulty_level}</p>
+                        <p class="text-[11px] text-slate-400">${detail(r)}</p>
                         <p class="text-[11px] text-slate-400">${formatDateTimeBR(r.played_at)}</p>
                     </div>
                     <button onclick="app.removeRankingEntry('${r.id}')" class="text-red-500 hover:bg-red-100 rounded-xl p-2 shrink-0 transition" title="Remover este jogador do ranking">

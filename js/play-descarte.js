@@ -10,7 +10,7 @@
 import { supabase } from './supabase.js?v=2';
 import { utilsMethods } from './core/utils.js?v=5';
 import { modalMethods } from './core/modals.js?v=1';
-import { playerMethods, descarteEngine as engine } from './games/descarte/player.js?v=29';
+import { playerMethods, descarteEngine as engine } from './games/descarte/player.js?v=30';
 import { joinLobby, joinMatch, uid } from './games/descarte/net.js?v=1';
 
 const MODEL_NAMES = ['Descarte a Carta', 'Eliminação'];
@@ -156,7 +156,7 @@ function exitToModes() {
     app.state.descarte = null;
     app.state.activeGame = null;
     closeGameModals();
-    showScreen('mode');
+    showModes();
 }
 
 function endOnline(message) {
@@ -169,6 +169,96 @@ function showGame() {
     showScreen('game');
     document.getElementById('back-from-player-btn')?.classList.remove('hidden');
     document.getElementById('save-from-player-btn')?.classList.add('hidden');
+}
+
+// ─── Ranking (só partidas jogadas pelo link compartilhado) ───────────────────
+// Mesma tabela do Código Secreto (public_plays), sem colunas novas: no
+// Descarte, difficulty_level guarda o modo da partida (ver RANKING_MODES) e
+// code_size, o número de jogadores. Cada computador registra só o resultado
+// do aluno que está nele; o ranking mostra apenas as vitórias.
+const RANKING_MODES = { solo: 1, trio: 2, duo: 3 };
+const RANKING_MODE_LABELS = { 1: MODE_LABELS.solo, 2: MODE_LABELS.trio, 3: MODE_LABELS.duo };
+
+function formatDateTimeBR(dateStr) {
+    const d = new Date(dateStr);
+    if (!dateStr || isNaN(d.getTime())) return '';
+    return `${d.toLocaleDateString('pt-BR')} ${d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+}
+
+function showModes() {
+    showScreen('mode');
+    loadRanking();
+}
+
+async function loadRanking() {
+    const list = document.getElementById('ranking-list');
+    if (!list) return;
+    list.innerHTML = '<p class="text-slate-400 text-sm text-center py-4"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i>Carregando...</p>';
+    try {
+        const { data, error } = await supabase.from('public_plays').select('*')
+            .eq('share_code', ps.shareCode).eq('won', true)
+            .order('score', { ascending: false }).order('played_at', { ascending: true })
+            .limit(10);
+        if (error) throw error;
+        if (!data || data.length === 0) {
+            list.innerHTML = '<p class="text-slate-400 text-sm text-center py-4">Nenhuma vitória registrada ainda. Seja o primeiro!</p>';
+            return;
+        }
+        const me = (ps.me.name || '').toLowerCase();
+        list.innerHTML = data.map((play, idx) => {
+            const medal = idx === 0 ? '<i class="fa-solid fa-medal text-amber-400"></i>'
+                : idx === 1 ? '<i class="fa-solid fa-medal text-slate-400"></i>'
+                : idx === 2 ? '<i class="fa-solid fa-medal text-amber-700"></i>'
+                : `<span class="text-sm font-black text-slate-500">${idx + 1}</span>`;
+            const isMe = play.player_name.toLowerCase() === me;
+            return `
+                <div class="flex items-center gap-3 p-3 rounded-2xl border ${idx === 0 ? 'bg-amber-50 border-amber-200' : 'bg-white border-slate-100'} ${isMe ? 'ring-2 ring-emerald-400' : ''}">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${idx < 3 ? '' : 'bg-slate-100'}">${medal}</div>
+                    <div class="flex-1 min-w-0 text-left">
+                        <p class="font-bold text-slate-800 truncate text-sm">${app.escapeCardText(play.player_name)}${isMe ? ' <span class="text-emerald-700 text-xs">(você)</span>' : ''}</p>
+                        <p class="text-[11px] text-slate-400">${RANKING_MODE_LABELS[play.difficulty_level] || ''} &bull; ${formatDateTimeBR(play.played_at)}</p>
+                    </div>
+                    <span class="font-black text-emerald-600 text-lg shrink-0">${play.score} <span class="text-xs">pts</span></span>
+                </div>`;
+        }).join('');
+    } catch (err) {
+        console.warn('Não foi possível carregar o ranking:', err.message);
+        list.innerHTML = '<p class="text-red-400 text-sm text-center py-4">Não foi possível carregar o ranking agora.</p>';
+    }
+}
+
+// Chamado pelo motor quando a partida termina (openResultModal).
+async function saveMatchResult(winnerIdx, score) {
+    const e = app.state.descarte;
+    if (!e) return;
+    const localIdx = e.localIdx != null ? e.localIdx : e.players.findIndex(p => !p.isBot);
+    const won = winnerIdx === localIdx;
+    const subEl = document.getElementById('descarte-result-subtitle');
+    try {
+        const { data, error } = await supabase.from('public_plays').insert([{
+            share_code: ps.shareCode,
+            player_name: ps.me.name,
+            score: won ? score : 0,
+            attempts_used: 0,
+            won,
+            difficulty_level: RANKING_MODES[ps.mode] || 1,
+            code_size: e.players.length
+        }]).select().single();
+        if (error) throw error;
+        if (!won || !data) return;
+        const [{ count: better }, { count: total }] = await Promise.all([
+            supabase.from('public_plays').select('id', { count: 'exact', head: true })
+                .eq('share_code', ps.shareCode).eq('won', true)
+                .or(`score.gt.${data.score},and(score.eq.${data.score},played_at.lt.${data.played_at})`),
+            supabase.from('public_plays').select('id', { count: 'exact', head: true })
+                .eq('share_code', ps.shareCode).eq('won', true)
+        ]);
+        if (subEl && app.state.descarte === e) {
+            subEl.innerText += ` — Você ficou em ${(better || 0) + 1}º lugar${total ? ` de ${total}` : ''} no ranking!`;
+        }
+    } catch (err) {
+        console.warn('Não foi possível salvar o resultado no ranking:', err.message);
+    }
 }
 
 // ─── Objeto `app` usado pelo motor e pelos onclick do partial/modais ─────────
@@ -205,6 +295,9 @@ const app = {
 
     descarteExit() { exitToModes(); },
 
+    // Fim de partida (o motor chama em openResultModal): grava no ranking.
+    onDescarteMatchEnd(winnerIdx, score) { saveMatchResult(winnerIdx, score); },
+
     startFromWelcome() {
         const input = document.getElementById('player-name-input');
         const name = (input ? input.value : '').trim();
@@ -215,7 +308,7 @@ const app = {
         if (input) input.classList.remove('border-red-400');
         ps.me.name = name;
         document.getElementById('mode-player-name').innerText = name;
-        showScreen('mode');
+        showModes();
     },
 
     chooseMode(mode) {

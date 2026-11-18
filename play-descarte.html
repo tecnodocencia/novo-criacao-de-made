@@ -104,7 +104,7 @@
 
     <!-- ========== ESCOLHA DO MODO ========== -->
     <div id="screen-mode" class="play-screen min-h-screen items-center justify-center p-4 flex-col">
-        <div class="w-full max-w-3xl bg-slate-50 rounded-[36px] shadow-2xl p-8 space-y-6">
+        <div class="w-full max-w-3xl bg-slate-50 rounded-[36px] shadow-2xl p-8 space-y-6 my-6">
             <div class="text-center">
                 <h3 class="text-2xl font-black text-slate-900">Como você quer jogar?</h3>
                 <p class="text-sm text-slate-500 mt-2 font-bold">Jogador: <span id="mode-player-name" class="text-emerald-700"></span></p>
@@ -130,6 +130,19 @@
                 <i class="fa-solid fa-circle-info mr-1 text-sky-500"></i>
                 Para jogar com um colega, os dois abrem este mesmo link, cada um no seu computador, e escolhem a mesma opção. A partida só começa quando os dois estiverem na sala, e ninguém vê as cartas do outro.
             </p>
+            <!-- Ranking do jogo (vitórias pelo link compartilhado), carregado por loadRanking() -->
+            <div class="bg-white border border-amber-200 rounded-3xl p-5 space-y-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div class="text-left">
+                        <h4 class="font-black text-slate-900">Ranking</h4>
+                        <p class="text-xs text-slate-500">Quem vence ganha 10 pontos por carta que sobrou na mão de cada oponente.</p>
+                    </div>
+                </div>
+                <div id="ranking-list" class="space-y-2 max-h-72 overflow-y-auto custom-scrollbar pr-1"></div>
+            </div>
             <div class="text-center">
                 <button onclick="app.goToWelcome()" class="px-6 py-2.5 border border-slate-200 text-slate-500 hover:bg-white font-bold rounded-xl text-sm transition">
                     Trocar nome
@@ -239,6 +252,6 @@
         </div>
     </div>
 
-    <script type="module" src="js/play-descarte.js?v=4"></script>
+    <script type="module" src="js/play-descarte.js?v=5"></script>
 </body>
 </html>

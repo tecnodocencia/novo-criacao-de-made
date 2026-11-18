@@ -734,6 +734,8 @@ function openResultModal(app, winnerIdx, score) {
         `).join('');
     }
     modal.style.display = 'flex';
+    // Página do link compartilhado: grava o resultado no ranking.
+    if (app.onDescarteMatchEnd) app.onDescarteMatchEnd(winnerIdx, score);
 }
 
 function renderAll(app) {
