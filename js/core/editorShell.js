@@ -49,6 +49,10 @@ export const editorShellMethods = {
     newGame: async function(modelName = 'Código Secreto') {
         await this.ensureGamePartialsLoaded(modelName);
         const defaults = getGame(modelName).getDefaultData();
+        // Jogo novo: os blocos Regras/Aparência/Enunciado já vêm com textos
+        // padrão, mas só ganham o check no hub depois que o professor entra
+        // neles (ver isBlockVisited), para não parecer que já foram revisados.
+        defaults.disciplineInfo = { ...(defaults.disciplineInfo || {}), blocosVisitados: [] };
         this.state.editingGame = {
             id: "game-" + Date.now(),
             name: "",
@@ -364,9 +368,25 @@ export const editorShellMethods = {
         document.getElementById('creator-validation-message').classList.add('hidden');
     },
 
+    // Blocos já abertos pelo professor ficam em disciplineInfo.blocosVisitados
+    // (campo jsonb já salvo no banco, sem coluna nova). Jogos criados antes
+    // disso não têm a lista e contam todos os blocos como visitados.
+    isBlockVisited: function(blockNum) {
+        const list = this.state.editingGame?.disciplineInfo?.blocosVisitados;
+        return !Array.isArray(list) || list.includes(blockNum);
+    },
+
+    markBlockVisited: function(blockNum) {
+        const info = this.state.editingGame?.disciplineInfo;
+        if (!info || !Array.isArray(info.blocosVisitados) || info.blocosVisitados.includes(blockNum)) return;
+        info.blocosVisitados.push(blockNum);
+        this.scheduleAutoSave();
+    },
+
     showBlock: function(blockNum) {
         this.persistEditorFields();
         this.state.editingBlock = blockNum;
+        if (blockNum !== null) this.markBlockVisited(blockNum);
 
         document.querySelectorAll('.creator-block').forEach(el => el.classList.add('hidden'));
         const hub = document.getElementById('creator-blocks-hub');
@@ -422,9 +442,9 @@ export const editorShellMethods = {
             if (el) el.classList.toggle('hidden', !complete);
         };
 
-        setBadge(1, !!stripHtml(eg.regra) && !!stripHtml(eg.objetivo));
-        setBadge(2, !!eg.frontDesign && !!eg.backDesign);
-        setBadge(3, !!stripHtml(eg.enunciado) && !!stripHtml(eg.explicacao));
+        setBadge(1, this.isBlockVisited(1) && !!stripHtml(eg.regra) && !!stripHtml(eg.objetivo));
+        setBadge(2, this.isBlockVisited(2) && !!eg.frontDesign && !!eg.backDesign);
+        setBadge(3, this.isBlockVisited(3) && !!stripHtml(eg.enunciado) && !!stripHtml(eg.explicacao));
 
         // Delegado ao modelo ativo (bloco "Criação de Cartas" tem formato
         // diferente em cada modelo — ver validateCreatorCards/
