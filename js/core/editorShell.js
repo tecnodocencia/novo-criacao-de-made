@@ -169,7 +169,6 @@ export const editorShellMethods = {
         document.querySelectorAll('#model-choices > div').forEach(d => d.style.borderColor = '#e5e7eb');
         const chosen = Array.from(document.querySelectorAll('#model-choices > div')).find(d => d.innerText.trim().includes(eg.model || ''));
         if (chosen) chosen.style.borderColor = '#10b981';
-        this.updateGameVideoButton(eg.model || 'Código Secreto');
 
         // Jogos criados antes da troca de modelo ainda podem carregar os textos
         // (e a disciplina/conteúdo/série) padrão do Código Secreto — troca
@@ -576,7 +575,6 @@ export const editorShellMethods = {
             this.fillTextFields(this.state.editingGame);
             document.querySelectorAll('#model-choices > div').forEach(d => d.style.borderColor = '#e5e7eb');
             if (el) el.style.borderColor = '#10b981';
-            this.updateGameVideoButton(modelName);
             this.renderEditorGrid();
             this.renderBlocksHub();
             this.saveNow();

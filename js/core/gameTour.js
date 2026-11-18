@@ -140,25 +140,15 @@ const GAME_VIDEOS = {
 };
 
 export const gameTourMethods = {
-    // Botão "Entenda o Jogo ..." da escolha de modelo (Tela 1 do editor):
-    // aparece só para modelos que têm vídeo, com o nome do modelo.
-    updateGameVideoButton: function(model) {
-        const btn = document.getElementById('open-game-video-btn');
-        if (!btn) return;
-        btn.classList.toggle('hidden', !GAME_VIDEOS[model]);
-        const label = document.getElementById('open-game-video-label');
-        if (label) label.innerText = `Entenda o Jogo ${model}`;
-        btn.title = `Veja um vídeo animado, com narração, explicando como o jogo ${model} funciona para o aluno.`;
-    },
-
-    // Abre o vídeo do modelo do jogo em edição num modal com iframe. O src só
-    // é definido ao abrir e limpo ao fechar, o que também interrompe o áudio
+    // Abre o vídeo de um modelo (botão "Entenda o Jogo" embaixo do card de
+    // cada modelo, na Tela 1 do editor) num modal com iframe. O src só é
+    // definido ao abrir e limpo ao fechar, o que também interrompe o áudio
     // da narração.
-    openGameVideo: function() {
+    openGameVideo: function(model) {
         const frame = document.getElementById('game-video-frame');
         const modal = document.getElementById('modal-game-video');
         if (!frame || !modal) return;
-        const model = this.state.editingGame?.model || 'Código Secreto';
+        model = model || this.state.editingGame?.model || 'Código Secreto';
         const src = GAME_VIDEOS[model];
         if (!src) return;
         const title = document.getElementById('game-video-title');
