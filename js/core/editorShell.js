@@ -170,9 +170,7 @@ export const editorShellMethods = {
 
         if (document.getElementById('edit-game-name')) document.getElementById('edit-game-name').value = eg.name || "";
         if (document.getElementById('edit-game-model')) document.getElementById('edit-game-model').value = eg.model || "Código Secreto";
-        document.querySelectorAll('#model-choices > div').forEach(d => d.style.borderColor = '#e5e7eb');
-        const chosen = Array.from(document.querySelectorAll('#model-choices > div')).find(d => d.innerText.trim().includes(eg.model || ''));
-        if (chosen) chosen.style.borderColor = '#10b981';
+        this.markSelectedModel(eg.model || 'Código Secreto');
 
         // Jogos criados antes da troca de modelo ainda podem carregar os textos
         // (e a disciplina/conteúdo/série) padrão do Código Secreto — troca
@@ -573,6 +571,15 @@ export const editorShellMethods = {
         });
     },
 
+    // Destaca o card do modelo escolhido na Tela 1 (contorno, fundo e selo
+    // "Selecionado", ver .model-selected em index.html).
+    markSelectedModel: function(modelName) {
+        document.querySelectorAll('#model-choices > div').forEach(d => {
+            const label = d.querySelector('.text-xs')?.innerText.trim();
+            d.classList.toggle('model-selected', label === modelName);
+        });
+    },
+
     selectModel: async function(modelName, el) {
         if (!this.state.editingGame) return;
         const prevModel = this.state.editingGame.model;
@@ -593,8 +600,7 @@ export const editorShellMethods = {
             this.reconcileModelTexts(this.state.editingGame, prevModel);
             this.fillDisciplineFields(this.state.editingGame);
             this.fillTextFields(this.state.editingGame);
-            document.querySelectorAll('#model-choices > div').forEach(d => d.style.borderColor = '#e5e7eb');
-            if (el) el.style.borderColor = '#10b981';
+            this.markSelectedModel(modelName);
             this.renderEditorGrid();
             this.renderBlocksHub();
             this.saveNow();

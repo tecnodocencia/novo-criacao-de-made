@@ -646,6 +646,31 @@
             0%, 100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.55); }
             50% { box-shadow: 0 0 0 14px rgba(14, 165, 233, 0); }
         }
+        /* Escolha do modelo na Tela 1 do editor: o card escolhido ganha contorno
+           grosso, fundo verde e o selo "Selecionado" (markSelectedModel). */
+        #model-choices > div { position: relative; transition: border-color .2s, box-shadow .2s, background-color .2s; }
+        #model-choices > div.cursor-pointer:hover { border-color: #6ee7b7; }
+        #model-choices > div.model-selected {
+            border-color: #10b981;
+            background-color: #ecfdf5;
+            box-shadow: 0 0 0 3px #10b981, 0 8px 18px rgba(16, 185, 129, 0.25);
+        }
+        #model-choices > div.model-selected .text-xs { color: #047857; }
+        #model-choices > div.model-selected::after {
+            content: "\2713  Selecionado";
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: #10b981;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            padding: 3px 8px;
+            border-radius: 999px;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.35);
+        }
         /* Enunciado/Regra recolhíveis nos cards da tela inicial (dashboard.js). */
         .game-card-details > summary { list-style: none; }
         .game-card-details > summary::-webkit-details-marker { display: none; }
@@ -2222,6 +2247,6 @@
         </div>
     </div>
 
-    <script type="module" src="js/app.js?v=87"></script>
+    <script type="module" src="js/app.js?v=88"></script>
 </body>
 </html>
