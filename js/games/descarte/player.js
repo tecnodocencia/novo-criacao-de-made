@@ -170,6 +170,15 @@ function canLocalAct(e) {
     return !!e && e.winner == null && !e.awaitingHandoff && !e.pendingWild && !e.busy && isLocalTurn(e);
 }
 
+// Dono da mão mostrada na tela: o aluno deste computador (rede), o único
+// humano (contra o computador, mão sempre visível) ou o humano da vez
+// (vários humanos no mesmo aparelho).
+function handOwnerIdx(e) {
+    if (e.localIdx != null) return e.localIdx;
+    const humans = e.players.map((p, i) => p.isBot ? -1 : i).filter(i => i >= 0);
+    return humans.length === 1 ? humans[0] : e.currentPlayerIndex;
+}
+
 function isGuest(e) { return !!(e && e.net && e.net.role === 'guest'); }
 
 // O convidado não roda o motor: manda a jogada para o anfitrião e espera o
@@ -405,6 +414,34 @@ function showDescarteToast(message) {
     el.classList.add('show');
     clearTimeout(el._hideTimer);
     el._hideTimer = setTimeout(() => el.classList.remove('show'), 4000);
+}
+
+// Quando a vez muda de jogador, um aviso grande aparece no meio da mesa por
+// um instante ("Sua vez!" / "Vez do Computador"). A chave guarda o último
+// anúncio para não repetir a cada redesenho; uma partida nova anuncia de novo.
+let lastTurnKey = null;
+function announceTurn(app, e, localTurn, youLabel) {
+    if (e.winner != null || e.awaitingHandoff) { lastTurnKey = null; return; }
+    const key = e.players.map(p => p.name).join('|') + '#' + e.currentPlayerIndex;
+    if (key === lastTurnKey) return;
+    lastTurnKey = key;
+    const cur = e.players[e.currentPlayerIndex];
+    const anchor = document.getElementById('descarte-discard-top')?.closest('.relative');
+    if (!anchor) return;
+    let pop = document.getElementById('descarte-turn-pop');
+    if (!pop || pop.parentElement !== anchor) {
+        pop?.remove();
+        pop = document.createElement('div');
+        pop.id = 'descarte-turn-pop';
+        pop.setAttribute('aria-live', 'polite');
+        anchor.appendChild(pop);
+    }
+    pop.className = 'descarte-turn-pop ' + (localTurn ? 'is-you' : 'is-opp');
+    pop.innerHTML = localTurn
+        ? `<i class="fa-solid fa-hand-pointer"></i>${youLabel ? 'Sua vez!' : 'Vez de ' + app.escapeCardText(cur.name)}`
+        : `<i class="fa-solid ${cur.isBot ? 'fa-robot' : 'fa-user'}"></i>Vez ${cur.isBot ? 'do' : 'de'} ${app.escapeCardText(cur.name)}`;
+    void pop.offsetWidth;
+    pop.classList.add('show');
 }
 
 function playerRowEl(playerIdx) {
@@ -725,13 +762,33 @@ function renderAll(app) {
     const cur = e.players[e.currentPlayerIndex];
 
     const localTurn = e.winner == null && isLocalTurn(e);
+    // Na partida contra o computador só há um humano: a vez dele é "Sua vez!".
+    const singleHuman = e.players.filter(p => !p.isBot).length === 1;
+    const youLabel = e.localIdx != null || singleHuman;
     const banner = document.getElementById('descarte-turn-banner');
     if (banner) {
-        banner.innerText = e.winner != null ? 'Partida encerrada'
-            : (e.localIdx != null && localTurn) ? 'Sua vez!' : `Vez de: ${cur.name}`;
-        banner.className = localTurn
-            ? 'descarte-turn-you text-center border font-black uppercase tracking-widest text-xs py-3 rounded-2xl mb-1'
-            : 'text-center bg-slate-100 border border-slate-200 text-slate-500 font-black uppercase tracking-widest text-xs py-2 rounded-2xl mb-1';
+        if (e.winner != null) {
+            banner.innerHTML = '<i class="fa-solid fa-flag-checkered mr-2"></i>Partida encerrada';
+            banner.className = 'descarte-turn-banner descarte-turn-over';
+        } else if (localTurn) {
+            banner.innerHTML = `<i class="fa-solid fa-hand-pointer mr-2"></i>${youLabel ? 'Sua vez!' : 'Vez de: ' + app.escapeCardText(cur.name)}`;
+            banner.className = 'descarte-turn-banner descarte-turn-you';
+        } else {
+            banner.innerHTML = `<i class="fa-solid ${cur.isBot ? 'fa-robot' : 'fa-user'} mr-2"></i>Vez de: ${app.escapeCardText(cur.name)}`;
+            banner.className = 'descarte-turn-banner descarte-turn-opp';
+        }
+    }
+    announceTurn(app, e, localTurn, youLabel);
+
+    // Mão do jogador: acende na vez dele, fica apagada na vez do oponente.
+    const handZone = document.getElementById('descarte-hand-zone');
+    if (handZone) {
+        handZone.classList.toggle('descarte-zone-active', localTurn);
+        handZone.classList.toggle('descarte-zone-waiting', e.winner == null && !localTurn);
+        const label = document.getElementById('descarte-hand-label');
+        if (label) label.innerHTML = e.winner != null ? 'Sua mão'
+            : localTurn ? 'Sua mão · <span class="descarte-hand-label-go">é a sua vez, jogue!</span>'
+            : `Sua mão · aguarde ${app.escapeCardText(cur.name)}`;
     }
 
     const botIndicator = document.getElementById('descarte-bot-indicator');
@@ -806,16 +863,17 @@ function renderAll(app) {
                 <div id="descarte-opp-${idx}" class="flex flex-col items-center ${active ? 'descarte-opp-active' : ''}" style="min-width:90px;">
                     <div class="flex items-start justify-center flex-nowrap" style="min-height:var(--e-opp-h);">${slots}</div>
                     <span class="descarte-opp-label"><i class="fa-solid ${icon} mr-1"></i>${app.escapeCardText(p.name)} · ${p.hand.length}</span>
+                    ${active ? '<span class="descarte-opp-playing"><i class="fa-solid fa-ellipsis fa-beat-fade mr-1"></i>jogando</span>' : ''}
                 </div>`;
         }).join('');
     }
 
-    // Em rede o aluno vê a própria mão o tempo todo (só joga na sua vez);
-    // na partida local, só a mão do humano da vez.
-    const handOwner = e.localIdx != null ? e.players[e.localIdx] : cur;
+    // Mão sempre visível (só jogável na vez do dono) em rede e contra o
+    // computador; com vários humanos no mesmo aparelho, só a do humano da vez.
+    const handOwner = e.players[handOwnerIdx(e)];
     const handEl = document.getElementById('descarte-hand');
     if (handEl) {
-        if (e.localIdx == null && (cur.isBot || e.awaitingHandoff || e.winner != null)) {
+        if (e.localIdx == null && !singleHuman && (cur.isBot || e.awaitingHandoff || e.winner != null)) {
             handEl.innerHTML = '';
         } else {
             // Toda carta da mão pode ser clicada e tentada — não existe mais
@@ -1178,7 +1236,7 @@ export const playerMethods = {
     descartePreviewHandCard: function(instanceId) {
         const e = this.state.descarte;
         if (!e || !this.state.activeGame) return;
-        const owner = e.players[e.localIdx != null ? e.localIdx : e.currentPlayerIndex];
+        const owner = e.players[handOwnerIdx(e)];
         const card = owner.hand.find(c => c.instanceId === instanceId);
         if (!card) return;
         const modal = document.getElementById('modal-preview');

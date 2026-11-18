@@ -15,7 +15,7 @@
                             <h2 class="font-black text-lg">Descarte a Carta</h2>
                             <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Jogadores</p>
                         </div>
-                        <div id="descarte-turn-banner" class="text-center bg-emerald-50 border border-emerald-200 text-emerald-800 font-black uppercase tracking-widest text-xs py-2 rounded-2xl mb-1">
+                        <div id="descarte-turn-banner" class="descarte-turn-banner descarte-turn-opp">
                             Vez de: -
                         </div>
                         <div id="descarte-bot-indicator" class="hidden text-center text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2">
@@ -92,8 +92,8 @@
                         </button>
 
                         <!-- MÃO DO JOGADOR DA VEZ -->
-                        <div class="w-full shrink-0">
-                            <p class="text-center text-sm font-black text-slate-500 uppercase tracking-widest">Sua mão</p>
+                        <div id="descarte-hand-zone" class="descarte-hand-zone w-full shrink-0">
+                            <p id="descarte-hand-label" class="text-center text-sm font-black text-slate-500 uppercase tracking-widest">Sua mão</p>
                             <div id="descarte-hand" class="flex items-end justify-center flex-nowrap px-4" style="padding-top: 18px; padding-bottom: 6px;"></div>
                         </div>
 

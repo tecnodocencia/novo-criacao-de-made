@@ -77,13 +77,105 @@
    (o voo em si é feito por flyCard() em js/games/descarte/player.js) e
    a linha do jogador que vai jogar pulsa. */
 .descarte-pile-land { animation: descarte-pile-land 0.45s ease var(--land-delay, 0.42s) both; }
-/* Destaque da vez do jogador (barra lateral) e dica de "compre uma carta". */
+/* Faixa "Vez de" na barra lateral: vermelha e pulsando na vez do jogador,
+   escura na vez do oponente. */
+.descarte-turn-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 18px;
+    border: 2px solid transparent;
+    margin-bottom: 4px;
+    transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
 .descarte-turn-you {
-    background: #ea3257 !important;
-    border-color: #d12a4c !important;
-    color: #ffffff !important;
-    font-size: 14px !important;
-    box-shadow: 0 6px 16px rgba(234, 50, 87, 0.45);
+    background: #ea3257;
+    border-color: #d12a4c;
+    color: #ffffff;
+    font-size: 17px;
+    padding: 16px 10px;
+    box-shadow: 0 8px 20px rgba(234, 50, 87, 0.45);
+    animation: descarte-turn-glow 1.6s ease-in-out infinite;
+}
+.descarte-turn-opp {
+    background: #334155;
+    border-color: #1e293b;
+    color: #ffffff;
+    font-size: 14px;
+    padding: 12px 10px;
+}
+.descarte-turn-over {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #64748b;
+    font-size: 13px;
+    padding: 10px;
+}
+@keyframes descarte-turn-glow {
+    0%, 100% { box-shadow: 0 8px 20px rgba(234, 50, 87, 0.45); }
+    50% { box-shadow: 0 8px 20px rgba(234, 50, 87, 0.45), 0 0 0 7px rgba(234, 50, 87, 0.18); }
+}
+/* Área da mão: acende na vez do jogador, apaga na do oponente. */
+.descarte-hand-zone {
+    border-radius: 28px;
+    padding-top: 6px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
+}
+.descarte-zone-active {
+    background: rgba(234, 50, 87, 0.07);
+    box-shadow: inset 0 0 0 3px rgba(234, 50, 87, 0.45);
+}
+.descarte-zone-active #descarte-hand-label { color: #be123c; }
+.descarte-hand-label-go { color: #ea3257; }
+.descarte-zone-waiting #descarte-hand { opacity: 0.55; filter: saturate(0.6); }
+.descarte-zone-waiting #descarte-hand-label { color: #94a3b8; }
+/* Oponente da vez: cartas e nome destacados, com "jogando". */
+.descarte-opp-active .descarte-opp-card { box-shadow: 0 0 0 3px #334155, 0 6px 14px rgba(15, 23, 42, 0.3); }
+.descarte-opp-playing {
+    margin-top: 4px;
+    padding: 2px 10px;
+    border-radius: 9999px;
+    background: #334155;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+/* Aviso grande no meio da mesa quando a vez muda (announceTurn). */
+.descarte-turn-pop {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 30px;
+    border-radius: 9999px;
+    font-size: 26px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #ffffff;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.7);
+}
+.descarte-turn-pop.is-you { background: #ea3257; box-shadow: 0 14px 34px rgba(234, 50, 87, 0.5); }
+.descarte-turn-pop.is-opp { background: #334155; box-shadow: 0 14px 34px rgba(15, 23, 42, 0.45); font-size: 22px; }
+.descarte-turn-pop.show { animation: descarte-turn-pop 1.5s ease forwards; }
+@keyframes descarte-turn-pop {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+    15% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+    25% { transform: translate(-50%, -50%) scale(1); }
+    75% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -60%) scale(0.95); }
 }
 .descarte-draw-hint { animation: descarte-draw-hint 1.1s ease-in-out infinite; }
 @keyframes descarte-draw-hint {
@@ -100,8 +192,10 @@
     0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(234, 50, 87, 0); }
     50% { transform: scale(1.04); box-shadow: 0 0 0 5px rgba(234, 50, 87, 0.35); }
 }
+@keyframes descarte-turn-pop-fade { 0%, 80% { opacity: 1; transform: translate(-50%, -50%); } 100% { opacity: 0; transform: translate(-50%, -50%); } }
 @media (prefers-reduced-motion: reduce) {
     .descarte-pile-land, .descarte-player-pulse, .descarte-turn-you, .descarte-draw-hint { animation: none; }
+    .descarte-turn-pop.show { animation: descarte-turn-pop-fade 1.5s linear forwards; }
 }
 /* Mão dos oponentes: cartas viradas para baixo em leque invertido (o
    leque do jogador abre pra cima, o do oponente abre pra baixo, como se
