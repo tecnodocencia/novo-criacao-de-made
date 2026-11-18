@@ -25,6 +25,7 @@ export const authMethods = {
 
         document.getElementById('view-login').classList.remove('active');
         document.getElementById('main-layout').classList.remove('hidden');
+        this.renderDashboardLoading();
 
         try {
             // Tenta carregar os jogos do banco de dados

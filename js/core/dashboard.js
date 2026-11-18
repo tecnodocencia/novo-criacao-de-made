@@ -205,6 +205,20 @@ export const dashboardMethods = {
         }
     },
 
+    // Enquanto os jogos vêm do banco (logo após o login), a grade mostra um
+    // aviso de carregamento em vez de ficar vazia.
+    renderDashboardLoading: function() {
+        const grid = document.getElementById('dashboard-grid');
+        if (!grid) return;
+        grid.innerHTML = `
+            <div class="col-span-full flex flex-col items-center py-24 px-6 text-center" role="status" aria-live="polite">
+                <i class="fa-solid fa-circle-notch fa-spin text-5xl text-green-600 mb-5"></i>
+                <p class="text-lg font-black text-slate-700">Carregando seus materiais...</p>
+                <p class="text-sm text-slate-500 mt-1">Só um instante.</p>
+            </div>
+        `;
+    },
+
     renderDashboard: function() {
         const grid = document.getElementById('dashboard-grid');
         if(!grid) return;
