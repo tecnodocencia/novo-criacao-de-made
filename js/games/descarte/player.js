@@ -96,7 +96,44 @@ function valueContentHtml(value) {
     if (!value) return '';
     return value.image
         ? `<img src="${value.image}" class="max-w-full max-h-full object-contain" />`
-        : `<p class="text-[13px] leading-tight font-black text-slate-800 text-center px-1">${value.text || ''}</p>`;
+        : `<p class="descarte-fit-text text-[13px] leading-tight font-black text-slate-800 text-center px-1" style="max-width:100%;">${value.text || ''}</p>`;
+}
+
+// Textos longos (ex.: "INTERDISCIPLINARIDADE") não cabem na metade da carta
+// no tamanho padrão: a fonte de cada valor diminui até o texto caber. Se nem
+// no tamanho mínimo (ainda legível) couber, a palavra quebra com hífen. Precisa rodar com os
+// elementos já na tela (visíveis), depois de cada desenho das cartas.
+const FIT_MAX_PX = 13;
+const FIT_MIN_PX = 8;
+function fitCardTexts(root) {
+    (root || document).querySelectorAll('.descarte-fit-text').forEach(el => {
+        const box = el.parentElement;
+        if (!box || !box.clientWidth) return;
+        const overflows = () => el.scrollWidth > el.clientWidth + 1 || el.offsetHeight > box.clientHeight;
+        let size = FIT_MAX_PX;
+        el.style.fontSize = size + 'px';
+        el.style.overflowWrap = '';
+        el.style.hyphens = '';
+        while (size > FIT_MIN_PX && overflows()) {
+            size -= 0.5;
+            el.style.fontSize = size + 'px';
+        }
+        if (overflows()) {
+            el.lang = 'pt-BR';
+            el.style.hyphens = 'auto';
+            if (overflows()) el.style.overflowWrap = 'anywhere';
+        }
+    });
+}
+
+// O tamanho das cartas acompanha a altura da janela (CSS), então reajusta
+// os textos quando ela muda.
+let fitResizeTimer = null;
+if (typeof window !== 'undefined') {
+    window.addEventListener('resize', () => {
+        clearTimeout(fitResizeTimer);
+        fitResizeTimer = setTimeout(() => fitCardTexts(document), 150);
+    });
 }
 
 // Face de uma carta (base ou especial). Para especiais "wild" (+4/Escolher)
@@ -492,6 +529,7 @@ function flyCard(app, fromEl, toEl, card, opts = {}) {
     if (flip) inner.style.transform = 'rotateY(180deg)';
     wrap.appendChild(inner);
     document.body.appendChild(wrap);
+    fitCardTexts(wrap);
 
     const dx = (from.left + from.width / 2) - (to.left + to.width / 2);
     const dy = (from.top + from.height / 2) - (to.top + to.height / 2);
@@ -706,6 +744,7 @@ function openWildModal(app, kind) {
 
     const modal = document.getElementById('modal-descarte-wild');
     if (modal) modal.style.display = 'flex';
+    fitCardTexts(modal);
 }
 
 function openResultModal(app, winnerIdx, score) {
@@ -921,6 +960,7 @@ function renderAll(app) {
     if (e.net && e.net.onRender) e.net.onRender((e.drawAnims || []).slice(), reshuffled);
     // A animação de reabastecer espera as compras em andamento terminarem.
     const pendingDraws = (e.drawAnims || []).length;
+    fitCardTexts(document.getElementById('view-player') || document.getElementById('screen-game') || document);
     flushDrawAnims(app);
     if (reshuffled > 0) {
         playReshuffleFx(app, reshuffled, pendingDraws ? (pendingDraws - 1) * DRAW_STAGGER_MS + FLY_DRAW_MS : 0);
@@ -1246,6 +1286,7 @@ export const playerMethods = {
         container.innerHTML = `<div style="width:${(100 / k).toFixed(2)}%;height:${(100 / k).toFixed(2)}%;transform:scale(${k});transform-origin:center;flex-shrink:0;">${cardFaceHtml(card, this.state.activeGame.cards.attributes)}</div>`;
         text.innerText = 'Carta Selecionada';
         modal.style.display = 'flex';
+        fitCardTexts(container);
     },
 
     descarteCloseResultModal: function() {
