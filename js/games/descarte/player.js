@@ -22,8 +22,11 @@ function svgReverse() {
 function svgDraw(n, color) {
     return `<svg viewBox="0 0 48 48" class="w-9 h-9"><rect x="5" y="12" width="26" height="32" rx="6" fill="${color}" stroke="#fff" stroke-width="2"/><rect x="15" y="4" width="26" height="32" rx="6" fill="${color}" stroke="#fff" stroke-width="2"/><text x="28" y="25" font-size="15" font-weight="900" fill="#1f2937" text-anchor="middle">+${n}</text></svg>`;
 }
+// "Escolher": três cartas em leque e a do meio marcada — escolher um valor,
+// seja ele texto, imagem ou cor (antes eram 4 quadrados coloridos, que
+// sugeriam só "escolher uma cor").
 function svgChoose() {
-    return `<svg viewBox="0 0 48 48" class="w-9 h-9"><rect x="4" y="4" width="19" height="19" rx="3" fill="#FDE2B5"/><rect x="25" y="4" width="19" height="19" rx="3" fill="#BAF7CE"/><rect x="4" y="25" width="19" height="19" rx="3" fill="#B8E7FA"/><rect x="25" y="25" width="19" height="19" rx="3" fill="#FCB6D4"/></svg>`;
+    return `<svg viewBox="0 0 48 48" class="w-9 h-9"><g transform="rotate(-20 24 44)"><rect x="15" y="9" width="18" height="25" rx="3" fill="#fff" stroke="#6DBBE3" stroke-width="2.5"/></g><g transform="rotate(20 24 44)"><rect x="15" y="9" width="18" height="25" rx="3" fill="#fff" stroke="#6DBBE3" stroke-width="2.5"/></g><rect x="14" y="5" width="20" height="28" rx="3.5" fill="#FBD9E7" stroke="#F18AB5" stroke-width="2.5"/><circle cx="33" cy="33" r="8" fill="#7CC79B" stroke="#fff" stroke-width="2"/><path d="M29.5 33 L32 35.5 L36.5 30.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 }
 
 const SPECIAL_ICONS = {
@@ -63,10 +66,13 @@ function artDraw(n, color, stroke) {
 }
 function artChoose() {
     return `<svg viewBox="0 0 100 100" style="width:100%;height:100%" aria-hidden="true">
-        <rect x="14" y="14" width="34" height="34" rx="9" fill="#F9DDB0"/>
-        <rect x="52" y="14" width="34" height="34" rx="9" fill="#BDEBCB"/>
-        <rect x="14" y="52" width="34" height="34" rx="9" fill="#BCE4F5"/>
-        <rect x="52" y="52" width="34" height="34" rx="9" fill="#F7BBD3"/>
+        <g transform="rotate(-22 50 92)"><rect x="34" y="22" width="32" height="44" rx="7" fill="#fff" stroke="#6DBBE3" stroke-width="3"/></g>
+        <g transform="rotate(22 50 92)"><rect x="34" y="22" width="32" height="44" rx="7" fill="#fff" stroke="#6DBBE3" stroke-width="3"/></g>
+        <rect x="32" y="12" width="36" height="50" rx="8" fill="#FBD9E7" stroke="#F18AB5" stroke-width="3.5"/>
+        <rect x="40" y="24" width="20" height="4" rx="2" fill="#F18AB5" opacity="0.55"/>
+        <rect x="40" y="33" width="14" height="4" rx="2" fill="#F18AB5" opacity="0.55"/>
+        <circle cx="66" cy="62" r="13" fill="#7CC79B" stroke="#fff" stroke-width="3"/>
+        <path d="M60 62 L64.5 66.5 L72 58.5" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>`;
 }
 const SPECIAL_ART = {
