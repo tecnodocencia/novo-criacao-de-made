@@ -3,7 +3,7 @@ import { registerGame } from '../registry.js?v=1';
 import { getDefaultData } from './model.js?v=4';
 import { editorCartasMethods } from './editorCartas.js?v=3';
 import { reviewMethods } from './review.js?v=3';
-import { playerMethods } from './player.js?v=30';
+import { playerMethods } from './player.js?v=31';
 
 const descarteModule = {
     getDefaultData,

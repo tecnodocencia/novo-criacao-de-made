@@ -119,20 +119,8 @@
     0%, 100% { box-shadow: 0 8px 20px rgba(234, 50, 87, 0.45); }
     50% { box-shadow: 0 8px 20px rgba(234, 50, 87, 0.45), 0 0 0 7px rgba(234, 50, 87, 0.18); }
 }
-/* Área da mão: acende na vez do jogador, apaga na do oponente. */
-.descarte-hand-zone {
-    border-radius: 28px;
-    padding-top: 6px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
-}
-.descarte-zone-active {
-    background: rgba(234, 50, 87, 0.07);
-    box-shadow: inset 0 0 0 3px rgba(234, 50, 87, 0.45);
-}
-.descarte-zone-active #descarte-hand-label { color: #be123c; }
-.descarte-hand-label-go { color: #ea3257; }
+/* Área da mão: apagada na vez do oponente. */
 .descarte-zone-waiting #descarte-hand { opacity: 0.55; filter: saturate(0.6); }
-.descarte-zone-waiting #descarte-hand-label { color: #94a3b8; }
 /* Oponente da vez: cartas e nome destacados, com "jogando". */
 .descarte-opp-active .descarte-opp-card { box-shadow: 0 0 0 3px #334155, 0 6px 14px rgba(15, 23, 42, 0.3); }
 .descarte-opp-playing {

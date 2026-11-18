@@ -782,16 +782,9 @@ function renderAll(app) {
     }
     announceTurn(app, e, localTurn, youLabel);
 
-    // Mão do jogador: acende na vez dele, fica apagada na vez do oponente.
-    const handZone = document.getElementById('descarte-hand-zone');
-    if (handZone) {
-        handZone.classList.toggle('descarte-zone-active', localTurn);
-        handZone.classList.toggle('descarte-zone-waiting', e.winner == null && !localTurn);
-        const label = document.getElementById('descarte-hand-label');
-        if (label) label.innerHTML = e.winner != null ? 'Sua mão'
-            : localTurn ? 'Sua mão · <span class="descarte-hand-label-go">é a sua vez, jogue!</span>'
-            : `Sua mão · aguarde ${app.escapeCardText(cur.name)}`;
-    }
+    // Mão do jogador: fica apagada na vez do oponente (a vez do próprio
+    // jogador é destacada só na faixa lateral).
+    document.getElementById('descarte-hand-zone')?.classList.toggle('descarte-zone-waiting', e.winner == null && !localTurn);
 
     const botIndicator = document.getElementById('descarte-bot-indicator');
     if (botIndicator) {
