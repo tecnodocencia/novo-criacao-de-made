@@ -231,7 +231,7 @@ export const dashboardMethods = {
                         <i class="fa-solid fa-shapes text-4xl text-pink-500"></i>
                     </div>
                     <h3 class="text-lg font-black text-slate-800 mb-2">Nenhum material criado ainda</h3>
-                    <p class="text-sm text-slate-500 max-w-sm mb-6">Comece criando seu primeiro jogo educacional. Leva poucos minutos para montar um "Código Secreto" completo.</p>
+                    <p class="text-sm text-slate-500 max-w-sm mb-6">Comece criando seu primeiro jogo educacional. Leva poucos minutos para montar um jogo completo.</p>
                     <button onclick="app.newGame()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-2xl text-sm shadow-lg shadow-green-100 transition flex items-center gap-2">
                         <i class="fa-solid fa-plus"></i> Criar meu primeiro jogo
                     </button>

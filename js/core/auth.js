@@ -1,6 +1,5 @@
 // js/core/auth.js
 import { dbService } from '../database.js?v=7';
-import { getGame } from '../games/registry.js?v=1';
 
 export const authMethods = {
     init: async function() {
@@ -27,17 +26,14 @@ export const authMethods = {
         document.getElementById('main-layout').classList.remove('hidden');
         this.renderDashboardLoading();
 
+        // Conta sem jogos começa vazia (a tela inicial mostra "Nenhum material
+        // criado ainda"); não há mais jogos de exemplo.
         try {
-            // Tenta carregar os jogos do banco de dados
-            const jogosDoBanco = await dbService.listarJogos();
-            if (jogosDoBanco && jogosDoBanco.length > 0) {
-                this.state.games = jogosDoBanco;
-            } else {
-                this.loadDefaultGames();
-            }
+            this.state.games = (await dbService.listarJogos()) || [];
         } catch (error) {
             console.error("Erro ao carregar jogos do banco:", error);
-            this.loadDefaultGames();
+            this.state.games = [];
+            this.showNotification('Não foi possível carregar seus materiais agora. Verifique a conexão e recarregue a página.', 'Erro ao carregar');
         }
         this.renderDashboard();
     },
@@ -47,10 +43,6 @@ export const authMethods = {
         document.getElementById('view-login')?.classList.remove('hidden');
         document.getElementById('view-login')?.classList.add('active');
         this.setAuthMode('recovery');
-    },
-
-    loadDefaultGames: function() {
-        this.state.games = getGame('Código Secreto').getDemoGames();
     },
 
     setAuthMode: function(mode) {
