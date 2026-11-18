@@ -57,14 +57,14 @@
                             <label class="block text-xs font-black uppercase tracking-widest text-slate-400 ml-1">E-mail</label>
                             <div class="relative">
                                 <i class="fa-solid fa-envelope absolute left-5 top-1/2 -translate-y-1/2 text-slate-300"></i>
-                                <input id="auth-email" type="email" placeholder="teste@gmail.com" class="w-full pl-12 pr-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
+                                <input id="auth-email" type="email" onkeydown="if(event.key==='Enter') app.login()" placeholder="teste@gmail.com" class="w-full pl-12 pr-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
                             </div>
                         </div>
                         <div class="space-y-2">
                             <label class="block text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Senha</label>
                             <div class="relative">
                                 <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-slate-300"></i>
-                                <input id="auth-password" type="password" placeholder="••••••" class="w-full pl-12 pr-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
+                                <input id="auth-password" type="password" onkeydown="if(event.key==='Enter') app.login()" placeholder="••••••" class="w-full pl-12 pr-6 py-4 border-2 border-slate-100 rounded-2xl bg-slate-50/50 text-slate-800 outline-none focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" />
                             </div>
                         </div>
                         <button onclick="app.login()" class="w-full py-5 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-slate-300 transition-all active:scale-[0.98] mt-6 flex items-center justify-center gap-3">
