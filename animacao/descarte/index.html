@@ -277,10 +277,10 @@ const SCENES = [
       S.rel = pill('Relevo ➜',730,190,'background:var(--amber-bg);color:var(--ink);border:3px solid var(--amber)'); pop(S.rel,900);
       S.reg = pill('Região ➜',730,350,'background:var(--sky-bg);color:var(--ink);border:3px solid var(--sky)'); pop(S.reg,1400);
     }],
-    ['Neste exemplo, o relevo pode ser planície, planalto, montanha ou depressão, e a região pode ser Norte, Sudeste, Centro-Oeste ou Nordeste.', ()=>{
+    ['Neste exemplo, o relevo pode ser planície, planalto, montanha ou depressão, e a região pode ser Norte, Sudeste, Centro-Oeste, Nordeste ou Sul.', ()=>{
       const row = (vals, y, bg, bd, d0)=>chipRow(vals,56,y,`background:${bg};border:3px solid ${bd};color:var(--ink);font-size:18px;padding:8px 14px`,d0,260);
       S.r1 = row(['Planícies','Planaltos','Montanhas','Depressões'],280,'var(--amber-bg)','var(--amber)',200);
-      S.r2 = row(['Norte','Sudeste','Centro-Oeste','Nordeste'],430,'var(--sky-bg)','var(--sky)',3600);
+      S.r2 = row(['Norte','Sudeste','Centro-Oeste','Nordeste','Sul'],430,'var(--sky-bg)','var(--sky)',3600);
     }],
     ['Cada combinação vira uma carta: com quatro valores em cada categoria, são dezesseis cartas no baralho.', ()=>{
       [S.big,S.rel,S.reg,...S.r1,...S.r2].forEach(n=>fadeOut(n));
@@ -436,7 +436,7 @@ const SCENES = [
 ];
 
 /* ---------- narração contínua ---------- */
-const TL = {"dora":{"tl":[[0.3,0,0],[3.971,0,1],[9.307,0,2],[17.033,1,0],[23.009,1,1],[31.779,1,2],[38.33,1,3],[43.945,2,0],[46.869,2,1],[51.714,2,2],[55.279,2,3],[61.595,2,4],[65.288,2,5],[69.941,2,6],[75.468,2,7],[83.963,3,0],[87.805,3,1],[92.735,3,2],[96.79,3,3],[102.147,3,4],[107.909,3,5],[113.63,4,0],[116.469,4,1],[122.893,4,2],[127.055,4,3],[135.718,4,4]],"len":140.64},"alex":{"tl":[[0.3,0,0],[4.078,0,1],[9.477,0,2],[17.247,1,0],[23.222,1,1],[32.035,1,2],[38.607,1,3],[44.222,2,0],[47.168,2,1],[52.269,2,2],[55.855,2,3],[62.235,2,4],[66.077,2,5],[70.794,2,6],[76.471,2,7],[85.221,3,0],[89.17,3,1],[94.079,3,2],[98.347,3,3],[103.896,3,4],[109.743,3,5],[115.465,4,0],[118.389,4,1],[124.855,4,2],[129.124,4,3],[137.873,4,4]],"len":142.81}};
+const TL = {"dora":{"tl":[[0.3,0,0],[3.971,0,1],[9.307,0,2],[17.033,1,0],[23.009,1,1],[32.035,1,2],[38.586,1,3],[44.201,2,0],[47.125,2,1],[51.97,2,2],[55.535,2,3],[61.851,2,4],[65.544,2,5],[70.197,2,6],[75.724,2,7],[84.219,3,0],[88.061,3,1],[92.991,3,2],[97.046,3,3],[102.403,3,4],[108.165,3,5],[113.886,4,0],[116.725,4,1],[123.149,4,2],[127.311,4,3],[135.974,4,4]],"len":140.89},"alex":{"tl":[[0.3,0,0],[4.078,0,1],[9.477,0,2],[17.247,1,0],[23.222,1,1],[32.312,1,2],[38.885,1,3],[44.499,2,0],[47.445,2,1],[52.546,2,2],[56.132,2,3],[62.513,2,4],[66.355,2,5],[71.071,2,6],[76.748,2,7],[85.499,3,0],[89.447,3,1],[94.356,3,2],[98.625,3,3],[104.173,3,4],[110.021,3,5],[115.742,4,0],[118.667,4,1],[125.133,4,2],[129.401,4,3],[138.15,4,4]],"len":143.09}};
 const list = document.getElementById('scriptList');
 list.appendChild($(`<li style="cursor:default"><p>${SCENES.map((sc,si)=>sc.beats.map((b,bi)=>`<span class="s" data-k="${si}-${bi}">${b[0]}</span>`).join(' ')).join(' ')}</p></li>`));
 list.querySelectorAll('.s').forEach(e=>{ e.style.cursor='pointer'; e.addEventListener('click',()=>{ const [a,b]=e.dataset.k.split('-').map(Number); seekTo(TL[mode].tl.find(x=>x[1]===a&&x[2]===b)[0]); }); });
