@@ -30,12 +30,13 @@
         .play-screen.active { display: flex; }
 
         /* Game screen is special — full height, no scroll at root */
-        #screen-game { flex-direction: column; height: 100vh; overflow: hidden; }
+        #screen-game { flex-direction: column; height: 100vh; overflow: hidden; background: #f5f5ee; }
 
         /* Card bank */
+        /* Medidas iguais às da tela de jogo da plataforma (index.html). */
         .bank-card {
             position: relative;
-            height: 132px;
+            height: 140px;
             border-radius: 4px;
             cursor: grab;
             user-select: none;
@@ -45,34 +46,34 @@
             content: '';
             position: absolute;
             inset: 0;
-            border-radius: 20px;
+            border-radius: 24px;
             background: white;
             border: 2px solid #d1d5db;
-            transform: translate(5px, 5px);
+            transform: translate(6px, 6px);
             z-index: 0;
         }
         .bank-card::after {
             content: '';
             position: absolute;
             inset: 0;
-            border-radius: 20px;
+            border-radius: 24px;
             background: white;
             border: 2px solid #d1d5db;
-            transform: translate(10px, 10px);
+            transform: translate(12px, 12px);
             z-index: -1;
         }
         .bank-card-inner {
             position: relative;
             z-index: 2;
             height: 100%;
-            border-radius: 20px;
+            border-radius: 24px;
             background: white;
             border: 2px solid #cbd5e1;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            padding: 8px;
+            padding: 10px;
             font-weight: 900;
             text-align: center;
             cursor: pointer;
@@ -91,17 +92,18 @@
 
         /* Drop slots */
         .drop-slot {
-            width: 124px;
-            height: 168px;
-            border: 3px dashed #94a3b8;
-            border-radius: 20px;
+            flex: 1 1 0;
+            min-width: 0;
+            max-width: 120px;
+            aspect-ratio: 3 / 4;
+            border: 4px dashed #94a3b8;
+            border-radius: 24px;
             background: rgba(255,255,255,0.7);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: border-color 0.2s, background 0.2s;
-            flex-shrink: 0;
             overflow: hidden;
         }
         .drop-slot:hover { border-color: #10b981; background: rgba(236,253,245,0.8); }
@@ -110,15 +112,16 @@
 
         /* Secret slots */
         .secret-card-slot {
-            width: 124px;
-            height: 168px;
-            border-radius: 20px;
+            flex: 1 1 0;
+            min-width: 0;
+            max-width: 120px;
+            aspect-ratio: 3 / 4;
+            border-radius: 24px;
             background: linear-gradient(135deg, #047857, #10b981);
             border: 3px solid white;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             background-size: cover;
             background-position: center;
-            flex-shrink: 0;
         }
 
         /* History */
@@ -126,55 +129,60 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 8px;
-            padding: 10px;
-            border-radius: 16px;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 18px;
             background: #f8fafc;
             border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
         }
         .history-row.recent {
             background: #f0f9ff;
             border-color: #bae6fd;
             position: relative;
             box-shadow: 0 4px 12px rgba(186,230,253,0.4);
+            transform: scale(1.02);
+            z-index: 10;
         }
         .history-row.recent::before {
-            content: 'ÚLTIMA';
+            content: 'ÚLTIMA JOGADA';
             position: absolute;
             top: -8px;
-            right: 10px;
+            right: 12px;
             background: #0ea5e9;
             color: white;
             font-size: calc(8px * var(--play-font-scale));
             font-weight: 900;
-            padding: 2px 6px;
+            padding: 2px 8px;
             border-radius: 999px;
             letter-spacing: 0.05em;
+            box-shadow: 0 2px 4px rgba(14, 165, 233, 0.3);
         }
+        .history-cards { display: flex; gap: 8px; }
         .history-mini-card {
-            width: 52px;
-            height: 68px;
-            border-radius: 10px;
+            width: 75px;
+            height: 100px;
+            border-radius: 14px;
             background: white;
-            border: 1.5px solid #cbd5e1;
+            border: 2px solid #cbd5e1;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: calc(8px * var(--play-font-scale));
-            font-weight: 900;
+            font-size: calc(11px * var(--play-font-scale));
+            font-weight: 800;
             text-align: center;
-            padding: 3px;
+            padding: 4px;
             overflow: hidden;
         }
         .feedback-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 4px;
+            gap: 6px;
             width: fit-content;
         }
         .feedback-dot {
-            width: 14px;
-            height: 14px;
+            width: 18px;
+            height: 18px;
             border-radius: 999px;
             border: 2px solid #e2e8f0;
             background: white;
@@ -204,11 +212,11 @@
 
         /* Zoom icon */
         .zoom-icon {
-            position: absolute; top: 6px; left: 6px; z-index: 30;
+            position: absolute; top: 10px; left: 10px; z-index: 30;
             background: rgba(255,255,255,0.9); color: #047857;
-            width: 22px; height: 22px; border-radius: 50%;
+            width: 28px; height: 28px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: calc(11px * var(--play-font-scale)); cursor: pointer; border: none;
+            font-size: calc(14px * var(--play-font-scale)); cursor: pointer; border: none;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             transition: all 0.2s;
         }
@@ -352,105 +360,135 @@
     </div>
 
     <!-- ========== SCREEN 3: GAME ========== -->
+    <!-- Mesmo layout e medidas da tela de jogo da plataforma
+         (partials/games/codigo-secreto/player.html): Cartas à esquerda,
+         informações + enunciado + código no centro, Histórico à direita. -->
     <div id="screen-game" class="play-screen">
-        <!-- Topbar -->
-        <div class="shrink-0 bg-white border-b border-slate-200 px-4 py-2 flex items-center justify-between gap-4">
-            <div class="flex items-center gap-3 min-w-0">
-                <img src="Criação vermelho sem.png" alt="MADE" class="h-7 w-auto shrink-0">
-                <span class="text-slate-300">|</span>
-                <p id="play-header-title" class="text-sm font-black text-slate-800 truncate">-</p>
-                <span class="hidden sm:inline text-slate-300">|</span>
-                <p class="hidden sm:inline text-sm text-slate-500"><span id="play-header-disciplina">-</span> · <span id="play-header-conteudo">-</span> · <span id="play-header-serie">-</span></p>
-            </div>
-            <div class="flex items-center gap-2 shrink-0">
-                <span class="text-sm text-slate-400 font-bold hidden sm:inline">Jogador: <span id="play-header-player" class="text-emerald-600"></span></span>
-                <span id="play-header-autores" class="hidden text-sm text-slate-400 font-bold md:inline truncate max-w-[220px]"></span>
-                <div class="flex items-center gap-0.5 bg-slate-100 rounded-lg px-1 py-1" title="Tamanho da fonte">
-                    <button onclick="playApp.decreaseFontSize()" id="btn-font-decrease"
-                        class="w-6 h-6 flex items-center justify-center text-slate-600 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed rounded-md font-black text-sm transition"
-                        title="Diminuir fonte">A-</button>
-                    <span id="font-scale-indicator" class="text-[10px] font-bold text-slate-400 w-8 text-center select-none">100%</span>
-                    <button onclick="playApp.increaseFontSize()" id="btn-font-increase"
-                        class="w-6 h-6 flex items-center justify-center text-slate-600 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed rounded-md font-black text-sm transition"
-                        title="Aumentar fonte">A+</button>
-                </div>
-                <button onclick="playApp.showObjetivo()" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-[11px] font-black uppercase tracking-wider transition">
-                    <i class="fa-solid fa-bullseye mr-1"></i>Objetivo
-                </button>
-                <button onclick="playApp.showExplicacao()" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-[11px] font-black uppercase tracking-wider transition">
-                    <i class="fa-solid fa-circle-question mr-1"></i>Como Jogar
-                </button>
-            </div>
-        </div>
-
-        <!-- 3-column layout -->
         <div class="flex-1 flex overflow-hidden">
 
-            <!-- LEFT: Card Bank -->
-            <div class="w-60 sm:w-72 border-r border-slate-200 bg-white p-3 flex flex-col overflow-hidden">
-                <div class="shrink-0 mb-3">
-                    <h2 class="font-black text-sm text-slate-700">Banco de Cartas</h2>
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Clique para selecionar</p>
+            <!-- ESQUERDA: banco de cartas -->
+            <div class="w-[440px] shrink-0 border-r border-slate-300 bg-white p-4 overflow-y-auto">
+                <div class="mb-4">
+                    <h2 class="font-black text-lg">Cartas</h2>
+                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Clique ou arraste as cartas</p>
                 </div>
-                <div id="play-item-bank" class="grid grid-cols-3 gap-3 overflow-y-auto flex-1 pb-2"></div>
+                <div id="play-item-bank" class="grid grid-cols-3 gap-4 pb-4"></div>
             </div>
 
-            <!-- CENTER: Main game area -->
-            <div class="flex-1 flex flex-col items-center justify-start p-4 overflow-y-auto min-w-0">
+            <!-- CENTRO -->
+            <div class="flex-1 flex flex-col items-center justify-start p-6 overflow-y-auto min-w-0">
+
+                <!-- Informações do jogo -->
+                <div class="w-full max-w-2xl mb-4">
+                    <div class="bg-white border border-slate-200 rounded-3xl px-5 py-3 shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
+                            <div>
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Título</span>
+                                <p id="play-header-title" class="text-sm font-black text-slate-800 leading-tight">-</p>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Disciplina</span>
+                                <p id="play-header-disciplina" class="text-sm font-bold text-slate-700">-</p>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Conteúdo</span>
+                                <p id="play-header-conteudo" class="text-sm font-bold text-slate-700">-</p>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Série</span>
+                                <p id="play-header-serie" class="text-sm font-bold text-slate-700">-</p>
+                            </div>
+                            <div class="max-w-[160px]">
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Autores</span>
+                                <p id="play-header-autores" class="text-sm font-semibold text-slate-600 leading-tight">-</p>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Jogador</span>
+                                <p id="play-header-player" class="text-sm font-black text-emerald-600">-</p>
+                            </div>
+                            <div class="flex gap-2 ml-auto">
+                                <button onclick="playApp.showObjetivo()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-[11px] font-black uppercase tracking-wider transition" title="Ver Objetivo">
+                                    <i class="fa-solid fa-bullseye mr-1"></i>Objetivo
+                                </button>
+                                <button onclick="playApp.showExplicacao()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-[11px] font-black uppercase tracking-wider transition" title="Como Jogar">
+                                    <i class="fa-solid fa-circle-question mr-1"></i>Como Jogar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Enunciado -->
-                <div class="w-full max-w-2xl bg-white/80 border border-slate-200 px-5 py-3 rounded-3xl mb-5 text-center shadow-sm">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Enunciado</p>
+                <div id="play-enunciado" class="w-full max-w-2xl bg-white/50 border border-slate-200 p-4 rounded-3xl mb-6 text-center shadow-sm">
+                    <p class="text-sm font-black text-slate-400 uppercase tracking-widest mb-1">Enunciado</p>
                     <div id="play-enunciado-content" class="text-sm font-semibold text-slate-700"></div>
                 </div>
 
-                <!-- Secret slots -->
-                <div id="play-secret-slots" class="flex flex-wrap justify-center gap-3 mb-6"></div>
+                <!-- Código secreto -->
+                <div id="play-secret-slots" class="flex flex-nowrap justify-center gap-4 mb-8 w-full"></div>
 
-                <!-- Drop slots -->
-                <div id="play-drop-slots" class="flex flex-wrap justify-center gap-3 mb-6"></div>
+                <!-- Tentativa -->
+                <div id="play-drop-slots" class="flex flex-nowrap justify-center gap-4 mb-8 w-full"></div>
 
-                <!-- Validate button -->
                 <button id="btn-validate-play" onclick="playApp.validateGuess()"
                     class="bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-4 rounded-2xl font-black tracking-wider transition shadow-lg shadow-emerald-100">
                     VALIDAR
                 </button>
             </div>
 
-            <!-- RIGHT: History and controls -->
-            <div class="w-60 sm:w-72 border-l border-slate-200 bg-white p-3 flex flex-col overflow-hidden">
+            <!-- DIREITA: histórico e controles -->
+            <div class="w-[480px] shrink-0 border-l border-slate-300 bg-white p-4 flex flex-col overflow-hidden">
 
-                <div class="shrink-0 mb-3">
-                    <h2 class="font-black text-base text-slate-700">Histórico</h2>
-                    <div class="text-sm font-bold text-slate-500 mt-2">
+                <div class="shrink-0 mb-6">
+                    <div class="flex items-center justify-between gap-3">
+                        <h2 class="font-black text-lg">Histórico</h2>
+                        <!-- Tamanho da fonte (acessibilidade, só no link compartilhado) -->
+                        <div class="flex items-center gap-0.5 bg-slate-100 rounded-lg px-1 py-1" title="Tamanho da fonte">
+                            <button onclick="playApp.decreaseFontSize()" id="btn-font-decrease"
+                                class="w-7 h-7 flex items-center justify-center text-slate-600 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed rounded-md font-black text-sm transition"
+                                title="Diminuir fonte">A-</button>
+                            <span id="font-scale-indicator" class="text-[10px] font-bold text-slate-400 w-9 text-center select-none">100%</span>
+                            <button onclick="playApp.increaseFontSize()" id="btn-font-increase"
+                                class="w-7 h-7 flex items-center justify-center text-slate-600 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed rounded-md font-black text-sm transition"
+                                title="Aumentar fonte">A+</button>
+                        </div>
+                    </div>
+                    <div class="text-sm font-bold text-slate-600 mt-4">
                         Tentativa <span id="current-attempt-play">1</span> | Restantes: <span id="total-attempts-play">0</span>
                     </div>
-                    <div class="mt-2 grid grid-cols-2 gap-1.5 text-sm">
-                        <div class="bg-slate-50 rounded-xl px-2 py-1.5 border border-slate-100">
+                    <div class="mt-3 grid grid-cols-2 gap-2 text-sm font-bold text-slate-500">
+                        <div class="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2">
                             <span class="block text-slate-400 uppercase tracking-wider text-sm">Nível</span>
-                            <span id="level-info-nivel-play" class="font-bold text-slate-600">-</span>
+                            <span id="level-info-nivel-play">-</span>
                         </div>
-                        <div class="bg-slate-50 rounded-xl px-2 py-1.5 border border-slate-100">
-                            <span class="block text-slate-400 uppercase tracking-wider text-sm">Cartas</span>
-                            <span id="level-info-cartas-play" class="font-bold text-slate-600">-</span>
+                        <div class="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2">
+                            <span class="block text-slate-400 uppercase tracking-wider text-sm">Cartas do Código</span>
+                            <span id="level-info-cartas-play">-</span>
                         </div>
-                        <div class="bg-slate-50 rounded-xl px-2 py-1.5 border border-slate-100 col-span-2">
-                            <span class="block text-slate-400 uppercase tracking-wider text-sm">Troca</span>
-                            <span id="level-info-troca-play" class="font-bold text-slate-600">-</span>
+                        <div class="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2">
+                            <span class="block text-slate-400 uppercase tracking-wider text-sm">Repetição de Cartas</span>
+                            <span id="level-info-repeticao-play">-</span>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2">
+                            <span class="block text-slate-400 uppercase tracking-wider text-sm">Troca ao Reiniciar</span>
+                            <span id="level-info-troca-play">-</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="shrink-0 grid grid-cols-2 gap-1.5 mb-3">
-                    <button onclick="playApp.askRestart()" class="py-2 px-2 bg-red-50 hover:bg-red-100 text-red-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-red-100">
+                <div class="shrink-0 grid grid-cols-2 gap-2 mb-6">
+                    <button onclick="playApp.changeDifficulty()" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-slate-200">
+                        <i class="fa-solid fa-gears mr-1"></i> Dificuldade
+                    </button>
+                    <button onclick="playApp.askRestart()" class="py-2 px-3 bg-red-50 hover:bg-red-100 text-red-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-red-100">
                         <i class="fa-solid fa-rotate-left mr-1"></i> Reiniciar
                     </button>
-                    <button onclick="playApp.showGameRules()" class="py-2 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-slate-200">
+                    <button onclick="playApp.showGameRules()" class="col-span-2 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-slate-200">
                         <i class="fa-solid fa-circle-info mr-1"></i> Regras
                     </button>
                 </div>
 
-                <div id="play-history-list" class="flex-1 flex flex-col gap-4 overflow-y-auto pt-2 pb-6 px-0.5"></div>
+                <div id="play-history-list" class="flex-1 flex flex-col gap-6 overflow-y-auto pt-4 pb-10 px-1"></div>
             </div>
         </div>
     </div>
@@ -557,6 +595,6 @@
         </div>
     </div>
 
-    <script type="module" src="js/play.js?v=11"></script>
+    <script type="module" src="js/play.js?v=12"></script>
 </body>
 </html>

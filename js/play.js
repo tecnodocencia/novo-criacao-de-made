@@ -247,12 +247,7 @@ function renderGameHeader() {
     const autoresEl = document.getElementById('play-header-autores');
     if (autoresEl) {
         const autores = Array.isArray(info.autores) ? info.autores.filter(Boolean) : [];
-        if (autores.length > 0) {
-            autoresEl.innerText = 'Autor(es): ' + autores.join(', ');
-            autoresEl.classList.remove('hidden');
-        } else {
-            autoresEl.classList.add('hidden');
-        }
+        autoresEl.innerText = autores.length > 0 ? autores.join(', ') : 'Não informado';
     }
 }
 
@@ -321,20 +316,20 @@ function renderBankCards() {
         let innerContent;
         if (card.contentImage) {
             innerContent = `<img src="${card.contentImage}" alt="${escapeHtml(stripHtml(card.content))}"
-                style="max-height:82px; max-width:100%; object-fit:contain; border-radius:8px; pointer-events:none;">`;
+                class="max-w-full max-h-full object-contain" style="pointer-events:none;">`;
         } else {
-            innerContent = `<p class="text-[11px] font-black text-slate-800 text-center leading-tight">${card.content || ''}</p>`;
+            innerContent = `<div class="leading-tight text-slate-800">${card.content || ''}</div>`;
         }
 
         const cardIdStr = escapeHtml(String(card.id));
         const useBg = card.frontImage || frontDesign;
         bankCard.innerHTML = `
             <div class="bank-card-inner" data-card-inner-id="${cardIdStr}" style="background-image:url('${useBg}');background-size:cover;background-position:center;">
-                <div class="front-content-wrap ${card.frontImage ? 'bg-transparent' : 'bg-white/80'}" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:16px;overflow:hidden;">
+                <div class="front-content-wrap ${card.frontImage ? 'bg-transparent' : 'bg-white/80'}" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:8px;border-radius:22px;overflow:hidden;">
                     ${innerContent}
                 </div>
                 <button class="zoom-icon" title="Ampliar">
-                    <i class="fa-solid fa-magnifying-glass-plus" style="font-size:calc(9px * var(--play-font-scale));"></i>
+                    <i class="fa-solid fa-magnifying-glass-plus"></i>
                 </button>
             </div>
         `;
@@ -433,7 +428,7 @@ function renderDropSlotContent(slotIndex) {
         let content;
         if (card.contentImage) {
             content = `<img src="${card.contentImage}" alt="${escapeHtml(stripHtml(card.content))}"
-                style="max-height:120px; max-width:90%; object-fit:contain; border-radius:12px; pointer-events:none;">`;
+                style="max-height:100%; max-width:100%; object-fit:contain; border-radius:12px; pointer-events:none;">`;
         } else {
             content = `<p class="text-[11px] font-black text-slate-800 text-center leading-tight px-1">${card.content || ''}</p>`;
         }
@@ -482,10 +477,10 @@ function updateAttemptCounter() {
 function updateLevelInfo() {
     const level = gs.currentDifficulty;
     const rules = difficultyRules[level];
-    const names = { 1: 'Iniciante', 2: 'Intermediário', 3: 'Avançado', 4: 'Especialista' };
-    document.getElementById('level-info-nivel-play').innerText = `${level} - ${names[level] || ''}`;
+    document.getElementById('level-info-nivel-play').innerText = `Nível ${level} (${rules.attempts} tentativas)`;
     document.getElementById('level-info-cartas-play').innerText = String(gs.currentCodeSize);
-    document.getElementById('level-info-troca-play').innerText = rules.swap > 0 ? `${rules.swap} carta${rules.swap > 1 ? 's' : ''}` : 'Não';
+    document.getElementById('level-info-repeticao-play').innerText = rules.repeatMax === 0 ? 'Nenhuma' : getLevelDescription(level).repeatText.replace('repetição de ', '');
+    document.getElementById('level-info-troca-play').innerText = rules.swap > 0 ? `${rules.swap} carta${rules.swap > 1 ? 's' : ''} a cada reinício` : 'Nenhuma';
 }
 
 // ─── Validação ────────────────────────────────────────────────────────────────
@@ -557,27 +552,24 @@ function addHistoryRow(guess, black, white) {
     const dotHtml = dots.map(d => `<div class="feedback-dot ${d}"></div>`).join('');
 
     const cardsHtml = guess.map(card => {
-        let inner;
-        if (card.contentImage) {
-            inner = `<img src="${card.contentImage}" alt="${escapeHtml(stripHtml(card.content))}"
-                style="max-height:55px;max-width:100%;object-fit:contain;border-radius:6px;">`;
-        } else {
-            inner = `<p style="font-size:calc(8px * var(--play-font-scale));font-weight:900;text-align:center;line-height:1.2;">${card.content || ''}</p>`;
-        }
-        return `<div class="history-mini-card">${inner}</div>`;
+        const inner = card.contentImage
+            ? `<img src="${card.contentImage}" alt="${escapeHtml(stripHtml(card.content))}" class="max-w-full max-h-full object-contain">`
+            : (card.content || '');
+        return `<div class="history-mini-card overflow-hidden">${inner}</div>`;
     }).join('');
 
     const row = document.createElement('div');
     row.className = 'history-row recent';
     row.innerHTML = `
-        <div style="min-width:22px;text-align:center;">
-            <span style="font-size:calc(8px * var(--play-font-scale));font-weight:900;color:#94a3b8;text-transform:uppercase;">${attemptNum}</span>
+        <div class="flex-1">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Tentativa ${attemptNum}</p>
+            <div class="history-cards">${cardsHtml}</div>
         </div>
-        <div style="display:flex;gap:4px;flex-wrap:wrap;">${cardsHtml}</div>
         <div class="feedback-grid">${dotHtml}</div>
     `;
 
     list.prepend(row);
+    list.scrollTop = 0;
 }
 
 // ─── Modal de solução ─────────────────────────────────────────────────────────
@@ -923,6 +915,12 @@ window.playApp = {
     previewCard(cardIdStr) {
         const card = gs.game.cards.find(c => String(c.id) === String(cardIdStr));
         if (card) previewCard(card);
+    },
+
+    changeDifficulty() {
+        const go = () => showScreen('difficulty');
+        if (gs.gameOver || gs.attempts.length === 0) { go(); return; }
+        showConfirm('Trocar a dificuldade? A partida atual será perdida.', go);
     },
 
     askRestart() {
