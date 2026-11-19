@@ -5,7 +5,7 @@
 <style>
 /* Layout: palco 16:9 (1280×720 escalado) + controles + narração sincronizada. Visual único do MADE (sem tema escuro, como o sistema). */
 :root{
-  --pink:#FCB6C0; --rose:#EA3257; --rose-dk:#D12A4C; --ink:#4c0519; --wine:#6b0f1a;
+  --pink:#FDDADF; --rose:#EA3257; --rose-dk:#D12A4C; --ink:#4c0519; --wine:#6b0f1a;
   --paper:#ffffff; --muted:#7a4a55; --line:#f1c9d0;
   --amber:#F9C77A; --amber-bg:#FDE2B5; --green:#22c55e; --green-bg:#CFF3DC; --green-dk:#15803d;
   --sky:#7CCBEF; --sky-bg:#D3EEFB; --pinkish:#FCB6D4; --pinkish-bg:#FDD9E8; --red:#f87171; --red-dk:#b91c1c;
@@ -101,7 +101,7 @@ select{font:inherit;font-size:12px;font-weight:800;border-radius:12px;border:2px
 .cover h2{margin:0;font-size:clamp(20px,4.4vw,48px);font-weight:900;line-height:1.02;color:var(--ink)}
 .cover p{margin:6px 0 16px;font-size:clamp(11px,1.6vw,17px);font-weight:700;color:var(--muted)}
 .cover .btn.primary{font-size:clamp(13px,1.8vw,18px);padding:12px 22px;border-radius:18px}
-.end{position:absolute;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(252,182,192,.78)}
+.end{position:absolute;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(253,218,223,.82)}
 @media (max-width:560px){ .cover-inner{gap:14px;padding:12px} .voice{width:100%} select{max-width:none;flex:1} }
 </style>
 
@@ -392,7 +392,7 @@ const SCENES = [
       const t=pill('🔀 O monte acabou! As cartas voltaram para o monte.',260,540,'background:#065f46;color:#fff;font-size:21px'); pop(t,3400);
     }],
   ]},
- { key:'05 · fechamento', color:'#EA3257', bg:'#FCB6C0', build(){
+ { key:'05 · fechamento', color:'#EA3257', bg:'#FDDADF', build(){
     head('05 · fechamento','Quem combina<br>melhor, vence');
    },
    beats:[
