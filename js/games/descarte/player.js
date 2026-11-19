@@ -10,7 +10,7 @@
 // GAME_METHODS em js/app.js) são finos — delegam para funções internas deste
 // módulo (não exportadas, recebem `app` explicitamente). Isso evita que cada
 // chamada interna precise passar pelo despachante genérico de js/app.js.
-import { buildDeck, cardMatchesTags, calculateDescarteScore, masterValues, computeHandSize } from './model.js?v=4';
+import { buildDeck, cardMatchesTags, calculateDescarteScore, masterValues, computeHandSize } from './model.js?v=5';
 
 // --- Ícones inline (cartas especiais), nas cores pastel do MADE ---
 function svgSkip() {
@@ -1310,7 +1310,7 @@ export const playerMethods = {
                 ${regraJaCompleta ? '' : `<div class="p-4 bg-slate-50 rounded-2xl space-y-3 border border-slate-200">
                     <p class="font-black text-sm uppercase tracking-widest text-slate-500">Cartas especiais:</p>
                     ${row(svgSkip(), 'Perder a Vez', 'o próximo jogador perde a vez.')}
-                    ${row(svgReverse(), 'Retornar a Ordem', 'inverte o sentido da rodada.')}
+                    ${row(svgReverse(), 'Inverter a Ordem', 'inverte o sentido da rodada.')}
                     ${row(svgDraw(1, '#FDE2B5'), 'Comprar 1', 'o próximo jogador compra 1 carta.')}
                     ${row(svgDraw(2, '#BAF7CE'), 'Comprar 2', 'o próximo jogador compra 2 cartas.')}
                     ${row(svgDraw(4, '#FCB6D4'), 'Comprar 4 e Escolher', 'jogável a qualquer momento. Você escolhe o novo valor em jogo e o próximo jogador compra 4 cartas.')}
