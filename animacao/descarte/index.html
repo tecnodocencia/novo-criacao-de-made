@@ -280,7 +280,7 @@ const SCENES = [
     ['Neste exemplo, o relevo pode ser planícies, planaltos, montanhas ou depressões, e a região pode ser Norte, Sudeste, Centro-Oeste ou Nordeste.', ()=>{
       const row = (vals, y, bg, bd, d0)=>chipRow(vals,56,y,`background:${bg};border:3px solid ${bd};color:var(--ink);font-size:18px;padding:8px 14px`,d0,260);
       S.r1 = row(['Planícies','Planaltos','Montanhas','Depressões'],280,'var(--amber-bg)','var(--amber)',200);
-      S.r2 = row(['Norte','Sudeste','Centro-Oeste','Nordeste'],430,'var(--sky-bg)','var(--sky)',4400);
+      S.r2 = row(['Norte','Sudeste','Centro-Oeste','Nordeste'],430,'var(--sky-bg)','var(--sky)',5000);
     }],
     ['Cada combinação vira uma carta: com quatro valores em cada categoria, são dezesseis cartas no baralho.', ()=>{
       [S.big,S.rel,S.reg,...S.r1,...S.r2].forEach(n=>fadeOut(n));
@@ -436,13 +436,13 @@ const SCENES = [
 ];
 
 /* ---------- narração contínua ---------- */
-const TL = {"dora":{"tl":[[0.3,0,0],[3.916,0,1],[8.752,0,2],[16.558,1,0],[22.608,1,1],[32.038,1,2],[38.564,1,3],[44.132,2,0],[47.11,2,1],[51.672,2,2],[54.948,2,3],[61.678,2,4],[65.502,2,5],[69.8,2,6],[75.116,2,7],[83.536,3,0],[87.316,3,1],[92.05,3,2],[96.334,3,3],[101.804,3,4],[107.244,3,5],[112.676,4,0],[115.27,4,1],[121.468,4,2],[125.66,4,3],[134.322,4,4]],"len":139.08},"alex":{"tl":[[0.3,0,0],[3.872,0,1],[8.448,0,2],[16.588,1,0],[22.708,1,1],[32.948,1,2],[39.482,1,3],[45.044,2,0],[48.262,2,1],[52.736,2,2],[55.954,2,3],[64.056,2,4],[67.724,2,5],[71.954,2,6],[77.408,2,7],[85.682,3,0],[89.452,3,1],[94.242,3,2],[98.918,3,3],[104.3,3,4],[109.75,3,5],[115.264,4,0],[117.834,4,1],[123.874,4,2],[128.06,4,3],[136.552,4,4]],"len":141.47}};
+const TL = {"dora":{"tl":[[0.35,0,0],[3.752,0,1],[8.377,0,2],[16.714,1,0],[22.719,1,1],[32.281,1,2],[38.856,1,3],[44.962,2,0],[47.814,2,1],[52.114,2,2],[55.239,2,3],[62.452,2,4],[66.189,2,5],[70.639,2,6],[76.139,2,7],[84.878,3,0],[88.383,3,1],[92.983,3,2],[97.258,3,3],[102.445,3,4],[107.82,3,5],[113.798,4,0],[116.15,4,1],[122.025,4,2],[126.163,4,3],[134.388,4,4]],"len":139.83},"alex":{"tl":[[0.35,0,0],[4.092,0,1],[9.055,0,2],[17.528,1,0],[23.825,1,1],[34.45,1,2],[41.363,1,3],[47.262,2,0],[50.642,2,1],[55.517,2,2],[59.117,2,3],[67.642,2,4],[71.704,2,5],[76.329,2,6],[82.179,2,7],[90.782,3,0],[94.689,3,1],[99.902,3,2],[104.977,3,3],[110.739,3,4],[116.564,3,5],[122.432,4,0],[125.172,4,1],[131.584,4,2],[136.184,4,3],[145.072,4,4]],"len":150.43}};
 const list = document.getElementById('scriptList');
 list.appendChild($(`<li style="cursor:default"><p>${SCENES.map((sc,si)=>sc.beats.map((b,bi)=>`<span class="s" data-k="${si}-${bi}">${b[0]}</span>`).join(' ')).join(' ')}</p></li>`));
 list.querySelectorAll('.s').forEach(e=>{ e.style.cursor='pointer'; e.addEventListener('click',()=>{ const [a,b]=e.dataset.k.split('-').map(Number); seekTo(TL[mode].tl.find(x=>x[1]===a&&x[2]===b)[0]); }); });
 
 let mode='dora', voiceOn=true, subsOn=true, si=-1, bi=-1, next=0, ended=false, audioOk=true, vt0=0;
-const audio = new Audio(`audio/narracao-${mode}.mp3?v=2`); audio.preload='auto';
+const audio = new Audio(`audio/narracao-${mode}.mp3?v=3`); audio.preload='auto';
 audio.addEventListener('error',()=>{ audioOk=false; });
 audio.addEventListener('ended',()=>{ if(!ended){ ended=true; later(finish,1200); } });
 const sub = ()=>stage.querySelector('.sub');
@@ -525,7 +525,7 @@ const sel=document.getElementById('voiceSel');
 sel.addEventListener('change',()=>{
   const old=TL[mode].tl, k=Math.max(0,next-1), frac = old[k] ? (now()-old[k][0]) : 0;
   mode=sel.value; const was=playing; audio.pause(); audioOk=true;
-  audio.src=`audio/narracao-${mode}.mp3?v=2`;
+  audio.src=`audio/narracao-${mode}.mp3?v=3`;
   const t = TL[mode].tl[k] ? TL[mode].tl[k][0]+Math.max(0,frac) : 0;
   audio.addEventListener('loadedmetadata',()=>{ try{ audio.currentTime=t; }catch(e){} if(was){ audio.muted=!voiceOn; audio.play().catch(()=>{}); } },{once:true});
   vt0=clock-t*1000;
