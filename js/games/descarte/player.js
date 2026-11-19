@@ -10,7 +10,7 @@
 // GAME_METHODS em js/app.js) são finos — delegam para funções internas deste
 // módulo (não exportadas, recebem `app` explicitamente). Isso evita que cada
 // chamada interna precise passar pelo despachante genérico de js/app.js.
-import { buildDeck, cardMatchesTags, calculateDescarteScore, masterValues, computeHandSize } from './model.js?v=5';
+import { buildDeck, cardMatchesTags, calculateDescarteScore, masterValues, computeHandSize } from './model.js?v=6';
 
 // --- Ícones inline (cartas especiais), nas cores pastel do MADE ---
 function svgSkip() {

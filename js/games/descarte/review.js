@@ -1,5 +1,5 @@
 // js/games/descarte/review.js
-import { countBaseCards } from './model.js?v=5';
+import { countBaseCards } from './model.js?v=6';
 
 export const reviewMethods = {
     populateReviewStep: function() {

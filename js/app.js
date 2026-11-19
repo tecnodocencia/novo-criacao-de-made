@@ -10,7 +10,7 @@ import { modalMethods } from './core/modals.js?v=1';
 import { gameTourMethods } from './core/gameTour.js?v=12';
 import { getGame } from './games/registry.js?v=1';
 import './games/codigo-secreto/index.js?v=11';
-import './games/descarte/index.js?v=34';
+import './games/descarte/index.js?v=35';
 
 // Métodos que pertencem ao modelo de jogo ativo ("Código Secreto" e
 // "Descarte a Carta" hoje). app.js não implementa o comportamento: delega para o

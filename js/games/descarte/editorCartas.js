@@ -3,7 +3,7 @@
 // define 2 atributos (nome + 2 a 9 valores cada) e marca exatamente 2
 // valores "carta mestre" por atributo. Ver js/games/descarte/model.js para
 // as regras derivadas (cartas-base, cópias de especiais, cartas mestre).
-import { countBaseCards, uuid } from './model.js?v=5';
+import { countBaseCards, uuid } from './model.js?v=6';
 
 const ATTR_LABELS = ['Atributo 1', 'Atributo 2'];
 
