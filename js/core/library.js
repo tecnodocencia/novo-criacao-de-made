@@ -397,6 +397,7 @@ export const libraryMethods = {
             const reviewFront = document.getElementById('review-preview-front');
             if (previewFront) previewFront.src = url;
             if (reviewFront) reviewFront.src = url;
+            if (typeof this.renderTextBackdropControl === 'function') this.renderTextBackdropControl();
         } else if (target === 'back-design') {
             const extBackPreview = document.getElementById('external-back-preview');
             const extBackWrapper = document.getElementById('external-back-preview-wrapper');

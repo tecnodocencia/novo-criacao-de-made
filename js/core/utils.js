@@ -23,6 +23,105 @@ function selectNodeContents(sel, node) {
     sel.addRange(r);
 }
 
+
+// --- Cor do texto (barra de formatação) ---
+// O botão "A" pinta o trecho selecionado com a cor atual; a setinha ao lado
+// abre uma paleta (e um seletor livre "Outra cor") para trocar essa cor. A
+// cor escolhida fica lembrada neste navegador e aparece no sublinhado do "A".
+const TEXT_COLORS = [
+    '#b91c1c', '#ea580c', '#ca8a04', '#15803d', '#0d9488',
+    '#1d4ed8', '#7c3aed', '#db2777', '#0f172a', '#64748b'
+];
+const TEXT_COLOR_KEY = 'made.textColor';
+let currentTextColor = '#b91c1c';
+try { currentTextColor = localStorage.getItem(TEXT_COLOR_KEY) || currentTextColor; } catch (e) {}
+let colorPickerTarget = null;
+let colorPickerRange = null;
+
+function paintColorIndicators() {
+    if (typeof document === 'undefined') return;
+    document.documentElement.style.setProperty('--rt-color', currentTextColor);
+}
+if (typeof document !== 'undefined') paintColorIndicators();
+
+function setCurrentTextColor(color) {
+    currentTextColor = color;
+    try { localStorage.setItem(TEXT_COLOR_KEY, color); } catch (e) {}
+    paintColorIndicators();
+}
+
+function isColoredStrong(node) {
+    return !!node && node.nodeName === 'STRONG' && !!(node.style && node.style.color);
+}
+
+function unwrapNode(node) {
+    const parent = node.parentNode;
+    if (!parent) return;
+    while (node.firstChild) parent.insertBefore(node.firstChild, node);
+    parent.removeChild(node);
+}
+
+function closeTextColorPicker() {
+    const pop = document.getElementById('richtext-color-pop');
+    if (pop) pop.classList.add('hidden');
+    colorPickerTarget = null;
+}
+
+function restoreColorPickerRange() {
+    if (!colorPickerRange) return;
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(colorPickerRange);
+}
+
+function ensureTextColorPicker(app) {
+    let pop = document.getElementById('richtext-color-pop');
+    if (pop) return pop;
+    pop = document.createElement('div');
+    pop.id = 'richtext-color-pop';
+    pop.className = 'richtext-color-pop hidden';
+    pop.innerHTML = `
+        <p class="richtext-color-pop-title">Cor do texto</p>
+        <div class="richtext-color-grid">
+            ${TEXT_COLORS.map(c => `<button type="button" class="richtext-color-swatch" data-color="${c}" style="background:${c}" title="Usar esta cor"></button>`).join('')}
+        </div>
+        <label class="richtext-color-custom" title="Escolher qualquer outra cor">
+            <input type="color" value="${currentTextColor}">
+            <span>Outra cor...</span>
+        </label>`;
+    document.body.appendChild(pop);
+
+    pop.addEventListener('mousedown', (e) => {
+        // Mantém a seleção no campo de texto (menos no seletor livre, que
+        // precisa do clique para abrir a janela de cores do navegador).
+        if (e.target.closest('.richtext-color-swatch')) e.preventDefault();
+    });
+    const applyAndClose = (color) => {
+        const target = colorPickerTarget;
+        const hadSelection = !!colorPickerRange;
+        setCurrentTextColor(color);
+        const el = target && document.getElementById(target);
+        if (el) el.focus();
+        restoreColorPickerRange();
+        closeTextColorPicker();
+        // Sem trecho selecionado, só troca a cor do botão "A" (vale para o próximo uso).
+        if (target && hadSelection) app.applyTextColor(target);
+    };
+    pop.querySelectorAll('.richtext-color-swatch').forEach(btn => {
+        btn.addEventListener('click', () => applyAndClose(btn.dataset.color));
+    });
+    const input = pop.querySelector('input[type="color"]');
+    input.addEventListener('change', () => applyAndClose(input.value));
+    document.addEventListener('mousedown', (e) => {
+        if (pop.classList.contains('hidden')) return;
+        if (e.target.closest('#richtext-color-pop') || e.target.closest('.richtext-color-caret')) return;
+        closeTextColorPicker();
+    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeTextColorPicker(); });
+    window.addEventListener('resize', closeTextColorPicker);
+    return pop;
+}
+
 export const utilsMethods = {
     // Textos ricos (regra, objetivo, enunciado, explicação) são HTML; textos
     // antigos eram texto puro com "\n" — converte para exibir com quebras.
@@ -101,15 +200,34 @@ export const utilsMethods = {
         return arr;
     },
 
-    wrapSelectionInRed: function(elementId) {
+    // Pinta o trecho selecionado com a cor atual (ou `color`, se vier). Se o
+    // trecho já é exatamente um destaque colorido, só troca a cor dele.
+    applyTextColor: function(elementId, color) {
         const el = document.getElementById(elementId);
         if(!el) return;
         const inside = selectionInside(el);
-        if (!inside) return;
+        if (!inside) {
+            if (typeof this.showNotification === 'function') this.showNotification('Selecione primeiro o trecho do texto que você quer colorir.');
+            return;
+        }
         const { sel: selection, range } = inside;
+        const useColor = color || currentTextColor;
+
+        let node = range.commonAncestorContainer;
+        while (node && node !== el) {
+            if (isColoredStrong(node) && node.textContent === range.toString()) {
+                node.style.color = useColor;
+                if (typeof this.scheduleAutoSave === 'function') this.scheduleAutoSave();
+                return;
+            }
+            node = node.parentNode;
+        }
+
         const span = document.createElement('strong');
-        span.style.color = '#b91c1c';
+        span.style.color = useColor;
         span.appendChild(range.extractContents());
+        // Destaques antigos dentro do trecho passam a ter a cor nova.
+        span.querySelectorAll('strong').forEach(n => { if (isColoredStrong(n)) unwrapNode(n); });
         range.insertNode(span);
         selectNodeContents(selection, span);
         // Manipulação via Range API não dispara evento 'input' de forma
@@ -117,6 +235,28 @@ export const utilsMethods = {
         // no contenteditable (coberta pelo oninput do próprio elemento no
         // HTML) — por isso o auto-save é agendado explicitamente aqui.
         if (typeof this.scheduleAutoSave === 'function') this.scheduleAutoSave();
+    },
+
+    // Nome antigo, mantido para chamadas existentes.
+    wrapSelectionInRed: function(elementId) { this.applyTextColor(elementId); },
+
+    openTextColorPicker: function(elementId, btn) {
+        const pop = ensureTextColorPicker(this);
+        if (!pop.classList.contains('hidden') && colorPickerTarget === elementId) {
+            closeTextColorPicker();
+            return;
+        }
+        const el = document.getElementById(elementId);
+        const inside = el ? selectionInside(el) : null;
+        colorPickerRange = inside ? inside.range.cloneRange() : null;
+        colorPickerTarget = elementId;
+        pop.querySelector('input[type="color"]').value = currentTextColor;
+        pop.querySelectorAll('.richtext-color-swatch').forEach(b => b.classList.toggle('active', b.dataset.color === currentTextColor));
+        pop.classList.remove('hidden');
+        const r = btn.getBoundingClientRect();
+        const w = pop.offsetWidth;
+        pop.style.left = Math.max(8, Math.min(r.left, window.innerWidth - w - 8)) + 'px';
+        pop.style.top = (r.bottom + 6) + 'px';
     },
 
     // Alterna uma tag de formatação simples (negrito/itálico/sublinhado) na seleção:
@@ -183,24 +323,24 @@ export const utilsMethods = {
         }
     },
 
+    // Tira a cor (qualquer cor) do trecho selecionado.
     removeRedFromSelection: function(elementId) {
         const el = document.getElementById(elementId);
         if(!el) return;
         const inside = selectionInside(el);
         if (!inside) return;
         const { range } = inside;
+        const targets = new Set();
         let node = range.commonAncestorContainer;
         while (node && node !== el) {
-            if (node.nodeName === 'STRONG' && node.style.color === 'rgb(185, 28, 28)') {
-                const parent = node.parentNode;
-                while (node.firstChild) {
-                    parent.insertBefore(node.firstChild, node);
-                }
-                parent.removeChild(node);
-                if (typeof this.scheduleAutoSave === 'function') this.scheduleAutoSave();
-                return;
-            }
+            if (isColoredStrong(node)) targets.add(node);
             node = node.parentNode;
         }
+        el.querySelectorAll('strong').forEach(n => {
+            if (isColoredStrong(n) && range.intersectsNode(n)) targets.add(n);
+        });
+        if (!targets.size) return;
+        targets.forEach(unwrapNode);
+        if (typeof this.scheduleAutoSave === 'function') this.scheduleAutoSave();
     }
 };

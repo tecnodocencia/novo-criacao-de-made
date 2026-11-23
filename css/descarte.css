@@ -307,3 +307,64 @@
     .descarte-pile-refill { animation: none; }
     .descarte-toast { transition: none; }
 }
+
+/* Faixa atrás do texto das cartas (bloco Aparência do editor: "Leitura do
+   texto nas cartas"). A classe fica no <body> durante a partida e na carta
+   de exemplo do editor. */
+.descarte-text-claro .descarte-fit-text,
+.descarte-text-claro .descarte-special-label {
+    background: rgba(255, 255, 255, 0.92);
+    color: #0f172a !important;
+    border-radius: 8px;
+    padding: 2px 6px !important;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.28);
+}
+.descarte-text-escuro .descarte-fit-text,
+.descarte-text-escuro .descarte-special-label {
+    background: rgba(15, 23, 42, 0.82);
+    color: #ffffff !important;
+    border-radius: 8px;
+    padding: 2px 6px !important;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.35);
+}
+
+/* Editor: carta de exemplo e botões de escolha da faixa. */
+.text-backdrop-sample {
+    position: relative;
+    width: 150px;
+    height: 202px;
+    border-radius: 18px;
+    background-color: #f1f5f9;
+    background-position: center;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
+}
+.text-backdrop-sample-inner {
+    position: absolute;
+    inset: 12px;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.text-backdrop-opt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 2px solid #e2e8f0;
+    background: #ffffff;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 800;
+    transition: border-color 0.15s, background 0.15s;
+}
+.text-backdrop-opt:hover { border-color: #94a3b8; }
+.text-backdrop-opt.active { border-color: #16a34a; background: #dcfce7; color: #14532d; }
+/* Editor: valor marcado como carta mestre. */
+.game-card.descarte-master-chip {
+    border-color: #fbbf24 !important;
+    background: #fffbeb;
+    box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.35);
+}

@@ -1,43 +1,88 @@
                             <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm space-y-5">
-                                <div class="space-y-4">
+                                <div class="space-y-2">
                                     <p class="text-sm uppercase tracking-[0.28em] text-slate-500 font-black">Criação de Cartas</p>
-                                    <p class="text-sm text-slate-600">Defina os dois atributos do seu conteúdo. Cada carta do jogo é uma combinação de um valor do Atributo 1 com um valor do Atributo 2.</p>
+                                    <p class="text-sm text-slate-600">Você não precisa montar carta por carta: basta escrever os valores de <strong>dois atributos</strong> do seu conteúdo e o jogo monta todas as cartas sozinho.</p>
                                 </div>
-                                <div>
-                                    <div class="rounded-[28px] border border-slate-200 bg-emerald-50 p-4 text-slate-700 space-y-2">
-                                        <p class="text-sm font-black">SOBRE AS CARTAS</p>
-                                        <p class="text-sm">Este jogo usa <strong>2 atributos</strong> do seu conteúdo (por exemplo, "Relevo" e "Região"). Cada atributo recebe de <strong>2 a 9 valores</strong> (texto ou imagem). Toda combinação possível entre um valor do Atributo 1 e um valor do Atributo 2 vira uma carta do jogo. Durante a partida, uma carta só pode ser jogada sobre a carta da mesa se compartilhar o valor de pelo menos um dos dois atributos com ela. Em cada atributo, marque exatamente <strong>2 valores como "carta mestre"</strong> (clique na estrela ao editar o valor): são os valores mais importantes, usados também nas cartas especiais "Comprar 4 e Escolher" e "Escolher".</p>
+
+                                <!-- Passo a passo + exemplo -->
+                                <div class="rounded-[28px] border border-emerald-200 bg-emerald-50 p-5 space-y-4">
+                                    <p class="text-sm font-black text-emerald-900 uppercase tracking-widest"><i class="fa-solid fa-list-ol mr-1"></i> Como montar as cartas</p>
+                                    <div class="grid grid-cols-1 xl:grid-cols-[1fr_auto] gap-5 items-center">
+                                        <ol class="space-y-3">
+                                            <li class="flex gap-3">
+                                                <span class="w-7 h-7 shrink-0 rounded-full bg-emerald-600 text-white text-sm font-black flex items-center justify-center">1</span>
+                                                <p class="text-sm text-slate-700"><strong>Dê um nome a cada atributo.</strong> Atributo é uma característica do conteúdo. Ex.: em Geografia, <em>Relevo</em> (Atributo 1) e <em>Região</em> (Atributo 2).</p>
+                                            </li>
+                                            <li class="flex gap-3">
+                                                <span class="w-7 h-7 shrink-0 rounded-full bg-emerald-600 text-white text-sm font-black flex items-center justify-center">2</span>
+                                                <p class="text-sm text-slate-700"><strong>Adicione os valores de cada atributo</strong> (de 2 a 9, com texto ou imagem) no botão <em>Adicionar valor</em>. Ex.: Relevo → Planalto, Planície, Depressão. Região → Nordeste, Sul, Norte.</p>
+                                            </li>
+                                            <li class="flex gap-3">
+                                                <span class="w-7 h-7 shrink-0 rounded-full bg-amber-500 text-white text-sm font-black flex items-center justify-center">3</span>
+                                                <p class="text-sm text-slate-700"><strong>Marque 2 cartas mestre em cada atributo</strong> clicando na estrela <span class="inline-flex w-5 h-5 rounded-full border-2 border-amber-400 text-amber-500 items-center justify-center text-[10px] align-middle"><i class="fa-regular fa-star"></i></span> do valor. Ela fica amarela <span class="inline-flex w-5 h-5 rounded-full bg-amber-400 text-white items-center justify-center text-[10px] align-middle"><i class="fa-solid fa-star"></i></span> quando o valor vira carta mestre.</p>
+                                            </li>
+                                        </ol>
+                                        <div class="flex items-center justify-center gap-3">
+                                            <div class="text-right space-y-2">
+                                                <span class="block text-[11px] font-black uppercase tracking-widest text-amber-700">Relevo: Planalto</span>
+                                                <span class="block text-[11px] font-black uppercase tracking-widest text-sky-700">Região: Nordeste</span>
+                                            </div>
+                                            <i class="fa-solid fa-arrow-right text-slate-400"></i>
+                                            <div class="w-24 h-32 rounded-xl border-2 border-slate-300 bg-white shadow flex flex-col overflow-hidden" title="Exemplo de carta gerada">
+                                                <div class="flex-1 flex items-center justify-center text-xs font-black text-slate-800 border-b border-slate-200 bg-amber-50">Planalto</div>
+                                                <div class="flex-1 flex items-center justify-center text-xs font-black text-slate-800 bg-sky-50">Nordeste</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-slate-700">Cada carta junta <strong>1 valor do Atributo 1</strong> com <strong>1 valor do Atributo 2</strong> (todas as combinações). Na partida, o aluno só descarta uma carta que tenha <strong>pelo menos um valor igual</strong> ao da carta da mesa.</p>
+                                </div>
+
+                                <!-- O que é carta mestre -->
+                                <div class="rounded-[28px] border-2 border-amber-300 bg-amber-50 p-5 flex gap-4">
+                                    <div class="w-11 h-11 shrink-0 rounded-2xl bg-amber-400 text-white flex items-center justify-center text-xl shadow">
+                                        <i class="fa-solid fa-star"></i>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <p class="text-sm font-black text-amber-900 uppercase tracking-widest">O que é carta mestre?</p>
+                                        <p class="text-sm text-amber-900">São os <strong>2 valores mais importantes de cada atributo</strong> (4 no total). Quando alguém joga a carta especial <em>"Compra 4 e escolhe"</em> ou <em>"Escolhe"</em>, escolhe um desses 4 valores para continuar o jogo. Escolha valores que você quer que os alunos vejam mais vezes.</p>
                                     </div>
                                 </div>
+
                                 <div id="descarte-attributes-wrap" class="grid grid-cols-1 lg:grid-cols-2 gap-5">
                                     <div class="rounded-[28px] border-2 border-slate-200 p-5 space-y-4" style="background: linear-gradient(180deg, rgba(253,226,181,0.35), rgba(253,226,181,0.08));">
                                         <div>
-                                            <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Nome do Atributo 1</label>
-                                            <input id="descarte-attr-0-name" type="text" oninput="app.descarteUpdateAttributeName(0, event)" title="Nome deste atributo (ex: Relevo, Número, Tipo de equação)." class="w-full py-3 px-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Relevo">
+                                            <label for="descarte-attr-0-name" class="text-xs font-black text-amber-800 uppercase block mb-2 tracking-widest">1. Nome do Atributo 1</label>
+                                            <input id="descarte-attr-0-name" type="text" oninput="app.descarteUpdateAttributeName(0, event)" title="Nome deste atributo (ex: Relevo, Número, Tipo de equação)." class="w-full py-3 px-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm bg-white" placeholder="Ex: Relevo">
                                         </div>
-                                        <div id="descarte-attr-0-values" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+                                        <div>
+                                            <p class="text-xs font-black text-amber-800 uppercase mb-2 tracking-widest">2. Valores <span class="normal-case tracking-normal font-bold text-slate-500">— clique no valor para editar</span></p>
+                                            <div id="descarte-attr-0-values" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+                                        </div>
                                         <div class="flex items-center justify-between gap-3">
-                                            <button type="button" id="descarte-attr-0-add" onclick="app.descarteAddAttributeValue(0)" title="Adicionar um novo valor a este atributo (máximo 9)." class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-black uppercase tracking-widest transition flex items-center gap-2">
+                                            <button type="button" id="descarte-attr-0-add" onclick="app.descarteAddAttributeValue(0)" title="Adicionar um novo valor a este atributo (máximo 9)." class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-black uppercase tracking-widest transition flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                                                 <i class="fa-solid fa-plus"></i> Adicionar valor
                                             </button>
                                         </div>
-                                        <p id="descarte-attr-0-hint" class="text-xs font-bold mt-2 text-amber-700"></p>
+                                        <div id="descarte-attr-0-hint"></div>
                                     </div>
                                     <div class="rounded-[28px] border-2 border-slate-200 p-5 space-y-4" style="background: linear-gradient(180deg, rgba(184,231,250,0.35), rgba(184,231,250,0.08));">
                                         <div>
-                                            <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Nome do Atributo 2</label>
-                                            <input id="descarte-attr-1-name" type="text" oninput="app.descarteUpdateAttributeName(1, event)" title="Nome deste atributo (ex: Região, Cor, Variável)." class="w-full py-3 px-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm" placeholder="Ex: Região">
+                                            <label for="descarte-attr-1-name" class="text-xs font-black text-sky-800 uppercase block mb-2 tracking-widest">1. Nome do Atributo 2</label>
+                                            <input id="descarte-attr-1-name" type="text" oninput="app.descarteUpdateAttributeName(1, event)" title="Nome deste atributo (ex: Região, Cor, Variável)." class="w-full py-3 px-4 border-2 border-slate-200 rounded-3xl outline-none focus:border-emerald-500 transition text-sm bg-white" placeholder="Ex: Região">
                                         </div>
-                                        <div id="descarte-attr-1-values" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+                                        <div>
+                                            <p class="text-xs font-black text-sky-800 uppercase mb-2 tracking-widest">2. Valores <span class="normal-case tracking-normal font-bold text-slate-500">— clique no valor para editar</span></p>
+                                            <div id="descarte-attr-1-values" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+                                        </div>
                                         <div class="flex items-center justify-between gap-3">
-                                            <button type="button" id="descarte-attr-1-add" onclick="app.descarteAddAttributeValue(1)" title="Adicionar um novo valor a este atributo (máximo 9)." class="px-4 py-2.5 bg-sky-500 hover:bg-sky-600 text-white rounded-xl text-xs font-black uppercase tracking-widest transition flex items-center gap-2">
+                                            <button type="button" id="descarte-attr-1-add" onclick="app.descarteAddAttributeValue(1)" title="Adicionar um novo valor a este atributo (máximo 9)." class="px-4 py-2.5 bg-sky-500 hover:bg-sky-600 text-white rounded-xl text-xs font-black uppercase tracking-widest transition flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                                                 <i class="fa-solid fa-plus"></i> Adicionar valor
                                             </button>
                                         </div>
-                                        <p id="descarte-attr-1-hint" class="text-xs font-bold mt-2 text-amber-700"></p>
+                                        <div id="descarte-attr-1-hint"></div>
                                     </div>
                                 </div>
                                 <div class="rounded-[28px] border border-slate-200 bg-slate-50 p-4 text-center">
-                                    <p class="text-sm font-bold text-slate-600">Total de cartas-base geradas (todas as combinações possíveis): <span id="descarte-total-base-cards" class="text-slate-900">0</span></p>
+                                    <p class="text-sm font-bold text-slate-600">Total de cartas geradas (todas as combinações possíveis): <span id="descarte-total-base-cards" class="text-slate-900">0</span></p>
                                 </div>
                             </div>

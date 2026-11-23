@@ -39,6 +39,17 @@ const BLOCK_THEME_BG = {
 const ALL_EDITOR_BG_CLASSES = Array.from(new Set([...DEFAULT_EDITOR_BG, ...Object.values(BLOCK_THEME_BG).flat()]));
 const EDITOR_BG_TARGET_IDS = ['view-creator', 'editor-aside', 'editor-footer'];
 
+// Faixa atrás do texto das cartas (Descarte a Carta), salva em
+// disciplineInfo.fundoTexto: 'auto' | 'nenhum' | 'claro' | 'escuro'. Mesma
+// regra de resolveTextBackdrop em js/games/descarte/player.js.
+const TEXT_BACKDROP_CLASSES = ['descarte-text-nenhum', 'descarte-text-claro', 'descarte-text-escuro'];
+function resolveTextBackdrop(game) {
+    const mode = game?.disciplineInfo?.fundoTexto;
+    if (mode === 'nenhum' || mode === 'claro' || mode === 'escuro') return mode;
+    const front = game?.frontDesign || 'imagens/frente/frente01.png';
+    return front.startsWith('imagens/frente/') ? 'nenhum' : 'claro';
+}
+
 function stripHtml(html) {
     const div = document.createElement('div');
     div.innerHTML = html || '';
@@ -184,6 +195,7 @@ export const editorShellMethods = {
 
         this.renderAuthorsList();
         this.renderEditorGrid();
+        this.renderTextBackdropControl();
         this.showPhase(this.state.editingStep);
     },
 
@@ -397,6 +409,7 @@ export const editorShellMethods = {
             const activeBlock = document.getElementById(`creator-block-${blockNum}`);
             if (activeBlock) activeBlock.classList.remove('hidden');
             if (blockNum === 4) this.renderEditorGrid();
+            if (blockNum === 2) this.renderTextBackdropControl();
         }
 
         const prevBtn = document.getElementById('creator-prev-btn');
@@ -563,7 +576,12 @@ export const editorShellMethods = {
         const list = document.getElementById('edit-game-authors-list');
         if(!list || !this.state.editingGame) return;
         list.innerHTML = '';
-        (this.state.editingGame.disciplineInfo.autores || []).forEach((author, idx) => {
+        const autores = this.state.editingGame.disciplineInfo.autores || [];
+        if (!autores.length) {
+            list.innerHTML = `<p class="text-xs font-bold text-rose-700"><i class="fa-solid fa-circle-info mr-1"></i>Nenhum autor adicionado ainda. Clique em "Adicionar autor".</p>`;
+            return;
+        }
+        autores.forEach((author, idx) => {
             const chip = document.createElement('div');
             chip.className = 'author-chip';
             chip.innerHTML = `<span>${author}</span><button type="button" onclick="app.removeAuthor(${idx})" title="Remover ${author} da lista de autores.">×</button>`;
@@ -602,6 +620,7 @@ export const editorShellMethods = {
             this.fillTextFields(this.state.editingGame);
             this.markSelectedModel(modelName);
             this.renderEditorGrid();
+            this.renderTextBackdropControl();
             this.renderBlocksHub();
             this.saveNow();
         };
@@ -689,6 +708,7 @@ export const editorShellMethods = {
         else idx = (idx - 1 + frontDesigns.length) % frontDesigns.length;
         this.state.editingGame.frontDesign = frontDesigns[idx];
         document.getElementById('preview-front').src = this.state.editingGame.frontDesign;
+        this.renderTextBackdropControl();
         this.saveNow();
     },
 
@@ -700,6 +720,53 @@ export const editorShellMethods = {
         this.state.editingGame.backDesign = backDesigns[idx];
         document.getElementById('preview-back').src = this.state.editingGame.backDesign;
         this.saveNow();
+    },
+
+    setTextBackdrop: function(mode) {
+        const eg = this.state.editingGame;
+        if (!eg) return;
+        if (!eg.disciplineInfo) eg.disciplineInfo = {};
+        eg.disciplineInfo.fundoTexto = mode;
+        this.renderTextBackdropControl();
+        this.saveNow();
+    },
+
+    // Opções de faixa + carta de exemplo (frente atual com dois valores do
+    // próprio jogo). Só aparece no Descarte a Carta.
+    renderTextBackdropControl: function() {
+        const wrap = document.getElementById('text-backdrop-wrap');
+        const eg = this.state.editingGame;
+        if (!wrap || !eg) return;
+        const isDescarte = eg.model === 'Descarte a Carta';
+        wrap.classList.toggle('hidden', !isDescarte);
+        if (!isDescarte) return;
+
+        const chosen = eg.disciplineInfo?.fundoTexto || 'auto';
+        document.querySelectorAll('#text-backdrop-options .text-backdrop-opt').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.mode === chosen);
+        });
+
+        const front = eg.frontDesign || 'imagens/frente/frente01.png';
+        const sample = document.getElementById('text-backdrop-sample');
+        if (sample) {
+            sample.style.backgroundImage = `url('${front}')`;
+            sample.style.backgroundSize = front.startsWith('imagens/frente/') ? '110% 110%' : 'cover';
+            sample.classList.remove(...TEXT_BACKDROP_CLASSES);
+            sample.classList.add('descarte-text-' + resolveTextBackdrop(eg));
+        }
+        // A faixa do jogador fica no <body> durante a partida; no editor, o
+        // exemplo decide sozinho.
+        document.body.classList.remove(...TEXT_BACKDROP_CLASSES);
+
+        const attrs = eg.cards?.attributes || [];
+        const sampleText = (attrIdx, fallback) => {
+            const v = (attrs[attrIdx]?.values || []).find(x => stripHtml(x.text));
+            return v ? v.text : fallback;
+        };
+        const t1 = document.getElementById('text-backdrop-sample-1');
+        const t2 = document.getElementById('text-backdrop-sample-2');
+        if (t1) t1.innerHTML = sampleText(0, 'Planalto');
+        if (t2) t2.innerHTML = sampleText(1, 'Nordeste');
     },
 
     handleExternalFrontImageUpload: async function(event) {
@@ -732,6 +799,7 @@ export const editorShellMethods = {
         }
         document.getElementById('preview-front').src = frontDesigns[0];
         document.getElementById('review-preview-front').src = frontDesigns[0];
+        this.renderTextBackdropControl();
         this.saveNow();
     },
 

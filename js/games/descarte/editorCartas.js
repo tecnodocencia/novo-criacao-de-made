@@ -15,6 +15,29 @@ function getCurrentValue(app) {
     return eg.cards.attributes[app.state.descarteSelectedAttr]?.values[app.state.descarteSelectedValueIdx] || null;
 }
 
+// Marca/desmarca um valor como carta mestre direto pela estrela do chip
+// (sem abrir o modal). No máximo 2 por atributo.
+function toggleMaster(app, attrIdx, valueIdx) {
+    const attr = app.state.editingGame?.cards?.attributes?.[attrIdx];
+    const val = attr?.values?.[valueIdx];
+    if (!val) return;
+    if (!val.isMaster) {
+        if (!(app.stripHtml(val.text) || val.image)) {
+            app.showNotification('Preencha este valor (texto ou imagem) antes de marcá-lo como carta mestre.');
+            return;
+        }
+        if (attr.values.filter(v => v.isMaster).length >= 2) {
+            app.showNotification('Este atributo já tem 2 cartas mestre. Clique na estrela amarela de uma delas para desmarcar e depois marque a nova.');
+            return;
+        }
+    }
+    val.isMaster = !val.isMaster;
+    app.renderEditorGrid();
+    app.saveNow();
+}
+
+const check = (ok, text) => `<li class="flex items-center gap-2 ${ok ? 'text-emerald-700' : 'text-amber-800'}"><i class="fa-solid ${ok ? 'fa-circle-check' : 'fa-circle-exclamation'}"></i><span>${text}</span></li>`;
+
 export const editorCartasMethods = {
     renderEditorGrid: function() {
         const eg = this.state.editingGame;
@@ -31,7 +54,7 @@ export const editorCartasMethods = {
             attr.values.forEach((val, valueIdx) => {
                 const chip = document.createElement('div');
                 const hasContent = !!(this.stripHtml(val.text) || val.image);
-                chip.className = `game-card flex flex-col p-3 cursor-pointer transition-all relative ${hasContent ? '' : 'empty'}`;
+                chip.className = `game-card flex flex-col p-3 cursor-pointer transition-all relative ${hasContent ? '' : 'empty'} ${val.isMaster ? 'descarte-master-chip' : ''}`;
                 chip.title = 'Clique para editar este valor (texto ou imagem).';
                 chip.onclick = () => this.descarteOpenValueModal(attrIdx, valueIdx);
 
@@ -39,21 +62,29 @@ export const editorCartasMethods = {
                     ? `<img src="${val.image}" class="max-w-full max-h-20 object-contain rounded-lg mb-1" />`
                     : `<p class="text-xs font-bold text-slate-800 text-center leading-tight line-clamp-3 px-1">${val.text || ''}</p>`;
 
+                const starBtn = val.isMaster
+                    ? `<button type="button" data-role="master" title="É carta mestre. Clique para desmarcar." class="absolute top-2 left-2 h-6 pl-1.5 pr-2 rounded-full bg-amber-400 text-white flex items-center gap-1 text-[10px] font-black uppercase shadow z-10 hover:bg-amber-500"><i class="fa-solid fa-star"></i> Mestre</button>`
+                    : `<button type="button" data-role="master" title="Clique para marcar este valor como carta mestre." class="absolute top-2 left-2 w-6 h-6 rounded-full bg-white border-2 border-amber-300 text-amber-400 flex items-center justify-center text-[11px] z-10 hover:bg-amber-50 hover:text-amber-500"><i class="fa-regular fa-star"></i></button>`;
+
                 chip.innerHTML = `
-                    ${val.isMaster ? `<div class="absolute top-2 left-2 w-6 h-6 rounded-full bg-amber-400 text-white flex items-center justify-center text-[11px] shadow" title="Carta mestre deste atributo"><i class="fa-solid fa-star"></i></div>` : ''}
-                    <button type="button" title="Remover este valor" class="absolute top-2 right-2 w-6 h-6 rounded-full bg-white border border-slate-200 text-slate-400 hover:text-red-500 hover:border-red-300 flex items-center justify-center text-[11px] z-10">
+                    ${starBtn}
+                    <button type="button" data-role="remove" title="Remover este valor" class="absolute top-2 right-2 w-6 h-6 rounded-full bg-white border border-slate-200 text-slate-400 hover:text-red-500 hover:border-red-300 flex items-center justify-center text-[11px] z-10">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
-                    <div class="flex-1 flex flex-col items-center justify-center overflow-hidden">
+                    <div class="flex-1 flex flex-col items-center justify-center overflow-hidden pt-4">
                         ${hasContent ? contentHtml : `
                             <i class="fa-solid fa-plus text-2xl text-slate-300"></i>
-                            <span class="text-[10px] font-bold text-slate-400 mt-2">EDITAR</span>
+                            <span class="text-[10px] font-bold text-slate-400 mt-2">CLIQUE PARA ESCREVER</span>
                         `}
                     </div>
                 `;
-                chip.querySelector('button').onclick = (e) => {
+                chip.querySelector('[data-role="remove"]').onclick = (e) => {
                     e.stopPropagation();
                     this.descarteRemoveAttributeValue(attrIdx, valueIdx);
+                };
+                chip.querySelector('[data-role="master"]').onclick = (e) => {
+                    e.stopPropagation();
+                    toggleMaster(this, attrIdx, valueIdx);
                 };
                 grid.appendChild(chip);
             });
@@ -64,11 +95,14 @@ export const editorCartasMethods = {
             const hint = document.getElementById(`descarte-attr-${attrIdx}-hint`);
             if (hint) {
                 const masterCount = attr.values.filter(v => v.isMaster).length;
-                const parts = [];
-                parts.push(`${attr.values.length} / 9 valores (mínimo 2)`);
-                parts.push(`${masterCount} / 2 cartas mestre`);
-                hint.innerHTML = parts.join(' &bull; ');
-                hint.className = `text-xs font-bold mt-2 ${attr.values.length >= 2 && masterCount === 2 ? 'text-emerald-700' : 'text-amber-700'}`;
+                const filled = attr.values.filter(v => this.stripHtml(v.text) || v.image).length;
+                const allFilled = filled === attr.values.length;
+                const missingMaster = 2 - masterCount;
+                hint.innerHTML = `<ul class="rounded-2xl bg-white/70 border border-slate-200 px-4 py-3 space-y-1 text-xs font-bold">
+                    ${check(!!(attr.name || '').trim(), (attr.name || '').trim() ? `Nome: ${this.escapeCardText(attr.name.trim())}` : 'Falta dar um nome ao atributo')}
+                    ${check(attr.values.length >= 2 && allFilled, `${filled} de ${attr.values.length} valores preenchidos (mínimo 2, máximo 9)`)}
+                    ${check(masterCount === 2, masterCount === 2 ? '2 cartas mestre marcadas' : missingMaster > 0 ? `Cartas mestre: ${masterCount} de 2 — clique na estrela de mais ${missingMaster} valor${missingMaster > 1 ? 'es' : ''}` : `Há ${masterCount} cartas mestre — desmarque ${masterCount - 2}`)}
+                </ul>`;
             }
         });
 
@@ -79,6 +113,7 @@ export const editorCartasMethods = {
     descarteUpdateAttributeName: function(attrIdx, event) {
         if (!this.state.editingGame) return;
         this.state.editingGame.cards.attributes[attrIdx].name = event.target.value;
+        this.renderEditorGrid();
         this.scheduleAutoSave();
     },
 
@@ -193,7 +228,7 @@ export const editorCartasMethods = {
             const attr = this.state.editingGame.cards.attributes[this.state.descarteSelectedAttr];
             const currentMasters = attr.values.filter(v => v.isMaster && v.id !== val.id);
             if (currentMasters.length >= 2) {
-                this.showNotification('Este atributo já tem 2 cartas mestre. Desmarque uma delas antes de marcar outra.');
+                this.showNotification('Este atributo já tem 2 cartas mestre. Desmarque uma delas (clique na estrela amarela) antes de marcar outra.');
                 return;
             }
         }
@@ -224,7 +259,7 @@ export const editorCartasMethods = {
             }
             const masterCount = attr.values.filter(v => v.isMaster).length;
             if (masterCount !== 2) {
-                return { valid: false, message: `Marque exatamente 2 cartas mestre em ${attr.name} (hoje: ${masterCount}).` };
+                return { valid: false, message: `Marque exatamente 2 cartas mestre em ${attr.name}, clicando na estrela dos valores (hoje: ${masterCount}).` };
             }
         }
         return { valid: true, message: '' };

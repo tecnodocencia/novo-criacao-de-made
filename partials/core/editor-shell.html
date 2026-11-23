@@ -96,12 +96,22 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <div class="flex items-center gap-3 mb-1">
-                                        <label class="text-xs font-black text-slate-500 uppercase tracking-widest">Autores</label>
-                                        <button type="button" onclick="app.openAuthorModal()" title="Adicionar um autor responsável por este jogo." class="text-emerald-700 text-xs uppercase font-black hover:text-emerald-800 transition">Adicionar</button>
+                                <div class="rounded-2xl border-2 border-dashed border-[#EA3257]/60 bg-rose-50 px-4 py-3">
+                                    <div class="flex flex-wrap items-center justify-between gap-3">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-9 h-9 shrink-0 rounded-xl bg-[#EA3257] text-white flex items-center justify-center">
+                                                <i class="fa-solid fa-user-pen"></i>
+                                            </div>
+                                            <div>
+                                                <label class="text-xs font-black text-rose-900 uppercase tracking-widest block">Autores do jogo</label>
+                                                <p class="text-xs text-rose-900/80">Coloque o seu nome e o de quem criou o jogo com você.</p>
+                                            </div>
+                                        </div>
+                                        <button type="button" onclick="app.openAuthorModal()" title="Adicionar um autor responsável por este jogo." class="inline-flex items-center gap-2 bg-[#EA3257] hover:bg-[#D12A4C] text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest shadow-md shadow-rose-200 transition active:scale-[0.97]">
+                                            <i class="fa-solid fa-plus"></i> Adicionar autor
+                                        </button>
                                     </div>
-                                    <div id="edit-game-authors-list" title="Lista de autores do jogo. Clique no × de um nome para removê-lo." class="mt-2 flex flex-wrap gap-2"></div>
+                                    <div id="edit-game-authors-list" title="Lista de autores do jogo. Clique no × de um nome para removê-lo." class="mt-3 flex flex-wrap gap-2"></div>
                                 </div>
                                 <div>
                                     <label class="text-xs font-black text-slate-500 uppercase block mb-1 tracking-widest">Modelo</label>
@@ -214,10 +224,8 @@
                                                     <i class="fa-solid fa-underline"></i>
                                                 </button>
                                                 <span class="richtext-divider"></span>
-                                                <button type="button" onclick="app.wrapSelectionInRed('edit-game-regra')" class="richtext-btn" title="Marcar em vermelho o texto selecionado">
-                                                    <span class="richtext-color-a" style="--rt-color:#dc2626;">A</span>
-                                                </button>
-                                                <button type="button" onclick="app.removeRedFromSelection('edit-game-regra')" class="richtext-btn" title="Remover a cor vermelha do texto selecionado">
+                                                <button type="button" onclick="app.applyTextColor('edit-game-regra')" class="richtext-btn richtext-color-apply" title="Colorir o texto selecionado com a cor escolhida"><span class="richtext-color-a">A</span></button><button type="button" onclick="app.openTextColorPicker('edit-game-regra', this)" class="richtext-btn richtext-color-caret" title="Escolher a cor do texto (qualquer cor)"><i class="fa-solid fa-chevron-down richtext-caret"></i></button>
+                                                <button type="button" onclick="app.removeRedFromSelection('edit-game-regra')" class="richtext-btn" title="Remover a cor do texto selecionado">
                                                     <i class="fa-solid fa-eraser"></i>
                                                 </button>
                                             </div>
@@ -238,10 +246,8 @@
                                                     <i class="fa-solid fa-underline"></i>
                                                 </button>
                                                 <span class="richtext-divider"></span>
-                                                <button type="button" onclick="app.wrapSelectionInRed('edit-game-objetivo')" class="richtext-btn" title="Marcar em vermelho o texto selecionado">
-                                                    <span class="richtext-color-a" style="--rt-color:#dc2626;">A</span>
-                                                </button>
-                                                <button type="button" onclick="app.removeRedFromSelection('edit-game-objetivo')" class="richtext-btn" title="Remover a cor vermelha do texto selecionado">
+                                                <button type="button" onclick="app.applyTextColor('edit-game-objetivo')" class="richtext-btn richtext-color-apply" title="Colorir o texto selecionado com a cor escolhida"><span class="richtext-color-a">A</span></button><button type="button" onclick="app.openTextColorPicker('edit-game-objetivo', this)" class="richtext-btn richtext-color-caret" title="Escolher a cor do texto (qualquer cor)"><i class="fa-solid fa-chevron-down richtext-caret"></i></button>
+                                                <button type="button" onclick="app.removeRedFromSelection('edit-game-objetivo')" class="richtext-btn" title="Remover a cor do texto selecionado">
                                                     <i class="fa-solid fa-eraser"></i>
                                                 </button>
                                             </div>
@@ -317,6 +323,34 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- Só no Descarte a Carta (o texto dos valores fica por cima da imagem
+                                         da frente): faixa atrás do texto para ele não sumir na imagem.
+                                         Ver renderTextBackdropControl em js/core/editorShell.js. -->
+                                    <div id="text-backdrop-wrap" class="hidden">
+                                        <label class="text-xs font-black text-slate-500 uppercase block mb-4 tracking-widest">Leitura do texto nas cartas</label>
+                                        <div class="rounded-[28px] border-2 border-slate-200 bg-slate-50 shadow-sm p-5">
+                                            <div class="flex flex-col sm:flex-row items-center gap-6">
+                                                <div class="flex-1 w-full space-y-3">
+                                                    <p class="text-sm text-slate-600">Dependendo da imagem escolhida para a frente, o texto das cartas pode ficar difícil de ler. Coloque uma <strong>faixa atrás do texto</strong> e confira no exemplo ao lado como a carta vai ficar.</p>
+                                                    <div id="text-backdrop-options" class="grid grid-cols-2 gap-2">
+                                                        <button type="button" data-mode="auto" onclick="app.setTextBackdrop('auto')" title="Faixa clara só quando a frente é uma imagem enviada por você; nos modelos prontos, sem faixa." class="text-backdrop-opt"><i class="fa-solid fa-wand-magic-sparkles"></i> Automático</button>
+                                                        <button type="button" data-mode="nenhum" onclick="app.setTextBackdrop('nenhum')" title="Texto direto sobre a imagem, sem faixa." class="text-backdrop-opt"><i class="fa-solid fa-ban"></i> Sem faixa</button>
+                                                        <button type="button" data-mode="claro" onclick="app.setTextBackdrop('claro')" title="Faixa branca atrás do texto, com letra escura. Boa para imagens escuras ou coloridas." class="text-backdrop-opt"><i class="fa-regular fa-square"></i> Faixa clara</button>
+                                                        <button type="button" data-mode="escuro" onclick="app.setTextBackdrop('escuro')" title="Faixa escura atrás do texto, com letra branca. Boa para imagens muito claras." class="text-backdrop-opt"><i class="fa-solid fa-square"></i> Faixa escura</button>
+                                                    </div>
+                                                </div>
+                                                <div class="shrink-0 text-center">
+                                                    <div id="text-backdrop-sample" class="text-backdrop-sample" title="Exemplo de como o texto aparece na frente da carta.">
+                                                        <div class="text-backdrop-sample-inner">
+                                                            <div class="flex-1 flex items-center justify-center overflow-hidden p-1 border-b border-slate-200"><p id="text-backdrop-sample-1" class="descarte-fit-text text-[13px] leading-tight font-black text-slate-800 text-center px-1" style="max-width:100%;">Planalto</p></div>
+                                                            <div class="flex-1 flex items-center justify-center overflow-hidden p-1"><p id="text-backdrop-sample-2" class="descarte-fit-text text-[13px] leading-tight font-black text-slate-800 text-center px-1" style="max-width:100%;">Nordeste</p></div>
+                                                        </div>
+                                                    </div>
+                                                    <p class="text-[11px] font-black uppercase tracking-widest text-slate-500 mt-2">Exemplo</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -344,10 +378,8 @@
                                                     <i class="fa-solid fa-underline"></i>
                                                 </button>
                                                 <span class="richtext-divider"></span>
-                                                <button type="button" onclick="app.wrapSelectionInRed('edit-game-enunciado')" class="richtext-btn" title="Marcar em vermelho o texto selecionado">
-                                                    <span class="richtext-color-a" style="--rt-color:#dc2626;">A</span>
-                                                </button>
-                                                <button type="button" onclick="app.removeRedFromSelection('edit-game-enunciado')" class="richtext-btn" title="Remover a cor vermelha do texto selecionado">
+                                                <button type="button" onclick="app.applyTextColor('edit-game-enunciado')" class="richtext-btn richtext-color-apply" title="Colorir o texto selecionado com a cor escolhida"><span class="richtext-color-a">A</span></button><button type="button" onclick="app.openTextColorPicker('edit-game-enunciado', this)" class="richtext-btn richtext-color-caret" title="Escolher a cor do texto (qualquer cor)"><i class="fa-solid fa-chevron-down richtext-caret"></i></button>
+                                                <button type="button" onclick="app.removeRedFromSelection('edit-game-enunciado')" class="richtext-btn" title="Remover a cor do texto selecionado">
                                                     <i class="fa-solid fa-eraser"></i>
                                                 </button>
                                             </div>
@@ -362,8 +394,8 @@
                                                 <button type="button" onclick="app.toggleItalic('edit-game-explicacao')" class="richtext-btn" title="Itálico"><i class="fa-solid fa-italic"></i></button>
                                                 <button type="button" onclick="app.toggleUnderline('edit-game-explicacao')" class="richtext-btn" title="Sublinhado"><i class="fa-solid fa-underline"></i></button>
                                                 <span class="richtext-divider"></span>
-                                                <button type="button" onclick="app.wrapSelectionInRed('edit-game-explicacao')" class="richtext-btn" title="Marcar em vermelho o texto selecionado"><span class="richtext-color-a" style="--rt-color:#dc2626;">A</span></button>
-                                                <button type="button" onclick="app.removeRedFromSelection('edit-game-explicacao')" class="richtext-btn" title="Remover a cor vermelha do texto selecionado"><i class="fa-solid fa-eraser"></i></button>
+                                                <button type="button" onclick="app.applyTextColor('edit-game-explicacao')" class="richtext-btn richtext-color-apply" title="Colorir o texto selecionado com a cor escolhida"><span class="richtext-color-a">A</span></button><button type="button" onclick="app.openTextColorPicker('edit-game-explicacao', this)" class="richtext-btn richtext-color-caret" title="Escolher a cor do texto (qualquer cor)"><i class="fa-solid fa-chevron-down richtext-caret"></i></button>
+                                                <button type="button" onclick="app.removeRedFromSelection('edit-game-explicacao')" class="richtext-btn" title="Remover a cor do texto selecionado"><i class="fa-solid fa-eraser"></i></button>
                                             </div>
                                             <div id="edit-game-explicacao" contenteditable="true" oninput="app.scheduleAutoSave()" title="Texto exibido ao aluno ao final do jogo, explicando a resposta e como jogar." class="richtext-editable min-h-48 max-h-72 overflow-y-auto" style="white-space: pre-wrap; word-wrap: break-word;"></div>
                                         </div>

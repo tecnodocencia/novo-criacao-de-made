@@ -1,9 +1,9 @@
 // js/games/descarte/index.js
 import { registerGame } from '../registry.js?v=1';
 import { getDefaultData } from './model.js?v=6';
-import { editorCartasMethods } from './editorCartas.js?v=5';
+import { editorCartasMethods } from './editorCartas.js?v=6';
 import { reviewMethods } from './review.js?v=5';
-import { playerMethods } from './player.js?v=35';
+import { playerMethods } from './player.js?v=36';
 
 const descarteModule = {
     getDefaultData,

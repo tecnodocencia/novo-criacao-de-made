@@ -156,7 +156,7 @@ function cardFaceHtml(card, attributes) {
         return `
             <div class="w-full h-full flex flex-col items-center justify-center p-1" style="gap:2px;">
                 <div class="w-full min-h-0 flex items-center justify-center" style="flex:4 1 0;">${art}</div>
-                <p class="text-[10px] leading-tight font-black text-slate-700 text-center uppercase tracking-wide">${label}</p>
+                <p class="descarte-special-label text-[10px] leading-tight font-black text-slate-700 text-center uppercase tracking-wide">${label}</p>
             </div>`;
     }
     const tag = card.tags[0];
@@ -343,6 +343,22 @@ const BOT_ACT_MS = 700;
 // colado na borda da imagem; ampliar o fundo em 10% (centralizado) joga esse
 // contorno pra fora da carta sem mexer no desenho de dentro. Imagens enviadas
 // pelo professor (qualquer outro caminho) continuam com "cover".
+// Faixa atrás do texto das cartas, escolhida pelo professor no bloco
+// Aparência (disciplineInfo.fundoTexto). 'auto': faixa clara só quando a
+// frente é uma imagem própria (os modelos prontos têm o miolo branco). Fica
+// no <body> porque as cartas também aparecem fora da mesa (voo, zoom, modal
+// Escolher). Mesma regra em js/core/editorShell.js (resolveTextBackdrop).
+const TEXT_BACKDROP_CLASSES = ['descarte-text-nenhum', 'descarte-text-claro', 'descarte-text-escuro'];
+function applyTextBackdrop(game) {
+    let mode = game?.disciplineInfo?.fundoTexto;
+    if (mode !== 'nenhum' && mode !== 'claro' && mode !== 'escuro') {
+        const front = game?.frontDesign || 'imagens/frente/frente01.png';
+        mode = front.startsWith('imagens/frente/') ? 'nenhum' : 'claro';
+    }
+    document.body.classList.remove(...TEXT_BACKDROP_CLASSES);
+    document.body.classList.add('descarte-text-' + mode);
+}
+
 function frontBgSize(design) {
     return (design || "").startsWith("imagens/frente/") ? "110% 110%" : "cover";
 }
@@ -781,6 +797,7 @@ function renderAll(app) {
     const e = descarte(app);
     const game = app.state.activeGame;
     if (!e || !game) return;
+    applyTextBackdrop(game);
     // Monte acabou: reabastece na hora com as cartas da mesa (no convidado de
     // uma partida em rede quem decide é o anfitrião, que manda `reshuffled`).
     if (!isGuest(e) && e.winner == null && e.drawPile.length === 0 && e.discardPile.length > 1) {
