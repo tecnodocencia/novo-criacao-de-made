@@ -122,7 +122,25 @@ function ensureTextColorPicker(app) {
     return pop;
 }
 
+// Menu lateral em gaveta no celular (ver css/responsive.css): qualquer
+// botão do menu fecha a gaveta depois do clique.
+if (typeof document !== 'undefined') {
+    document.addEventListener('click', (e) => {
+        if (!document.body.classList.contains('nav-open')) return;
+        if (e.target.closest && e.target.closest('#app-sidebar button')) document.body.classList.remove('nav-open');
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') document.body.classList.remove('nav-open');
+    });
+}
+
 export const utilsMethods = {
+    toggleMobileNav: function(force) {
+        const open = typeof force === 'boolean' ? force : !document.body.classList.contains('nav-open');
+        document.body.classList.toggle('nav-open', open);
+    },
+
+
     // Textos ricos (regra, objetivo, enunciado, explicação) são HTML; textos
     // antigos eram texto puro com "\n" — converte para exibir com quebras.
     richTextHtml: function(text) {

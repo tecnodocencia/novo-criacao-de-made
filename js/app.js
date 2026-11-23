@@ -1,7 +1,7 @@
 // js/app.js
 import { dbService } from './database.js?v=7';
 import { state } from './core/state.js?v=5';
-import { utilsMethods } from './core/utils.js?v=6';
+import { utilsMethods } from './core/utils.js?v=7';
 import { authMethods } from './core/auth.js?v=9';
 import { dashboardMethods } from './core/dashboard.js?v=30';
 import { libraryMethods } from './core/library.js?v=9';

@@ -8,7 +8,7 @@
 // e o motor de js/games/descarte/player.js, que esperam um objeto `app` com
 // `state` e os métodos de utilidade/modal — montado aqui, sem o resto do app.
 import { supabase } from './supabase.js?v=2';
-import { utilsMethods } from './core/utils.js?v=6';
+import { utilsMethods } from './core/utils.js?v=7';
 import { modalMethods } from './core/modals.js?v=1';
 import { playerMethods, descarteEngine as engine } from './games/descarte/player.js?v=36';
 import { joinLobby, joinMatch, uid } from './games/descarte/net.js?v=1';

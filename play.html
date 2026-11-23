@@ -6,6 +6,7 @@
     <title>MADE — Jogar</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="css/responsive.css?v=1" rel="stylesheet">
     <style>
         /* Controle de tamanho de fonte (acessibilidade) — botões A-/A+ no topbar
            do jogo (ver playApp.increaseFontSize/decreaseFontSize em js/play.js).
@@ -19,7 +20,7 @@
            não quebrar o grid/layout — só o texto escala. */
         :root { --play-font-scale: 1; }
         html, body { height: 100%; margin: 0; padding: 0; }
-        html { font-size: calc(16px * var(--play-font-scale)); }
+        html { font-size: calc(var(--base-font, 16px) * var(--play-font-scale)); }
         body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: #f0fdf4; }
         .text-\[8px\]  { font-size: calc(8px  * var(--play-font-scale)) !important; }
         .text-\[9px\]  { font-size: calc(9px  * var(--play-font-scale)) !important; }
@@ -367,10 +368,10 @@
          (partials/games/codigo-secreto/player.html): Cartas à esquerda,
          informações + enunciado + código no centro, Histórico à direita. -->
     <div id="screen-game" class="play-screen">
-        <div class="flex-1 flex overflow-hidden">
+        <div class="cs-layout flex-1 flex overflow-hidden">
 
             <!-- ESQUERDA: banco de cartas -->
-            <div class="w-[440px] shrink-0 border-r border-slate-300 bg-white p-4 overflow-y-auto">
+            <div class="cs-left shrink-0 border-r border-slate-300 bg-white p-4 overflow-y-auto">
                 <div class="mb-4">
                     <h2 class="font-black text-lg">Cartas</h2>
                     <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Clique ou arraste as cartas</p>
@@ -379,7 +380,7 @@
             </div>
 
             <!-- CENTRO -->
-            <div class="flex-1 flex flex-col items-center justify-start p-6 overflow-y-auto min-w-0">
+            <div class="cs-center flex-1 flex flex-col items-center justify-start p-6 overflow-y-auto min-w-0">
 
                 <!-- Informações do jogo -->
                 <div class="w-full max-w-2xl mb-4">
@@ -440,7 +441,7 @@
             </div>
 
             <!-- DIREITA: histórico e controles -->
-            <div class="w-[480px] shrink-0 border-l border-slate-300 bg-white p-4 flex flex-col overflow-hidden">
+            <div class="cs-right shrink-0 border-l border-slate-300 bg-white p-4 flex flex-col overflow-hidden">
 
                 <div class="shrink-0 mb-6">
                     <div class="flex items-center justify-between gap-3">

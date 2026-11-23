@@ -1,4 +1,4 @@
-                <div class="absolute top-4 right-4 z-20 flex items-center gap-3">
+                <div class="player-top-actions absolute top-4 right-4 z-20 flex items-center gap-3">
                     <button id="save-from-player-btn" onclick="app.saveGame()" title="Salvar o jogo e voltar para a lista de materiais." class="hidden bg-emerald-600 text-white px-6 py-3 font-bold rounded-xl text-sm transition">
                         Salvar Jogo
                     </button>
@@ -7,11 +7,11 @@
                     </button>
                 </div>
 
-                <div class="flex-1 flex overflow-hidden">
+                <div class="dc-layout flex-1 flex overflow-hidden">
 
                     <!-- ESQUERDA: informações da partida -->
-                    <div class="w-[360px] border-r border-slate-300 bg-white p-4 overflow-y-auto shrink-0">
-                        <div class="mb-4">
+                    <div class="dc-side border-r border-slate-300 bg-white p-4 overflow-y-auto shrink-0">
+                        <div class="dc-side-title mb-4">
                             <h2 class="font-black text-lg">Descarte a Carta</h2>
                             <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Jogadores</p>
                         </div>
@@ -23,7 +23,7 @@
                         </div>
                         <div id="descarte-players-panel" class="space-y-2 mb-4 mt-2"></div>
 
-                        <div class="grid grid-cols-1 gap-2 mb-6">
+                        <div class="dc-actions grid grid-cols-1 gap-2 mb-6">
                             <button onclick="app.showGameRules()" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-black uppercase tracking-wider transition border border-slate-200">
                                 <i class="fa-solid fa-circle-info mr-1"></i> Regras
                             </button>
@@ -38,7 +38,7 @@
                             </button>
                         </div>
 
-                        <div class="bg-white border border-slate-200 rounded-3xl px-4 py-3 shadow-sm space-y-2">
+                        <div class="dc-info bg-white border border-slate-200 rounded-3xl px-4 py-3 shadow-sm space-y-2">
                             <div>
                                 <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Título</span>
                                 <p id="descarte-header-title" class="text-sm font-black text-slate-800 leading-tight">-</p>
@@ -63,9 +63,9 @@
                     </div>
 
                     <!-- CENTRO: mesa de jogo -->
-                    <div class="flex-1 flex flex-col items-center justify-between px-3 pt-2 pb-1 overflow-hidden min-w-0 min-h-0 relative">
+                    <div class="dc-table flex-1 flex flex-col items-center justify-between px-3 pt-2 pb-1 overflow-hidden min-w-0 min-h-0 relative">
 
-                        <div id="descarte-enunciado" class="w-full max-w-3xl bg-white/50 border border-slate-200 px-4 py-1.5 rounded-2xl text-center shadow-sm shrink-0 mr-24">
+                        <div id="descarte-enunciado" class="dc-enunciado w-full max-w-3xl bg-white/50 border border-slate-200 px-4 py-1.5 rounded-2xl text-center shadow-sm shrink-0 mr-24">
                             <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mr-2">Enunciado</span>
                             <div id="descarte-enunciado-content" class="inline text-xs font-semibold text-slate-700"></div>
                         </div>
