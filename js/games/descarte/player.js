@@ -349,14 +349,15 @@ const BOT_ACT_MS = 700;
 // no <body> porque as cartas também aparecem fora da mesa (voo, zoom, modal
 // Escolher). Mesma regra em js/core/editorShell.js (resolveTextBackdrop).
 const TEXT_BACKDROP_CLASSES = ['descarte-text-nenhum', 'descarte-text-claro', 'descarte-text-escuro'];
+function resolveTextBackdrop(game) {
+    const mode = game?.disciplineInfo?.fundoTexto;
+    if (mode === 'nenhum' || mode === 'claro' || mode === 'escuro') return mode;
+    const front = game?.frontDesign || 'imagens/frente/frente01.png';
+    return front.startsWith('imagens/frente/') ? 'nenhum' : 'claro';
+}
 function applyTextBackdrop(game) {
-    let mode = game?.disciplineInfo?.fundoTexto;
-    if (mode !== 'nenhum' && mode !== 'claro' && mode !== 'escuro') {
-        const front = game?.frontDesign || 'imagens/frente/frente01.png';
-        mode = front.startsWith('imagens/frente/') ? 'nenhum' : 'claro';
-    }
     document.body.classList.remove(...TEXT_BACKDROP_CLASSES);
-    document.body.classList.add('descarte-text-' + mode);
+    document.body.classList.add('descarte-text-' + resolveTextBackdrop(game));
 }
 
 function frontBgSize(design) {
@@ -1356,3 +1357,6 @@ export const playerMethods = {
         this.showNotification(this.richTextHtml(g.explicacao) || 'Explicação não definida.', 'Como Jogar');
     }
 };
+
+// Usados pela Revisão do editor (review.js) para mostrar as cartas como no jogo.
+export { cardFaceHtml, fitCardTexts, frontBgSize, resolveTextBackdrop, TEXT_BACKDROP_CLASSES };

@@ -1,5 +1,6 @@
 // js/games/descarte/review.js
 import { countBaseCards } from './model.js?v=6';
+import { cardFaceHtml, fitCardTexts, frontBgSize, resolveTextBackdrop, TEXT_BACKDROP_CLASSES } from './player.js?v=37';
 
 export const reviewMethods = {
     populateReviewStep: function() {
@@ -34,28 +35,67 @@ export const reviewMethods = {
         grid.innerHTML = '';
 
         const attributes = eg.cards?.attributes || [];
-        const cartasBase = countBaseCards(attributes);
+        const filled = (attr) => (attr?.values || []).filter(v => this.stripHtml(v.text) || v.image);
+        const values0 = filled(attributes[0]);
+        const values1 = filled(attributes[1]);
+        const front = eg.frontDesign || 'imagens/frente/frente01.png';
+        const bgSize = frontBgSize(front);
 
-        const summary = document.createElement('div');
-        summary.className = 'col-span-full rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-bold text-slate-700 text-center';
-        summary.innerText = `${cartasBase} cartas-base (combinações possíveis entre os dois atributos)`;
-        grid.appendChild(summary);
+        // Mesma carta da mesa de jogo: imagem da frente + face desenhada por
+        // cardFaceHtml (player.js), com a faixa atrás do texto escolhida em Aparência.
+        const cardHtml = (card, caption, isMaster) => `
+            <div class="flex flex-col items-center gap-1.5">
+                <div class="descarte-review-card" style="background-image:url('${front}'); background-size:${bgSize};">
+                    ${isMaster ? '<span class="descarte-review-star" title="Tem carta mestre"><i class="fa-solid fa-star"></i></span>' : ''}
+                    <div class="descarte-hand-card-inner">${cardFaceHtml(card, attributes)}</div>
+                </div>
+                ${caption ? `<span class="text-[11px] font-black uppercase tracking-widest text-slate-500 text-center leading-tight">${caption}</span>` : ''}
+            </div>`;
 
-        attributes.forEach((attr, idx) => {
-            const header = document.createElement('div');
-            header.className = 'col-span-full mt-2';
-            header.innerHTML = `<p class="text-xs font-black uppercase tracking-widest text-slate-500">${attr.name || ('Atributo ' + (idx + 1))}</p>`;
-            grid.appendChild(header);
+        const section = (title, subtitle, cardsHtml) => {
+            const el = document.createElement('div');
+            el.className = 'col-span-full space-y-3';
+            el.innerHTML = `
+                <div>
+                    <p class="text-sm font-black text-slate-700">${title}</p>
+                    ${subtitle ? `<p class="text-xs text-slate-500">${subtitle}</p>` : ''}
+                </div>
+                <div class="descarte-review-cards descarte-text-${resolveTextBackdrop(eg)}">${cardsHtml}</div>`;
+            grid.appendChild(el);
+        };
 
-            attr.values.forEach(val => {
-                const cardEl = document.createElement('div');
-                cardEl.className = `p-3 rounded-xl border flex flex-col items-center justify-center text-center text-sm font-semibold relative ${val.isMaster ? 'bg-amber-50 border-amber-300 text-amber-900' : 'bg-white border-slate-200 text-slate-700'}`;
-                const contentHtml = val.image
-                    ? `<img src="${val.image}" class="max-w-full max-h-20 object-contain rounded-lg mb-1" />${val.text ? `<p class="mt-1">${val.text}</p>` : ''}`
-                    : `<p>${val.text || ''}</p>`;
-                cardEl.innerHTML = `${val.isMaster ? '<span class="absolute -top-2 -right-2 bg-amber-400 text-white text-[10px] rounded-full w-6 h-6 flex items-center justify-center shadow"><i class="fa-solid fa-star"></i></span>' : ''}${contentHtml}`;
-                grid.appendChild(cardEl);
-            });
-        });
+        const name0 = attributes[0]?.name || 'Atributo 1';
+        const name1 = attributes[1]?.name || 'Atributo 2';
+        const baseCards = [];
+        values0.forEach(v0 => values1.forEach(v1 => baseCards.push({
+            card: { kind: 'base', tags: [{ attr: 0, valueId: v0.id }, { attr: 1, valueId: v1.id }] },
+            master: v0.isMaster || v1.isMaster
+        })));
+        section(
+            `Cartas do jogo (${countBaseCards(attributes)})`,
+            `Cada carta junta 1 valor de ${this.escapeCardText(name0)} (em cima) com 1 valor de ${this.escapeCardText(name1)} (embaixo). A estrela marca as cartas com valor mestre.`,
+            baseCards.length ? baseCards.map(c => cardHtml(c.card, '', c.master)).join('') : '<p class="text-sm text-slate-500">Nenhuma carta ainda: preencha os valores no bloco Criação de Cartas.</p>'
+        );
+
+        // Um exemplo de cada carta especial (as que carregam valor usam o primeiro de cada atributo).
+        const tag0 = values0[0] ? [{ attr: 0, valueId: values0[0].id }] : [];
+        const tag1 = values1[0] ? [{ attr: 1, valueId: values1[0].id }] : [];
+        const specials = [
+            { card: { kind: 'draw1', tags: tag0 }, caption: 'Compra 1' },
+            { card: { kind: 'draw2', tags: tag1 }, caption: 'Compra 2' },
+            { card: { kind: 'skip', tags: tag0 }, caption: 'Perde a vez*' },
+            { card: { kind: 'reverse', tags: tag1 }, caption: 'Inverte a ordem*' },
+            { card: { kind: 'draw4choose', tags: [] }, caption: 'Compra 4 e escolhe' },
+            { card: { kind: 'choose', tags: [] }, caption: 'Escolhe' }
+        ];
+        section(
+            'Cartas especiais (exemplos)',
+            'Entram no baralho junto com as cartas acima. *Só nas partidas com 3 jogadores.',
+            specials.map(sp => cardHtml(sp.card, sp.caption, false)).join('')
+        );
+
+        // A faixa da partida fica no <body>; aqui quem decide é cada grupo de cartas.
+        document.body.classList.remove(...TEXT_BACKDROP_CLASSES);
+        requestAnimationFrame(() => fitCardTexts(grid));
     }
 };

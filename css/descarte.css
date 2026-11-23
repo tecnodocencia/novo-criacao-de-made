@@ -368,3 +368,37 @@
     background: #fffbeb;
     box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.35);
 }
+
+/* Editor, Tela da Revisão: cartas desenhadas como na mesa de jogo. */
+.descarte-review-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 18px 14px;
+    justify-items: center;
+}
+.descarte-review-card {
+    position: relative;
+    width: 120px;
+    height: 161px;
+    border-radius: 14px;
+    background-color: #ffffff;
+    background-position: center;
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.14);
+}
+.descarte-review-card .descarte-hand-card-inner { inset: 8px; border-radius: 8px; }
+.descarte-review-star {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    z-index: 2;
+    width: 24px;
+    height: 24px;
+    border-radius: 9999px;
+    background: #fbbf24;
+    color: #ffffff;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.25);
+}
