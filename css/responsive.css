@@ -149,3 +149,13 @@ html { font-size: var(--base-font); }
     #view-login .overflow-y-auto { align-items: safe center; padding: 1.5rem 1.25rem !important; }
     #view-login .space-y-10 > * + * { margin-top: 1.75rem !important; }
 }
+
+/* Revisão do Código Secreto: cartas como no banco do jogo (ver review.js). */
+.cs-review-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+    gap: 16px 12px;
+    justify-items: center;
+}
+.cs-review-card { width: 112px; height: 140px; }
+.cs-review-card .bank-card-inner { height: 100%; font-size: 0.8125rem; line-height: 1.2; overflow: hidden; }

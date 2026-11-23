@@ -9,7 +9,7 @@ import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShel
 import { modalMethods } from './core/modals.js?v=1';
 import { gameTourMethods } from './core/gameTour.js?v=12';
 import { getGame } from './games/registry.js?v=1';
-import './games/codigo-secreto/index.js?v=11';
+import './games/codigo-secreto/index.js?v=12';
 import './games/descarte/index.js?v=37';
 
 // Métodos que pertencem ao modelo de jogo ativo ("Código Secreto" e
