@@ -2223,6 +2223,10 @@
                 <p id="descarte-value-modal-attr-label" class="text-sm text-slate-400 font-bold uppercase mt-1 tracking-widest">Atributo</p>
             </div>
             <div class="flex-1 min-h-0 space-y-4 overflow-y-auto pl-1 pr-4 custom-scrollbar">
+                <label class="flex items-center gap-3 p-4 bg-amber-50 border border-amber-200 rounded-2xl cursor-pointer">
+                    <input id="descarte-value-modal-master" type="checkbox" class="w-5 h-5 accent-amber-500">
+                    <span class="text-sm font-bold text-amber-800"><i class="fa-solid fa-star mr-1"></i> Marcar como carta mestre (cada atributo precisa de exatamente 2). As cartas mestre são os valores que o aluno pode escolher quando joga "Compra 4 e escolhe" ou "Escolhe". Você também pode marcar clicando na estrela do valor.</span>
+                </label>
                 <div>
                     <label class="text-xs font-black text-slate-500 uppercase block mb-2 tracking-widest">Conteúdo Textual</label>
                     <div class="richtext-field">
@@ -2263,10 +2267,6 @@
                         </div>
                     </div>
                 </div>
-                <label class="flex items-center gap-3 p-4 bg-amber-50 border border-amber-200 rounded-2xl cursor-pointer">
-                    <input id="descarte-value-modal-master" type="checkbox" class="w-5 h-5 accent-amber-500">
-                    <span class="text-sm font-bold text-amber-800"><i class="fa-solid fa-star mr-1"></i> Marcar como carta mestre (cada atributo precisa de exatamente 2). As cartas mestre são os valores que o aluno pode escolher quando joga "Compra 4 e escolhe" ou "Escolhe". Você também pode marcar clicando na estrela do valor.</span>
-                </label>
             </div>
             <div class="flex gap-3 shrink-0 justify-end">
                 <button onclick="app.descarteCloseValueModal()" title="Fechar sem salvar as alterações feitas neste valor." class="px-8 py-3.5 border border-slate-200 hover:bg-slate-50 font-bold rounded-2xl text-sm transition">Cancelar</button>
