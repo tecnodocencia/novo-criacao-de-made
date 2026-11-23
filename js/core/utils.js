@@ -81,13 +81,14 @@ function ensureTextColorPicker(app) {
     pop.id = 'richtext-color-pop';
     pop.className = 'richtext-color-pop hidden';
     pop.innerHTML = `
-        <p class="richtext-color-pop-title">Cor do texto</p>
+        <p class="richtext-color-pop-title">Cor da letra</p>
+        <p class="richtext-color-pop-hint">Selecione um trecho do texto e clique numa cor para pintar as letras.</p>
         <div class="richtext-color-grid">
-            ${TEXT_COLORS.map(c => `<button type="button" class="richtext-color-swatch" data-color="${c}" style="background:${c}" title="Usar esta cor"></button>`).join('')}
+            ${TEXT_COLORS.map(c => `<button type="button" class="richtext-color-swatch" data-color="${c}" style="background:${c}" title="Pintar as letras com esta cor"></button>`).join('')}
         </div>
-        <label class="richtext-color-custom" title="Escolher qualquer outra cor">
+        <label class="richtext-color-custom" title="Escolher qualquer outra cor para as letras">
             <input type="color" value="${currentTextColor}">
-            <span>Outra cor...</span>
+            <span>Outra cor da letra...</span>
         </label>`;
     document.body.appendChild(pop);
 

@@ -579,12 +579,15 @@
             border-bottom: 3px solid var(--rt-color, #0f172a);
             padding-bottom: 2px;
         }
-        .richtext-color-apply { padding-right: 4px; }
-        .richtext-color-caret { min-width: 20px; padding: 0 5px; margin-left: -2px; }
+        /* "A" + "Cor da letra" formam um grupo só (cor da fonte). */
+        .richtext-color-apply, .richtext-color-caret { border: 1px solid #e2e8f0; background: #ffffff; }
+        .richtext-color-apply { border-radius: 8px 0 0 8px; border-right: 0; padding: 0 8px; }
+        .richtext-color-caret { border-radius: 0 8px 8px 0; gap: 6px; padding: 0 8px; color: #334155; }
+        .richtext-color-label { font-size: 12px; font-weight: 800; white-space: nowrap; }
         .richtext-color-pop {
             position: fixed;
             z-index: 200;
-            width: 196px;
+            width: 216px;
             padding: 10px 12px 12px;
             background: #ffffff;
             border: 2px solid #e2e8f0;
@@ -598,8 +601,9 @@
             text-transform: uppercase;
             letter-spacing: 0.12em;
             color: #64748b;
-            margin-bottom: 8px;
+            margin-bottom: 2px;
         }
+        .richtext-color-pop-hint { font-size: 11px; color: #64748b; line-height: 1.35; margin-bottom: 8px; }
         .richtext-color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
         .richtext-color-swatch {
             width: 28px;
@@ -1498,7 +1502,7 @@
                                 <i class="fa-solid fa-underline"></i>
                             </button>
                             <span class="richtext-divider"></span>
-                            <button type="button" onclick="app.applyTextColor('modal-card-content')" class="richtext-btn richtext-color-apply" title="Colorir o texto selecionado com a cor escolhida"><span class="richtext-color-a">A</span></button><button type="button" onclick="app.openTextColorPicker('modal-card-content', this)" class="richtext-btn richtext-color-caret" title="Escolher a cor do texto (qualquer cor)"><i class="fa-solid fa-chevron-down richtext-caret"></i></button>
+                            <button type="button" onclick="app.applyTextColor('modal-card-content')" class="richtext-btn richtext-color-apply" title="Pintar o texto selecionado com esta cor da letra"><span class="richtext-color-a">A</span></button><button type="button" onclick="app.openTextColorPicker('modal-card-content', this)" class="richtext-btn richtext-color-caret" title="Escolher a cor da letra (qualquer cor)"><i class="fa-solid fa-palette"></i><span class="richtext-color-label">Cor da letra</span><i class="fa-solid fa-chevron-down richtext-caret"></i></button>
                             <button type="button" onclick="app.removeRedFromSelection('modal-card-content')" class="richtext-btn" title="Remover a cor do texto selecionado">
                                 <i class="fa-solid fa-eraser"></i>
                             </button>
@@ -2232,7 +2236,7 @@
                                 <i class="fa-solid fa-underline"></i>
                             </button>
                             <span class="richtext-divider"></span>
-                            <button type="button" onclick="app.applyTextColor('descarte-value-modal-content')" class="richtext-btn richtext-color-apply" title="Colorir o texto selecionado com a cor escolhida"><span class="richtext-color-a">A</span></button><button type="button" onclick="app.openTextColorPicker('descarte-value-modal-content', this)" class="richtext-btn richtext-color-caret" title="Escolher a cor do texto (qualquer cor)"><i class="fa-solid fa-chevron-down richtext-caret"></i></button>
+                            <button type="button" onclick="app.applyTextColor('descarte-value-modal-content')" class="richtext-btn richtext-color-apply" title="Pintar o texto selecionado com esta cor da letra"><span class="richtext-color-a">A</span></button><button type="button" onclick="app.openTextColorPicker('descarte-value-modal-content', this)" class="richtext-btn richtext-color-caret" title="Escolher a cor da letra (qualquer cor)"><i class="fa-solid fa-palette"></i><span class="richtext-color-label">Cor da letra</span><i class="fa-solid fa-chevron-down richtext-caret"></i></button>
                             <button type="button" onclick="app.removeRedFromSelection('descarte-value-modal-content')" class="richtext-btn" title="Remover a cor do texto selecionado">
                                 <i class="fa-solid fa-eraser"></i>
                             </button>
@@ -2309,6 +2313,6 @@
         </div>
     </div>
 
-    <script type="module" src="js/app.js?v=92"></script>
+    <script type="module" src="js/app.js?v=93"></script>
 </body>
 </html>
