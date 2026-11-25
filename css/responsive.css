@@ -183,3 +183,4 @@ html { font-size: var(--base-font); }
 .adjust-range { width: 100%; accent-color: #ea3257; cursor: pointer; }
 .text-backdrop-sample.cs-sample { width: 130px; height: 165px; background: transparent; box-shadow: none; }
 .text-backdrop-sample.cs-sample .bank-card-inner { height: 100%; }
+.adjust-color { width: 100%; height: 28px; padding: 0 2px; border: 1px solid #cbd5e1; border-radius: 8px; background: #ffffff; cursor: pointer; }

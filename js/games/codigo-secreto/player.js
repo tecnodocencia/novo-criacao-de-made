@@ -6,7 +6,7 @@
 // guiado interativo (js/core/gameTour.js). _gameTourCheckpoint é um NO-OP
 // silencioso quando state.gameTourActive é false — não afetam em nada o
 // fluxo normal de jogo/teste fora do tour.
-import { getCardVisual, cardBgCss, applyCardBg, applyCardFontScale } from '../../core/cardStyle.js?v=1';
+import { getCardVisual, cardBgCss, applyCardBg, applyCardFontScale } from '../../core/cardStyle.js?v=2';
 import { difficultyRules, applyReplaySwap, resolveRepeatCount, getLevelDescription, calculateScore } from './model.js?v=4';
 
 export { difficultyRules };

@@ -1,7 +1,7 @@
 // js/core/editorShell.js
 import { dbService } from '../database.js?v=7';
 import { getGame } from '../games/registry.js?v=1';
-import { getCardVisual, cardBgCss, applyCardBg, FONT_SCALE_MIN, FONT_SCALE_MAX } from './cardStyle.js?v=1';
+import { getCardVisual, cardBgCss, applyCardBg, FONT_SCALE_MIN, FONT_SCALE_MAX } from './cardStyle.js?v=2';
 
 export const frontDesigns = [
     'imagens/frente/frente01.png',
@@ -747,8 +747,8 @@ export const editorShellMethods = {
     setCardAdjust: function(side, prop, value) {
         const store = this._cardVisualStore();
         if (!store) return;
-        const n = Number(value);
-        store[side][prop] = prop === 'zoom' ? n / 100 : n;
+        if (prop === 'bg') store[side].bg = value;
+        else store[side][prop] = prop === 'zoom' ? Number(value) / 100 : Number(value);
         this.renderTextBackdropControl();
         this.scheduleAutoSave();
     },
@@ -756,7 +756,8 @@ export const editorShellMethods = {
     resetCardAdjust: function(side) {
         const store = this._cardVisualStore();
         if (!store) return;
-        store[side] = { zoom: 1, x: 50, y: 50 };
+        // Restaura o enquadramento; a cor de fundo escolhida continua.
+        store[side] = { zoom: 1, x: 50, y: 50, bg: store[side].bg };
         this.renderTextBackdropControl();
         this.saveNow();
     },
@@ -784,8 +785,9 @@ export const editorShellMethods = {
             const adj = visual[side];
             applyCardBg(document.getElementById(`adjust-preview-${side}`), urls[side], adj, base);
             document.querySelectorAll(`#card-adjust-wrap input[data-side="${side}"]`).forEach(input => {
-                const v = input.dataset.prop === 'zoom' ? Math.round(adj.zoom * 100) : adj[input.dataset.prop];
-                if (Number(input.value) !== v) input.value = v;
+                const prop = input.dataset.prop;
+                const v = prop === 'zoom' ? Math.round(adj.zoom * 100) : adj[prop];
+                if (String(input.value).toLowerCase() !== String(v).toLowerCase()) input.value = v;
             });
             const setLabel = (prop, text) => {
                 const el = document.querySelector(`#card-adjust-wrap [data-value-for="${side}-${prop}"]`);
@@ -794,6 +796,7 @@ export const editorShellMethods = {
             setLabel('zoom', `${Math.round(adj.zoom * 100)}%`);
             setLabel('x', posLabel(adj.x, 'Esq.', 'Dir.'));
             setLabel('y', posLabel(adj.y, 'Cima', 'Baixo'));
+            setLabel('bg', adj.bg.toLowerCase() === '#ffffff' ? 'Branco' : adj.bg.toUpperCase());
         });
     },
 

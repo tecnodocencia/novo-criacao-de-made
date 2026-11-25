@@ -1,5 +1,5 @@
 // js/games/codigo-secreto/review.js
-import { getCardVisual, cardBgCss, applyCardFontScale } from '../../core/cardStyle.js?v=1';
+import { getCardVisual, cardBgCss, applyCardFontScale } from '../../core/cardStyle.js?v=2';
 export const reviewMethods = {
     populateReviewStep: function() {
         if (!this.state.editingGame) return;

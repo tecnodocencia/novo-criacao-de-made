@@ -11,7 +11,7 @@
 // módulo (não exportadas, recebem `app` explicitamente). Isso evita que cada
 // chamada interna precise passar pelo despachante genérico de js/app.js.
 import { buildDeck, cardMatchesTags, calculateDescarteScore, masterValues, computeHandSize } from './model.js?v=6';
-import { getCardVisual, cardBgCss as coreCardBgCss, applyCardBg as coreApplyCardBg, applyCardFontScale, readCardFontScale } from '../../core/cardStyle.js?v=1';
+import { getCardVisual, cardBgCss as coreCardBgCss, applyCardBg as coreApplyCardBg, applyCardFontScale, readCardFontScale } from '../../core/cardStyle.js?v=2';
 
 // --- Ícones inline (cartas especiais), nas cores pastel do MADE ---
 function svgSkip() {

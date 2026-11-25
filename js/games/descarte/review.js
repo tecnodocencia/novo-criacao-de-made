@@ -1,7 +1,7 @@
 // js/games/descarte/review.js
 import { countBaseCards } from './model.js?v=6';
-import { cardFaceHtml, fitCardTexts, cardBgCss, resolveTextBackdrop, TEXT_BACKDROP_CLASSES } from './player.js?v=40';
-import { applyCardFontScale } from '../../core/cardStyle.js?v=1';
+import { cardFaceHtml, fitCardTexts, cardBgCss, resolveTextBackdrop, TEXT_BACKDROP_CLASSES } from './player.js?v=41';
+import { applyCardFontScale } from '../../core/cardStyle.js?v=2';
 
 export const reviewMethods = {
     populateReviewStep: function() {
