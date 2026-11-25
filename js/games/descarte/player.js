@@ -342,7 +342,7 @@ const BOT_ACT_MS = 700;
 // As molduras padrão (imagens/frente/*) trazem um contorno vermelho grosso
 // colado na borda da imagem; ampliar o fundo em 10% (centralizado) joga esse
 // contorno pra fora da carta sem mexer no desenho de dentro. Imagens enviadas
-// pelo professor (qualquer outro caminho) continuam com "cover".
+// pelo professor (qualquer outro caminho) e os versos usam CARD_BG_FULL.
 // Faixa atrás do texto das cartas, escolhida pelo professor no bloco
 // Aparência (disciplineInfo.fundoTexto). 'auto': faixa clara só quando a
 // frente é uma imagem própria (os modelos prontos têm o miolo branco). Fica
@@ -360,8 +360,13 @@ function applyTextBackdrop(game) {
     document.body.classList.add('descarte-text-' + resolveTextBackdrop(game));
 }
 
+// Imagem da carta ocupa a carta inteira, sem cortar nada (com "cover" as
+// bordas/molduras das imagens eram cortadas, porque a proporção delas não é
+// exatamente a da carta). As frentes prontas usam 110% de propósito (ver
+// o comentário das molduras padrão acima).
+const CARD_BG_FULL = "100% 100%";
 function frontBgSize(design) {
-    return (design || "").startsWith("imagens/frente/") ? "110% 110%" : "cover";
+    return (design || "").startsWith("imagens/frente/") ? "110% 110%" : CARD_BG_FULL;
 }
 
 // --- Animações de jogada / compra ---
@@ -428,7 +433,7 @@ function playReshuffleFx(app, count, delay) {
             setTimeout(() => {
                 const wrap = document.createElement('div');
                 wrap.style.cssText = `position:fixed;left:${a.left}px;top:${a.top}px;width:${a.width}px;height:${a.height}px;z-index:10050;pointer-events:none;perspective:900px;`;
-                wrap.innerHTML = `<div style="position:absolute;inset:0;transform-style:preserve-3d;">${face(frontDesign, frontBgSize(frontDesign), '')}${face(backDesign, 'cover', 'transform:rotateY(180deg);')}</div>`;
+                wrap.innerHTML = `<div style="position:absolute;inset:0;transform-style:preserve-3d;">${face(frontDesign, frontBgSize(frontDesign), '')}${face(backDesign, CARD_BG_FULL, 'transform:rotateY(180deg);')}</div>`;
                 document.body.appendChild(wrap);
                 const spin = (i % 2 ? 1 : -1) * (6 + i * 2);
                 wrap.animate([
@@ -539,9 +544,9 @@ function flyCard(app, fromEl, toEl, card, opts = {}) {
     inner.style.cssText = 'position:absolute;inset:0;transform-style:preserve-3d;';
     if (card) {
         inner.appendChild(makeFace(frontDesign, frontBgSize(frontDesign), cardFaceHtml(card, game.cards.attributes)));
-        if (flip) inner.appendChild(makeFace(backDesign, 'cover', '', 'transform:rotateY(180deg);'));
+        if (flip) inner.appendChild(makeFace(backDesign, CARD_BG_FULL, '', 'transform:rotateY(180deg);'));
     } else {
-        inner.appendChild(makeFace(backDesign, 'cover', ''));
+        inner.appendChild(makeFace(backDesign, CARD_BG_FULL, ''));
     }
     if (flip) inner.style.transform = 'rotateY(180deg)';
     wrap.appendChild(inner);
@@ -878,7 +883,7 @@ function renderAll(app) {
     const drawPileEl = document.getElementById('descarte-draw-pile');
     if (drawPileEl) {
         drawPileEl.style.backgroundImage = `url('${backDesign}')`;
-        drawPileEl.style.backgroundSize = 'cover';
+        drawPileEl.style.backgroundSize = CARD_BG_FULL;
         drawPileEl.style.backgroundPosition = 'center';
     }
     const drawCountEl = document.getElementById('descarte-draw-pile-count');

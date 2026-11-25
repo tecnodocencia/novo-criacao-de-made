@@ -750,7 +750,7 @@ export const editorShellMethods = {
         const sample = document.getElementById('text-backdrop-sample');
         if (sample) {
             sample.style.backgroundImage = `url('${front}')`;
-            sample.style.backgroundSize = front.startsWith('imagens/frente/') ? '110% 110%' : 'cover';
+            sample.style.backgroundSize = front.startsWith('imagens/frente/') ? '110% 110%' : '100% 100%';
             sample.classList.remove(...TEXT_BACKDROP_CLASSES);
             sample.classList.add('descarte-text-' + resolveTextBackdrop(eg));
         }

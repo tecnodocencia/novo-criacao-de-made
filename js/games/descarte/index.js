@@ -2,8 +2,8 @@
 import { registerGame } from '../registry.js?v=1';
 import { getDefaultData } from './model.js?v=6';
 import { editorCartasMethods } from './editorCartas.js?v=6';
-import { reviewMethods } from './review.js?v=6';
-import { playerMethods } from './player.js?v=37';
+import { reviewMethods } from './review.js?v=7';
+import { playerMethods } from './player.js?v=38';
 
 const descarteModule = {
     getDefaultData,
