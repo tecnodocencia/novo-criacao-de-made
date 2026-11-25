@@ -17,7 +17,8 @@
     border-radius: 20px;
     cursor: pointer;
     user-select: none;
-    background-size: 100% 100%;
+    background-size: contain, cover;
+    background-repeat: no-repeat;
     background-position: center;
     box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12);
     transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
@@ -197,7 +198,8 @@
     width: var(--e-opp-w);
     height: var(--e-opp-h);
     border-radius: 9px;
-    background-size: 100% 100%;
+    background-size: contain, cover;
+    background-repeat: no-repeat;
     background-position: center;
     border: 2px solid white;
     box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2);
@@ -226,7 +228,8 @@
     border: 3px solid white;
     box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
     background-color: #f1f5f9;
-    background-size: 100% 100%;
+    background-size: contain, cover;
+    background-repeat: no-repeat;
     background-position: center;
     display: flex;
     align-items: center;
@@ -245,7 +248,8 @@
     inset: 0;
     border-radius: inherit;
     background: inherit;
-    background-size: 100% 100%;
+    background-size: contain, cover;
+    background-repeat: no-repeat;
     background-position: center;
     border: 3px solid white;
     box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12);

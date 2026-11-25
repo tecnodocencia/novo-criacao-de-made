@@ -1,6 +1,6 @@
 // js/games/descarte/review.js
 import { countBaseCards } from './model.js?v=6';
-import { cardFaceHtml, fitCardTexts, frontBgSize, resolveTextBackdrop, TEXT_BACKDROP_CLASSES } from './player.js?v=38';
+import { cardFaceHtml, fitCardTexts, cardBgCss, resolveTextBackdrop, TEXT_BACKDROP_CLASSES } from './player.js?v=39';
 
 export const reviewMethods = {
     populateReviewStep: function() {
@@ -39,13 +39,12 @@ export const reviewMethods = {
         const values0 = filled(attributes[0]);
         const values1 = filled(attributes[1]);
         const front = eg.frontDesign || 'imagens/frente/frente01.png';
-        const bgSize = frontBgSize(front);
 
         // Mesma carta da mesa de jogo: imagem da frente + face desenhada por
         // cardFaceHtml (player.js), com a faixa atrás do texto escolhida em Aparência.
         const cardHtml = (card, caption, isMaster) => `
             <div class="flex flex-col items-center gap-1.5">
-                <div class="descarte-review-card" style="background-image:url('${front}'); background-size:${bgSize};">
+                <div class="descarte-review-card" style="${cardBgCss(front)}">
                     ${isMaster ? '<span class="descarte-review-star" title="Tem carta mestre"><i class="fa-solid fa-star"></i></span>' : ''}
                     <div class="descarte-hand-card-inner">${cardFaceHtml(card, attributes)}</div>
                 </div>

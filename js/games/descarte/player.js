@@ -342,7 +342,7 @@ const BOT_ACT_MS = 700;
 // As molduras padrão (imagens/frente/*) trazem um contorno vermelho grosso
 // colado na borda da imagem; ampliar o fundo em 10% (centralizado) joga esse
 // contorno pra fora da carta sem mexer no desenho de dentro. Imagens enviadas
-// pelo professor (qualquer outro caminho) e os versos usam CARD_BG_FULL.
+// pelo professor (qualquer outro caminho) e os versos usam cardBgCss abaixo.
 // Faixa atrás do texto das cartas, escolhida pelo professor no bloco
 // Aparência (disciplineInfo.fundoTexto). 'auto': faixa clara só quando a
 // frente é uma imagem própria (os modelos prontos têm o miolo branco). Fica
@@ -360,13 +360,28 @@ function applyTextBackdrop(game) {
     document.body.classList.add('descarte-text-' + resolveTextBackdrop(game));
 }
 
-// Imagem da carta ocupa a carta inteira, sem cortar nada (com "cover" as
-// bordas/molduras das imagens eram cortadas, porque a proporção delas não é
-// exatamente a da carta). As frentes prontas usam 110% de propósito (ver
-// o comentário das molduras padrão acima).
-const CARD_BG_FULL = "100% 100%";
-function frontBgSize(design) {
-    return (design || "").startsWith("imagens/frente/") ? "110% 110%" : CARD_BG_FULL;
+// Fundo de uma carta (frente ou verso). Frentes prontas: 110% (ver acima).
+// Demais imagens: a imagem aparece INTEIRA e na proporção certa (contain,
+// sem corte e sem esticar) e, por trás dela, a mesma imagem ampliada até
+// cobrir a carta (cover) preenche as sobras quando a proporção da imagem não
+// é exatamente a da carta. Antes era só "cover", que cortava as molduras.
+function isBuiltInFront(design) {
+    return (design || "").startsWith("imagens/frente/");
+}
+function cardBgParts(url) {
+    if (isBuiltInFront(url)) return { image: `url('${url}')`, size: "110% 110%" };
+    return { image: `url('${url}'), url('${url}')`, size: "contain, cover" };
+}
+function cardBgCss(url) {
+    const { image, size } = cardBgParts(url);
+    return `background-image:${image};background-size:${size};background-position:center;background-repeat:no-repeat;`;
+}
+function applyCardBg(el, url) {
+    const { image, size } = cardBgParts(url);
+    el.style.backgroundImage = image;
+    el.style.backgroundSize = size;
+    el.style.backgroundPosition = 'center';
+    el.style.backgroundRepeat = 'no-repeat';
 }
 
 // --- Animações de jogada / compra ---
@@ -428,12 +443,12 @@ function playReshuffleFx(app, count, delay) {
         if (!a.width) return;
         const dx = (b.left + b.width / 2) - (a.left + a.width / 2);
         const dy = (b.top + b.height / 2) - (a.top + a.height / 2);
-        const face = (bg, size, extra) => `<div class="descarte-pile-card" style="position:absolute;inset:0;width:100%;height:100%;margin:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background-image:url('${bg}');background-size:${size};background-position:center;${extra}"></div>`;
+        const face = (bg, extra) => `<div class="descarte-pile-card" style="position:absolute;inset:0;width:100%;height:100%;margin:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;${cardBgCss(bg)}${extra}"></div>`;
         for (let i = 0; i < Math.min(count, 8); i++) {
             setTimeout(() => {
                 const wrap = document.createElement('div');
                 wrap.style.cssText = `position:fixed;left:${a.left}px;top:${a.top}px;width:${a.width}px;height:${a.height}px;z-index:10050;pointer-events:none;perspective:900px;`;
-                wrap.innerHTML = `<div style="position:absolute;inset:0;transform-style:preserve-3d;">${face(frontDesign, frontBgSize(frontDesign), '')}${face(backDesign, CARD_BG_FULL, 'transform:rotateY(180deg);')}</div>`;
+                wrap.innerHTML = `<div style="position:absolute;inset:0;transform-style:preserve-3d;">${face(frontDesign, '')}${face(backDesign, 'transform:rotateY(180deg);')}</div>`;
                 document.body.appendChild(wrap);
                 const spin = (i % 2 ? 1 : -1) * (6 + i * 2);
                 wrap.animate([
@@ -530,10 +545,10 @@ function flyCard(app, fromEl, toEl, card, opts = {}) {
 
     const frontDesign = game.frontDesign || 'imagens/frente/frente01.png';
     const backDesign = game.backDesign || 'imagens/verso/Cópia de Trás da Carta - Natureza.png';
-    const makeFace = (bgUrl, bgSize, html, extraStyle) => {
+    const makeFace = (bgUrl, html, extraStyle) => {
         const d = document.createElement('div');
         d.className = 'descarte-pile-card';
-        d.style.cssText = `position:absolute;inset:0;width:100%;height:100%;margin:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background-image:url('${bgUrl}');background-size:${bgSize};background-position:center;${extraStyle || ''}`;
+        d.style.cssText = `position:absolute;inset:0;width:100%;height:100%;margin:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;${cardBgCss(bgUrl)}${extraStyle || ''}`;
         if (html) d.innerHTML = html;
         return d;
     };
@@ -543,10 +558,10 @@ function flyCard(app, fromEl, toEl, card, opts = {}) {
     const inner = document.createElement('div');
     inner.style.cssText = 'position:absolute;inset:0;transform-style:preserve-3d;';
     if (card) {
-        inner.appendChild(makeFace(frontDesign, frontBgSize(frontDesign), cardFaceHtml(card, game.cards.attributes)));
-        if (flip) inner.appendChild(makeFace(backDesign, CARD_BG_FULL, '', 'transform:rotateY(180deg);'));
+        inner.appendChild(makeFace(frontDesign, cardFaceHtml(card, game.cards.attributes)));
+        if (flip) inner.appendChild(makeFace(backDesign, '', 'transform:rotateY(180deg);'));
     } else {
-        inner.appendChild(makeFace(backDesign, CARD_BG_FULL, ''));
+        inner.appendChild(makeFace(backDesign, ''));
     }
     if (flip) inner.style.transform = 'rotateY(180deg)';
     wrap.appendChild(inner);
@@ -757,7 +772,7 @@ function openWildModal(app, kind) {
             const { angle, lift, marginLeft } = handFanTransform(idx, hand.length, cardW);
             return `
             <div class="descarte-wild-hand-slot" style="transform: rotate(${angle.toFixed(1)}deg) translateY(${(lift * 0.6).toFixed(1)}px); margin-left:${marginLeft.toFixed(1)}px; z-index:${idx};">
-                <div class="descarte-wild-hand-card" style="background-image:url('${frontDesign}'); background-size:${frontBgSize(frontDesign)};">
+                <div class="descarte-wild-hand-card" style="${cardBgCss(frontDesign)}">
                     <div class="descarte-hand-card-inner">${cardFaceHtml(card, attrs)}</div>
                 </div>
             </div>`;
@@ -867,9 +882,7 @@ function renderAll(app) {
     const discardEl = document.getElementById('descarte-discard-top');
     if (discardEl) {
         const top = e.discardPile[e.discardPile.length - 1];
-        discardEl.style.backgroundImage = `url('${frontDesign}')`;
-        discardEl.style.backgroundSize = frontBgSize(frontDesign);
-        discardEl.style.backgroundPosition = 'center';
+        applyCardBg(discardEl, frontDesign);
         discardEl.innerHTML = top ? cardFaceHtml(top, attributes) : '';
         discardEl.classList.remove('descarte-pile-land');
         if (e.landFx) {
@@ -882,8 +895,7 @@ function renderAll(app) {
 
     const drawPileEl = document.getElementById('descarte-draw-pile');
     if (drawPileEl) {
-        drawPileEl.style.backgroundImage = `url('${backDesign}')`;
-        drawPileEl.style.backgroundSize = CARD_BG_FULL;
+        applyCardBg(drawPileEl, backDesign);
         drawPileEl.style.backgroundPosition = 'center';
     }
     const drawCountEl = document.getElementById('descarte-draw-pile-count');
@@ -912,7 +924,7 @@ function renderAll(app) {
             const slots = p.hand.map((_, i) => {
                 const { angle, lift, overlap } = handFanTransform(i, p.hand.length, 64);
                 const style = `transform: rotate(${(-angle).toFixed(1)}deg) translateY(calc(var(--e-opp-h) * -${(lift / 215).toFixed(3)})); margin-left:calc(var(--e-opp-w) * -${overlap.toFixed(3)}); z-index:${i};`;
-                return `<div class="descarte-opp-slot" style="${style}"><div class="descarte-opp-card" style="background-image:url('${backDesign}');"></div></div>`;
+                return `<div class="descarte-opp-slot" style="${style}"><div class="descarte-opp-card" style="${cardBgCss(backDesign)}"></div></div>`;
             }).join('');
             const active = idx === e.currentPlayerIndex && e.winner == null;
             const icon = p.isBot ? 'fa-robot' : 'fa-user';
@@ -944,7 +956,7 @@ function renderAll(app) {
                 const slotStyle = `transform: rotate(${angle.toFixed(1)}deg) translateY(calc(var(--e-hand-h) * ${(lift / 215).toFixed(3)})); margin-left:calc(var(--e-hand-w) * -${overlap.toFixed(3)}); z-index:${idx};`;
                 return `
                     <div class="descarte-hand-slot" style="${slotStyle}">
-                        <div class="descarte-hand-card" data-instance="${card.instanceId}" style="background-image:url('${frontDesign}'); background-size:${frontBgSize(frontDesign)};">
+                        <div class="descarte-hand-card" data-instance="${card.instanceId}" style="${cardBgCss(frontDesign)}">
                             <div class="zoom-icon" title="Visualizar ampliado"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
                             <div class="descarte-hand-card-inner">${cardFaceHtml(card, attributes)}</div>
                         </div>
@@ -1300,8 +1312,7 @@ export const playerMethods = {
         const modal = document.getElementById('modal-preview');
         const container = document.getElementById('preview-card-container');
         const text = document.getElementById('preview-card-text');
-        container.style.backgroundImage = `url('${this.state.activeGame.frontDesign || 'imagens/frente/frente01.png'}')`;
-        container.style.backgroundSize = frontBgSize(this.state.activeGame.frontDesign || 'imagens/frente/frente01.png');
+        applyCardBg(container, this.state.activeGame.frontDesign || 'imagens/frente/frente01.png');
         container.style.backgroundPosition = 'center';
         // O conteúdo da carta é desenhado em tamanho de mão; aqui ele é ampliado
         // (scale) pra acompanhar o tamanho do zoom.
@@ -1364,4 +1375,4 @@ export const playerMethods = {
 };
 
 // Usados pela Revisão do editor (review.js) para mostrar as cartas como no jogo.
-export { cardFaceHtml, fitCardTexts, frontBgSize, resolveTextBackdrop, TEXT_BACKDROP_CLASSES };
+export { cardFaceHtml, fitCardTexts, cardBgCss, resolveTextBackdrop, TEXT_BACKDROP_CLASSES };

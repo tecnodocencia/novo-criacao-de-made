@@ -749,8 +749,11 @@ export const editorShellMethods = {
         const front = eg.frontDesign || 'imagens/frente/frente01.png';
         const sample = document.getElementById('text-backdrop-sample');
         if (sample) {
-            sample.style.backgroundImage = `url('${front}')`;
-            sample.style.backgroundSize = front.startsWith('imagens/frente/') ? '110% 110%' : '100% 100%';
+            // Mesma regra das cartas na mesa (cardBgParts em js/games/descarte/player.js).
+            const builtIn = front.startsWith('imagens/frente/');
+            sample.style.backgroundImage = builtIn ? `url('${front}')` : `url('${front}'), url('${front}')`;
+            sample.style.backgroundSize = builtIn ? '110% 110%' : 'contain, cover';
+            sample.style.backgroundRepeat = 'no-repeat';
             sample.classList.remove(...TEXT_BACKDROP_CLASSES);
             sample.classList.add('descarte-text-' + resolveTextBackdrop(eg));
         }
