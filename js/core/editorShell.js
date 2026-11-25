@@ -1,6 +1,7 @@
 // js/core/editorShell.js
 import { dbService } from '../database.js?v=7';
 import { getGame } from '../games/registry.js?v=1';
+import { getCardVisual, cardBgCss, applyCardBg, FONT_SCALE_MIN, FONT_SCALE_MAX } from './cardStyle.js?v=1';
 
 export const frontDesigns = [
     'imagens/frente/frente01.png',
@@ -719,6 +720,7 @@ export const editorShellMethods = {
         else idx = (idx - 1 + backDesigns.length) % backDesigns.length;
         this.state.editingGame.backDesign = backDesigns[idx];
         document.getElementById('preview-back').src = this.state.editingGame.backDesign;
+        this.renderTextBackdropControl();
         this.saveNow();
     },
 
@@ -731,45 +733,128 @@ export const editorShellMethods = {
         this.saveNow();
     },
 
-    // Opções de faixa + carta de exemplo (frente atual com dois valores do
-    // próprio jogo). Só aparece no Descarte a Carta.
+    // --- Ajustes visuais da carta (bloco Aparência), salvos em
+    // disciplineInfo.cartaVisual — ver js/core/cardStyle.js. ---
+    _cardVisualStore: function() {
+        const eg = this.state.editingGame;
+        if (!eg) return null;
+        if (!eg.disciplineInfo) eg.disciplineInfo = {};
+        const v = getCardVisual(eg);
+        eg.disciplineInfo.cartaVisual = { front: v.front, back: v.back, fontScale: v.fontScale };
+        return eg.disciplineInfo.cartaVisual;
+    },
+
+    setCardAdjust: function(side, prop, value) {
+        const store = this._cardVisualStore();
+        if (!store) return;
+        const n = Number(value);
+        store[side][prop] = prop === 'zoom' ? n / 100 : n;
+        this.renderTextBackdropControl();
+        this.scheduleAutoSave();
+    },
+
+    resetCardAdjust: function(side) {
+        const store = this._cardVisualStore();
+        if (!store) return;
+        store[side] = { zoom: 1, x: 50, y: 50 };
+        this.renderTextBackdropControl();
+        this.saveNow();
+    },
+
+    setCardFontScale: function(value) {
+        const store = this._cardVisualStore();
+        if (!store) return;
+        store.fontScale = Math.min(FONT_SCALE_MAX, Math.max(FONT_SCALE_MIN, Number(value) / 100));
+        this.renderTextBackdropControl();
+        this.scheduleAutoSave();
+    },
+
+    // Prévias da frente/verso com zoom e posição + valores dos controles.
+    renderCardAdjustControls: function() {
+        const eg = this.state.editingGame;
+        if (!eg) return;
+        const visual = getCardVisual(eg);
+        const base = eg.model === 'Descarte a Carta' ? 'fit' : 'cover';
+        const urls = {
+            front: eg.frontDesign || 'imagens/frente/frente01.png',
+            back: eg.backDesign || 'imagens/verso/Cópia de Trás da Carta - Natureza.png'
+        };
+        const posLabel = (v, low, high) => v === 50 ? 'Centro' : (v < 50 ? `${low} ${50 - v}` : `${high} ${v - 50}`);
+        ['front', 'back'].forEach(side => {
+            const adj = visual[side];
+            applyCardBg(document.getElementById(`adjust-preview-${side}`), urls[side], adj, base);
+            document.querySelectorAll(`#card-adjust-wrap input[data-side="${side}"]`).forEach(input => {
+                const v = input.dataset.prop === 'zoom' ? Math.round(adj.zoom * 100) : adj[input.dataset.prop];
+                if (Number(input.value) !== v) input.value = v;
+            });
+            const setLabel = (prop, text) => {
+                const el = document.querySelector(`#card-adjust-wrap [data-value-for="${side}-${prop}"]`);
+                if (el) el.innerText = text;
+            };
+            setLabel('zoom', `${Math.round(adj.zoom * 100)}%`);
+            setLabel('x', posLabel(adj.x, 'Esq.', 'Dir.'));
+            setLabel('y', posLabel(adj.y, 'Cima', 'Baixo'));
+        });
+    },
+
+    // "Letras dentro da carta": tamanho da letra (os dois jogos) + faixa atrás
+    // do texto (só Descarte a Carta), com carta de exemplo usando a frente,
+    // o enquadramento e textos do próprio jogo. Também redesenha as prévias
+    // de "Ajustar imagem da carta".
     renderTextBackdropControl: function() {
         const wrap = document.getElementById('text-backdrop-wrap');
         const eg = this.state.editingGame;
         if (!wrap || !eg) return;
+        this.renderCardAdjustControls();
+
         const isDescarte = eg.model === 'Descarte a Carta';
-        wrap.classList.toggle('hidden', !isDescarte);
-        if (!isDescarte) return;
+        const visual = getCardVisual(eg);
+        document.getElementById('text-backdrop-options-wrap')?.classList.toggle('hidden', !isDescarte);
 
         const chosen = eg.disciplineInfo?.fundoTexto || 'auto';
         document.querySelectorAll('#text-backdrop-options .text-backdrop-opt').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.mode === chosen);
         });
 
+        const pct = Math.round(visual.fontScale * 100);
+        const fontInput = document.getElementById('card-font-scale');
+        if (fontInput && Number(fontInput.value) !== pct) fontInput.value = pct;
+        const fontLabel = document.getElementById('card-font-scale-value');
+        if (fontLabel) fontLabel.innerText = `${pct}%`;
+
         const front = eg.frontDesign || 'imagens/frente/frente01.png';
         const sample = document.getElementById('text-backdrop-sample');
-        if (sample) {
-            // Mesma regra das cartas na mesa (cardBgParts em js/games/descarte/player.js).
-            const builtIn = front.startsWith('imagens/frente/');
-            sample.style.backgroundImage = builtIn ? `url('${front}')` : `url('${front}'), url('${front}')`;
-            sample.style.backgroundSize = builtIn ? '110% 110%' : 'contain, cover';
-            sample.style.backgroundRepeat = 'no-repeat';
-            sample.classList.remove(...TEXT_BACKDROP_CLASSES);
-            sample.classList.add('descarte-text-' + resolveTextBackdrop(eg));
-        }
-        // A faixa do jogador fica no <body> durante a partida; no editor, o
-        // exemplo decide sozinho.
+        if (!sample) return;
+        sample.classList.toggle('cs-sample', !isDescarte);
+        sample.classList.remove(...TEXT_BACKDROP_CLASSES);
+        sample.style.setProperty('--card-font-scale', String(visual.fontScale));
+        // A faixa/escala da partida ficam no <body>/<html>; no editor, o exemplo decide sozinho.
         document.body.classList.remove(...TEXT_BACKDROP_CLASSES);
 
-        const attrs = eg.cards?.attributes || [];
-        const sampleText = (attrIdx, fallback) => {
-            const v = (attrs[attrIdx]?.values || []).find(x => stripHtml(x.text));
-            return v ? v.text : fallback;
-        };
-        const t1 = document.getElementById('text-backdrop-sample-1');
-        const t2 = document.getElementById('text-backdrop-sample-2');
-        if (t1) t1.innerHTML = sampleText(0, 'Planalto');
-        if (t2) t2.innerHTML = sampleText(1, 'Nordeste');
+        if (isDescarte) {
+            sample.classList.add('descarte-text-' + resolveTextBackdrop(eg));
+            const attrs = eg.cards?.attributes || [];
+            const sampleText = (attrIdx, fallback) => {
+                const v = (attrs[attrIdx]?.values || []).find(x => stripHtml(x.text));
+                return v ? v.text : fallback;
+            };
+            const px = (13 * visual.fontScale).toFixed(1);
+            applyCardBg(sample, front, visual.front, 'fit');
+            sample.innerHTML = `
+                <div class="text-backdrop-sample-inner">
+                    <div class="flex-1 flex items-center justify-center overflow-hidden p-1 border-b border-slate-200"><p class="descarte-fit-text leading-tight font-black text-slate-800 text-center px-1" style="max-width:100%;font-size:${px}px;">${sampleText(0, 'Planalto')}</p></div>
+                    <div class="flex-1 flex items-center justify-center overflow-hidden p-1"><p class="descarte-fit-text leading-tight font-black text-slate-800 text-center px-1" style="max-width:100%;font-size:${px}px;">${sampleText(1, 'Nordeste')}</p></div>
+                </div>`;
+        } else {
+            // Código Secreto: igual à carta do banco (frente + área branca com o conteúdo).
+            sample.style.backgroundImage = 'none';
+            const firstCard = (Array.isArray(eg.cards) ? eg.cards : []).find(c => stripHtml(c.content));
+            const text = firstCard ? firstCard.content : 'Baleia';
+            sample.innerHTML = `
+                <div class="bank-card-inner" style="${cardBgCss(front, visual.front, 'cover')}">
+                    <div class="w-full h-full flex items-center justify-center p-2 bg-white/80 rounded-[22px] overflow-hidden leading-tight text-slate-800">${text}</div>
+                </div>`;
+        }
     },
 
     handleExternalFrontImageUpload: async function(event) {
@@ -836,6 +921,7 @@ export const editorShellMethods = {
         }
         document.getElementById('preview-back').src = backDesigns[0];
         document.getElementById('review-preview-back').src = backDesigns[0];
+        this.renderTextBackdropControl();
         this.saveNow();
     }
 };

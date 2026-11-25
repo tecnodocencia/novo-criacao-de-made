@@ -159,3 +159,27 @@ html { font-size: var(--base-font); }
 }
 .cs-review-card { width: 112px; height: 140px; }
 .cs-review-card .bank-card-inner { height: 100%; font-size: 0.8125rem; line-height: 1.2; overflow: hidden; }
+
+/* Tamanho da letra dentro das cartas, definido pelo professor em Aparência
+   (--card-font-scale, ver js/core/cardStyle.js). O texto das cartas do
+   Descarte é ajustado por fitCardTexts, que já lê a mesma variável. */
+.bank-card-inner { font-size: calc(1rem * var(--card-font-scale, 1)); }
+.descarte-special-label { font-size: calc(10px * var(--card-font-scale, 1)) !important; }
+
+/* Editor › Aparência: "Ajustar imagem da carta" e exemplo de "Letras dentro da carta". */
+.card-adjust-col { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+.adjust-card {
+    width: 150px;
+    height: 202px;
+    border-radius: 16px;
+    background-color: #ffffff;
+    border: 3px solid #ffffff;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
+}
+.adjust-row { display: grid; grid-template-columns: 6.5rem 1fr 3.75rem; align-items: center; gap: 0.5rem; cursor: pointer; }
+.adjust-label { font-size: 0.75rem; font-weight: 800; color: #475569; white-space: nowrap; }
+.adjust-label i { width: 1rem; color: #64748b; }
+.adjust-value { font-size: 0.75rem; font-weight: 900; color: #0f172a; text-align: right; white-space: nowrap; }
+.adjust-range { width: 100%; accent-color: #ea3257; cursor: pointer; }
+.text-backdrop-sample.cs-sample { width: 130px; height: 165px; background: transparent; box-shadow: none; }
+.text-backdrop-sample.cs-sample .bank-card-inner { height: 100%; }

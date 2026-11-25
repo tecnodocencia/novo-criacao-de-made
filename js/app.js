@@ -4,13 +4,13 @@ import { state } from './core/state.js?v=5';
 import { utilsMethods } from './core/utils.js?v=8';
 import { authMethods } from './core/auth.js?v=9';
 import { dashboardMethods } from './core/dashboard.js?v=30';
-import { libraryMethods } from './core/library.js?v=9';
-import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=28';
+import { libraryMethods } from './core/library.js?v=10';
+import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=29';
 import { modalMethods } from './core/modals.js?v=1';
 import { gameTourMethods } from './core/gameTour.js?v=12';
 import { getGame } from './games/registry.js?v=1';
-import './games/codigo-secreto/index.js?v=12';
-import './games/descarte/index.js?v=39';
+import './games/codigo-secreto/index.js?v=13';
+import './games/descarte/index.js?v=40';
 
 // Métodos que pertencem ao modelo de jogo ativo ("Código Secreto" e
 // "Descarte a Carta" hoje). app.js não implementa o comportamento: delega para o

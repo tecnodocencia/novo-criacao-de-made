@@ -10,7 +10,7 @@
 import { supabase } from './supabase.js?v=2';
 import { utilsMethods } from './core/utils.js?v=8';
 import { modalMethods } from './core/modals.js?v=1';
-import { playerMethods, descarteEngine as engine } from './games/descarte/player.js?v=39';
+import { playerMethods, descarteEngine as engine } from './games/descarte/player.js?v=40';
 import { joinLobby, joinMatch, uid } from './games/descarte/net.js?v=1';
 
 const MODEL_NAMES = ['Descarte a Carta', 'Eliminação'];

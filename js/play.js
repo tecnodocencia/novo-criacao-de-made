@@ -1,5 +1,6 @@
 // js/play.js — Página pública de jogo (sem autenticação obrigatória)
 import { supabase } from './supabase.js?v=2';
+import { getCardVisual, cardBgCss, applyCardBg, applyCardFontScale } from './core/cardStyle.js?v=1';
 import { difficultyRules, applyReplaySwap, resolveRepeatCount, getLevelDescription, calculateScore } from './games/codigo-secreto/model.js?v=4';
 
 // ─── Estado global do jogo ───────────────────────────────────────────────────
@@ -114,13 +115,16 @@ function showConfirm(message, onConfirm) {
     confirmCallback = onConfirm;
 }
 
+// Zoom/posição da imagem da frente/verso (bloco Aparência do editor). Cartas
+// com frente própria (card.frontImage) não recebem o ajuste do jogo.
+const frontAdj = (card) => card.frontImage ? null : getCardVisual(gs.game).front;
+const backAdj = () => getCardVisual(gs.game).back;
+
 function previewCard(card) {
     const container = document.getElementById('preview-play-card-container');
     const frontDesign = gs.game.frontDesign || 'imagens/frente/frente01.png';
     const useBg = card.frontImage || frontDesign;
-    container.style.backgroundImage = `url('${useBg}')`;
-    container.style.backgroundSize = 'cover';
-    container.style.backgroundPosition = 'center';
+    applyCardBg(container, useBg, frontAdj(card));
     if (card.contentImage) {
         container.innerHTML = `<img src="${card.contentImage}" alt="${escapeHtml(stripHtml(card.content))}"
             style="max-height:280px; max-width:100%; object-fit:contain; border-radius:12px;">`;
@@ -198,6 +202,7 @@ function resetGameScreen() {
     gs.currentResult = null;
 
     showScreen('game');
+    applyCardFontScale(gs.game);
 
     renderGameHeader();
     renderEnunciado();
@@ -275,9 +280,7 @@ function renderSecretSlots() {
         slot.className = 'secret-card-slot';
         slot.id = `secret-slot-play-${i}`;
         if (gs.game.backDesign) {
-            slot.style.backgroundImage = `url('${gs.game.backDesign}')`;
-            slot.style.backgroundSize = 'cover';
-            slot.style.backgroundPosition = 'center';
+            applyCardBg(slot, gs.game.backDesign, backAdj());
         }
         container.appendChild(slot);
     }
@@ -324,7 +327,7 @@ function renderBankCards() {
         const cardIdStr = escapeHtml(String(card.id));
         const useBg = card.frontImage || frontDesign;
         bankCard.innerHTML = `
-            <div class="bank-card-inner" data-card-inner-id="${cardIdStr}" style="background-image:url('${useBg}');background-size:cover;background-position:center;">
+            <div class="bank-card-inner" data-card-inner-id="${cardIdStr}" style="${cardBgCss(useBg, frontAdj(card))}">
                 <div class="front-content-wrap ${card.frontImage ? 'bg-transparent' : 'bg-white/80'}" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:8px;border-radius:22px;overflow:hidden;">
                     ${innerContent}
                 </div>
@@ -436,7 +439,7 @@ function renderDropSlotContent(slotIndex) {
         const useBg = card.frontImage || frontDesign;
         slot.classList.add('filled');
         slot.innerHTML = `
-            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative;background-image:url('${useBg}');background-size:cover;background-position:center;border-radius:17px;padding:8px;">
+            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative;${cardBgCss(useBg, frontAdj(card))}border-radius:17px;padding:8px;">
                 <div class="${card.frontImage ? 'bg-transparent' : 'bg-white/80'}" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;border-radius:17px;overflow:hidden;">
                     ${content}
                 </div>
@@ -609,19 +612,19 @@ async function openSolutionModal(result) {
             </div>`;
         }
 
-        const backBg = gs.game.backDesign
-            ? `url('${gs.game.backDesign}')`
-            : 'linear-gradient(135deg, #047857, #10b981)';
+        const backCss = gs.game.backDesign
+            ? cardBgCss(gs.game.backDesign, backAdj())
+            : 'background-image:linear-gradient(135deg, #047857, #10b981);';
         const frontBg = card.frontImage || frontDesign;
 
         const cardEl = document.createElement('div');
         cardEl.className = 'solution-card-container';
         cardEl.innerHTML = `
             <div class="solution-card-inner">
-                <div class="solution-card-front" style="overflow:hidden;background-image:url('${frontBg}');background-size:cover;background-position:center;">
+                <div class="solution-card-front" style="overflow:hidden;${cardBgCss(frontBg, frontAdj(card))}">
                     <div style="width:100%;height:100%;background:${card.frontImage ? 'transparent' : 'rgba(255,255,255,0.85)'};">${frontContent}</div>
                 </div>
-                <div class="solution-card-back" style="background-image:${backBg};background-size:cover;background-position:center;"></div>
+                <div class="solution-card-back" style="${backCss}"></div>
             </div>
         `;
         container.appendChild(cardEl);
@@ -676,7 +679,7 @@ function renderOtherCorrectCards(frontDesign) {
         const frontBg = card.frontImage || frontDesign;
         return `
             <div style="position:relative;aspect-ratio:4/5;">
-                <div style="width:100%;height:100%;border-radius:16px;overflow:hidden;border:2px solid #7dd3fc;opacity:0.9;background-image:url('${frontBg}');background-size:cover;background-position:center;">
+                <div style="width:100%;height:100%;border-radius:16px;overflow:hidden;border:2px solid #7dd3fc;opacity:0.9;${cardBgCss(frontBg, frontAdj(card))}">
                     <div style="width:100%;height:100%;background:rgba(255,255,255,0.85);">${content}</div>
                 </div>
                 <div style="position:absolute;top:-6px;right:-6px;background:#0ea5e9;color:white;font-size:9px;font-weight:900;text-transform:uppercase;padding:3px 6px;border-radius:9999px;box-shadow:0 2px 6px rgba(0,0,0,0.15);">Fora da senha</div>

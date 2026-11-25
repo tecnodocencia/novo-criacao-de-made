@@ -408,6 +408,7 @@ export const libraryMethods = {
             const reviewBack = document.getElementById('review-preview-back');
             if (previewBack) previewBack.src = url;
             if (reviewBack) reviewBack.src = url;
+            if (typeof this.renderTextBackdropControl === 'function') this.renderTextBackdropControl();
         }
 
         this.closeImageLibrary();

@@ -1,6 +1,7 @@
 // js/games/descarte/review.js
 import { countBaseCards } from './model.js?v=6';
-import { cardFaceHtml, fitCardTexts, cardBgCss, resolveTextBackdrop, TEXT_BACKDROP_CLASSES } from './player.js?v=39';
+import { cardFaceHtml, fitCardTexts, cardBgCss, resolveTextBackdrop, TEXT_BACKDROP_CLASSES } from './player.js?v=40';
+import { applyCardFontScale } from '../../core/cardStyle.js?v=1';
 
 export const reviewMethods = {
     populateReviewStep: function() {
@@ -44,7 +45,7 @@ export const reviewMethods = {
         // cardFaceHtml (player.js), com a faixa atrás do texto escolhida em Aparência.
         const cardHtml = (card, caption, isMaster) => `
             <div class="flex flex-col items-center gap-1.5">
-                <div class="descarte-review-card" style="${cardBgCss(front)}">
+                <div class="descarte-review-card" style="${cardBgCss(front, 'front', eg)}">
                     ${isMaster ? '<span class="descarte-review-star" title="Tem carta mestre"><i class="fa-solid fa-star"></i></span>' : ''}
                     <div class="descarte-hand-card-inner">${cardFaceHtml(card, attributes)}</div>
                 </div>
@@ -95,6 +96,7 @@ export const reviewMethods = {
 
         // A faixa da partida fica no <body>; aqui quem decide é cada grupo de cartas.
         document.body.classList.remove(...TEXT_BACKDROP_CLASSES);
+        applyCardFontScale(eg, grid);
         requestAnimationFrame(() => fitCardTexts(grid));
     }
 };

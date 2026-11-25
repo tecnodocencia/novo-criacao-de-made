@@ -6,6 +6,7 @@
 // guiado interativo (js/core/gameTour.js). _gameTourCheckpoint é um NO-OP
 // silencioso quando state.gameTourActive é false — não afetam em nada o
 // fluxo normal de jogo/teste fora do tour.
+import { getCardVisual, cardBgCss, applyCardBg, applyCardFontScale } from '../../core/cardStyle.js?v=1';
 import { difficultyRules, applyReplaySwap, resolveRepeatCount, getLevelDescription, calculateScore } from './model.js?v=4';
 
 export { difficultyRules };
@@ -72,7 +73,7 @@ export const playerMethods = {
                 <div class="zoom-icon" title="Visualizar ampliado">
                     <i class="fa-solid fa-magnifying-glass-plus"></i>
                 </div>
-                <div class="bank-card-inner" style="background-image: url('${useBg}'); background-size: cover; background-position: center;">
+                <div class="bank-card-inner" style="${cardBgCss(useBg, card.frontImage ? null : getCardVisual(this.state.activeGame).front)}">
                     <div class="w-full h-full flex items-center justify-center p-2 ${card.frontImage ? 'bg-transparent' : 'bg-white/80'} rounded-[22px] overflow-hidden">
                         ${contentHtml}
                     </div>
@@ -116,9 +117,7 @@ export const playerMethods = {
         const frontDesign = this.state.activeGame?.frontDesign || this.state.editingGame?.frontDesign || 'imagens/frente/frente01.png';
         const useBg = card.frontImage || frontDesign;
 
-        container.style.backgroundImage = `url('${useBg}')`;
-        container.style.backgroundSize = 'cover';
-        container.style.backgroundPosition = 'center';
+        applyCardBg(container, useBg, card.frontImage ? null : getCardVisual(this.state.activeGame || this.state.editingGame).front);
 
         const contentHtml = card.contentImage
             ? `<img src="${card.contentImage}" class="max-w-full max-h-full object-contain shadow-2xl rounded-2xl" />`
@@ -450,12 +449,11 @@ export const playerMethods = {
 
     applyCardDesigns: function() {
         if (!this.state.activeGame) return;
+        applyCardFontScale(this.state.activeGame);
         const backDesign = this.state.activeGame.backDesign || 'imagens/verso/Cópia de Trás da Carta - Natureza.png';
         document.querySelectorAll('.secret-card-slot').forEach(slot => {
             slot.innerHTML = '';
-            slot.style.backgroundImage = `url('${backDesign}')`;
-            slot.style.backgroundSize = 'cover';
-            slot.style.backgroundPosition = 'center';
+            applyCardBg(slot, backDesign, getCardVisual(this.state.activeGame).back);
         });
     },
 
@@ -644,9 +642,7 @@ export const playerMethods = {
                 cardContainer.classList.remove('hidden');
                 const frontFace = cardContainer.querySelector('.solution-card-front');
                 frontFace.className = 'solution-card-front bank-card-inner w-full h-full flex flex-col justify-center items-center text-center overflow-hidden';
-                frontFace.style.backgroundImage = `url('${frontDesign}')`;
-                frontFace.style.backgroundSize = 'cover';
-                frontFace.style.backgroundPosition = 'center';
+                applyCardBg(frontFace, card.frontImage || frontDesign, card.frontImage ? null : getCardVisual(this.state.activeGame).front);
 
                 const contentHtml = card.contentImage
                     ? `<img src="${card.contentImage}" class="max-w-full max-h-full object-contain" />`
@@ -692,7 +688,7 @@ export const playerMethods = {
             const useBg = card.frontImage || frontDesign;
             return `
                 <div class="relative" style="aspect-ratio: 4/5;">
-                    <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-2xl border-2 border-sky-300 opacity-90" style="background-image: url('${useBg}'); background-size: cover; background-position: center;">
+                    <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-2xl border-2 border-sky-300 opacity-90" style="${cardBgCss(useBg, card.frontImage ? null : getCardVisual(this.state.activeGame).front)}">
                         ${contentHtml}
                     </div>
                     <div class="absolute -top-2 -right-2 bg-sky-500 text-white text-[9px] font-black uppercase px-2 py-1 rounded-full shadow">Fora da senha</div>

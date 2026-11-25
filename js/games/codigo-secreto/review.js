@@ -1,4 +1,5 @@
 // js/games/codigo-secreto/review.js
+import { getCardVisual, cardBgCss, applyCardFontScale } from '../../core/cardStyle.js?v=1';
 export const reviewMethods = {
     populateReviewStep: function() {
         if (!this.state.editingGame) return;
@@ -43,7 +44,7 @@ export const reviewMethods = {
             return `
                 <div class="flex flex-col items-center gap-1.5">
                     <div class="cs-review-card ${hasContent ? '' : 'opacity-60'}">
-                        <div class="bank-card-inner" style="background-image: url('${useBg}'); background-size: cover; background-position: center;">
+                        <div class="bank-card-inner" style="${cardBgCss(useBg, card.frontImage ? null : getCardVisual(eg).front)}">
                             <div class="w-full h-full flex items-center justify-center p-2 ${card.frontImage ? 'bg-transparent' : 'bg-white/80'} rounded-[22px] overflow-hidden">
                                 ${contentHtml}
                             </div>
@@ -65,6 +66,7 @@ export const reviewMethods = {
             grid.appendChild(el);
         };
 
+        applyCardFontScale(eg, grid);
         const cards = eg.cards || [];
         section('Cartas corretas', 'Fazem parte do código secreto que o aluno precisa descobrir.',
             'border-emerald-200 bg-emerald-50/60 text-emerald-900', cards.slice(0, 6), 0);
