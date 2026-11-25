@@ -1,4 +1,5 @@
 // js/games/codigo-secreto/editorCartas.js
+import { getCardVisual, cardBgCss, applyCardFontScale } from '../../core/cardStyle.js?v=2';
 export const editorCartasMethods = {
     renderEditorGrid: function() {
         const grid = document.getElementById('editor-grid');
@@ -50,6 +51,42 @@ export const editorCartasMethods = {
         // acima de modo autocontido — o editor genérico (editorShell.js) não
         // precisa mais chamar updateSecretCardCounter() separadamente.
         this.updateSecretCardCounter();
+        this.renderCardsPreview();
+    },
+
+    // Prévia das cartas como ficam no banco do jogo (mesmo desenho de
+    // renderPlayBank: frente, enquadramento e tamanho da letra escolhidos).
+    renderCardsPreview: function() {
+        const eg = this.state.editingGame;
+        const box = document.getElementById('cards-final-preview');
+        if (!eg || !box || !Array.isArray(eg.cards)) return;
+        // Controle do tamanho da letra (fica neste bloco) em dia com o jogo.
+        const pct = Math.round(getCardVisual(eg).fontScale * 100);
+        const fontInput = document.getElementById('card-font-scale');
+        if (fontInput && Number(fontInput.value) !== pct) fontInput.value = pct;
+        const fontLabel = document.getElementById('card-font-scale-value');
+        if (fontLabel) fontLabel.innerText = `${pct}%`;
+
+        const filled = eg.cards.filter(c => c.contentImage || this.stripHtml(c.content));
+        if (!filled.length) {
+            box.innerHTML = '<p class="text-sm text-slate-500 text-center py-4">Preencha as cartas para ver aqui como elas ficam no jogo.</p>';
+            return;
+        }
+        const frontDesign = eg.frontDesign || 'imagens/frente/frente01.png';
+        const frontAdj = getCardVisual(eg).front;
+        box.innerHTML = `<div class="cs-review-cards">${filled.map(card => {
+            const useBg = card.frontImage || frontDesign;
+            const contentHtml = card.contentImage
+                ? `<img src="${card.contentImage}" class="max-w-full max-h-full object-contain" />`
+                : (card.content || '');
+            return `
+                <div class="cs-review-card">
+                    <div class="bank-card-inner" style="${cardBgCss(useBg, card.frontImage ? null : frontAdj)}">
+                        <div class="w-full h-full flex items-center justify-center p-2 ${card.frontImage ? 'bg-transparent' : 'bg-white/80'} rounded-[22px] overflow-hidden">${contentHtml}</div>
+                    </div>
+                </div>`;
+        }).join('')}</div>`;
+        applyCardFontScale(eg, box);
     },
 
     updateSecretCardCounter: function() {

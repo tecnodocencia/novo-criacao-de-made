@@ -5,12 +5,12 @@ import { utilsMethods } from './core/utils.js?v=8';
 import { authMethods } from './core/auth.js?v=9';
 import { dashboardMethods } from './core/dashboard.js?v=30';
 import { libraryMethods } from './core/library.js?v=10';
-import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=30';
+import { editorShellMethods, frontDesigns, backDesigns } from './core/editorShell.js?v=31';
 import { modalMethods } from './core/modals.js?v=1';
 import { gameTourMethods } from './core/gameTour.js?v=12';
 import { getGame } from './games/registry.js?v=1';
-import './games/codigo-secreto/index.js?v=14';
-import './games/descarte/index.js?v=41';
+import './games/codigo-secreto/index.js?v=15';
+import './games/descarte/index.js?v=42';
 
 // Métodos que pertencem ao modelo de jogo ativo ("Código Secreto" e
 // "Descarte a Carta" hoje). app.js não implementa o comportamento: delega para o
@@ -21,7 +21,7 @@ import './games/descarte/index.js?v=41';
 // modelo ativo apenas loga um erro no console, não quebra o app.
 const GAME_METHODS = [
     // Bloco "Criação de Cartas" do editor (genérico entre modelos)
-    'renderEditorGrid', 'validateCreatorCards', 'isCardsBlockComplete',
+    'renderEditorGrid', 'renderCardsPreview', 'validateCreatorCards', 'isCardsBlockComplete',
     // Específico do Código Secreto
     'updateSecretCardCounter', 'openCardModal',
     'closeCardModal', 'handleCardImageUrlInput', 'removeCardContentImage', 'saveCardModal',

@@ -4,6 +4,8 @@
 // valores "carta mestre" por atributo. Ver js/games/descarte/model.js para
 // as regras derivadas (cartas-base, cópias de especiais, cartas mestre).
 import { countBaseCards, uuid } from './model.js?v=6';
+import { cardFaceHtml, fitCardTexts, cardBgCss, resolveTextBackdrop } from './player.js?v=41';
+import { getCardVisual, applyCardFontScale } from '../../core/cardStyle.js?v=2';
 
 const ATTR_LABELS = ['Atributo 1', 'Atributo 2'];
 
@@ -108,6 +110,47 @@ export const editorCartasMethods = {
 
         const totalEl = document.getElementById('descarte-total-base-cards');
         if (totalEl) totalEl.innerText = String(countBaseCards(eg.cards.attributes));
+        this.renderCardsPreview();
+    },
+
+    // Prévia das cartas como ficam na mesa (mesmo desenho do jogo: frente,
+    // enquadramento, faixa atrás do texto e tamanho da letra escolhidos).
+    renderCardsPreview: function() {
+        const eg = this.state.editingGame;
+        const box = document.getElementById('cards-final-preview');
+        if (!eg || !box || !eg.cards?.attributes) return;
+        // Controle do tamanho da letra (fica neste bloco) em dia com o jogo.
+        const pct = Math.round(getCardVisual(eg).fontScale * 100);
+        const fontInput = document.getElementById('card-font-scale');
+        if (fontInput && Number(fontInput.value) !== pct) fontInput.value = pct;
+        const fontLabel = document.getElementById('card-font-scale-value');
+        if (fontLabel) fontLabel.innerText = `${pct}%`;
+
+        const attributes = eg.cards.attributes;
+        const filled = (attr) => (attr?.values || []).filter(v => this.stripHtml(v.text) || v.image);
+        const values0 = filled(attributes[0]);
+        const values1 = filled(attributes[1]);
+        if (!values0.length || !values1.length) {
+            box.innerHTML = '<p class="text-sm text-slate-500 text-center py-4">Preencha pelo menos um valor em cada atributo para ver as cartas aqui.</p>';
+            return;
+        }
+        const MAX = 8;
+        const cards = [];
+        values0.forEach(v0 => values1.forEach(v1 => {
+            cards.push({ kind: 'base', tags: [{ attr: 0, valueId: v0.id }, { attr: 1, valueId: v1.id }] });
+        }));
+        const front = eg.frontDesign || 'imagens/frente/frente01.png';
+        const shown = cards.slice(0, MAX);
+        box.innerHTML = `
+            <div class="descarte-review-cards descarte-text-${resolveTextBackdrop(eg)}">
+                ${shown.map(card => `
+                    <div class="descarte-review-card" style="${cardBgCss(front, 'front', eg)}">
+                        <div class="descarte-hand-card-inner">${cardFaceHtml(card, attributes)}</div>
+                    </div>`).join('')}
+            </div>
+            ${cards.length > MAX ? `<p class="text-xs text-slate-500 text-center mt-3">Mostrando ${MAX} de ${cards.length} cartas. Todas aparecem na tela de Revisão.</p>` : ''}`;
+        applyCardFontScale(eg, box);
+        requestAnimationFrame(() => fitCardTexts(box));
     },
 
     descarteUpdateAttributeName: function(attrIdx, event) {

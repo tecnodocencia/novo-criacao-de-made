@@ -767,6 +767,7 @@ export const editorShellMethods = {
         if (!store) return;
         store.fontScale = Math.min(FONT_SCALE_MAX, Math.max(FONT_SCALE_MIN, Number(value) / 100));
         this.renderTextBackdropControl();
+        this.renderCardsPreview();
         this.scheduleAutoSave();
     },
 
@@ -812,7 +813,7 @@ export const editorShellMethods = {
 
         const isDescarte = eg.model === 'Descarte a Carta';
         const visual = getCardVisual(eg);
-        document.getElementById('text-backdrop-options-wrap')?.classList.toggle('hidden', !isDescarte);
+        wrap.classList.toggle('hidden', !isDescarte);
 
         const chosen = eg.disciplineInfo?.fundoTexto || 'auto';
         document.querySelectorAll('#text-backdrop-options .text-backdrop-opt').forEach(btn => {

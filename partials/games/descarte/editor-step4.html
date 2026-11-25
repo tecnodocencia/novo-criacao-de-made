@@ -85,4 +85,23 @@
                                 <div class="rounded-[28px] border border-slate-200 bg-slate-50 p-4 text-center">
                                     <p class="text-sm font-bold text-slate-600">Total de cartas geradas (todas as combinações possíveis): <span id="descarte-total-base-cards" class="text-slate-900">0</span></p>
                                 </div>
+                                <!-- Prévia das cartas como ficam no jogo + tamanho da letra (os dois jogos).
+                                     Desenhada por renderCardsPreview em js/games/<modelo>/editorCartas.js;
+                                     o tamanho é salvo por setCardFontScale (js/core/editorShell.js). -->
+                                <div class="rounded-[28px] border-2 border-sky-200 bg-sky-50 p-5 space-y-4">
+                                    <div class="flex flex-wrap items-center justify-between gap-4">
+                                        <div>
+                                            <p class="text-sm font-black text-slate-800"><i class="fa-solid fa-eye mr-1"></i> Prévia das cartas no jogo</p>
+                                            <p class="text-xs text-slate-600">Veja como as cartas ficam na partida e ajuste o tamanho da letra.</p>
+                                        </div>
+                                        <div class="flex items-center gap-3 w-full sm:w-auto sm:min-w-[320px]">
+                                            <span class="text-xs font-black text-slate-700 whitespace-nowrap">Tamanho da letra</span>
+                                            <span class="text-xs font-black text-slate-500" aria-hidden="true">A</span>
+                                            <input id="card-font-scale" type="range" min="70" max="160" step="5" value="100" oninput="app.setCardFontScale(this.value)" title="Tamanho da letra dentro das cartas do jogo." class="flex-1 adjust-range">
+                                            <span class="text-xl font-black text-slate-500" aria-hidden="true">A</span>
+                                            <span id="card-font-scale-value" class="adjust-value">100%</span>
+                                        </div>
+                                    </div>
+                                    <div id="cards-final-preview"></div>
+                                </div>
                             </div>
